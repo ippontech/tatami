@@ -162,12 +162,19 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/home/group/GroupHeaderView.min.html':'src/main/webapp/app/components/home/group/GroupHeaderView.html',
                     'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.min.html':'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.html',
                     'src/main/webapp/app/components/home/profile/ProfileHeaderView.min.html':'src/main/webapp/app/components/home/profile/ProfileHeaderView.html',
+                    //Login Module
                     'src/main/webapp/app/components/login/LoginView.min.html':'src/main/webapp/app/components/login/LoginView.html',
                     'src/main/webapp/app/components/login/manual/ManualLoginView.min.html':'src/main/webapp/app/components/login/manual/ManualLoginView.html',
-                    'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html':'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html',
+                    'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html':'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.html',
                     'src/main/webapp/app/components/login/google/GoogleLoginView.min.html':'src/main/webapp/app/components/login/google/GoogleLoginView.html',
                     'src/main/webapp/app/components/login/register/RegisterView.min.html':'src/main/webapp/app/components/login/register/RegisterView.html',
                     'src/main/webapp/app/components/login/email/EmailRegistration.min.html':'src/main/webapp/app/components/login/email/EmailRegistration.html',
+                    //TatamiApp module
+                    'src/main/webapp/app/shared/topMenu/TopMenuView.min.html':'src/main/webapp/app/shared/topMenu/TopMenuView.html',
+                    'src/main/webapp/app/shared/error/404View.min.html':'src/main/webapp/app/shared/error/404View.html',
+                    'src/main/webapp/app/shared/error/505View.min.html':'src/main/webapp/app/shared/error/505View.html'
+
+
 
 
 

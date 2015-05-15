@@ -106,7 +106,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 abstract: true,
                 views: {
                     'topMenu@': {
-                        templateUrl: 'app/shared/topMenu/TopMenuView.html',
+                        templateUrl: 'app/shared/topMenu/TopMenuView.min.html',
                         controller: 'TopMenuController'
                     },
                     '': {
@@ -124,13 +124,13 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 }
             })
             .state('tatami.pageNotFound', {
-                templateUrl: 'app/shared/error/404View.html',
+                templateUrl: 'app/shared/error/404View.min.html',
                 data: {
                     public: true
                 }
             })
             .state('tatami.accessdenied', {
-                templateUrl: 'app/shared/error/500View.html',
+                templateUrl: 'app/shared/error/500View.min.html',
                 data: {
                     public: true
                 }
