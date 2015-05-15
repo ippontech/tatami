@@ -160,6 +160,7 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/home/welcome/WelcomeView.min.html':'src/main/webapp/app/components/home/welcome/WelcomeView.html',
                     'src/main/webapp/app/shared/lists/user/UserListView.min.html':'src/main/webapp/app/shared/lists/user/UserListView.html',
                     'src/main/webapp/app/components/home/group/GroupHeaderView.min.html':'src/main/webapp/app/components/home/group/GroupHeaderView.html',
+                    'src/main/webapp/app/shared/topMenu/post/PostView.min.html':'src/main/webapp/app/shared/topMenu/post/PostView.html',
                     'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.min.html':'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.html',
                     'src/main/webapp/app/components/home/profile/ProfileHeaderView.min.html':'src/main/webapp/app/components/home/profile/ProfileHeaderView.html',
                     //Login Module
@@ -172,7 +173,7 @@ module.exports = function(grunt) {
                     //TatamiApp module
                     'src/main/webapp/app/shared/topMenu/TopMenuView.min.html':'src/main/webapp/app/shared/topMenu/TopMenuView.html',
                     'src/main/webapp/app/shared/error/404View.min.html':'src/main/webapp/app/shared/error/404View.html',
-                    'src/main/webapp/app/shared/error/505View.min.html':'src/main/webapp/app/shared/error/505View.html'
+                    'src/main/webapp/app/shared/error/500View.min.html':'src/main/webapp/app/shared/error/500View.html'
 
 
 
