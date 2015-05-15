@@ -12,9 +12,8 @@ node_modules/karma-phantomjs-launcher
 src/main/webapp/WEB-INF/generated-wro4j
 .merge_file*
 .DS_Store
-*.min.html
 phantomjsdriver.log
-
 *.log
-
-src/main/webapp/TATAMI.CONCAT.js
+*.CONCAT.js
+*.min.html
+*.min.js

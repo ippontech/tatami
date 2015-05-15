@@ -17,7 +17,6 @@ Tatami is made with the following technologies :
 
 Tatami is developed by [Ippon Technologies](http://www.ippon.fr)
 
-Current build status: [![Build Status](https://drone.io/github.com/ippontech/tatami/status.png)](https://drone.io/github.com/ippontech/tatami/latest)
 
 Installation for developers
 ---------------------------------------
