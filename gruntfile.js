@@ -162,6 +162,12 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/home/group/GroupHeaderView.min.html':'src/main/webapp/app/components/home/group/GroupHeaderView.html',
                     'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.min.html':'src/main/webapp/app/shared/sidebars/profile/ProfileSidebarView.html',
                     'src/main/webapp/app/components/home/profile/ProfileHeaderView.min.html':'src/main/webapp/app/components/home/profile/ProfileHeaderView.html',
+                    'src/main/webapp/app/components/login/LoginView.min.html':'src/main/webapp/app/components/login/LoginView.html',
+                    'src/main/webapp/app/components/login/manual/ManualLoginView.min.html':'src/main/webapp/app/components/login/manual/ManualLoginView.html',
+                    'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html':'src/main/webapp/app/components/login/recoverPassword/RecoverPasswordView.min.html',
+                    'src/main/webapp/app/components/login/google/GoogleLoginView.min.html':'src/main/webapp/app/components/login/google/GoogleLoginView.html',
+                    'src/main/webapp/app/components/login/register/RegisterView.min.html':'src/main/webapp/app/components/login/register/RegisterView.html',
+                    'src/main/webapp/app/components/login/email/EmailRegistration.min.html':'src/main/webapp/app/components/login/email/EmailRegistration.html',
 
 
 
