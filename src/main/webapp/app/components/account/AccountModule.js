@@ -50,12 +50,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.password', {
             url: '/password',
-            templateUrl: 'app/components/account/password/PasswordView.html',
+            templateUrl: 'app/components/account/password/PasswordView.min.html',
             controller: 'PasswordController'
         })
         .state('tatami.account.files', {
             url: '/files',
-            templateUrl: 'app/components/account/files/FilesView.html',
+            templateUrl: 'app/components/account/files/FilesView.min.html',
             resolve: {
                 FilesService: 'FilesService',
                 attachmentQuota: function(FilesService) {
@@ -70,7 +70,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.users', {
             url: '/users',
-            templateUrl: 'app/components/account/FormView.html',
+            templateUrl: 'app/components/account/FormView.min.html',
             controller: 'FormController'
         })
         .state('tatami.account.users.following', {
@@ -85,7 +85,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.users.recommended', {
             url: '/recommended',
-            templateUrl: 'app/components/account/users/UsersView.html',
+            templateUrl: 'app/components/account/users/UsersView.min.html',
             resolve: {
                 usersList: ['UserService', function(UserService) {
                     UserService.getSuggestions().$promise;
@@ -95,7 +95,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.users.search', {
             url: '/search/:q',
-            templateUrl: 'app/components/account/users/UsersView.html',
+            templateUrl: 'app/components/account/users/UsersView.min.html',
             resolve: {
                 usersList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
                     return SearchService.query({ term: 'users', q: $stateParams.q }).$promise;
@@ -105,19 +105,19 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.groups', {
             url: '/groups',
-            templateUrl: 'app/components/account/FormView.html',
+            templateUrl: 'app/components/account/FormView.min.html',
             controller: 'FormController'
         })
         .state('tatami.account.groups.main', {
             url: '',
-            templateUrl: 'app/components/account/groups/GroupsView.html',
+            templateUrl: 'app/components/account/groups/GroupsView.min.html',
             controller: 'GroupController'
         })
         .state('tatami.account.groups.main.top', {
             url: '',
             views: {
                 'create@tatami.account.groups.main': {
-                    templateUrl: 'app/components/account/groups/creation/GroupsCreateView.html',
+                    templateUrl: 'app/components/account/groups/creation/GroupsCreateView.min.html',
                     controller: 'GroupsCreateController'
                 }
             }
@@ -126,7 +126,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '',
             views: {
                 'list@tatami.account.groups.main': {
-                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.min.html',
                     resolve: {
                         userGroups: ['GroupService', function(GroupService) {
                             return GroupService.query().$promise;
@@ -140,7 +140,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/recommended',
             views: {
                 'list@tatami.account.groups.main': {
-                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.min.html',
                     resolve: {
                         userGroups: ['GroupService', function(GroupService) {
                             return GroupService.getRecommendations().$promise;
@@ -154,7 +154,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/search/:q',
             views: {
                 'list@tatami.account.groups.main': {
-                    templateUrl: 'app/components/account/groups/list/GroupsListView.html',
+                    templateUrl: 'app/components/account/groups/list/GroupsListView.min.html',
                     resolve: {
                         userGroups: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
                             return SearchService.query({ term: 'groups', q: $stateParams.q }).$promise;
@@ -166,7 +166,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.groups.manage', {
             url:'/:groupId',
-            templateUrl: 'app/components/account/groups/manage/GroupsManageView.html',
+            templateUrl: 'app/components/account/groups/manage/GroupsManageView.min.html',
             resolve: {
                 group: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
                     return GroupService.get({ groupId: $stateParams.groupId }).$promise;
@@ -180,12 +180,12 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.tags', {
             url:'/tags',
-            templateUrl: 'app/components/account/FormView.html',
+            templateUrl: 'app/components/account/FormView.min.html',
             controller: 'FormController'
         })
         .state('tatami.account.tags.following', {
             url: '/following',
-            templateUrl: 'app/components/account/tags/TagsView.html',
+            templateUrl: 'app/components/account/tags/TagsView.min.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
                     return TagService.query().$promise;
@@ -195,7 +195,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.tags.trends', {
             url: '/trends',
-            templateUrl: 'app/components/account/tags/TagsView.html',
+            templateUrl: 'app/components/account/tags/TagsView.min.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
                     return TagService.getPopular().$promise;
@@ -205,7 +205,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.tags.search', {
             url: '/search/:q',
-            templateUrl: 'app/components/account/tags/TagsView.html',
+            templateUrl: 'app/components/account/tags/TagsView.min.html',
             resolve: {
                 tagList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
                     if($stateParams.q.length === 0) {
@@ -220,7 +220,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
         })
         .state('tatami.account.topPosters', {
             url: '/top',
-            templateUrl: 'app/components/account/topPosters/TopPostersView.html',
+            templateUrl: 'app/components/account/topPosters/TopPostersView.min.html',
             resolve: {
                 topPosters: ['TopPostersService', function(TopPostersService) {
                     // Get the {username, count} pairs for all the top posters

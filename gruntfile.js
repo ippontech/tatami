@@ -139,7 +139,19 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/about/presentation/PresentationView.min.html': 'src/main/webapp/app/components/about/presentation/PresentationView.html',     // 'destination': 'source'
                     'src/main/webapp/app/components/account/AccountView.min.html': 'src/main/webapp/app/components/account/AccountView.html',
                     'src/main/webapp/app/components/account/profile/ProfileView.min.html': 'src/main/webapp/app/components/account/profile/ProfileView.html',
-                    'src/main/webapp/app/components/account/preferences/PreferencesView.min.html':'src/main/webapp/app/components/account/preferences/PreferencesView.html'
+                    'src/main/webapp/app/components/account/preferences/PreferencesView.min.html':'src/main/webapp/app/components/account/preferences/PreferencesView.html',
+                    'src/main/webapp/app/components/account/password/PasswordView.min.html': 'src/main/webapp/app/components/account/password/PasswordView.html',
+                    'src/main/webapp/app/components/account/files/FilesView.min.html':'src/main/webapp/app/components/account/files/FilesView.html',
+                    'src/main/webapp/app/components/account/FormView.min.html':'src/main/webapp/app/components/account/FormView.html',
+                    'src/main/webapp/app/components/account/users/UsersView.min.html':'src/main/webapp/app/components/account/users/UsersView.html',
+                    'src/main/webapp/app/components/account/groups/GroupsView.min.html':'src/main/webapp/app/components/account/groups/GroupsView.html',
+                    'src/main/webapp/app/components/account/groups/creation/GroupsCreateView.min.html':'src/main/webapp/app/components/account/groups/creation/GroupsCreateView.html',
+                    'src/main/webapp/app/components/account/groups/list/GroupsListView.min.html':'src/main/webapp/app/components/account/groups/list/GroupsListView.html',
+                    'src/main/webapp/app/components/account/groups/manage/GroupsManageView.min.html':'src/main/webapp/app/components/account/groups/manage/GroupsManageView.html',
+                    'src/main/webapp/app/components/account/tags/TagsView.min.html':'src/main/webapp/app/components/account/tags/TagsView.html',
+                    'src/main/webapp/app/components/account/topPosters/TopPostersView.min.html':'src/main/webapp/app/components/account/topPosters/TopPostersView.html',
+                    'src/main/webapp/app/components/admin/AdminView.min.html':'src/main/webapp/app/components/admin/AdminView.html',
+
                 }
             }
         }
