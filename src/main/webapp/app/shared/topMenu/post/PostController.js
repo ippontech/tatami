@@ -13,7 +13,8 @@ PostModule.controller('PostController', [
     'groups',
     'curStatus',
     'SearchService',
-    function($scope, $modalInstance, $translate, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService) {
+    '$stateParams',
+    function($scope, $modalInstance, $translate, $upload, StatusService, GeolocalisationService, groups, curStatus, SearchService, $stateParams) {
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;
         };
@@ -196,11 +197,10 @@ PostModule.controller('PostController', [
         $scope.newStatus = function() {
             if($scope.status.content.trim().length !== 0) {
                 $scope.status.content = $scope.status.content.trim();
-
                 StatusService.save($scope.status, function() {
                     $modalInstance.close();
                     $modalInstance.result.then(function() {
-                        $scope.$state.transitionTo('tatami.home.home.timeline', {}, { reload: true });
+                        $scope.$state.transitionTo($scope.$state.current.name.split('.post')[0], $stateParams, { reload: true });
                     });
                     $scope.reset();
                 })
