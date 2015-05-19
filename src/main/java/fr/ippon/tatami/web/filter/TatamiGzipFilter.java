@@ -20,7 +20,6 @@ public class TatamiGzipFilter extends GzipFilter {
         } else {
             //otherwise, continue on in the chain with the ServletRequest and ServletResponse objects
         	chain.doFilter(request, response);
-        }       
-        return;
+        }
     }
 }
