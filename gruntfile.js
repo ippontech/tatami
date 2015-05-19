@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+    require('load-grunt-tasks')(grunt);
     grunt.initConfig({
         clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
         uglify: {
@@ -112,10 +113,6 @@ module.exports = function(grunt) {
             }
         },
         cssmin: {
-            options: {
-                shorthandCompacting: false,
-                roundingPrecision: -1
-            },
             target: {
                 files: { //tatami.css should not be minified-- it breaks.
                     'src/main/webapp/css/CSSMIN.css': [
@@ -175,18 +172,18 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/shared/error/404View.min.html':'src/main/webapp/app/shared/error/404View.html',
                     'src/main/webapp/app/shared/error/500View.min.html':'src/main/webapp/app/shared/error/500View.html'
 
-
-
-
-
                 }
             }
+        },
+        concurrent: {
+            target1: ['cssmin', 'htmlmin', 'uglify']
         }
 
    } );
+    grunt.loadNpmTasks('grunt-');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
-    grunt.registerTask('default', ['clean','cssmin', 'htmlmin', 'uglify']);
+    grunt.registerTask('default', ['clean','concurrent:target1']);
 };

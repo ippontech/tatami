@@ -17,3 +17,5 @@ phantomjsdriver.log
 *.CONCAT.js
 *.min.html
 *.min.js
+*MIN.css
+
