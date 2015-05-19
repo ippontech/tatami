@@ -8,6 +8,6 @@ LoginModule.controller('RegisterController', ['$scope', 'RegistrationService', f
             $scope.user.email = '';
         }, function(err) {
             console.log(err);
-        })
-    }
+        });
+    };
 }]);

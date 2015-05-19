@@ -9,5 +9,5 @@ LoginModule.controller('RecoverPasswordController', ['$scope', 'RegistrationServ
         }, function(err) {
             console.log(err);
         });
-    }
+    };
 }]);

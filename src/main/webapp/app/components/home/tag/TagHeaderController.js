@@ -11,6 +11,6 @@ HomeModule.controller('TagHeaderController', ['$scope', 'TagService', 'tag',
                     $scope.$state.reload();
                 }
             );
-        }
+        };
     }
 ]);

@@ -1,7 +1,10 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     grunt.initConfig({
-        clean: [ 'src/main/webapp/TATAMI.CONCAT.js', 'src/main/webapp/css/CSSMIN.css'],
+        clean: [
+            'src/main/webapp/TATAMI.CONCAT.js',
+            'src/main/webapp/css/CSSMIN.css',
+            '**/*.min.html'],
         uglify: {
             options: {
                 mangle: false

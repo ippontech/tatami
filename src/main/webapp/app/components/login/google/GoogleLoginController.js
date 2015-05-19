@@ -5,5 +5,5 @@ LoginModule.controller('GoogleLoginController', ['$scope', '$http', 'UserSession
                 UserSession.clearSession();
                 $scope.$state.go('tatami.login.main');
             });
-    }
+    };
 }]);
