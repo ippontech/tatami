@@ -67,7 +67,7 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
 
     $rootScope.$on('$stateChangeError', function(event) {
         event.preventDefault();
-        $state.transitionTo('tatami.pageNotFound', null, { location: false });
+        $state.transitionTo('tatami.login.main', null, { location: false });
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
