@@ -43,10 +43,10 @@ HomeModule.controller('StatusListContextController', [
                 var pollingDelay = 20000;
 
                 $scope.poller = $timeout(function() {
-                    var arguments = {};
+                    var args = {};
 
                     if($scope.statuses.length !== 0) {
-                        arguments = { start: statuses[0].timelineId };
+                        args = { start: statuses[0].timelineId };
                     }
 
                     var success = function(response) {
@@ -62,11 +62,11 @@ HomeModule.controller('StatusListContextController', [
                     };
 
                     if($scope.$state.is('tatami.home.home.timeline')) {
-                        StatusService.getHomeTimeline(arguments, success, error);
+                        StatusService.getHomeTimeline(args, success, error);
                     }
 
                     else if($scope.$state.is('tatami.home.home.company')) {
-                        HomeService.getCompanyTimeline(arguments, success, error);
+                        HomeService.getCompanyTimeline(args, success, error);
                     }
                 }, pollingDelay);
             };
