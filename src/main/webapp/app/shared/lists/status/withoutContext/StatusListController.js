@@ -176,7 +176,7 @@ HomeModule.controller('StatusListController', [
         };
 
         var loadOldStatuses = function(statuses) {
-            if(statuses.length === 0) {
+            if(statuses.length === 0){
                 $scope.end = true; // reached end of list
                 return;
             }

@@ -8,6 +8,6 @@ HomeModule.controller('UserListController', ['$scope', 'UserService', 'users',
                     $scope.users[index].friend = response.friend;
                     $scope.$state.reload();
             });
-        }
+        };
     }
 ]);

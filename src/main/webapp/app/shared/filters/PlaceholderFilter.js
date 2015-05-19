@@ -6,5 +6,5 @@ TatamiApp.filter('placeholderFilter', ['$translate', function($translate) {
         else {
             return $translate.instant('tatami.home.post.update');
         }
-    }
+    };
 }]);
