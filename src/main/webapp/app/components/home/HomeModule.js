@@ -18,7 +18,7 @@ HomeModule.run(['UserSession','$rootScope','$location','$interval','$state','$do
         }
     }, 1000);
     //tracking basically all user input.
-    $(document).on('mousemove keydown DOMMouseScroll mousewheel mousedown touchstart',
+    $(document).on('keydown DOMMouseScroll mousewheel mousedown touchstart',
     function resetIdle () {
         time=Date.now();
     });
