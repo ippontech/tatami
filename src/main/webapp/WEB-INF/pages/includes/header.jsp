@@ -7,8 +7,6 @@
     request.setAttribute("version", version);
     String googleAnalyticsKey = Constants.GOOGLE_ANALYTICS_KEY;
     request.setAttribute("googleAnalyticsKey", googleAnalyticsKey);
-    boolean wro4jEnabled = Constants.WRO4J_ENABLED;
-    request.setAttribute("wro4jEnabled", wro4jEnabled);
 %>
 <head>
     <meta charset="utf-8">
