@@ -5,11 +5,13 @@ describe("License controller test", function() {
     beforeEach(inject(function(_$controller_) {
        $controller = _$controller_; 
     }));
-
+    it('SANITY', function(){
+        expect(true).toBeTruthy();
+    });
     it('Checks that LicenseController injects current year in the copyright', function() {
         var $scope = {};
         var controller = $controller('LicenseController', {$scope: $scope});
-        expect($scope.endYear).toBe( new Date().getFullYear());
+        expect($scope.time).toBe(" 2012-"+new Date().getFullYear()+" ");
     });
 
 });

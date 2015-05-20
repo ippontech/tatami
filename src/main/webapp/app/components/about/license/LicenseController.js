@@ -1,5 +1,6 @@
 AboutModule.controller('LicenseController', ['$scope',
-    function() {
-        $("#endYear").html(" 2012-"+new Date().getFullYear())+" ";
+    function($scope) {
+        $scope.time=" 2012-"+new Date().getFullYear()+" ";
+        $("#endYear").html($scope.time);
     }
 ]);
