@@ -17,7 +17,7 @@ describe("Status Controller Test", function () {
 
             },
             get: function (Token){
-                return true
+                return true;
             }
         }
     }));
