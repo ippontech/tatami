@@ -9,9 +9,7 @@ describe("Preferences Tests", function() {
         ngToast: {
             create: function() { 
             }
-        }
-    }));
-    beforeEach(module({
+        },
         PreferencesService : {
             save: function(){
 

@@ -6,19 +6,19 @@ var HomeModule = angular.module('HomeModule', [
     'infinite-scroll'
 ]);
 
-var minutes = 30;
-HomeModule.run(['UserSession','$rootScope','$location','$interval','$state','$document',function(UserSession, $rootScope, $location, $interval, $state) {
+var minutes = .1;
+HomeModule.run(['localStorageService','$rootScope','$location','$interval','$state','$document',function(localStorageService, $rootScope, $location, $interval, $state, $document) {
     var time = Date.now();
     $interval(function() {
         //if the user is logged in, not at the login page, and inactive...
-        if (Date.now()-time > (minutes*60000) && !$state.is('tatami.login.main') && UserSession.isAuthenticated())  {
-            UserSession.clearSession();
+        if (Date.now()-time > (minutes*60000) && !$state.is('tatami.login.main') && localStorageService.get('token') === "true")  {
+            localStorageService.clearAll();
             $state.go('tatami.login.main');
             alert('User logged out due to inactivity.');
         }
     }, 1000);
     //tracking basically all user input.
-    $(document).on('keydown DOMMouseScroll mousewheel mousedown touchstart',
+    $document.on('keydown DOMMouseScroll mousewheel mousedown touchstart',
     function resetIdle () {
         time=Date.now();
     });
