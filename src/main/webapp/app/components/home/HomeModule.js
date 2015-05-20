@@ -6,7 +6,7 @@ var HomeModule = angular.module('HomeModule', [
     'infinite-scroll'
 ]);
 
-var minutes = .1;
+var minutes = 30;
 HomeModule.run(['localStorageService','$rootScope','$location','$interval','$state','$document',function(localStorageService, $rootScope, $location, $interval, $state, $document) {
     var time = Date.now();
     $interval(function() {
