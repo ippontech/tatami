@@ -2,7 +2,7 @@ describe("Status Controller Test", function () {
     var ctrl, statusService;
     beforeEach(module('ui.router'));
     beforeEach(module('HomeModule'));
-    beforeEach(module('angular-local-storage'));
+
     beforeEach(module('pascalprecht.translate'));
 
 
@@ -23,7 +23,7 @@ describe("Status Controller Test", function () {
     }));
 
 
-    beforeEach(inject(function ($scope, _$controller_, _$translate_, _StatusService_, _localStorageService_) {
+    beforeEach(inject(function ($rootScope, _$controller_, _$translate_, _StatusService_, _localStorageService_) {
         $scope = $rootScope.$new();
         $translate = _$translate_;
         statusService = _StatusService_;
