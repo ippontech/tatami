@@ -69,40 +69,6 @@
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
             </properties>
-            <build>
-<!--
-                <plugins>
-                    <plugin>
-                        <groupId>ro.isdc.wro4j</groupId>
-                        <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>${maven.wro4j.version}</version>
-			 <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <targetGroups>tatami-vendor,tatami-app,tatami-account,tatami-app-account</targetGroups>
-                            <minimize>false</minimize>
-                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
-                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
-                            <ignoreMissingResources>false</ignoreMissingResources>
-                            <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>ro.isdc.wro4j</groupId>
-                                <artifactId>wro4j-extensions</artifactId>
-                                <version>${maven.wro4j.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
--->
-            </build>
         </profile>
         <profile>
             <id>prod</id>
@@ -133,39 +99,6 @@
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
-            <build>
-<!--  
-              <plugins>
-                    <plugin>
-                        <groupId>ro.isdc.wro4j</groupId>
-                        <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>${maven.wro4j.version}</version>
-			<executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <targetGroups>tatami-vendor,tatami-app,tatami-account,tatami-app-account</targetGroups>
-                            <minimize>false</minimize>
-                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
-                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
-                            <ignoreMissingResources>false</ignoreMissingResources>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>ro.isdc.wro4j</groupId>
-                                <artifactId>wro4j-extensions</artifactId>
-                                <version>${maven.wro4j.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
--->
-            </build>
         </profile>
         <profile>
             <id>stress-tests</id>
@@ -194,7 +127,7 @@
                         <directory>src/integration/resources</directory>
                     </testResource>
                 </testResources>
-                <plugins>
+                <plugins>   
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
@@ -476,7 +409,7 @@
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
-        
+
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
@@ -494,7 +427,7 @@
             </snapshots>
         </repository>
     </repositories>
-    
+
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
@@ -981,6 +914,22 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <shortRevisionLength>7</shortRevisionLength>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
@@ -991,8 +940,8 @@
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
                     <!-- 
-                    <runOrder>reversealphabetical</runOrder>
-                     -->
+                      <runOrder>reversealphabetical</runOrder>
+                      -->
                 </configuration>
             </plugin>
             <plugin>
@@ -1006,6 +955,7 @@
                         </manifest>
                         <manifestEntries>
                             <Implementation-Version>${project.version}</Implementation-Version>
+                            <git-SHA-1>${buildNumber}</git-SHA-1>
                             <Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
                         </manifestEntries>
                     </archive>
@@ -1112,132 +1062,132 @@
                             <name>.settings/org.eclipse.core.resources.prefs</name>
                             <content>
                                 <![CDATA[eclipse.preferences.version=1${line.separator}encoding//src/main/webapp/WEB-INF/messages/messages_en.properties=UTF-8${line.separator}encoding//src/main/webapp/WEB-INF/messages/messages_fr.properties=UTF-8${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
-                                </content>
-                            </file>
-                        </additionalConfig>
-                    </configuration>
-                </plugin>
+                            </content>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>com.github.klieber</groupId>
+                <artifactId>phantomjs-maven-plugin</artifactId>
+                <version>0.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>1.9.8</version>
+                    <skip>${js-tests.skip}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.kelveden</groupId>
+                <artifactId>maven-karma-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <karmaExecutable>${project.basedir}/node_modules/.bin/karma</karmaExecutable>
+                    <configFile>${project.basedir}/karma.ci.conf.js</configFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.4.201502262128</version>
+                <executions>
+                    <execution>
+                        <id>pre-unit-tests</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
+                            <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
+                            <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.github.klieber</groupId>
-                    <artifactId>phantomjs-maven-plugin</artifactId>
-                    <version>0.4</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>install</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
                     <configuration>
-                        <version>1.9.8</version>
-                        <skip>${js-tests.skip}</skip>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>ro.isdc.wro4j</groupId>
+                                        <artifactId>
+                                            wro4j-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.4.7,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>run</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.codehaus.gmaven
+                                        </groupId>
+                                        <artifactId>
+                                            gmaven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.4,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>testCompile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>com.kelveden</groupId>
-                    <artifactId>maven-karma-plugin</artifactId>
-                    <version>1.6</version>
-                    <executions>
-                        <execution>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>start</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <karmaExecutable>${project.basedir}/node_modules/.bin/karma</karmaExecutable>
-                        <configFile>${project.basedir}/karma.ci.conf.js</configFile>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.4.201502262128</version>
-                    <executions>
-                        <execution>
-                            <id>pre-unit-tests</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <!-- Sets the path to the file which contains the execution data. -->
-                                <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
-                                <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
-                                <propertyName>surefireArgLine</propertyName>
-                            </configuration>
-                        </execution>
-                        <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
-                        <execution>
-                            <id>post-unit-test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
-                                <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
-            <pluginManagement>
-                <plugins>
-                    <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                    <plugin>
-                        <groupId>org.eclipse.m2e</groupId>
-                        <artifactId>lifecycle-mapping</artifactId>
-                        <version>1.0.0</version>
-                        <configuration>
-                            <lifecycleMappingMetadata>
-                                <pluginExecutions>
-                                    <pluginExecution>
-                                        <pluginExecutionFilter>
-                                            <groupId>ro.isdc.wro4j</groupId>
-                                            <artifactId>
-                                                wro4j-maven-plugin
-                                            </artifactId>
-                                            <versionRange>
-                                                [1.4.7,)
-                                            </versionRange>
-                                            <goals>
-                                                <goal>run</goal>
-                                            </goals>
-                                        </pluginExecutionFilter>
-                                        <action>
-                                            <ignore></ignore>
-                                        </action>
-                                    </pluginExecution>
-                                    <pluginExecution>
-                                        <pluginExecutionFilter>
-                                            <groupId>
-                                                org.codehaus.gmaven
-                                            </groupId>
-                                            <artifactId>
-                                                gmaven-plugin
-                                            </artifactId>
-                                            <versionRange>
-                                                [1.4,)
-                                            </versionRange>
-                                            <goals>
-                                                <goal>testCompile</goal>
-                                            </goals>
-                                        </pluginExecutionFilter>
-                                        <action>
-                                            <ignore></ignore>
-                                        </action>
-                                    </pluginExecution>
-                                </pluginExecutions>
-                            </lifecycleMappingMetadata>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </pluginManagement>
-        </build>
-    </project>
+        </pluginManagement>
+    </build>
+</project>
