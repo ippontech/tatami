@@ -119,9 +119,9 @@ module.exports = function(grunt) {
             target: {
                 files: { //tatami.css should not be minified-- it breaks.
                     'src/main/webapp/css/CSSMIN.css': [
-                        "src/main/webapp/assets/bower_components/ment.io/ment.io/styles.css",
                         "src/main/webapp/assets/bower_components/ngtoast/dist/ngToast.min.css",
                         "src/main/webapp/assets/vendor/css/bootstrap/css/bootstrap.css",
+                        "src/main/webapp/assets/bower_components/ment.io/ment.io/styles.css",
                         "src/main/webapp/assets/bower_components/bootstrap-tour/build/css/bootstrap-tour.css"
                     ]
                 }
