@@ -1013,6 +1013,21 @@
                 <version>1.2.1</version>
                 <executions>
                     <execution>
+                        <id>insert-version</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <executable>scripts/insertBuildVersion.sh</executable>
+                            <arguments>
+                                <argument>${project.version}</argument>
+                                <argument>${buildNumber}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
@@ -1021,6 +1036,7 @@
                             <executable>${project.npm.bin}/grunt</executable>
                         </configuration>
                     </execution>
+                    
                     <execution>
                         <id>install-phantomjs</id>
                         <phase>generate-sources</phase>

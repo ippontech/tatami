@@ -163,6 +163,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'title': 'Tatami',
                     'about': {
                         'title': 'About',
+                        'version' : 'Version',
                         'presentation': 'Presentation',
                         'tos': 'Terms of Service',
                         'language': {
@@ -623,6 +624,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'title': 'Tatami',
                     'about': {
                         'title': 'Information',
+                        'version' : 'Version',
                         'presentation': 'Présentation',
                         'tos': 'Conditions de service',
                         'language': {
