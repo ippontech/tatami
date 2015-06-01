@@ -8,32 +8,56 @@ describe("Status Controller Test", function () {
 
     //Mocked password service:
     beforeEach(module({
-        StatusService: {
-            save: function () {
-            }
-        },
-        localStorageService : {
-            clearAll:function(){
+            UserSession: {
+                isAuthenticated: function () {
+                    return "true";
+                },
 
+                isUserResolved: function () {
+                    return true;
+                },
+
+                setLoginState: function (loggedIn) {
+                },
+
+                clearSession: function () {
+                },
+
+                getUser: function () {
+                },
+
+                authenticate: function (force) {
+                }
             },
-            get: function (Token){
-                return true;
+            StatusService: {
+                save: function () {
+                }
             }
-        }
-    }));
+            ,
+            localStorageService: {
+                clearAll: function () {
+
+                }
+                ,
+                get: function (token) {
+                    return true;
+                }
+            }
+        })
+    );
 
 
     beforeEach(inject(function ($rootScope, _$controller_, _$translate_, _StatusService_, _localStorageService_) {
         $scope = $rootScope.$new();
         $translate = _$translate_;
         statusService = _StatusService_;
-        var storageService =  _localStorageService_;
+        var storageService = _localStorageService_;
         spyOn(statusService, 'save');
         ctrl = _$controller_('StatusController', {
             $scope: $scope,
             $translate: $translate,
             'StatusService': statusService,
-            'localStorageService' : storageService,
+            'localStorageService': storageService,
             'profile': {},
             'status': 'teehee',
             'context': {discussionStatuses: []},
@@ -51,4 +75,5 @@ describe("Status Controller Test", function () {
     it('Status accepted without discussion', function () {
         expect($scope.statuses[0] == 'teehee').toBeTruthy();
     });
-});
+})
+;
