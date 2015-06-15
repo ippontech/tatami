@@ -113,7 +113,7 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                         templateUrl: 'index.html'
                     },
                     'footer@': {
-                        templateUrl: 'app/shared/footer/FooterView.html'
+                        templateUrl: 'app/shared/footer/FooterView.min.html'
                     }
                 },
                 resolve: {
