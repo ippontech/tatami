@@ -172,6 +172,7 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/login/email/EmailRegistration.min.html':'src/main/webapp/app/components/login/email/EmailRegistration.html',
                     //TatamiApp module
                     'src/main/webapp/app/shared/topMenu/TopMenuView.min.html':'src/main/webapp/app/shared/topMenu/TopMenuView.html',
+                    'src/main/webapp/app/shared/footer/FooterView.min.html':'src/main/webapp/app/shared/footer/FooterView.html',
                     'src/main/webapp/app/shared/error/404View.min.html':'src/main/webapp/app/shared/error/404View.html',
                     'src/main/webapp/app/shared/error/500View.min.html':'src/main/webapp/app/shared/error/500View.html'
 
