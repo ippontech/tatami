@@ -154,6 +154,7 @@ module.exports = function(grunt) {
                     'src/main/webapp/app/components/home/HomeView.min.html':'src/main/webapp/app/components/home/HomeView.html',
                     'src/main/webapp/app/components/home/status/StatusView.min.html':'src/main/webapp/app/components/home/status/StatusView.html',
                     'src/main/webapp/app/components/home/search/SearchHeaderView.min.html':'src/main/webapp/app/components/home/search/SearchHeaderView.html',
+                    'src/main/webapp/app/components/home/tag/TagHeaderView.min.html':'src/main/webapp/app/components/home/tag/TagHeaderView.html',
                     'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.min.html':'src/main/webapp/app/shared/lists/status/withoutContext/StatusListView.html',
                     'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.min.html':'src/main/webapp/app/shared/sidebars/home/HomeSidebarView.html',
                     'src/main/webapp/app/components/home/timeline/TimelineHeaderView.min.html':'src/main/webapp/app/components/home/timeline/TimelineHeaderView.html',
