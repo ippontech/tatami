@@ -99,6 +99,31 @@
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>insert-version</id>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <executable>scripts/insertBuildVersion.sh</executable>
+                                    <arguments>
+                                        <argument>${project.version}</argument>
+                                        <argument>${buildNumber}</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>stress-tests</id>
@@ -1012,21 +1037,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <executions>
-                    <execution>
-                        <id>insert-version</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <executable>scripts/insertBuildVersion.sh</executable>
-                            <arguments>
-                                <argument>${project.version}</argument>
-                                <argument>${buildNumber}</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-
                     <execution>
                         <phase>compile</phase>
                         <goals>
