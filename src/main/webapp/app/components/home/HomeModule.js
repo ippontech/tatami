@@ -6,38 +6,34 @@ var HomeModule = angular.module('HomeModule', [
     'infinite-scroll'
 ]);
 
-var minutes = 30;
-HomeModule.run(['localStorageService','$rootScope','$location','$interval','$state','$document',function(localStorageService, $rootScope, $location, $interval, $state, $document) {
-    var time = Date.now();
-    $interval(function() {
+HomeModule.run(['UserSession', '$rootScope', '$location', '$interval', '$state', '$document', function (UserSession, $rootScope, $location, $interval, $state) {
+    $interval(function () {
         //if the user is logged in, not at the login page, and inactive...
-        if (Date.now()-time > (minutes*60000) && !$state.is('tatami.login.main') && localStorageService.get('token') === "true")  {
-            localStorageService.clearAll();
-            $state.go('tatami.login.main');
-            alert('User logged out due to inactivity.');
+        if (UserSession.isAuthenticated() && UserSession.isUserResolved()) {
+            try {
+                UserSession.authenticate(true);
+            } catch (err) {
+                UserSession.clearSession();
+                $state.go('tatami.login.main');
+                alert('User logged out due to session expiration.');
+            }
         }
-    }, 1000);
-    //tracking basically all user input.
-    $document.on('keydown DOMMouseScroll mousewheel mousedown touchstart',
-    function resetIdle () {
-        time=Date.now();
-    });
-
+    }, 1000 * 60 * 10); //10 minutes
 }]);
 
-HomeModule.config(['$stateProvider', function($stateProvider) {
+HomeModule.config(['$stateProvider', function ($stateProvider) {
     $stateProvider
         .state('tatami.home', {
             url: '/home',
             abstract: true,
             templateUrl: 'app/components/home/HomeView.min.html',
             resolve: {
-                profile: ['ProfileService', function(ProfileService) {
+                profile: ['ProfileService', function (ProfileService) {
                     return ProfileService.get().$promise;
                 }],
 
-                userRoles: ['$http', function($http) {
-                    return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {
+                userRoles: ['$http', function ($http) {
+                    return $http({method: 'GET', url: '/tatami/rest/account/admin'}).then(function (result) {
                         return result.data;
                     });
                 }]
@@ -52,18 +48,18 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                status: ['StatusService', '$stateParams', '$q', function(StatusService, $stateParams, $q) {
-                    return StatusService.get({ statusId: $stateParams.statusId })
+                status: ['StatusService', '$stateParams', '$q', function (StatusService, $stateParams, $q) {
+                    return StatusService.get({statusId: $stateParams.statusId})
                         .$promise.then(
-                            function(response) {
-                                if(angular.equals({}, response.toJSON())) {
-                                    return $q.reject();
-                                }
+                        function (response) {
+                            if (angular.equals({}, response.toJSON())) {
+                                return $q.reject();
+                            }
                             return response;
-                    });
+                        });
                 }],
-                context: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                    return StatusService.getDetails({ statusId: $stateParams.statusId }).$promise;
+                context: ['StatusService', '$stateParams', function (StatusService, $stateParams) {
+                    return StatusService.getDetails({statusId: $stateParams.statusId}).$promise;
                 }]
             }
         })
@@ -80,10 +76,10 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
-                    return SearchService.query({ term: 'status', q: $stateParams.searchTerm }).$promise;
+                statuses: ['SearchService', '$stateParams', function (SearchService, $stateParams) {
+                    return SearchService.query({term: 'status', q: $stateParams.searchTerm}).$promise;
                 }],
-                showModal: function() {
+                showModal: function () {
                     return false;
                 }
             }
@@ -93,16 +89,16 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             url: '^/home',
             abstract: true,
             resolve: {
-                groups: ['GroupService', function(GroupService) {
+                groups: ['GroupService', function (GroupService) {
                     return GroupService.query().$promise;
                 }],
-                tags: ['TagService', function(TagService) {
-                    return TagService.query({ popular: true }).$promise;
+                tags: ['TagService', function (TagService) {
+                    return TagService.query({popular: true}).$promise;
                 }],
-                suggestions: ['UserService', function(UserService) {
+                suggestions: ['UserService', function (UserService) {
                     return UserService.getSuggestions().$promise;
                 }],
-                showModal: function() {
+                showModal: function () {
                     return false;
                 }
             }
@@ -123,17 +119,17 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['StatusService', function(StatusService) {
+                statuses: ['StatusService', function (StatusService) {
                     return StatusService.getHomeTimeline().$promise;
                 }],
-                showModal: ['statuses', function(statuses) {
+                showModal: ['statuses', function (statuses) {
                     return statuses.length === 0;
                 }]
             }
         })
         .state('tatami.home.home.timeline.presentation', {
             url: '',
-            onEnter: ['$stateParams', '$modal', function($stateParams, $modal) {
+            onEnter: ['$stateParams', '$modal', function ($stateParams, $modal) {
                 $modal.open({
                     templateUrl: 'app/components/home/welcome/WelcomeView.min.html',
                     controller: 'WelcomeController'
@@ -156,7 +152,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['HomeService', function(HomeService) {
+                statuses: ['HomeService', function (HomeService) {
                     return HomeService.getMentions().$promise;
                 }]
 
@@ -178,7 +174,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['HomeService', function(HomeService) {
+                statuses: ['HomeService', function (HomeService) {
                     return HomeService.getFavorites().$promise;
                 }]
             }
@@ -199,7 +195,7 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['HomeService', function(HomeService) {
+                statuses: ['HomeService', function (HomeService) {
                     return HomeService.getCompanyTimeline().$promise;
                 }]
             }
@@ -221,11 +217,11 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                tag: ['TagService', '$stateParams', function(TagService, $stateParams) {
-                    return TagService.get({ tag: $stateParams.tag }).$promise;
+                tag: ['TagService', '$stateParams', function (TagService, $stateParams) {
+                    return TagService.get({tag: $stateParams.tag}).$promise;
                 }],
-                statuses: ['TagService', '$stateParams', function(TagService, $stateParams) {
-                    return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
+                statuses: ['TagService', '$stateParams', function (TagService, $stateParams) {
+                    return TagService.getTagTimeline({tag: $stateParams.tag}).$promise;
                 }]
             }
         })
@@ -233,8 +229,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             url: '/group/:groupId',
             abstract: true,
             resolve: {
-                group: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
-                    return GroupService.get({ groupId: $stateParams.groupId }).$promise;
+                group: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
+                    return GroupService.get({groupId: $stateParams.groupId}).$promise;
                 }]
             }
         })
@@ -255,8 +251,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
-                    return GroupService.getStatuses({ groupId: $stateParams.groupId }).$promise;
+                statuses: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
+                    return GroupService.getStatuses({groupId: $stateParams.groupId}).$promise;
                 }]
             }
         })
@@ -277,8 +273,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                users: ['GroupService', '$stateParams', function(GroupService, $stateParams) {
-                    return GroupService.getMembers({ groupId: $stateParams.groupId }).$promise;
+                users: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
+                    return GroupService.getMembers({groupId: $stateParams.groupId}).$promise;
                 }]
             }
         })
@@ -287,11 +283,11 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
             url: '/profile/:username',
             abstract: true,
             resolve: {
-                user: ['UserService', '$stateParams', function(UserService, $stateParams) {
-                    return UserService.get({ username: $stateParams.username }).$promise;
+                user: ['UserService', '$stateParams', function (UserService, $stateParams) {
+                    return UserService.get({username: $stateParams.username}).$promise;
                 }],
-                tags: ['TagService', '$stateParams', function(TagService, $stateParams) {
-                    return TagService.query({ popular: true, user: $stateParams.username }).$promise;
+                tags: ['TagService', '$stateParams', function (TagService, $stateParams) {
+                    return TagService.query({popular: true, user: $stateParams.username}).$promise;
                 }]
             }
         })
@@ -312,10 +308,10 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                statuses: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                    return StatusService.getUserTimeline({ username: $stateParams.username }).$promise;
+                statuses: ['StatusService', '$stateParams', function (StatusService, $stateParams) {
+                    return StatusService.getUserTimeline({username: $stateParams.username}).$promise;
                 }],
-                showModal: function() {
+                showModal: function () {
                     return false;
                 }
             }
@@ -337,8 +333,8 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                users: ['UserService', '$stateParams', function(UserService, $stateParams) {
-                    return UserService.getFollowing({ username: $stateParams.username }).$promise;
+                users: ['UserService', '$stateParams', function (UserService, $stateParams) {
+                    return UserService.getFollowing({username: $stateParams.username}).$promise;
                 }]
             }
         })
@@ -359,10 +355,10 @@ HomeModule.config(['$stateProvider', function($stateProvider) {
                 }
             },
             resolve: {
-                users: ['UserService', '$stateParams', function(UserService, $stateParams) {
-                    return UserService.getFollowers({ username: $stateParams.username }).$promise;
+                users: ['UserService', '$stateParams', function (UserService, $stateParams) {
+                    return UserService.getFollowers({username: $stateParams.username}).$promise;
                 }]
             }
         });
-    }
+}
 ]);

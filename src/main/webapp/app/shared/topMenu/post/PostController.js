@@ -194,8 +194,10 @@ PostModule.controller('PostController', [
          * Uses the StatusService for this purpose, and we do nothing if no
          * content has been provided by the user.
          */
+        var isAlreadyPosting=false;
         $scope.newStatus = function() {
-            if($scope.status.content.trim().length !== 0) {
+            if($scope.status.content.trim().length !== 0 && !isAlreadyPosting) {
+                isAlreadyPosting=true;
                 $scope.status.content = $scope.status.content.trim();
                 StatusService.save($scope.status, function() {
                     $modalInstance.close();

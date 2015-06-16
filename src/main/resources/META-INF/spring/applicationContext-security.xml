@@ -49,9 +49,7 @@
 
         <logout logout-url="/tatami/logout"
                 logout-success-url="/tatami/login"/>
-        <session-management invalid-session-url="/tatami/login">
-            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
-        </session-management>
+        <session-management invalid-session-url="/tatami/login"/>
     </http>
 
     <authentication-manager alias="authenticationManager">

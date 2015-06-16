@@ -18,12 +18,12 @@
     }
 
     #tatamiBody {
-        padding: 0px;
+        padding: 0;
     }
 }
 .noRadius
 {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .noCollapse
@@ -36,7 +36,7 @@
 }
 
 .noRadius {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 
@@ -62,7 +62,7 @@
 }
 @media screen and (min-width: 767px) {
     #tatamiBody {
-        padding: 10px 15px 10px 0px;
+        padding: 10px 15px 10px 0;
     }
 }
 
@@ -80,7 +80,7 @@ h4 {
 }
 
 .well h4 {
-    margin: 0px;
+    margin: 0;
 }
 
 .labelSizeNormal{
@@ -97,7 +97,7 @@ h4 {
 }
 .controle-group
 {
-  padding: 0px 0px 5px;
+  padding: 0 0 5px;
     padding-top: 10px;
     }
 .quota {
@@ -108,7 +108,7 @@ h4 {
 }
 
 .nomargin {
-      margin: 0px;
+      margin: 0;
 }
 
 .file-table
@@ -131,7 +131,7 @@ display: block;
 
 
 div.jGrowl-notification{
-    background-color : none;
+    background-color : transparent;
     opacity : 1;
 }
 
@@ -186,7 +186,7 @@ div.jGrowl-notification{
 .avatar-float-left-container  {
     margin-left: 15px;
     margin-top: 15px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     margin-right: 15px;
 }
 
@@ -199,12 +199,12 @@ div.jGrowl-notification{
 }
 
 .navbar .nav li.dropdown > .dropdown-toggle .caret {
-    border-top-color: #CCCCCC; 
-    border-bottom-color: #CCCCCC; 
+    border-top-color: #CCCCCC;
+    border-bottom-color: #CCCCCC;
 }
 
 .navbar .nav li.dropdown > .dropdown-toggle .caret:hover {
-    border-top-color: white; 
+    border-top-color: white;
     border-bottom-color: white;
 }
 
@@ -266,9 +266,9 @@ div.jGrowl-notification{
 }
 
 .page-header {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .img-rounded {
@@ -307,7 +307,7 @@ div.jGrowl-notification{
 
 /*.tatam, .useritem {*/
 .useritem {
-    padding: 0px 5px 0px 0px;
+    padding: 0 5px 0 0;
     overflow: hidden;
     display: none;
     border: 1px solid #CCCCCC;
@@ -321,7 +321,7 @@ div.jGrowl-notification{
     background-color: rgba(241, 241, 241, 0.65) !important;
 }
 .useritemmini {
-    padding: 0px 5px 1px 35px;
+    padding: 0 5px 1px 35px;
     overflow: hidden;
     display: none;
 }
@@ -399,7 +399,7 @@ div.jGrowl-notification{
 
 .tatam > header {
     padding-bottom: 0;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .tatams {
@@ -407,12 +407,12 @@ div.jGrowl-notification{
 }
 
 .tatam > div:first-child, .useritem > div:first-child {
-    padding: 5px 10px 0px 10px;
+    padding: 5px 10px 0 10px;
 }
 
 .tatams > * {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 @media screen and (min-width: 767px) {
@@ -441,7 +441,7 @@ div.jGrowl-notification{
 }
 
 /*.tatams-discussion {
-    margin-top: 0px;
+    margin-top: 0;
     margin-left: -60px;
 }*/
 
@@ -467,7 +467,7 @@ div.jGrowl-notification{
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
     margin-bottom: -1px;
-    padding: 10px;    
+    padding: 10px;
     box-shadow: inset 0 3px 8px rgba(0,0,0,.05);
 }
 
@@ -489,7 +489,7 @@ div.jGrowl-notification{
 /* Style for degradated fileUpload on IE8 */
 .controlsIE {
 text-align: left;
-vertical-align: center;
+vertical-align: middle;
 margin-bottom: 20px;
 }
 
@@ -500,7 +500,7 @@ margin-bottom: 20px;
 .controlsIE span.glyphicon, span.upload-ko, span.upload-ok {
     padding-left: 15px;
     margin-top: 10px;
-    
+
 }
 
 .controlsIE span.upload-ko, .controlsIE span.upload-ok, span.hidden-label {
@@ -511,7 +511,7 @@ margin-bottom: 20px;
     background-color: white;
     border-top: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    padding: 0px;
+    padding: 0;
     margin-bottom: -1px;
     overflow: hidden;
     display: none;
@@ -524,11 +524,11 @@ margin-bottom: 20px;
 }
 
 .tatam-first {
-    border-top: 0px;
+    border-top: 0;
 }
 
 .tatam-last {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 @media screen and (min-width: 767px) {
@@ -552,13 +552,13 @@ margin-bottom: 20px;
     border-left: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
     background-color: white;
-    margin-bottom: 0px;
-    border-radius: 5px 5px 0px 0px;
+    margin-bottom: 0;
+    border-radius: 5px 5px 0 0;
 }
 
 .tatams-content h3 {
     padding: 5px 10px 5px 10px;
-    margin: 0px;
+    margin: 0;
     font-weight: normal;
     font-size: 1.4em;
 }
@@ -569,11 +569,10 @@ margin-bottom: 20px;
 }
 
 .tatams-content hr {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     border-top: 1px solid #CCCCCC;
     margin-bottom: -2px;
-    margin-top: 0px;
 }
 
 .tatams-container {
@@ -601,11 +600,11 @@ margin-bottom: 20px;
 
 .nav-justified > li {
     border: 1px solid #CCCCCC;
-    padding: 0px;
+    padding: 0;
 }
 
 .nav-tabs > li > a {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .homebody-nav {
@@ -627,7 +626,7 @@ margin-bottom: 20px;
 .typeahead.dropdown-menu.hasCategory{
     /*width: 280px;*/
     background: #EDEDED;
-    padding: 0px;
+    padding: 0;
 }
 
 @media screen and (max-width: 767px) {
@@ -731,7 +730,7 @@ margin-bottom: 20px;
 
 .nav-collapse .dropdown-menu .divider {
   display: block;
-  height: 0px;
+  height: 0;
   border-bottom: 1px solid #CCCCCC;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -751,15 +750,15 @@ margin-bottom: 20px;
 }
 
 .searchbody h3 {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     font-weight: normal;
     font-size: 1.4em;
 }
 
 .searchbody hr {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     border-top: 1px solid #CCCCCC;
     margin-top: 10px;
 }
@@ -781,15 +780,15 @@ margin-bottom: 20px;
 
 .statusitem-content {
     margin-bottom: 5px;
-    
+
 }
 
 .statusitem-footer {
-    padding: 0px;   
+    padding: 0;
 }
 
 .markdown p {
-    margin: 0px 0px 0.5em 0px;
+    margin: 0 0 0.5em 0;
 }
 
 #current {
@@ -798,8 +797,8 @@ margin-bottom: 20px;
 }
 
 #before{
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 #after {
@@ -839,7 +838,7 @@ margin-bottom: 20px;
     .button-ios {
         margin-left: -2px;
         margin-right: -2px;
-        margin: 2px 4px 2px 0px; 
+        margin: 2px 4px 2px 0;
     }
 
     .button-ios-right {
@@ -894,7 +893,7 @@ margin-bottom: 20px;
 
     .slider-container .slider-container-img {
         background-color: black;
-        text-align: center;   
+        text-align: center;
         width: 900px;
         line-height: 550px;
         height: 550px;
@@ -922,7 +921,7 @@ margin-bottom: 20px;
 
     .slider-container .slider-container-img {
         background-color: black;
-        text-align: center;   
+        text-align: center;
         width: 500px;
         line-height: 550px;
         height: 550px;
@@ -940,7 +939,7 @@ margin-bottom: 20px;
 
 
 .slider-container .slider-container-header {
-    height: 0px;
+    height: 0;
     text-align: right;
     margin-right: 5px;
 }
