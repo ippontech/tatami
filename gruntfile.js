@@ -120,13 +120,48 @@ module.exports = function(grunt) {
         return result;
     }
 
+    var prepareTags = function(prepFiles, open, close) {
+        var result = '';
+        var end = '\n\t';
+        for(var file = 0; file < prepFiles.length; ++file) {
+            if(file == prepFiles.length-1) { end = ''; }
+            result += open + prepFiles[file] + close + end;
+        }
+        return result;
+    }
+
     var filePrefix = 'src/main/webapp/';
 
     grunt.initConfig({
+        template: {
+            prepareMinIndex: {
+                options: {
+                    data: {
+                        jsTags: '<script src="TATAMI.CONCAT.js"></script>',
+                        cssTags: '<link href="/css/CSSMIN.css" rel="stylesheet" type="text/css">'
+                    }
+                },
+                files: {
+                    'src/main/webapp/index.html': ['src/main/webapp/index.html.tpl']
+                }
+            },
+            prepareDevIndex: {
+                options: {
+                    data: {
+                        jsTags: prepareTags(jsFiles, '<script src="', '"></script>'),
+                        cssTags: prepareTags(cssFiles, '<link href="', '" rel="stylesheet" type="text/css">')
+                    }
+                },
+                files: {
+                    'src/main/webapp/index.html': ['src/main/webapp/index.html.tpl']
+                }
+            }
+        },
         clean: [
             'src/main/webapp/TATAMI.CONCAT.js',
             'src/main/webapp/css/CSSMIN.css',
-            '**/*.min.html'],
+            '**/*.min.html',
+            'src/main/webapp/index.html'],
         uglify: {
             options: {
                 mangle: false
@@ -198,14 +233,17 @@ module.exports = function(grunt) {
             }
         },
         concurrent: {
-            target1: ['cssmin', 'htmlmin', 'uglify']
+            minifyTarget: ['template:prepareMinIndex', 'cssmin', 'htmlmin', 'uglify'],
+            devTarget: ['template:prepareDevIndex', 'htmlmin']
         }
 
    } );
     grunt.loadNpmTasks('grunt-');
+    grunt.loadNpmTasks('grunt-template');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
-    grunt.registerTask('default', ['clean','concurrent:target1']);
+    grunt.registerTask('minify', ['clean','concurrent:minifyTarget']);
+    grunt.registerTask('dev', ['clean', 'concurrent:devTarget']);
 };
