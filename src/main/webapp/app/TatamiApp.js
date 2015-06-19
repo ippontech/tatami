@@ -5,6 +5,7 @@ var TatamiApp = angular.module('TatamiApp', [
     'AccountModule',
     'AboutModule',
     'AdminModule',
+    'FooterModule',
     'ngResource',
     'ngTouch',
     'ngCookies',
@@ -113,7 +114,8 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                         templateUrl: 'index.html'
                     },
                     'footer@': {
-                        templateUrl: 'app/shared/footer/FooterView.min.html'
+                        templateUrl: 'app/shared/footer/FooterView.min.html',
+                        controller: 'FooterController'
                     }
                 },
                 resolve: {

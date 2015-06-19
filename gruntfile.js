@@ -49,6 +49,8 @@ module.exports = function(grunt) {
         "/app/shared/lists/user/UserListController.js",
         "/app/shared/topMenu/post/PostModule.js",
         "/app/shared/topMenu/post/PostController.js",
+        "/app/shared/footer/FooterModule.js",
+        "/app/shared/footer/FooterController.js",
         "/app/components/home/welcome/WelcomeController.js",
         "/app/components/admin/AdminController.js",
         "/app/components/admin/AdminService.js",
