@@ -4,7 +4,7 @@
     <title>Tatami</title>
     <meta name="author" content="Ippon Technologies">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/company-logo.ico">
-    <link href="/css/CSSMIN.css" rel="stylesheet" type="text/css">
+    <%= cssTags %>
     <link href="/assets/css/tatami.css" rel="stylesheet" type="text/css">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,6 +38,6 @@
     <div ui-view="topMenu"></div>
     <div ui-view></div>
     <div ui-view="footer"></div>
-    <script src="TATAMI.CONCAT.js"></script>
+    <%= jsTags %>
 </body>
 </html>
