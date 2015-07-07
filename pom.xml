@@ -157,7 +157,7 @@
                         <executions>
                             <execution>
                                 <id>insert-version</id>
-                                <phase>compile</phase>
+                                <phase>generate-sources</phase>
                                 <configuration>
                                     <executable>scripts/insertBuildVersion.sh</executable>
                                     <arguments>
