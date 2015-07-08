@@ -466,13 +466,13 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
             'pageNotFound': 'Page non trouvée.',
 
             'welcome': {
-                'title': 'Bienvenue à Tatami',
-                'message': 'Votre timeline est vide! Avez-vous besoin d\'aide pour apprendre à utilizer Tatami? Veuillez clicker sur le bouton ci-dessous pour lancer une présentation.',
+                'title': 'Bienvenue sur Tatami',
+                'message': 'Votre timeline est vide! Avez-vous besoin d\'aide pour apprendre à utilizer Tatami? Veuillez cliquer sur le bouton ci-dessous pour lancer une présentation.',
                 'presentation': 'Lancer la présentation',
                 'help': {
                     'title': 'Aide',
-                    'line1': 'Bienvenue à l\'aide en ligne!',
-                    'line2':' Suivez les étapes suivantes pour une tournée des principales caractéristiques de Tatami .'
+                    'line1': 'Bienvenue sur l\'aide en ligne!',
+                    'line2':' Suivez les étapes suivantes pour une présentation des principales caractéristiques de Tatami .'
                 },
                 'timeline': {
                     'title': 'Timeline',
@@ -480,21 +480,21 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'bulletPoint1': 'vous mentionner ou envoyé en privé à vous',
                     'bulletPoint2': 'envoyé par les utilisateurs que vous suivez',
                     'bulletPoint3': 'envoyé par vous-même ',
-                    'bulletPoint4': 'envoyé à un groupe que vous êtes abonné',
+                    'bulletPoint4': 'envoyé à un groupe auquel vous êtes abonné(e)',
                     'afterBP1': 'Si elle est vide, ne vous inquiétez pas, elle sera mise à jour dès que vous commencez à suivre d\'autres utilisateurs!',
-                    'afterBP2': 'Lors de l\'affichage d\'un message, vous pouvez y répondre et la marquer comme favori pour le retrouver plus facilement.',
+                    'afterBP2': 'Lors de l\'affichage d\'un message, vous pouvez y répondre et le marquer comme favori pour le retrouver plus facilement.',
                     'afterBP3': 'Si un message avait déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail: ce sera plus facile de suivre la conversation sur Tatami.'
                 },
                 'post': {
                     'title': 'Envoyer un message',
-                    'line1': 'C\'est ici que vous écrivez vos messages que vous souhaitez partager',
-                    'bulletPoint1': 'tous les messages sont publiques par défaut. Ils seront livrés à tous les utilisateurs qui vous suivent',
+                    'line1': 'C\'est ici que vous écrivez les messages que vous souhaitez partager',
+                    'bulletPoint1': 'tous les messages sont publics par défaut. Ils seront affichés à tous les utilisateurs qui vous suivent',
                     'bulletPoint2': 'pour écrire un message, vous devez utiliser #hashtags: cela signifie tout simplement l\'ajout d\'un «#» au début de mots importants qui peut être utilisé pour trouver votre message',
                     'bulletPoint3': 'en mentionnant, ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom: ils seront informés que vous vous adressez à eux'
                 },
                 'groups': {
                     'title': 'Groupes',
-                    'line1': 'Ceci est la liste des groupes que vous êtes un membre de.',
+                    'line1': 'Ceci est la liste des groupes auquel vous appartenez.',
                     'line2': 'Vous pouvez trouver et vous abonner à, groupe public dans la page Account/Groupes (menu en haut à droite).',
                     'line3': 'Il y a aussi des groupes privés: pour eux vous ne pouvez pas vous inscrire: le propriétaire du groupe doit vous ajouter en tant que membre.'
                 },
@@ -516,7 +516,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
             // Login View
             'login': {
                 'title': 'Login',
-                'mainTitle': 'Bienvenue à Tatami',
+                'mainTitle': 'Bienvenue sur Tatami',
                 'subtitle': 'Un réseau social d\'entreprise open source',
                 'moreInfo': 'Plus d\'info',
                 'email': 'Email',
@@ -530,8 +530,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'unregisteredEmail': 'Cette adresse e-mail n\'est pas enregistré avec Tatami.',
                 'register': {
                     'title': 'Enregistré',
-                    'line1': 'Un email de confirmation sera envoyé à l\'adresse que vous fournissez.',
-                    'line2': "Le domaine de votre email détermine l'espace de l'entreprise que vous allez rejoindre. Par exemple, les utilisateurs ayant une adresse email@ippon.fr vont joindre l'espace privées de Ippon.",
+                    'line1': 'Un email de confirmation sera envoyé à l\'adresse fournie.',
+                    'line2': "Le domaine de votre email détermine l'espace de l'entreprise que vous allez rejoindre. Par exemple, les utilisateurs ayant une adresse email@ippon.fr vont joindre l'espace privé Ippon.",
                     'line3': "Si vous êtes le premier employé de votre entreprise à se joindre à Tatami, l'espace privé de votre entreprise sera automatiquement créé."
                 },
                 'googleApps': {
@@ -563,14 +563,14 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'line4': 'Discuter et répondre à vos collègues',
                         'line5': 'Mettez des informations importantes à vos favoris',
                         'line6': 'Rechercher des informations utiles avec notre moteur de recherche intégré',
-                        'line7': 'Utilisez hashtags trouver des informations associé',
+                        'line7': 'Utilisez hashtags trouver des informations associées',
                         'line8': "Aller aux profils de vos collègues pour voir ce qu'ils travaillent sur",
-                        'line9': 'Des version Anglaise et Française sont disponible, c\'est aussi facile d\'ajouter d\'autre langue'
+                        'line9': 'Des versions en anglais et en français sont disponibles, il est facile d\'ajouter d\'autres langues'
                     },
                     'row2': {
                         'title': 'Fonctionne sur tous les appareils!',
                         'line1': 'Application web dynamique (HTML5): rien à installer, à l\'exception d\'un navigateur moderne!',
-                        'line2': "Fonctionne sur les appareils mobiles, des tablets ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
+                        'line2': "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
                         'line3': 'Restez connecté avec votre entreprise où que vous soyez'
                     },
                     'row3': {
@@ -579,9 +579,9 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'line2': 'Vos données vous appartient, pas à votre fournisseur SaaS!',
                         'line3': 'Intégration avec votre dossier LDAP',
                         'line4': 'Intégration avec Google Apps',
-                        'line5': 'Entièrement Open Source, avec une licence Apache 2.0, qui est sympa pour les entreprises',
+                        'line5': 'Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises',
                         'line6': 'Facile à étendre ou modifier selon vos besoins',
-                        'line7': 'Haute performance (basé sur Cassandra d\'Apache), même sur les petits hardware',
+                        'line7': 'Haute performance (basé sur Cassandra d\'Apache), même sur les petites configurations',
                         'line8': 'Rejoignez le projet et proposer des patches sur notre page Github:'
                     },
                     'row4': {
@@ -592,7 +592,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     },
                     'row5': {
                         'title': 'Besoin de plus d\'informations sur notre produit?',
-                        'line1': 'Notre équipe de vente est impatient de vous entendre! Appelez-nous au +33 01 46 12 48 48 ou par courriel à'
+                        'line1': 'Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 01 46 12 48 48 ou par courriel à'
                     }
                 },
 
@@ -603,8 +603,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
 
                 // License Page
                 'license': {
-                    'title': 'Licence du source code',
-                    'copyright': 'Droit d\'auteur'
+                    'title': 'Licence du code source',
+                    'copyright': 'Droits d\'auteur'
                 }
             },
 
@@ -616,7 +616,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'companyTimeline': 'Timeline de votre entreprise',
 
                 'newMessage': 'Nouveau Message',
-                'newMessages': 'Nouveau Messages',
+                'newMessages': 'Nouveaux Messages',
 
                 //Top Menu
                 'menu': {
@@ -639,7 +639,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         },
                         'ippon': {
                             'website': 'Site d\'Ippon Technologies',
-                            'blog': 'Blog d\'Ippon Technologies Blog',
+                            'blog': 'Blog d\'Ippon Technologies',
                             'twitter': 'Suivez @ippontech sur Twitter'
                         }
                     },
@@ -654,9 +654,9 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
 
                 // Post Modal
                 'post': {
-                    'mandatory': 'Commentaire est obligatoire',
+                    'mandatory': 'Commentaire obligatoire',
                     'content': {
-                        'mandatory': 'S\'il vous plaît remplir ce champ..'
+                        'mandatory': 'Veuillez remplir ce champ..'
                     },
                     'update': 'Mettre à jour votre statut',
                     'replyTo': 'Répondre',
@@ -716,7 +716,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'title': 'Tag',
                     'follow': 'Abonnés',
                     'following': 'Abonnements',
-                    'unfollow': 'Se désabonné'
+                    'unfollow': 'Se désabonner'
                 },
 
                 // Group View
@@ -742,8 +742,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
 
                     'youStatusesSingular': 'Votre 1 statut',
                     'youStatusesPlural': 'Vos {{ amount }} statuts',
-                    'youFollowingSingular': 'Vous êtes abonné à 1 personne',
-                    'youFollowingPlural': 'Vous êtes abonné à {{ amount }} personnes',
+                    'youFollowingSingular': 'Vous êtes abonné(e) à 1 personne',
+                    'youFollowingPlural': 'Vous êtes abonné(e) à {{ amount }} personnes',
                     'youFollowersSingular': '1 personne vous suivre',
                     'youFollowersPlural': '{{ amount }} personnes vous suivre',
 
@@ -754,7 +754,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'userFollowersSingular': '@{{ username }} a 1 abonnement',
                     'userFollowersPlural': '@{{ username }} a {{ amount }} abonnements',
 
-                    'deactivatedUser': 'Désactivé l\'utilisateur',
+                    'deactivatedUser': 'Utilisateur désactivé',
 
                     // Profile Sidebar View
                     'sidebar': {
@@ -763,7 +763,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'firstName': 'Prénom',
                         'lastName': 'Nom',
                         'email': 'Email',
-                        'jobTitle': 'Titre du travail',
+                        'jobTitle': 'Titre',
                         'phoneNumber': 'Numero de telephone',
                         'statuses': 'Statuts',
                         'following': 'Abonnement',
@@ -806,7 +806,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                             'weeklyDigest': 'Obtenez un sommaire hebdomadaire email'
                         },
                         'rss': {
-                            'timeline': 'Autoriser RSS publication de votre fils d\'actualité',
+                            'timeline': 'Autoriser la publication RSS de votre fil d\'actualité',
                             'link': 'Lien de votre RSS fils d\'actualité'
                         }
                     },
@@ -836,7 +836,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'users': {
                     'title': 'Utilisateur',
                     'following': 'Abonné',
-                    'recommended': 'Recommendé',
+                    'recommended': 'Recommandé',
                     'search': 'Recherchez',
                     'deactivated': 'Cet utilisateur est désactivé'
                 },
@@ -858,18 +858,18 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'access': 'Accès',
                     'members': 'Membres',
                     'manage': 'Gérer',
-                    'update': 'Mettre à jour let détails de votre groupe',
+                    'update': 'Mettre à jour les détails de votre groupe',
                     'archive': 'Voulez-vous archiver ce groupe?',
-                    'allowArchive': 'Oui, ce groupe devrait être archivée',
-                    'denyArchive': 'Non, ce groupe est encore en usage',
+                    'allowArchive': 'Oui, ce groupe devrait être archivé',
+                    'denyArchive': 'Non, ce groupe est encore utilisé',
                     'archiveWarning': 'Attention: Groupe archivé sont en lecture seule',
-                    'addMember': 'Ajouter un member',
+                    'addMember': 'Ajouter un membre',
                     'username': 'Username',
                     'role': 'Rôle',
                     'admin': 'Administrator',
                     'member': 'Membre',
                     'join': 'Joindre',
-                    'joined': 'Joignit',
+                    'joined': 'Rejoint',
                     'leave': 'Quitter',
                     'archived': 'Archivé',
                     'add': 'Ajouter',
@@ -885,7 +885,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'tag': 'Tag',
                     'follow': 'Abonné',
                     'following': 'Abonnement',
-                    'unfollow': 'Se désabonné'
+                    'unfollow': 'Se désabonner'
                 },
 
                 // Top Posters Tab
