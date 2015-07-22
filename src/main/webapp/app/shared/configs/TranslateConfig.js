@@ -521,13 +521,13 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'moreInfo': 'Plus d\'info',
                 'email': 'Email',
                 'password': 'Mot de passe',
-                'remember': 'Souviens-moi',
-                'forgotPassword': 'Mot de passe oublié?',
+                'remember': 'Se souvenir de moi',
+                'forgotPassword': 'Mot de passe oublié ?',
                 'resetPassword': 'Nouveau mot de passe',
                 'tos': 'Conditions de service',
-                'fail': 'Votre authentification a échoué! Etes-vous sûr que vous avez utilisé un mot de passe correct?',
-                'passwordEmailSent': 'Un e-mail vous a été envoyé, avec des instructions pour générer un nouveau mot de passe.',
-                'unregisteredEmail': 'Cette adresse e-mail n\'est pas enregistré avec Tatami.',
+                'fail': 'Votre authentification a échoué ! Etes-vous sûr que vous avez utilisé un mot de passe correct ?',
+                'passwordEmailSent': 'Un e-mail vous a été envoyé, avec des instructions pour créer un nouveau mot de passe.',
+                'unregisteredEmail': 'Cette adresse e-mail n\'est pas enregistrée dans Tatami.',
                 'register': {
                     'title': 'Enregistré',
                     'line1': 'Un email de confirmation sera envoyé à l\'adresse fournie.',
@@ -544,32 +544,32 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 },
 
                 'validation': 'Validation e-mail',
-                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe sera envoyé par e-mail à vous.',
+                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe voud sera envoyé par e-mail.',
                 'returnHome': 'Allez à la page d\'accueil',
-                'registrationEmail': 'Merci! Une inscription e-mail a été envoyé vers vous.'
+                'registrationEmail': 'Merci ! Un e-amil de confirmation vous a été envoyé.'
             },
 
             'about': {
                 // Presentation Page
                 'presentation': {
-                    'title': 'Qu\'est-ce que c\'est Tatami?',
+                    'title': 'Qu\'est-ce que Tatami ?',
                     'devices': 'Appareils',
                     'openSource': 'Open Source',
                     'row1': {
                         'title': 'Un réseau social d\'entreprise privée',
                         'line1': 'Mettre à jour votre statut afin d\'informer vos collègues',
-                        'line2': "Abonnez-vous aux timeline des autres employés",
+                        'line2': "S'abonner aux timelines des autres employés",
                         'line3': 'Partager des informations importantes au personnes qui vous suivent',
                         'line4': 'Discuter et répondre à vos collègues',
-                        'line5': 'Mettez des informations importantes à vos favoris',
-                        'line6': 'Rechercher des informations utiles avec notre moteur de recherche intégré',
-                        'line7': 'Utilisez hashtags trouver des informations associées',
-                        'line8': "Aller aux profils de vos collègues pour voir ce qu'ils travaillent sur",
-                        'line9': 'Des versions en anglais et en français sont disponibles, il est facile d\'ajouter d\'autres langues'
+                        'line5': 'Ajouter des informations importantes dans vos favoris',
+                        'line6': 'Chercher des informations utiles avec notre moteur de recherche intégré',
+                        'line7': 'Utiliser les mots-dièzes lors de votre recherche',
+                        'line8': "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
+                        'line9': 'Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues'
                     },
                     'row2': {
-                        'title': 'Fonctionne sur tous les appareils!',
-                        'line1': 'Application web dynamique (HTML5): rien à installer, à l\'exception d\'un navigateur moderne!',
+                        'title': 'Fonctionne sur tous les terinaux !',
+                        'line1': 'Application web dynamique (HTML5): il n\'y a rien à installer, à l\'exception d\'un navigateur moderne !',
                         'line2': "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
                         'line3': 'Restez connecté avec votre entreprise où que vous soyez'
                     },
