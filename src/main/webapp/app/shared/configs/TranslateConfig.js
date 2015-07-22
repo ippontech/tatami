@@ -544,7 +544,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 },
 
                 'validation': 'Validation e-mail',
-                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe voud sera envoyé par e-mail.',
+                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe vous sera envoyé par e-mail.',
                 'returnHome': 'Allez à la page d\'accueil',
                 'registrationEmail': 'Merci ! Un e-amil de confirmation vous a été envoyé.'
             },
@@ -563,13 +563,13 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'line4': 'Discuter et répondre à vos collègues',
                         'line5': 'Ajouter des informations importantes dans vos favoris',
                         'line6': 'Chercher des informations utiles avec notre moteur de recherche intégré',
-                        'line7': 'Utiliser les mots-dièzes lors de votre recherche',
+                        'line7': 'Utiliser les mots-dièses lors de votre recherche',
                         'line8': "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
                         'line9': 'Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues'
                     },
                     'row2': {
-                        'title': 'Fonctionne sur tous les terinaux !',
-                        'line1': 'Application web dynamique (HTML5): il n\'y a rien à installer, à l\'exception d\'un navigateur moderne !',
+                        'title': 'Fonctionne partout !',
+                        'line1': 'Application web dynamique (HTML5): rien à installer, un navigateur moderne suffit !',
                         'line2': "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
                         'line3': 'Restez connecté avec votre entreprise où que vous soyez'
                     },
@@ -699,7 +699,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'reply': 'Répondre',
                     'share': 'Partager',
                     'favorite': 'Favoris',
-                    'delete': 'Suprimez',
+                    'delete': 'Suprimer',
                     'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut?',
                     'sharedYour': 'a partagé votre statut',
                     'followed': 'vous suit',
