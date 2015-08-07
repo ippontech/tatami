@@ -26,7 +26,7 @@ public class StatusUpdateService {
 
     private static final Logger log = LoggerFactory.getLogger(StatusUpdateService.class);
 
-    private static final Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
+    private static final Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s,\\p{Punct}]+");
 
     private static final Pattern PATTERN_HASHTAG = Pattern.compile("(^|\\s)#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
