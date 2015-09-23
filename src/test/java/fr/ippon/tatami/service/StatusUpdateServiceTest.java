@@ -60,7 +60,7 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
     public void shouldMentionUser() throws Exception {
         mockAuthenticationOnTimelineServiceWithACurrentUser("other@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("other@ippon.fr");
-        String content = "Hello @janee! @john ! world";
+        String content = "Hello @jane! @john ! world";
 
         statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
 
