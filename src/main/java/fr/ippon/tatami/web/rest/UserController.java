@@ -1,16 +1,16 @@
 package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
+import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ import java.util.Collection;
 @Controller
 public class UserController {
 
-    private final Log log = LogFactory.getLog(UserController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Inject
     private UserService userService;
@@ -41,22 +41,6 @@ public class UserController {
     private SuggestionService suggestionService;
 
     /**
-     * GET  /users/show?screen_name=jdubois -> get the "jdubois" user
-     */
-    @RequestMapping(value = "/rest/users/show",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    @Deprecated
-    public User getUserV1(@RequestParam("screen_name") String username) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get Profile : " + username);
-        }
-        return userService.getUserByUsername(username);
-    }
-
-    /**
      * GET  /rest/users/:username -> get the "jdubois" user
      */
     @RequestMapping(value = "/rest/users/{username}",
@@ -65,9 +49,7 @@ public class UserController {
     @ResponseBody
     @Timed
     public UserDTO getUser(@PathVariable("username") String username) {
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to get Profile : " + username);
-        }
+        this.log.debug("REST request to get Profile : {}", username);
         User user = userService.getUserByUsername(username);
 
         return userService.buildUserDTO(user);
@@ -102,9 +84,7 @@ public class UserController {
     @Timed
     public Collection<User> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
-        if (this.log.isDebugEnabled()) {
-            this.log.debug("REST request to find users starting with : " + prefix);
-        }
+        this.log.debug("REST request to find users starting with : {}", prefix);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
@@ -126,7 +106,6 @@ public class UserController {
         return userService.getUsersForCurrentDomain(pagination);
     }
 
-
     /**
      * POST  /users -> Register new user
      */
@@ -145,5 +124,6 @@ public class UserController {
         userService.registerUser(user);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
+
 
 }

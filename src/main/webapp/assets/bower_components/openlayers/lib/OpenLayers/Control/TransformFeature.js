@@ -1,0 +1,396 @@
+/* Copyright (c) 2006-2013 by OpenLayers Contributors (see authors.txt for
+ * full list of contributors). Published under the 2-clause BSD license.
+ * See license.txt in the OpenLayers distribution or repository for the
+ * full text of the license. */
+
+
+
+OpenLayers.Control.TransformFeature = OpenLayers.Class(OpenLayers.Control, {
+
+    
+        geometryTypes: null,
+
+        layer: null,
+    
+        preserveAspectRatio: false,
+    
+        rotate: true,
+    
+        feature: null,
+    
+        renderIntent: "temporary",
+    
+        rotationHandleSymbolizer: null,
+    
+        box: null,
+    
+        center: null,
+    
+        scale: 1,
+    
+        ratio: 1,
+    
+        rotation: 0,
+    
+        handles: null,
+    
+        rotationHandles: null,
+    
+        dragControl: null,
+    
+        irregular: false,
+    
+        initialize: function(layer, options) {
+        OpenLayers.Control.prototype.initialize.apply(this, [options]);
+
+        this.layer = layer;
+
+        if(!this.rotationHandleSymbolizer) {
+            this.rotationHandleSymbolizer = {
+                stroke: false,
+                pointRadius: 10,
+                fillOpacity: 0,
+                cursor: "pointer"
+            };
+        }
+
+        this.createBox();
+        this.createControl();        
+    },
+    
+        activate: function() {
+        var activated = false;
+        if(OpenLayers.Control.prototype.activate.apply(this, arguments)) {
+            this.dragControl.activate();
+            this.layer.addFeatures([this.box]);
+            this.rotate && this.layer.addFeatures(this.rotationHandles);
+            this.layer.addFeatures(this.handles);        
+            activated = true;
+        }
+        return activated;
+    },
+    
+        deactivate: function() {
+        var deactivated = false;
+        if(OpenLayers.Control.prototype.deactivate.apply(this, arguments)) {
+            this.layer.removeFeatures(this.handles);
+            this.rotate && this.layer.removeFeatures(this.rotationHandles);
+            this.layer.removeFeatures([this.box]);
+            this.dragControl.deactivate();
+            deactivated = true;
+        }
+        return deactivated;
+    },
+    
+        setMap: function(map) {
+        this.dragControl.setMap(map);
+        OpenLayers.Control.prototype.setMap.apply(this, arguments);
+    },
+
+        setFeature: function(feature, initialParams) {
+        initialParams = OpenLayers.Util.applyDefaults(initialParams, {
+            rotation: 0,
+            scale: 1,
+            ratio: 1
+        });
+
+        var oldRotation = this.rotation;
+        var oldCenter = this.center;
+        OpenLayers.Util.extend(this, initialParams);
+
+        var cont = this.events.triggerEvent("beforesetfeature",
+            {feature: feature}
+        );
+        if (cont === false) {
+            return;
+        }
+
+        this.feature = feature;
+        this.activate();
+
+        this._setfeature = true;
+
+        var featureBounds = this.feature.geometry.getBounds();
+        this.box.move(featureBounds.getCenterLonLat());
+        this.box.geometry.rotate(-oldRotation, oldCenter);
+        this._angle = 0;
+
+        var ll;
+        if(this.rotation) {
+            var geom = feature.geometry.clone();
+            geom.rotate(-this.rotation, this.center);
+            var box = new OpenLayers.Feature.Vector(
+                geom.getBounds().toGeometry());
+            box.geometry.rotate(this.rotation, this.center);
+            this.box.geometry.rotate(this.rotation, this.center);
+            this.box.move(box.geometry.getBounds().getCenterLonLat());
+            var llGeom = box.geometry.components[0].components[0];
+            ll = llGeom.getBounds().getCenterLonLat();
+        } else {
+            ll = new OpenLayers.LonLat(featureBounds.left, featureBounds.bottom);
+        }
+        this.handles[0].move(ll);
+        
+        delete this._setfeature;
+
+        this.events.triggerEvent("setfeature", {feature: feature});
+    },
+    
+        unsetFeature: function() {
+        if (this.active) {
+            this.deactivate();
+        } else {
+            this.feature = null;
+            this.rotation = 0;
+            this.scale = 1;
+            this.ratio = 1;
+        }
+    },
+    
+        createBox: function() {
+        var control = this;
+        
+        this.center = new OpenLayers.Geometry.Point(0, 0);
+        this.box = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.LineString([
+                new OpenLayers.Geometry.Point(-1, -1),
+                new OpenLayers.Geometry.Point(0, -1),
+                new OpenLayers.Geometry.Point(1, -1),
+                new OpenLayers.Geometry.Point(1, 0),
+                new OpenLayers.Geometry.Point(1, 1),
+                new OpenLayers.Geometry.Point(0, 1),
+                new OpenLayers.Geometry.Point(-1, 1),
+                new OpenLayers.Geometry.Point(-1, 0),
+                new OpenLayers.Geometry.Point(-1, -1)
+            ]), null,
+            typeof this.renderIntent == "string" ? null : this.renderIntent
+        );
+        this.box.geometry.move = function(x, y) {
+            control._moving = true;
+            OpenLayers.Geometry.LineString.prototype.move.apply(this, arguments);
+            control.center.move(x, y);
+            delete control._moving;
+        };
+        var vertexMoveFn = function(x, y) {
+            OpenLayers.Geometry.Point.prototype.move.apply(this, arguments);
+            this._rotationHandle && this._rotationHandle.geometry.move(x, y);
+            this._handle.geometry.move(x, y);
+        };
+        var vertexResizeFn = function(scale, center, ratio) {
+            OpenLayers.Geometry.Point.prototype.resize.apply(this, arguments);
+            this._rotationHandle && this._rotationHandle.geometry.resize(
+                scale, center, ratio);
+            this._handle.geometry.resize(scale, center, ratio);
+        };
+        var vertexRotateFn = function(angle, center) {
+            OpenLayers.Geometry.Point.prototype.rotate.apply(this, arguments);
+            this._rotationHandle && this._rotationHandle.geometry.rotate(
+                angle, center);
+            this._handle.geometry.rotate(angle, center);
+        };
+        var handleMoveFn = function(x, y) {
+            var oldX = this.x, oldY = this.y;
+            OpenLayers.Geometry.Point.prototype.move.call(this, x, y);
+            if(control._moving) {
+                return;
+            }
+            var evt = control.dragControl.handlers.drag.evt;
+            var preserveAspectRatio = !control._setfeature &&
+                control.preserveAspectRatio;
+            var reshape = !preserveAspectRatio && !(evt && evt.shiftKey);
+            var oldGeom = new OpenLayers.Geometry.Point(oldX, oldY);
+            var centerGeometry = control.center;
+            this.rotate(-control.rotation, centerGeometry);
+            oldGeom.rotate(-control.rotation, centerGeometry);
+            var dx1 = this.x - centerGeometry.x;
+            var dy1 = this.y - centerGeometry.y;
+            var dx0 = dx1 - (this.x - oldGeom.x);
+            var dy0 = dy1 - (this.y - oldGeom.y);
+            if (control.irregular && !control._setfeature) {
+               dx1 -= (this.x - oldGeom.x) / 2;
+               dy1 -= (this.y - oldGeom.y) / 2;
+            }
+            this.x = oldX;
+            this.y = oldY;
+            var scale, ratio = 1;
+            if (reshape) {
+                scale = Math.abs(dy0) < 0.00001 ? 1 : dy1 / dy0;
+                ratio = (Math.abs(dx0) < 0.00001 ? 1 : (dx1 / dx0)) / scale;
+            } else {
+                var l0 = Math.sqrt((dx0 * dx0) + (dy0 * dy0));
+                var l1 = Math.sqrt((dx1 * dx1) + (dy1 * dy1));
+                scale = l1 / l0;
+            }
+            control._moving = true;
+            control.box.geometry.rotate(-control.rotation, centerGeometry);
+            delete control._moving;
+
+            control.box.geometry.resize(scale, centerGeometry, ratio);
+            control.box.geometry.rotate(control.rotation, centerGeometry);
+            control.transformFeature({scale: scale, ratio: ratio});
+            if (control.irregular && !control._setfeature) {
+               var newCenter = centerGeometry.clone();
+               newCenter.x += Math.abs(oldX - centerGeometry.x) < 0.00001 ? 0 : (this.x - oldX);
+               newCenter.y += Math.abs(oldY - centerGeometry.y) < 0.00001 ? 0 : (this.y - oldY);
+               control.box.geometry.move(this.x - oldX, this.y - oldY);
+               control.transformFeature({center: newCenter});
+            }
+        };
+        var rotationHandleMoveFn = function(x, y){
+            var oldX = this.x, oldY = this.y;
+            OpenLayers.Geometry.Point.prototype.move.call(this, x, y);
+            if(control._moving) {
+                return;
+            }
+            var evt = control.dragControl.handlers.drag.evt;
+            var constrain = (evt && evt.shiftKey) ? 45 : 1;
+            var centerGeometry = control.center;
+            var dx1 = this.x - centerGeometry.x;
+            var dy1 = this.y - centerGeometry.y;
+            var dx0 = dx1 - x;
+            var dy0 = dy1 - y;
+            this.x = oldX;
+            this.y = oldY;
+            var a0 = Math.atan2(dy0, dx0);
+            var a1 = Math.atan2(dy1, dx1);
+            var angle = a1 - a0;
+            angle *= 180 / Math.PI;
+            control._angle = (control._angle + angle) % 360;
+            var diff = control.rotation % constrain;
+            if(Math.abs(control._angle) >= constrain || diff !== 0) {
+                angle = Math.round(control._angle / constrain) * constrain -
+                    diff;
+                control._angle = 0;
+                control.box.geometry.rotate(angle, centerGeometry);
+                control.transformFeature({rotation: angle});
+            } 
+        };
+
+        var handles = new Array(8);
+        var rotationHandles = new Array(4);
+        var geom, handle, rotationHandle;
+        var positions = ["sw", "s", "se", "e", "ne", "n", "nw", "w"];
+        for(var i=0; i<8; ++i) {
+            geom = this.box.geometry.components[i];
+            handle = new OpenLayers.Feature.Vector(geom.clone(), {
+                role: positions[i] + "-resize"
+            }, typeof this.renderIntent == "string" ? null :
+                this.renderIntent);
+            if(i % 2 == 0) {
+                rotationHandle = new OpenLayers.Feature.Vector(geom.clone(), {
+                    role: positions[i] + "-rotate"
+                }, typeof this.rotationHandleSymbolizer == "string" ?
+                    null : this.rotationHandleSymbolizer);
+                rotationHandle.geometry.move = rotationHandleMoveFn;
+                geom._rotationHandle = rotationHandle;
+                rotationHandles[i/2] = rotationHandle;
+            }
+            geom.move = vertexMoveFn;
+            geom.resize = vertexResizeFn;
+            geom.rotate = vertexRotateFn;
+            handle.geometry.move = handleMoveFn;
+            geom._handle = handle;
+            handles[i] = handle;
+        }
+        
+        this.rotationHandles = rotationHandles;
+        this.handles = handles;
+    },
+    
+        createControl: function() {
+        var control = this;
+        this.dragControl = new OpenLayers.Control.DragFeature(this.layer, {
+            documentDrag: true,
+            moveFeature: function(pixel) {
+                if(this.feature === control.feature) {
+                    this.feature = control.box;
+                }
+                OpenLayers.Control.DragFeature.prototype.moveFeature.apply(this,
+                    arguments);
+            },
+            onDrag: function(feature, pixel) {
+                if(feature === control.box) {
+                    control.transformFeature({center: control.center});
+                }
+            },
+            onStart: function(feature, pixel) {
+                var eligible = !control.geometryTypes ||
+                    OpenLayers.Util.indexOf(control.geometryTypes,
+                        feature.geometry.CLASS_NAME) !== -1;
+                var i = OpenLayers.Util.indexOf(control.handles, feature);
+                i += OpenLayers.Util.indexOf(control.rotationHandles,
+                    feature);
+                if(feature !== control.feature && feature !== control.box &&
+                                                        i == -2 && eligible) {
+                    control.setFeature(feature);
+                }
+            },
+            onComplete: function(feature, pixel) {
+                control.events.triggerEvent("transformcomplete",
+                    {feature: control.feature});
+            }
+        });
+    },
+    
+        drawHandles: function() {
+        var layer = this.layer;
+        for(var i=0; i<8; ++i) {
+            if(this.rotate && i % 2 === 0) {
+                layer.drawFeature(this.rotationHandles[i/2],
+                    this.rotationHandleSymbolizer);
+            }
+            layer.drawFeature(this.handles[i], this.renderIntent);
+        }
+    },
+    
+        transformFeature: function(mods) {
+        if(!this._setfeature) {
+            this.scale *= (mods.scale || 1);
+            this.ratio *= (mods.ratio || 1);
+            var oldRotation = this.rotation;
+            this.rotation = (this.rotation + (mods.rotation || 0)) % 360;
+            
+            if(this.events.triggerEvent("beforetransform", mods) !== false) {
+                var feature = this.feature;
+                var geom = feature.geometry;
+                var center = this.center;
+                geom.rotate(-oldRotation, center);
+                if(mods.scale || mods.ratio) {
+                    geom.resize(mods.scale, center, mods.ratio);
+                } else if(mods.center) {
+                    feature.move(mods.center.getBounds().getCenterLonLat());
+                }
+                geom.rotate(this.rotation, center);
+                this.layer.drawFeature(feature);
+                feature.toState(OpenLayers.State.UPDATE);
+                this.events.triggerEvent("transform", mods);
+            }
+        }
+        this.layer.drawFeature(this.box, this.renderIntent);
+        this.drawHandles();
+    },
+        
+        destroy: function() {
+        var geom;
+        for(var i=0; i<8; ++i) {
+            geom = this.box.geometry.components[i];
+            geom._handle.destroy();
+            geom._handle = null;
+            geom._rotationHandle && geom._rotationHandle.destroy();
+            geom._rotationHandle = null;
+        }
+        this.center = null;
+        this.feature = null;
+        this.handles = null;
+        this.rotationHandleSymbolizer = null;
+        this.rotationHandles = null;
+        this.box.destroy();
+        this.box = null;
+        this.layer = null;
+        this.dragControl.destroy();
+        this.dragControl = null;
+        OpenLayers.Control.prototype.destroy.apply(this, arguments);
+    },
+
+    CLASS_NAME: "OpenLayers.Control.TransformFeature"
+});

@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * A trend : a tag that is trending up or down.
  */
-public class Trend {
+public class Trend implements Serializable {
 
     private String tag;
 

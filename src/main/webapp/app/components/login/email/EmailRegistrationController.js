@@ -1,0 +1,2 @@
+LoginModule.controller('EmailRegistrationController', [function() {
+}]);

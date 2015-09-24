@@ -1,14 +1,12 @@
 package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.CounterRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.domain.status.MentionFriend;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -27,7 +25,7 @@ import java.util.List;
 @Service
 public class FriendshipService {
 
-    private final Log log = LogFactory.getLog(FriendshipService.class);
+    private final Logger log = LoggerFactory.getLogger(FriendshipService.class);
 
     @Inject
     private UserRepository userRepository;
@@ -42,58 +40,68 @@ public class FriendshipService {
     private CounterRepository counterRepository;
 
     @Inject
+    private StatusRepository statusRepository;
+
+    @Inject
+    private MentionlineRepository mentionlineRepository;
+
+    @Inject
     private AuthenticationService authenticationService;
 
-    public User followUser(String usernameToFollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("Following user : " + usernameToFollow);
-        }
+    /**
+     * Follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean followUser(String usernameToFollow) {
+        log.debug("Following user : {}", usernameToFollow);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
         User followedUser = userRepository.findUserByLogin(loginToFollow);
         if (followedUser != null && !followedUser.equals(currentUser)) {
-            boolean userAlreadyFollowed = false;
             if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
                 for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getLogin())) {
                     if (alreadyFollowingTest.equals(loginToFollow)) {
-                        userAlreadyFollowed = true;
-                        if (log.isDebugEnabled()) {
-                            log.debug("User " + currentUser.getLogin() +
-                                    " already follows user " + followedUser.getLogin());
-                        }
-                        break;
+                        log.debug("User {} already follows user {}", currentUser.getLogin(), followedUser.getLogin());
+                        return false;
                     }
                 }
             }
-            if (!userAlreadyFollowed) {
-                friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
-                counterRepository.incrementFriendsCounter(currentUser.getLogin());
-                followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
-                counterRepository.incrementFollowersCounter(followedUser.getLogin());
-                if (log.isDebugEnabled()) {
-                    log.debug("User " + currentUser.getLogin() +
-                            " now follows user " + followedUser.getLogin());
-                }
-            }
-            return followedUser;
+            friendRepository.addFriend(currentUser.getLogin(), followedUser.getLogin());
+            counterRepository.incrementFriendsCounter(currentUser.getLogin());
+            followerRepository.addFollower(followedUser.getLogin(), currentUser.getLogin());
+            counterRepository.incrementFollowersCounter(followedUser.getLogin());
+            // mention the friend that the user has started following him
+            MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
+            mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
+            log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
+            return true;
         } else {
             log.debug("Followed user does not exist : " + loginToFollow);
-            return null;
+            return false;
         }
     }
 
-    public void unfollowUser(String usernameToUnfollow) {
-        if (log.isDebugEnabled()) {
-            log.debug("Removing followed user : " + usernameToUnfollow);
-        }
+    /**
+     * Un-follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean unfollowUser(String usernameToUnfollow) {
+        log.debug("Removing followed user : {}", usernameToUnfollow);
         User currentUser = authenticationService.getCurrentUser();
         String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = userRepository.findUserByLogin(loginToUnfollow);
-        unfollowUser(currentUser, userToUnfollow);
+        return unfollowUser(currentUser, userToUnfollow);
     }
 
-    public void unfollowUser(User currentUser, User userToUnfollow) {
+    /**
+     * Un-follow a user.
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
+    public boolean unfollowUser(User currentUser, User userToUnfollow) {
         if (userToUnfollow != null) {
             String loginToUnfollow = userToUnfollow.getLogin();
             boolean userAlreadyFollowed = false;
@@ -107,25 +115,24 @@ public class FriendshipService {
                 counterRepository.decrementFriendsCounter(currentUser.getLogin());
                 followerRepository.removeFollower(loginToUnfollow, currentUser.getLogin());
                 counterRepository.decrementFollowersCounter(loginToUnfollow);
-                log.debug("User " + currentUser.getLogin() +
-                        " has stopped following user " + loginToUnfollow);
+                log.debug("User {} has stopped following user {}", currentUser.getLogin(), loginToUnfollow);
+                return true;
+            } else {
+                return false;
             }
         } else {
             log.debug("Followed user does not exist.");
+            return false;
         }
     }
 
     public List<String> getFriendIdsForUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving friends for user : " + login);
-        }
+        log.debug("Retrieving friends for user : {}", login);
         return friendRepository.findFriendsForUser(login);
     }
 
     public Collection<String> getFollowerIdsForUser(String login) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving followed users : " + login);
-        }
+        log.debug("Retrieving followed users : {}", login);
         return followerRepository.findFollowersForUser(login);
     }
 
@@ -155,9 +162,7 @@ public class FriendshipService {
      * Finds if the "userLogin" user is followed by the current user.
      */
     public boolean isFollowed(String userLogin) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving if you follow this user : " + userLogin);
-        }
+        log.debug("Retrieving if you follow this user : {}", userLogin);
         boolean isFollowed = false;
         User user = authenticationService.getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {
@@ -178,9 +183,7 @@ public class FriendshipService {
      * Finds if  the current user user follow the "userLogin".
      */
     public boolean isFollowing(String userLogin) {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieving if you follow this user : " + userLogin);
-        }
+        log.debug("Retrieving if you follow this user : {}", userLogin);
         boolean isFollowing = false;
         User user = authenticationService.getCurrentUser();
         if (null != user && !userLogin.equals(user.getLogin())) {

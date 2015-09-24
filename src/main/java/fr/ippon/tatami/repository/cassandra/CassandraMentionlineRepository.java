@@ -1,16 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.MentionlineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.Collection;
+import java.util.List;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.MENTIONLINE_CF;
 
@@ -28,14 +22,17 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.MENTIONLINE_CF;
 public class CassandraMentionlineRepository extends AbstractCassandraLineRepository implements MentionlineRepository {
 
     @Override
-    public void addStatusToMentionline(String mentionedLogin, Status status) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(mentionedLogin, MENTIONLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()),
-                "", UUIDSerializer.get(), StringSerializer.get()));
+    public void addStatusToMentionline(String mentionedLogin, String statusId) {
+        addStatus(mentionedLogin, MENTIONLINE_CF, statusId);
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getMentionline(String login, int size, String since_id, String max_id) {
-        return getLineFromCF(MENTIONLINE_CF, login, size, since_id, max_id);
+    public void removeStatusesFromMentionline(String mentionedLogin, Collection<String> statusIdsToDelete) {
+        removeStatuses(mentionedLogin, MENTIONLINE_CF, statusIdsToDelete);
+    }
+
+    @Override
+    public List<String> getMentionline(String login, int size, String start, String finish) {
+        return getLineFromCF(MENTIONLINE_CF, login, size, start, finish);
     }
 }

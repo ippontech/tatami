@@ -2,21 +2,18 @@ package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.SharedStatusInfo;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.SearchService;
-import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.*;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
 import fr.ippon.tatami.web.rest.dto.Tag;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +24,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Search engine controller.
@@ -35,7 +32,7 @@ import java.util.Map;
 @Controller
 public class SearchController {
 
-    private final Log log = LogFactory.getLog(SearchController.class);
+    private final Logger log = LoggerFactory.getLogger(SearchController.class);
 
     @Inject
     private AuthenticationService authenticationService;
@@ -48,6 +45,9 @@ public class SearchController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private GroupService groupService;
 
     @Inject
     private TrendService trendService;
@@ -84,16 +84,14 @@ public class SearchController {
                                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to search status containing these words (" + query + ").");
-        }
+        log.debug("REST request to search status containing these words ({}).", query);
         final User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Map<String, SharedStatusInfo> line;
+        List<String> line;
         if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
         } else {
-            line = Collections.emptyMap();
+            line = Collections.emptyList();
         }
         return timelineService.buildStatusList(line);
     }
@@ -118,14 +116,12 @@ public class SearchController {
         Collection<Tag> tags = new ArrayList<Tag>();
 
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find tags starting with : " + prefix);
-            }
-            for(String trend : trends){
+            this.log.debug("REST request to find tags starting with : {}", prefix);
+            for (String trend : trends) {
                 Tag tag = new Tag();
                 tag.setName(trend);
-                if(followedTags.contains(trend)){
-                   tag.setFollowed(true);
+                if (followedTags.contains(trend)) {
+                    tag.setFollowed(true);
                 }
                 tags.add(tag);
             }
@@ -150,14 +146,12 @@ public class SearchController {
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
         Collection<Group> groups;
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find groups starting with : " + prefix);
-            }
+            this.log.debug("REST request to find groups starting with : {}", prefix);
             groups = searchService.searchGroupByPrefix(domain, prefix, 5);
         } else {
             groups = new ArrayList<Group>();
         }
-        return groups;
+        return groupService.buildGroupList(groups);
     }
 
     /**
@@ -174,7 +168,7 @@ public class SearchController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<User> searchUsers(@RequestParam("q") String query) {
+    public Collection<UserDTO> searchUsers(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
 
         User currentUser = authenticationService.getCurrentUser();
@@ -183,14 +177,12 @@ public class SearchController {
         Collection<User> users;
 
         if (query != null && !query.equals("")) {
-            if (this.log.isDebugEnabled()) {
-                this.log.debug("REST request to find users starting with : " + prefix);
-            }
+            this.log.debug("REST request to find users starting with : {}", prefix);
             users = userService.getUsersByLogin(logins);
         } else {
             users = new ArrayList<User>();
         }
-        return users;
+        return userService.buildUserDTOList(users);
 
     }
 

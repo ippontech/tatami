@@ -1,7 +1,5 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.FavoritelineRepository;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -15,8 +13,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.FAVLINE_CF;
@@ -40,23 +38,23 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addStatusToFavoriteline(Status status, String login) {
+    public void addStatusToFavoriteline(String login, String statusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(status.getStatusId()), "",
+        mutator.insert(login, FAVLINE_CF, HFactory.createColumn(UUID.fromString(statusId), "",
                 UUIDSerializer.get(), StringSerializer.get()));
     }
 
     @Override
     @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeStatusFromFavoriteline(Status status, String login) {
+    public void removeStatusFromFavoriteline(String login, String statusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(login, FAVLINE_CF, UUID.fromString(status.getStatusId()), UUIDSerializer.get());
+        mutator.delete(login, FAVLINE_CF, UUID.fromString(statusId), UUIDSerializer.get());
     }
 
     @Override
     @Cacheable("favorites-cache")
-    public Map<String, SharedStatusInfo> getFavoriteline(String login) {
-        Map<String, SharedStatusInfo> line = new LinkedHashMap<String, SharedStatusInfo>();
+    public List<String> getFavoriteline(String login) {
+        List<String> line = new ArrayList<String>();
         ColumnSlice<UUID, String> result = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(FAVLINE_CF)
@@ -66,7 +64,7 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
                 .get();
 
         for (HColumn<UUID, String> column : result.getColumns()) {
-            line.put(column.getName().toString(), null);
+            line.add(column.getName().toString());
         }
         return line;
     }

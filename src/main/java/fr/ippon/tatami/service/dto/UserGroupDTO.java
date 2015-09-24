@@ -1,9 +1,11 @@
 package fr.ippon.tatami.service.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO to manage a user in a group.
  */
-public class UserGroupDTO implements Comparable<UserGroupDTO> {
+public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     private String login;
 
@@ -18,6 +20,20 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
     private String role;
 
     private Boolean isMember = true;
+
+    private boolean friend;
+
+    private boolean activated;
+
+    private boolean you;
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
     public String getLogin() {
         return login;
@@ -73,6 +89,22 @@ public class UserGroupDTO implements Comparable<UserGroupDTO> {
 
     public void setIsMember(Boolean isMember) {
         this.isMember = isMember;
+    }
+
+    public boolean isFriend() {
+        return friend;
+    }
+
+    public void setFriend(boolean friend) {
+        this.friend = friend;
+    }
+
+    public boolean isYou() {
+        return you;
+    }
+
+    public void setYou(boolean you) {
+        this.you = you;
     }
 
     @Override

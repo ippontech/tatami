@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO containing the user name and e-mail.
  */
-public class EmailAndUsername {
+public class EmailAndUsername implements Serializable {
     private String email;
     private String username;
 

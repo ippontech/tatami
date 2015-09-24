@@ -25,14 +25,15 @@ public class AttachmentController {
     @ResponseBody
     @Timed
     public Collection<Attachment> getAttachments(
-            @RequestParam(required = false) Integer pagination) {
+            @RequestParam(required = false) Integer pagination,
+            @RequestParam(required = false) String finish) {
 
         if (pagination == null) {
-            pagination = 0;
+            pagination = 10;
         }
 
         Collection<String> attachmentIds =
-                attachmentService.getAttachmentIdsForCurrentUser(pagination);
+                attachmentService.getAttachmentIdsForCurrentUser(pagination, finish);
 
         Collection<Attachment> attachments =
                 new ArrayList<Attachment>();
@@ -64,9 +65,10 @@ public class AttachmentController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public void DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
+    public Attachment DeleteAttachment(@PathVariable("attachmentId") String attachmentId) {
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
         attachmentService.deleteAttachment(attachment);
+        return attachment;
     }
 
     /**

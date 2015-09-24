@@ -1,0 +1,1 @@
+var FilesModule = angular.module('FilesModule', []);

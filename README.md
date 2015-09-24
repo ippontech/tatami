@@ -6,28 +6,33 @@ Presentation
 
 Tatami is an Open Source enterprise social network.
 
-A publicly installed version of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
+A public installation of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
 
 Tatami is made with the following technologies :
 
-- HTML5, [Backbone.js](http://backbonejs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+- HTML5, [AngularJS](https://angularjs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
 - [The Spring Framework](http://www.springsource.org/)
 - [Apache Cassandra](http://cassandra.apache.org/)
-- [Apache Lucene](http://lucene.apache.org/core/)
-- [Elastic Search](http://www.elasticsearch.org/) (optional add-on, as a replacement for Lucene)
+- [Elastic Search](http://www.elasticsearch.org/)
 
-Tatami is developped by [Ippon Technologies](http://www.ippon.fr)
+Tatami is developed by [Ippon Technologies](http://www.ippon.fr)
 
-Installation for developpers
+
+Installation for developers
 ---------------------------------------
 
-### 5 minutes installation
+### 5 minute installation
 
 - Clone, fork or download the source code from this Github page
 - Install [Maven 3](http://maven.apache.org/)
+- Install [npm](https://www.npmjs.com/)
+- Point your terminal to the directory you cloned Tatami to.
+    - Type `npm install`
+    - You may need to give root user permissions: `sudo !!`
 - Run Cassandra from Maven : `mvn cassandra:run`
 - Run Jetty from Maven : `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
+
 
 To create users, use the registration form. As we have not configured a SMTP server (you can configure it in src/main/resources/META-INF/tatami/tatami.properties - see below "installation for production use" for more options), the validation URL as well as the password will not be e-mailed to you, but you can see them in the log (look at the Jetty console output).
 
@@ -41,7 +46,7 @@ If you want to use Tomcat instead of Jetty (which works better in development mo
 
 If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
 ```
-export MAVEN_OPTS="-XX:PermSize=64m -XX:MaxPermSize=96m -Xms256m -Xmx1024m"
+export MAVEN_OPTS="-XX:PermSize=64m -XX:MaxPermSize=128m -Xms256m -Xmx1024m"
 ```
 
 If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :
@@ -52,6 +57,13 @@ export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:
 ### Cassandra troubleshooting
 
 On Mac OS X, you should use JDK 6 and not JDK 7, see [issue #281](https://github.com/ippontech/tatami/issues/281#issuecomment-12430701).
+
+
+How to Contribute
+---------------------------------------
+In order to assure code quality, Ippon manages the pull requests for the project, and upholds certain rules regarding how individuals may contribute. 
+You may find these rules in your Tatami installation in the file `CONTRIBUTING.md`.
+
 
 Installation for production use
 ---------------------------------------
@@ -137,7 +149,7 @@ Launching UI Tests from your IDE :
 
 - Enable a groovy plugin on your IDE
 - Activate maven profile "uitest" or add src/integration/* in your classpath
-- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0`
+- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0 -Puitest`
 - Run Specs (in src\integration\java\fr\ippon\tatami\uitest) as Junit Tests from your IDE
   => you have to set adequate system properties to your running configurations (the same as those that are necessary in setting.xml for maven : see above)
 
@@ -157,7 +169,7 @@ Java and .NET applications. Take a look at YourKit's leading software products:
 License
 -------
 
-Copyright 2012 [Ippon Technologies](http://www.ippon.fr)
+Copyright © 2012-2015 [Ippon Technologies](http://www.ippon.fr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this application except in compliance with the License.

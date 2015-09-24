@@ -4,7 +4,9 @@ import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.*;
  * @author Pierre Rust
  */
 @SuppressWarnings("unchecked")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
     @Mock
@@ -59,32 +62,38 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
         // SpringJUnit4ClassRunner instead of MockitoJUnitRunner
         // (to get spring injection before mockito mocking with @InjectMocks)
         MockitoAnnotations.initMocks(this);
-    }
 
-    @Test
-    public void shouldNotGenerateDailyDigest() {
-
-        // Test data set has no user subscribed to daily Digest
-        // no mail should be sent.
+        // reset users registrations : 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(false);
-        mailDigestService.dailyDigest();
-        verifyZeroInteractions(mailServiceMock);
+
+        mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
+        userService.updateWeeklyDigestRegistration(false);
     }
 
     @Test
-    public void shouldNotGenerateWeeklyDigest() {
+    public void order_00_shouldNotGenerateDailyDigest() {
+        log.debug("In shouldNotGenerateDailyDigest");
 
         // Test data set has no user subscribed to weekly Digest
         // no mail should be sent.
-        mockAuthenticationOnUserService(DAILY_DIGEST_USER);
-        userService.updateDailyDigestRegistration(false);
         mailDigestService.dailyDigest();
         verifyZeroInteractions(mailServiceMock);
     }
 
     @Test
-    public void shouldGenerateDailyDigestNoMessage() {
+    public void order_01_shouldNotGenerateWeeklyDigest() {
+        log.debug("In shouldNotGenerateWeeklyDigest");
+
+        // Test data set has no user subscribed to weekly Digest
+        // no mail should be sent.
+        mailDigestService.dailyDigest();
+        verifyZeroInteractions(mailServiceMock);
+    }
+
+    @Test
+    public void order_03_shouldGenerateDailyDigestNoMessage() {
+        log.debug("In shouldGenerateDailyDigestNoMessage");
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
@@ -100,7 +109,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateDailyDigestOneMessage() {
+    public void order_04_shouldGenerateDailyDigestOneMessage() {
+        log.debug("In shouldGenerateDailyDigestOneMessage");
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
@@ -124,7 +134,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateDailyDigestWithTwoMessages() {
+    public void order_04_shouldGenerateDailyDigestWithTwoMessages() {
+        log.debug("In shouldGenerateDailyDigestWithTwoMessages");
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
@@ -147,7 +158,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateDailyDigestWithManyMessages() {
+    public void order_05_shouldGenerateDailyDigestWithManyMessages() {
+        log.debug("In shouldGenerateDailyDigestWithManyMessages");
 
         mockAuthenticationOnUserService(DAILY_DIGEST_USER);
         userService.updateDailyDigestRegistration(true);
@@ -173,7 +185,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigest() {
+    public void order_06_shouldGenerateWeeklyDigest() {
+        log.debug("In shouldGenerateWeeklyDigest");
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
@@ -185,10 +198,11 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestNoMessage() {
+    public void order_07_shouldGenerateWeeklyDigestNoMessage() {
+        log.debug("In shouldGenerateWeeklyDigestNoMessage");
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
-        userService.updateDailyDigestRegistration(true);
+        userService.updateWeeklyDigestRegistration(true);
 
         ArgumentCaptor<List> statuses = ArgumentCaptor.forClass(List.class);
 
@@ -201,7 +215,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestOneMessage() {
+    public void order_08_shouldGenerateWeeklyDigestOneMessage() {
+        log.debug("In shouldGenerateWeeklyDigestOneMessage");
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
@@ -225,7 +240,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
 
 
     @Test
-    public void shouldGenerateWeeklyDigestWithTwoMessages() {
+    public void order_09_shouldGenerateWeeklyDigestWithTwoMessages() {
+        log.debug("In shouldGenerateWeeklyDigestWithTwoMessages");
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);
@@ -248,7 +264,8 @@ public class MailDigestServiceTest extends AbstractCassandraTatamiTest {
     }
 
     @Test
-    public void shouldGenerateWeeklyDigestWithManyMessages() {
+    public void order_10_shouldGenerateWeeklyDigestWithManyMessages() {
+        log.debug("In shouldGenerateWeeklyDigestWithManyMessages");
 
         mockAuthenticationOnUserService(WEEKLY_DIGEST_USER);
         userService.updateWeeklyDigestRegistration(true);

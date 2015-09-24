@@ -8,6 +8,14 @@ tatami.iws
 .project
 .settings
 target
+node_modules/karma-phantomjs-launcher
 src/main/webapp/WEB-INF/generated-wro4j
 .merge_file*
 .DS_Store
+phantomjsdriver.log
+*.log
+*.CONCAT.js
+*.min.html
+*.min.js
+*MIN.css
+

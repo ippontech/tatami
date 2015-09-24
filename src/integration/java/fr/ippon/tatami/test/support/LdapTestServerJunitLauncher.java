@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * In Eclipse : when running this classes as "Java Application", target/test-classes is not added in the classpath
+ * In Eclipse : when running LdapTestServer as "Java Application", target/test-classes is not added in the classpath
  * resulting in a java.lang.ClassNotFoundException ...
  * This is a workaround ...
  * <p/>

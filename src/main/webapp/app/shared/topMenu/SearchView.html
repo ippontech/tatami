@@ -1,0 +1,17 @@
+<a>
+    <div class="category groups" ng-if="match.model.groupId">
+        <span class="glyphicon glyphicon-th-large">
+            {{ match.model.name }}
+        </span>
+    </div>
+    <div class="category users" ng-if="match.model.login">
+        <span class="glyphicon glyphicon-user">
+            @{{match.model.username}}
+        </span>
+    </div>
+    <div class="category tags" ng-if="!match.model.groupId && match.model.name">
+        <span class="glyphicon glyphicon-tags background-color:">
+            #{{match.model.name}}
+        </span>
+    </div>
+</a>

@@ -7,8 +7,8 @@ import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @Service
 public class AvatarService {
 
-    private static final Log log = LogFactory.getLog(AvatarService.class);
+    private static final Logger log = LoggerFactory.getLogger(AvatarService.class);
 
     @Inject
     private AvatarRepository avatarRepository;
@@ -53,17 +53,13 @@ public class AvatarService {
 
         avatarRepository.createAvatar(avatar);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Avatar created : " + avatar);
-        }
+        log.debug("Avatar created : {}", avatar);
 
         return avatar.getAvatarId();
     }
 
     public Avatar getAvatarById(String avatartId) {
-        if (log.isDebugEnabled()) {
-            log.debug("Get Avatar Id : " + avatartId);
-        }
+        log.debug("Get Avatar Id : {}", avatartId);
         return avatarRepository.findAvatarById(avatartId);
     }
 
@@ -87,9 +83,7 @@ public class AvatarService {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
 
-        if (log.isDebugEnabled()) {
-            log.debug("New Byte size of Avatar : " + byteArrayOutputStream.size() / 1024 + " Kbits");
-        }
+        log.debug("New Byte size of Avatar : {} Kbits", byteArrayOutputStream.size() / 1024);
 
         return byteArrayOutputStream.toByteArray();
     }

@@ -1,13 +1,17 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * Reply to a Status.
  */
-public class ActionStatus {
+public class ActionStatus implements Serializable {
 
     private Boolean favorite = null;
 
     private Boolean shared = null;
+
+    private Boolean announced = null;
 
     public Boolean isFavorite() {
         return favorite;
@@ -25,11 +29,20 @@ public class ActionStatus {
         this.shared = shared;
     }
 
+    public Boolean isAnnounced() {
+        return announced;
+    }
+
+    public void setAnnounced(Boolean announced) {
+        this.announced = announced;
+    }
+
     @Override
     public String toString() {
         return "ActionStatus{" +
-                "shared='" + shared + '\'' +
-                ", favorite='" + favorite + '\'' +
-                '}';
+                "favorite=" + favorite +
+                ", shared=" + shared +
+                ", announced=" + announced +
+                "} " + super.toString();
     }
 }

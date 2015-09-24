@@ -2,14 +2,11 @@ package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.*;
+import fr.ippon.tatami.service.FriendshipService;
+import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserDTO;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.EmailAndUsername;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +22,7 @@ import java.util.Collection;
 @Controller
 public class FriendshipController {
 
-    private final Log log = LogFactory.getLog(FriendshipController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Inject
     private FriendshipService friendshipService;
@@ -33,154 +30,12 @@ public class FriendshipController {
     @Inject
     private UserService userService;
 
-    @Inject
-    private AuthenticationService authenticationService;
-
-    @Inject
-    private MailService mailService;
-
-    /**
-     * POST /friendships/create -> follow user
-     */
-    @RequestMapping(value = "/rest/friendships/create",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void followUser(@RequestBody User user, HttpServletResponse response) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to follow username : " + user.getUsername());
-        }
-        User followedUser = friendshipService.followUser(user.getUsername());
-        if (followedUser == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    /**
-     * GET /friendships -> follow user
-     */
-    @RequestMapping(value = "/rest/friendships",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Boolean followUser(@RequestParam("screen_name") String username) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to get friendship status : " + username);
-        }
-        return friendshipService.isFollowing(username);
-    }
-
-    /**
-     * POST /friendships/destroy -> unfollow user
-     */
-    @RequestMapping(value = "/rest/friendships/destroy",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    public void unfollowUser(@RequestBody User user) {
-        if (log.isDebugEnabled()) {
-            log.debug("REST request to unfollow username  : " + user.getUsername());
-        }
-        friendshipService.unfollowUser(user.getUsername());
-    }
-
-    /**
-     * GET  /friends/lookup -> return extended data about the user's friends
-     */
-    @RequestMapping(value = "/rest/friends/lookup",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public Collection<User> getFriends(@RequestParam("screen_name") String username) {
-
-        return friendshipService.getFriendsForUser(username);
-    }
-
-    /**
-     * GET  /followers/lookup -> return extended data about the user's followers
-     */
-    @RequestMapping(value = "/rest/followers/lookup",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<User> getFollowers(@RequestParam("screen_name") String username) {
-        return friendshipService.getFollowersForUser(username);
-    }
-
-    /**
-     * POST /friendships -> follow user
-     */
-    @RequestMapping(value = "/rest/friendships",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    @Timed
-    public void followUserByEmailAndUsername(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
-        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
-            if (log.isDebugEnabled()) {
-                log.debug("REST request to follow username : " + emailAndUsername.getUsername());
-            }
-            friendshipService.followUser(emailAndUsername.getUsername());
-        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())) {
-            if (log.isDebugEnabled()) {
-                log.debug("REST request to follow email : " + emailAndUsername.getEmail());
-            }
-            User user = userService.getUserByLogin(emailAndUsername.getEmail());
-            if (user != null) {
-                friendshipService.followUser(user.getUsername());
-            } else {
-                User currentUser = authenticationService.getCurrentUser();
-                if (DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
-                    mailService.sendInvitationEmail(emailAndUsername.getEmail(), currentUser);
-                } else {
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                }
-            }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    /**
-     * POST /friendships/check -> check username or email
-     */
-    @RequestMapping(value = "/rest/friendships/check",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    @Timed
-    public void checkFriend(HttpServletResponse response, @RequestBody EmailAndUsername emailAndUsername) {
-        User user;
-        if (StringUtils.isNotEmpty(emailAndUsername.getUsername())) {
-            if (log.isDebugEnabled()) {
-                log.debug("REST request to check username : " + emailAndUsername.getUsername());
-            }
-            user = userService.getUserByUsername(emailAndUsername.getUsername());
-        } else if (StringUtils.isNotEmpty(emailAndUsername.getEmail())) {
-            if (log.isDebugEnabled()) {
-                log.debug("REST request to check email : " + emailAndUsername.getEmail());
-            }
-            user = userService.getUserByLogin(emailAndUsername.getEmail());
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        User currentUser = authenticationService.getCurrentUser();
-        if (user != null && !user.getDomain().equalsIgnoreCase(currentUser.getDomain())
-                || user == null && !DomainUtil.getDomainFromLogin(emailAndUsername.getEmail()).equalsIgnoreCase(currentUser.getDomain())) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-        return;
-    }
-
     @RequestMapping(value = "/rest/users/{username}/friends",
             method = RequestMethod.GET,
             produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFriendsV3(@PathVariable String username, HttpServletResponse response) {
+    public Collection<UserDTO> getFriends(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -196,7 +51,7 @@ public class FriendshipController {
             produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFollowersV3(@PathVariable String username, HttpServletResponse response) {
+    public Collection<UserDTO> getFollowers(@PathVariable String username, HttpServletResponse response) {
         User user = userService.getUserByUsername(username);
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -207,16 +62,84 @@ public class FriendshipController {
         return userService.buildUserDTOList(friends);
     }
 
+    /**
+     * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
+     */
     @RequestMapping(value = "/rest/users/{username}",
             method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriendV3(@RequestBody UserDTO user, @PathVariable String username){
-        if (user.isFriend()) {
-            friendshipService.followUser(username);
-        } else {
-            friendshipService.unfollowUser(username);
+    public UserDTO updateFriend(@RequestBody fr.ippon.tatami.web.rest.dto.UserActionStatus action, @PathVariable("username") String username) {
+        if ( action.getFriendShip() != null && action.getFriendShip() ) {
+            if ( action.getFriend() ) {
+                friendshipService.followUser(username);
+            } else {
+                friendshipService.unfollowUser(username);
+            }
+        }
+        else if ( action.getActivate() != null &&  action.getActivate()) {
+            this.log.debug("REST request to desactivate Profile : {}", username);
+            userService.desactivateUser(username);
         }
         return userService.buildUserDTO(userService.getUserByUsername(username));
+    }
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * POST /friendships/create -> follow user
+     */
+    @RequestMapping(value = "/rest/friendships/create",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public boolean followUser(@RequestBody User user, HttpServletResponse response) {
+        log.debug("REST request to follow username : {}", user.getUsername());
+        boolean success = friendshipService.followUser(user.getUsername());
+        if (!success) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return success;
+    }
+
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * POST /friendships/destroy -> unfollow user
+     */
+    @RequestMapping(value = "/rest/friendships/destroy",
+            method = RequestMethod.POST,
+            consumes = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public boolean unfollowUser(@RequestBody User user, HttpServletResponse response) {
+        log.debug("REST request to unfollow username  : {}", user.getUsername());
+        boolean success = friendshipService.unfollowUser(user.getUsername());
+        if (!success) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        return success;
+    }
+
+    /**
+     * WARNING! This is the old API, only used by the admin console
+     * <p/>
+     * GET /friendships -> is the user a friend ?
+     */
+    @RequestMapping(value = "/rest/friendships",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    @Deprecated
+    public Boolean followUser(@RequestParam("screen_name") String username) {
+        if (log.isDebugEnabled()) {
+            log.debug("REST request to get friendship status : " + username);
+        }
+        return friendshipService.isFollowing(username);
     }
 }

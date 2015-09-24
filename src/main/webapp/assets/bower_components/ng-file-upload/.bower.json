@@ -1,0 +1,21 @@
+{
+  "name": "angular-file-upload",
+  "main": "angular-file-upload.js",
+  "version": "3.3.3",
+  "homepage": "https://github.com/danialfarid/angular-file-upload",
+  "authors": [
+    "danialf <danial.farid@gmail.com>"
+  ],
+  "description": "Lightweight Angular JS directive to upload files. Support drag&drop, progress and abort",
+  "license": "MIT",
+  "_release": "3.3.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.3.3",
+    "commit": "daecb4c01cab44f42e0016ed085f9297cd3b2bd3"
+  },
+  "_source": "git://github.com/danialfarid/angular-file-upload-bower.git",
+  "_target": "~3.3.3",
+  "_originalSource": "ng-file-upload",
+  "_direct": true
+}

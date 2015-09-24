@@ -65,25 +65,34 @@ public class CassandraUserAttachmentRepository
     }
 
     @Override
-    public Collection<String> findAttachmentIds(String login, int pagination) {
+    public Collection<String> findAttachmentIds(String login, int pagination, String finish) {
+        List<HColumn<UUID, Long>> result;
+        if (finish != null) {
         ColumnSlice<UUID, Long> query = createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), LongSerializer.get())
                 .setColumnFamily(USER_ATTACHMENT_CF)
                 .setKey(login)
-                .setRange(null, null, true, pagination + Constants.PAGINATION_SIZE)
+                .setRange(UUID.fromString(finish), null, true, pagination)
                 .execute()
                 .get();
 
-        List<HColumn<UUID, Long>> result = query.getColumns();
+        result = query.getColumns();
+        }  else {
+            ColumnSlice<UUID, Long> query = createSliceQuery(keyspaceOperator,
+                    StringSerializer.get(), UUIDSerializer.get(), LongSerializer.get())
+                    .setColumnFamily(USER_ATTACHMENT_CF)
+                    .setKey(login)
+                    .setRange(null, null, true, pagination)
+                    .execute()
+                    .get();
+
+            result = query.getColumns();
+        }
+
         Collection<String> attachmentIds = new ArrayList<String>();
         int index = 0;
         for (HColumn<UUID, Long> column : result) {
-            if (index > pagination + Constants.PAGINATION_SIZE) {
-                break;
-            }
-            if (index >= pagination) {
-                attachmentIds.add(column.getName().toString());
-            }
+            attachmentIds.add(column.getName().toString());
             index++;
         }
         return attachmentIds;

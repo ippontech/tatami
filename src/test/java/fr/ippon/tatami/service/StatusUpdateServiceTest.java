@@ -2,6 +2,9 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.repository.MentionlineRepository;
+import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -25,15 +29,20 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
     @Inject
     public StatusUpdateService statusUpdateService;
 
+    @Inject
+    public MentionlineRepository mentionlineRepository;
+
+    @Inject
+    public StatusRepository statusRepository;
+
     @Test
     public void shouldPostStatus() throws Exception {
-        String login = "userWhoPostStatus@ippon.fr";
         String username = "userWhoPostStatus";
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         mockAuthenticationOnStatusUpdateServiceWithACurrentUser("userWhoPostStatus@ippon.fr");
         String content = "Longue vie au Ch'ti Jug";
 
-        statusUpdateService.postStatus(content, false, new ArrayList<String>());
+        statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
 
         /* verify */
         Collection<StatusDTO> statusFromUserline = timelineService.getUserline("userWhoPostStatus", 10, null, null);
@@ -45,6 +54,24 @@ public class StatusUpdateServiceTest extends AbstractCassandraTatamiTest {
         Collection<StatusDTO> statusFromUserlineOfAFollower = timelineService.getUserline("userWhoReadStatus", 10, null, null);
         assertThat(statusFromUserlineOfAFollower.isEmpty(), is(true));
 
+    }
+
+    @Test
+    public void shouldMentionUser() throws Exception {
+        mockAuthenticationOnTimelineServiceWithACurrentUser("other@ippon.fr");
+        mockAuthenticationOnStatusUpdateServiceWithACurrentUser("other@ippon.fr");
+        String content = "Hello @jane! @john ! world";
+
+        statusUpdateService.postStatus(content, false, new ArrayList<String>(), null);
+
+        List<String> janeMentions = mentionlineRepository.getMentionline("jane@ippon.fr", 10, null, null);
+        assertThat(janeMentions.size(), is(1));
+
+        Status status = (Status) statusRepository.findStatusById(janeMentions.get(0));
+        assertThat(status.getContent(), is(content));
+
+        List<String> johnMentions = mentionlineRepository.getMentionline("john@ippon.fr", 10, null, null);
+        assertThat(johnMentions.size(), is(1));
     }
 
     private void assertThatNewTestIsPosted(String username, String content, Collection<StatusDTO> statuses) {

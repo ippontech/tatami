@@ -61,7 +61,7 @@ public class TimelineControllerTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void testStatusUpdate() throws Exception {
-        mockMvc.perform(post("/rest/statuses/update")
+        mockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"content\":\"Test status with Spring TestContext\"}"))
                 .andExpect(status().isOk());
@@ -82,7 +82,7 @@ public class TimelineControllerTest extends AbstractCassandraTatamiTest {
     @Test
     public void testStatusReply() throws Exception {
         //Create status
-        mockMvc.perform(post("/rest/statuses/update")
+        mockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"content\":\"Test discussion\"}"))
                 .andExpect(status().isOk());
@@ -100,9 +100,9 @@ public class TimelineControllerTest extends AbstractCassandraTatamiTest {
 
         String statusId = statusDTOs.iterator().next().getStatusId();
 
-        mockMvc.perform(post("/rest/statuses/discussion")
+        mockMvc.perform(post("/rest/statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"statusId\":\"" + statusId + "\", \"content\":\"Reply discussion\"}"))
+                .content("{\"replyTo\":\"" + statusId + "\", \"content\":\"Reply discussion\"}"))
                 .andExpect(status().isOk());
 
         String replyAsJson = mockMvc.perform(get("/rest/statuses/home_timeline")

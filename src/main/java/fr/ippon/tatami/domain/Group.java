@@ -3,10 +3,12 @@ package fr.ippon.tatami.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 /**
  * A group.
  */
-public class Group implements Comparable<Group> {
+public class Group implements Comparable<Group>, Serializable, Cloneable {
 
     private String groupId;
 
@@ -22,6 +24,10 @@ public class Group implements Comparable<Group> {
     private String domain;
 
     private long counter;
+
+    private boolean member;
+
+    private boolean administrator;
 
     public String getGroupId() {
         return groupId;
@@ -79,6 +85,22 @@ public class Group implements Comparable<Group> {
         this.counter = counter;
     }
 
+    public boolean isMember() {
+        return member;
+    }
+
+    public void setMember(boolean member) {
+        this.member = member;
+    }
+
+    public boolean isAdministrator() {
+        return administrator;
+    }
+
+    public void setAdministrator(boolean administrator) {
+        this.administrator = administrator;
+    }
+
     @Override
     public int compareTo(Group o) {
         if (this.getName() == null) {
@@ -118,6 +140,21 @@ public class Group implements Comparable<Group> {
                 ", name='" + name + '\'' +
                 ", domain='" + domain + '\'' +
                 ", counter=" + counter +
+                ", member=" + member +
+                ", administrator=" + administrator +
                 '}';
     }
+
+    @Override
+    public Object clone() {
+        Group clone = null;
+        try {
+            clone = (Group) super.clone();
+        } catch (CloneNotSupportedException cnse) {
+            cnse.printStackTrace(System.err);
+        }
+        return clone;
+    }
+
+
 }

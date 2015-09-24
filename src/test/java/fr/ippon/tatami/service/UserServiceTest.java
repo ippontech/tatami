@@ -3,6 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.UserDTO;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -174,6 +175,42 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         mockAuthenticationOnUserService("jdubois@ippon.fr");
         Collection<User> users = userService.getUsersForCurrentDomain(0);
         assertTrue(users.size() > 10);
+    }
+
+    @Test
+    public void testUpdatePassword() {
+        String login = "jdubois@ippon.fr";
+        mockAuthenticationOnUserService(login);
+
+        User testUser = userService.getUserByLogin(login);
+        assertNull(testUser.getPassword());
+
+        testUser.setPassword("newPassword");
+        userService.updatePassword(testUser);
+
+        testUser = userService.getUserByLogin(login);
+        assertNotNull(testUser.getPassword());
+        assertNotEquals("newPassword", testUser.getPassword());
+    }
+
+    @Test
+    public void testBuildUserDTOList() {
+        String login = "jdubois@ippon.fr";
+        mockAuthenticationOnUserService(login);
+
+        User testUser = userService.getUserByLogin(login);
+        Collection<User> users = new ArrayList<User>();
+        users.add(testUser);
+
+        Collection<UserDTO> userDTOs = userService.buildUserDTOList(users);
+
+        assertEquals(1, userDTOs.size());
+        UserDTO dto = userDTOs.iterator().next();
+
+        assertEquals("Julien", dto.getFirstName());
+        assertEquals(3, dto.getFollowersCount());
+        assertEquals(4, dto.getFriendsCount());
+
     }
 
     private void mockAuthenticationOnUserService(String login) {

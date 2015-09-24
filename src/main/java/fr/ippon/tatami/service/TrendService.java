@@ -3,8 +3,8 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.repository.TrendRepository;
 import fr.ippon.tatami.repository.UserTrendRepository;
 import fr.ippon.tatami.web.rest.dto.Trend;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -24,7 +24,7 @@ import static fr.ippon.tatami.service.util.AnalysisUtil.incrementKeyCounterInMap
 @Service
 public class TrendService {
 
-    private final Log log = LogFactory.getLog(TrendService.class);
+    private final Logger log = LoggerFactory.getLogger(TrendService.class);
 
     private static final int TRENDS_SIZE = 8;
 
@@ -65,9 +65,7 @@ public class TrendService {
     }
 
     private List<Trend> calculateTrends(List<String> tags) {
-        if (log.isDebugEnabled()) {
-            log.debug("All tags: " + tags);
-        }
+        log.debug("All tags: {}", tags);
         HashMap<String, Integer> totalTagsCount = new HashMap<String, Integer>();
         HashMap<String, Integer> recentTagsCount = new HashMap<String, Integer>();
         HashMap<String, Integer> oldTagsCount = new HashMap<String, Integer>();

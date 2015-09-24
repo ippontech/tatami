@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>[%p] %c - %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="fr.ippon.tatami" level="DEBUG"/>
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="com.yammer.metrics" level="WARN"/>
+    <logger name="com.notnoop" level="WARN"/>
+    <logger name="me.prettyprint" level="WARN"/>
+    <logger name="net.sf.ehcache" level="WARN"/>
+    <logger name="netty" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="org.atmosphere" level="WARN"/>
+    <logger name="org.elasticsearch" level="WARN"/>
+    <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.openid4java" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.cache" level="WARN"/>
+    <logger name="ro.isdc" level="WARN"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

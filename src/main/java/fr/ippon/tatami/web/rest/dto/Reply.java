@@ -1,9 +1,11 @@
 package fr.ippon.tatami.web.rest.dto;
 
+import java.io.Serializable;
+
 /**
  * Reply to a Status.
  */
-public class Reply {
+public class Reply implements Serializable {
 
     private String statusId;
 

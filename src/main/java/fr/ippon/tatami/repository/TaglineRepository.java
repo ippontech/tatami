@@ -1,9 +1,9 @@
 package fr.ippon.tatami.repository;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.Status;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * The Tagline Repository.
@@ -13,15 +13,19 @@ import java.util.Map;
 public interface TaglineRepository {
 
     /**
-     * Analyze a message in order to extract and reference eventual hashtags.
+     * Add a status to the Tag line.
      */
-    void addStatusToTagline(Status status, String tag);
+    void addStatusToTagline(String tag, Status status);
+
+    /**
+     * Remove a collection of statuses from the Tag line.
+     */
+    void removeStatusesFromTagline(String tag, String domain, Collection<String> statusIdsToDelete);
 
     /**
      * The tagline : the statuses for a given tag.
      * - The name is the statusId of the statuses
-     * - Value is always null : this is to be consistent with the Timeline & Userline API,
-     * which returns Map<String, String>
+     * - Value is always null
      */
-    Map<String, SharedStatusInfo> getTagline(String domain, String tag, int size, String since_id, String max_id);
+    List<String> getTagline(String domain, String tag, int size, String start, String finish);
 }

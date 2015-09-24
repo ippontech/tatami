@@ -10,19 +10,20 @@
                 next: '<fmt:message key="tatami.help.next"/>',
                 prev: '<fmt:message key="tatami.help.previous"/>'
             },
-            allowState: false
+            backdrop: true,
+            useLocalStorage: true
         });
 
         tour.addStep({
             element: "#help-tour",
-            placement: "left",
+            placement: "bottom",
             stepId: "presentationHelp",
             title: "<fmt:message key="tatami.help.home.presentation.title"/>",
             content: "<fmt:message key="tatami.help.home.presentation.content"/>"
         });
 
         tour.addStep({
-            element: "#tab-content",
+            element: "#tatamiBody",
             placement: "left",
             stepId: "timelineHelp",
             title: "<fmt:message key="tatami.help.home.timeline.title"/>",
@@ -30,35 +31,38 @@
         });
 
         tour.addStep({
-            element: "#updateStatusContent",
-            placement: "bottom",
+            element: "#editTatam",
+            placement: "left",
             stepId: "updateStatusContentHelp",
             title: "<fmt:message key="tatami.help.home.updatestatus.title"/>",
             content: "<fmt:message key="tatami.help.home.updatestatus.content"/>"
         });
 
         tour.addStep({
-            element: "#groupsList",
+            element: "#groups-list-title",
             placement: "right",
             stepId: "groupsHelp",
             title: "<fmt:message key="tatami.help.home.groups.title"/>",
-            content: "<fmt:message key="tatami.help.home.groups.content"/>"
+            content: "<fmt:message key="tatami.help.home.groups.content"/>",
+            container: "#tatamiBody"
         });
 
         tour.addStep({
-            element: "#follow-suggest",
+            element: "#follow-suggest-title",
             placement: "right",
             stepId: "follow-suggestHelp",
             title: "<fmt:message key="tatami.help.home.follow-suggest.title"/>",
-            content: "<fmt:message key="tatami.help.home.follow-suggest.content"/>"
+            content: "<fmt:message key="tatami.help.home.follow-suggest.content"/>",
+            container: "#tatamiBody"
         });
 
         tour.addStep({
-            element: "#profileTrends",
+            element: "#profile-trends-title",
             placement: "right",
             stepId: "profileTrendsHelp",
             title: "<fmt:message key="tatami.help.home.profileTrends.title"/>",
-            content: "<fmt:message key="tatami.help.home.profileTrends.content"/>"
+            content: "<fmt:message key="tatami.help.home.profileTrends.content"/>",
+            container: "#tatamiBody"
         });
 
 

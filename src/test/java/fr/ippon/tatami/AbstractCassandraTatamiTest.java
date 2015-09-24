@@ -5,8 +5,6 @@ import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.test.application.WebApplicationTestConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cassandraunit.DataLoader;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -17,13 +15,17 @@ import org.elasticsearch.node.NodeBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 @ContextHierarchy({
         @ContextConfiguration(
                 name = "root",
@@ -35,7 +37,7 @@ import javax.inject.Inject;
 })
 public abstract class AbstractCassandraTatamiTest {
 
-    protected final Log log = LogFactory.getLog(this.getClass().getCanonicalName());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
 
     private static boolean isInitialized = false;
 

@@ -1,0 +1,55 @@
+<div>
+    <h2 translate="tatami.account.users.title"></h2>
+    <div class="tabMenu">
+        <ul class="nav nav-tabs">
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.users.following' }">
+                <a ui-sref="tatami.account.users.following" translate="tatami.account.users.following"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.users.recommended' }">
+                <a ui-sref="tatami.account.users.recommended" translate="tatami.account.users.recommended"></a>
+            </li>
+            <li ng-class="{ 'active': $state.current.name === 'tatami.account.users.search' }">
+                <a ui-sref="tatami.account.users.search" translate="tatami.account.users.search"></a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form class="row-fluid littleMargeBot">
+            <input ng-show="$state.current.name === 'tatami.account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'tatami.account.users.search' | translate }}">
+        </form>
+        <div ng-repeat="user in usersList">
+            <div class="useritem">
+                <div class="pull-left background-image-fffix">
+                    <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+                </div>
+                <h4>
+                    <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                        <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <span ng-show="!user.activated">
+                        <span ng-class="!user.activated ? 'badge hidden-phone progress-bar-danger' : ''" class="glyphicon glyphicon-off">
+                            {{ 'tatami.account.users.deactivated' | translate }}
+                        </span>
+                    </span>
+                    <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
+                        <strong>
+                            {{ user.firstName + ' ' + user.lastName }}
+                        </strong>
+                    </a>
+                    <br>
+                    <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
+                        <small>
+                            @{{ user.username }}
+                        </small>
+                    </a>
+                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
+                        <span class="glyphicon glyphicon-minus" translate="tatami.admin.deactivate"></span>
+                    </span>
+                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
+                        <span class="glyphicon glyphicon-plus" translate="tatami.admin.activate"></span>
+                    </span>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>

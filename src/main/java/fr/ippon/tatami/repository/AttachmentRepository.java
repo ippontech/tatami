@@ -17,4 +17,9 @@ public interface AttachmentRepository {
      * Only fetch the attachment metadata : file name & size, but not its content.
      */
     Attachment findAttachmentMetadataById(String attachmentId);
+    
+    /**
+     * Update the thumbnail of the given attachment
+     */
+    Attachment updateThumbnail(Attachment attach);
 }

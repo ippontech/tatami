@@ -13,11 +13,13 @@ public class TatamiGzipFilter extends GzipFilter {
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws Exception {
-        String path = request.getRequestURI();
-        if (!path.startsWith("/tatami/file")) {  // Do not GZIP attachments
-            super.doFilter(request, response, chain);
+
+        if(request.getHeader("accept").equals("*/*")) {
+            IeRefreshWrapper requestIE = new IeRefreshWrapper(request);
+            chain.doFilter(requestIE, response);
         } else {
-            chain.doFilter(request, response);
+            //otherwise, continue on in the chain with the ServletRequest and ServletResponse objects
+        	chain.doFilter(request, response);
         }
     }
 }

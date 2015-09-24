@@ -1,0 +1,39 @@
+<div class="col-span-8">
+    <div class="alert alert-status">
+        <div>
+            <form class="form-horizontal row-fluid">
+                <h2 translate="tatami.account.preferences.title"></h2>
+                <legend translate="tatami.account.preferences.notifications"></legend>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="mentionEmail" type="checkbox" ng-model="prefs.mentionEmail" ng-checked="prefs.mentionEmail">{{ 'tatami.account.preferences.notification.email.mention' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="dailyDigest" type="checkbox" ng-model="prefs.dailyDigest" ng-checked="prefs.dailyDigest"> {{ 'tatami.account.preferences.notification.email.dailyDigest' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="weeklyDigest" type="checkbox" ng-model="prefs.weeklyDigest" ng-checked="prefs.weeklyDigest"> {{ 'tatami.account.preferences.notification.email.weeklyDigest' | translate }}
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                        <input name="rssUidActive" type="checkbox" ng-model="prefs.rssUidActive" ng-checked="prefs.rssUidActive"> {{ 'tatami.account.preferences.notification.rss.timeline' | translate }}
+                        </label>
+                        <a ng-if="prefs.rssUidActive" href="/tatami/syndic/{{ prefs.rssUid }}">{{ 'tatami.account.preferences.notification.rss.link' | translate }}</a>
+                    </div>
+                </div>
+                <fieldset>
+                    <div class="return"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="tatami.form.save"></button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

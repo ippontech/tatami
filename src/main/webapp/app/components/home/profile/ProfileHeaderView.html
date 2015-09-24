@@ -1,0 +1,88 @@
+<div>
+    <ul class="homebody-nav nav nav-justified">
+        <li ui-sref-active="active">
+            <a ui-sref="tatami.home.profile.statuses">
+            <i class="glyphicon glyphicon-th-list"></i>
+            <span translate="tatami.home.profile.statuses"></span>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="tatami.home.profile.following">
+            <i class="glyphicon glyphicon-user"></i>
+            <span translate="tatami.home.profile.following"></span>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="tatami.home.profile.followers">
+            <i class="glyphicon glyphicon-user"></i>
+            <span translate="tatami.home.profile.followers"></span>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-content tatams-margin">
+        <div class="tatams-content-title">
+            <h3>
+                <span ng-if="$state.includes('tatami.home.profile.statuses')">
+                    <span ng-if="user.you">
+                        <strong ng-if="user.statusCount == 1" translate="tatami.home.profile.youStatusesSingular"></strong>
+                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="tatami.home.profile.youStatusesPlural" translate-values="{ amount: user.statusCount }"></strong>
+                    </span>
+                    <span ng-if="!user.you">
+                        <strong ng-if="user.statusCount == 1" translate="tatami.home.profile.userStatusesSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="tatami.home.profile.userStatusesPlural" translate-values="{ username: user.username, amount: user.statusCount }"></strong>
+                    </span>
+                    <span ng-if="user.follower" class="badge hidden-phone">
+                        {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
+                    </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
+                    </span>
+                </span>
+
+                <span ng-if="$state.includes('tatami.home.profile.following')">
+                    <span ng-if="user.you">
+                        <strong ng-if="user.friendsCount == 1" translate="tatami.home.profile.youFollowingSingular"></strong>
+                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="tatami.home.profile.youFollowingPlural" translate-values="{ amount: user.friendsCount }"></strong>
+                    </span>
+                    <span ng-if="!user.you">
+                        <strong ng-if="user.friendsCount == 1" translate="tatami.home.profile.userFollowingSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="tatami.home.profile.userFollowingPlural" translate-values="{ username: user.username, amount: user.friendsCount }"></strong>
+                    </span>
+                    <span ng-if="user.follower" class="badge hidden-phone">
+                        {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
+                    </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
+                    </span>
+                </span>
+
+                <span ng-if="$state.includes('tatami.home.profile.followers')">
+                    <span ng-if="user.you">
+                        <strong ng-if="user.followersCount == 1" translate="tatami.home.profile.youFollowersSingular"></strong>
+                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="tatami.home.profile.youFollowersPlural" translate-values="{ amount: user.followersCount }"></strong>
+                    </span>
+                    <span ng-if="!user.you">
+                        <strong ng-if="user.followersCount == 1" translate="tatami.home.profile.userFollowersSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="tatami.home.profile.userFollowersPlural" translate-values="{ username: user.username, amount: user.followersCount }"></strong>
+                    </span>
+                    <span ng-if="user.follower" class="badge hidden-phone">
+                        {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
+                    </span>
+                    <span ng-if="!user.activated" class="badge hidden-phone progress-bar-danger">
+                        {{ 'tatami.home.profile.deactivatedUser' | translate | uppercase }}
+                    </span>
+                </span>
+
+                <span ng-if="!user.you">
+                    <button type="button" ng-click="followUnfollowUser()" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': user.friend && hover, 'btn-info': user.friend && !hover }">
+                        <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'">
+                            <span ng-if="!user.friend" class="hidden-phone" translate="tatami.home.profile.follow"></span>
+                            <span ng-if="user.friend && !hover" class="hidden-phone" translate="tatami.home.profile.following"></span>
+                            <span ng-if="user.friend && hover" class="hidden-phone" translate="tatami.home.profile.unfollow"></span>
+                        </span>
+                    </button>
+                </span>
+            </h3>
+        </div>
+    </section>
+</div>

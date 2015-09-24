@@ -5,9 +5,10 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Attachment {
+public class Attachment implements Serializable {
 
     private static final DateTimeFormatter oldDateFormatter = new DateTimeFormatterBuilder()
             .appendDayOfMonth(1)
@@ -28,6 +29,11 @@ public class Attachment {
 
     @JsonIgnore
     private byte[] content;
+    
+    @JsonIgnore
+    private byte[] thumbnail;
+    
+    private boolean hasThumbnail = false;
 
     private long size;
 
@@ -71,6 +77,22 @@ public class Attachment {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+    
+    public byte[] getThumbnail() {
+    	return thumbnail;
+    }
+    
+    public void setThumbnail(byte[] thumbnail) {
+    	this.thumbnail = thumbnail;
+    }
+    
+    public boolean getHasThumbnail() {
+    	return this.hasThumbnail;
+    }
+    
+    public void setHasThumbnail(boolean hasThumbnail) {
+    	this.hasThumbnail = hasThumbnail;
     }
 
     public long getSize() {

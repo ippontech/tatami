@@ -1,9 +1,9 @@
 package fr.ippon.tatami.config;
 
 import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,11 @@ import java.util.Properties;
 @Configuration
 public class MailConfiguration {
 
-    private final Log log = LogFactory.getLog(MailConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(MailConfiguration.class);
 
     @Bean
     public VelocityEngine velocityEngine() throws IOException {
+        log.debug("Starting Velocity Engine");
         VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
         Properties props = new Properties();
 
@@ -45,7 +46,6 @@ public class MailConfiguration {
         factory.setVelocityProperties(props);
         return factory.createVelocityEngine();
     }
-
 
     @Bean
     public MessageSource mailMessageSource() {

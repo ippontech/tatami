@@ -1,24 +1,27 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.DomainConfiguration;
-import fr.ippon.tatami.repository.DomainConfigurationRepository;
+import javax.inject.Inject;
+
 import me.prettyprint.hom.EntityManagerImpl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
+import fr.ippon.tatami.domain.DomainConfiguration;
+import fr.ippon.tatami.repository.DomainConfigurationRepository;
 
 /**
  * Cassandra implementation of the DomainConfiguration repository.
  *
  * @author Julien Dubois
  */
+
 @Repository
 public class CassandraDomainConfigurationRepository implements DomainConfigurationRepository {
 
-    private final Log log = LogFactory.getLog(CassandraDomainConfigurationRepository.class);
-
+    private final Logger log = LoggerFactory.getLogger(CassandraDomainConfigurationRepository.class);
+    
     @Inject
     private EntityManagerImpl em;
 
@@ -34,9 +37,9 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
         try {
             domainConfiguration = em.find(DomainConfiguration.class, domain);
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception while looking for domain " + domain + " : " + e.toString());
-            }
+
+            log.debug("Exception while looking for domain {} : {}", domain, e.toString());
+
             return null;
         }
         if (domainConfiguration == null) {
@@ -46,18 +49,18 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
             em.persist(domainConfiguration);
         }
         if (domain.equals("ippon.fr")) {
-            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionLevel.IPPON);
-            domainConfiguration.setStorageSize(DomainConfiguration.StorageSizeOptions.IPPON);
+            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSUSCRIPTION);
+            domainConfiguration.setStorageSize(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSIZE);
         }
         return domainConfiguration;
     }
 
     private void setDefaultValues(DomainConfiguration domainConfiguration) {
         if (domainConfiguration.getStorageSize() == null) {
-            domainConfiguration.setStorageSize(DomainConfiguration.StorageSizeOptions.BASIC);
+            domainConfiguration.setStorageSize(DomainConfiguration.SubscriptionAndStorageSizeOptions.BASICSIZE);
         }
         if (domainConfiguration.getSubscriptionLevel() == null) {
-            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionLevel.FREE);
+            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionAndStorageSizeOptions.BASICSUSCRIPTION);
         }
     }
 }

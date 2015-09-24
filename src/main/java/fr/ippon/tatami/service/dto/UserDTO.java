@@ -1,20 +1,11 @@
 package fr.ippon.tatami.service.dto;
 
-import fr.ippon.tatami.domain.Attachment;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.format.ISODateTimeFormat;
-
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * DTO to present a "complete" status to the presentation layer.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private String login;
 
@@ -43,6 +34,16 @@ public class UserDTO {
     private boolean isFollower = false;
 
     private boolean isYou = false;
+
+    private boolean isActivated=true;
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.isActivated = activated;
+    }
 
     public String getUsername() {
         return username;
@@ -181,6 +182,7 @@ public class UserDTO {
                 ", isFriend=" + isFriend +
                 ", isFollower=" + isFollower +
                 ", isYou=" + isYou +
+                ", activated=" + isActivated +
                 '}';
     }
 

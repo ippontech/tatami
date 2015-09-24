@@ -19,11 +19,11 @@ public class TatamibotConfiguration {
 
     public static class TatamibotType {
 
-        public final static String RSS = "RSS";
+        public static final String RSS = "RSS";
 
-        public final static String TWITTER = "TWITTER";
+        public static final String TWITTER = "TWITTER";
 
-        public final static String GIT = "GIT";
+        public static final String GIT = "GIT";
 
     }
 

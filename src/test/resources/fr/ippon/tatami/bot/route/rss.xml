@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2frenchfull.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?><rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+
+<channel>
+    <title>Blog d’Ippon Technologies</title>
+    
+    <link>http://blog.ippon.fr</link>
+    <description>Les experts Java EE, Portail et SOA</description>
+    <lastBuildDate>Mon, 17 Dec 2012 17:35:51 +0000</lastBuildDate>
+    <language>fr-FR</language>
+    <sy:updatePeriod>hourly</sy:updatePeriod>
+    <sy:updateFrequency>1</sy:updateFrequency>
+    <generator>http://wordpress.org/?v=3.4.2</generator>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/LeBlogDesExpertsJ2ee" /><feedburner:info uri="leblogdesexpertsj2ee" /><atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" /><feedburner:feedFlare href="http://add.my.yahoo.com/content?lg=fr&amp;url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://us.i1.yimg.com/us.yimg.com/i/us/my/bn/intatm_fr_1.gif">Subscribe with Mon Yahoo!</feedburner:feedFlare><feedburner:feedFlare href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.newsgator.com/images/ngsub1.gif">Subscribe with NewsGator</feedburner:feedFlare><feedburner:feedFlare href="http://www.bloglines.com/sub/http://feeds.feedburner.com/LeBlogDesExpertsJ2ee" src="http://www.bloglines.com/images/sub_modern11.gif">Subscribe with Bloglines</feedburner:feedFlare><feedburner:feedFlare href="http://www.netvibes.com/subscribe.php?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.netvibes.com/img/add2netvibes.gif">Subscribe with Netvibes</feedburner:feedFlare><feedburner:feedFlare href="http://fusion.google.com/add?feedurl=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://buttons.googlesyndication.com/fusion/add.gif">Subscribe with Google</feedburner:feedFlare><feedburner:feedFlare href="http://www.pageflakes.com/subscribe.aspx?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.pageflakes.com/ImageFile.ashx?instanceId=Static_4&amp;fileName=ATP_blu_91x17.gif">Subscribe with Pageflakes</feedburner:feedFlare><feedburner:feedFlare href="http://www.plusmo.com/add?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://plusmo.com/res/graphics/fbplusmo.gif">Subscribe with Plusmo</feedburner:feedFlare><feedburner:feedFlare href="http://www.thefreedictionary.com/_/hp/AddRSS.aspx?http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://img.tfd.com/hp/addToTheFreeDictionary.gif">Subscribe with The Free Dictionary</feedburner:feedFlare><feedburner:feedFlare href="http://www.bitty.com/manual/?contenttype=rssfeed&amp;contentvalue=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.bitty.com/img/bittychicklet_91x17.gif">Subscribe with Bitty Browser</feedburner:feedFlare><feedburner:feedFlare href="http://www.live.com/?add=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://tkfiles.storage.msn.com/x1piYkpqHC_35nIp1gLE68-wvzLZO8iXl_JMledmJQXP-XTBOLfmQv4zhj4MhcWEJh_GtoBIiAl1Mjh-ndp9k47If7hTaFno0mxW9_i3p_5qQw">Subscribe with Live.com</feedburner:feedFlare><feedburner:feedFlare href="http://mix.excite.eu/add?feedurl=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://image.excite.co.uk/mix/addtomix.gif">Subscribe with Excite MIX</feedburner:feedFlare><feedburner:feedFlare href="http://www.webwag.com/wwgthis.php?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.webwag.com/images/wwgthis.gif">Subscribe with Webwag</feedburner:feedFlare><feedburner:feedFlare href="http://www.podcastready.com/oneclick_bookmark.php?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.podcastready.com/images/podcastready_button.gif">Subscribe with Podcast Ready</feedburner:feedFlare><feedburner:feedFlare href="http://www.wikio.com/subscribe?url=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.wikio.com/shared/img/add2wikio.gif">Subscribe with Wikio</feedburner:feedFlare><feedburner:feedFlare href="http://www.dailyrotation.com/index.php?feed=http%3A%2F%2Ffeeds.feedburner.com%2FLeBlogDesExpertsJ2ee" src="http://www.dailyrotation.com/rss-dr2.gif">Subscribe with Daily Rotation</feedburner:feedFlare><item>
+        <title>Les Méthodes Agiles – Définition de l’Agilité</title>
+        <link>http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/hSqyt1MCOoo/</link>
+        <comments>http://blog.ippon.fr/2012/12/07/gestion-projet-methodes-agiles/#comments</comments>
+        <pubDate>Fri, 07 Dec 2012 08:15:10 +0000</pubDate>
+        <dc:creator>Communication Ippon Technologies</dc:creator>
+                <category><![CDATA[Expertise Java]]></category>
+        <category><![CDATA[agile]]></category>
+        <category><![CDATA[gestion de projet]]></category>
+        <category><![CDATA[nantes]]></category>
+        <category><![CDATA[Scrum]]></category>
+
+        <guid isPermaLink="false">http://blog.ippon.fr/?p=7154</guid>
+        <description><![CDATA[<p>Ippon Technologies revient sur l&#8217;Agile Tour de Nantes&#8230;</p> <p>Notre reporter a été demander aux participants ce qu&#8217;évoque pour eux &#8216;l&#8217;Agilité&#8217;&#8230; Des réponses aussi riches et personnelles que surprenantes!</p> <p></p> ]]></description>
+            <content:encoded><![CDATA[<p>Ippon Technologies revient sur l&#8217;Agile Tour de Nantes&#8230;</p>
+<p>Notre reporter a été demander aux participants ce qu&#8217;évoque pour eux &#8216;l&#8217;Agilité&#8217;&#8230; Des réponses aussi riches et personnelles que surprenantes!</p>
+<p><iframe frameborder="0" height="360" src="http://www.youtube.com/embed/Uun_dQ16JTA" width="640"></iframe></p>
+<!-- Start Shareaholic ClassicBookmarks Automatic --><!-- End Shareaholic ClassicBookmarks Automatic --><img src="http://feeds.feedburner.com/~r/LeBlogDesExpertsJ2ee/~4/hSqyt1MCOoo" height="1" width="1"/>]]></content:encoded>
+            <wfw:commentRss>http://blog.ippon.fr/2012/12/07/gestion-projet-methodes-agiles/feed/</wfw:commentRss>
+        <slash:comments>0</slash:comments>
+        <feedburner:origLink>http://blog.ippon.fr/2012/12/07/gestion-projet-methodes-agiles/</feedburner:origLink></item>
+        <item>
+        <title>Business – Ippon Technologies acquiert Atomes et renforce son offre Cloud</title>
+        <link>http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/wK-Y47WGZBQ/</link>
+        <comments>http://blog.ippon.fr/2012/12/05/ippon-technologies-acquiert-atomes-et-renforce-son-offre-cloud/#comments</comments>
+        <pubDate>Wed, 05 Dec 2012 07:50:49 +0000</pubDate>
+        <dc:creator>Geoffray GRUEL</dc:creator>
+                <category><![CDATA[Cloud]]></category>
+        <category><![CDATA[Devops]]></category>
+        <category><![CDATA[Expertise Java]]></category>
+        <category><![CDATA[acquisition]]></category>
+        <category><![CDATA[atomes]]></category>
+        <category><![CDATA[hébergement]]></category>
+        <category><![CDATA[hybride]]></category>
+        <category><![CDATA[serveur]]></category>
+
+        <guid isPermaLink="false">http://blog.ippon.fr/?p=7131</guid>
+        <description><![CDATA[<p>Nous n&#8217;avons pas pour habitude d&#8217;utiliser le blog pour des news business mais celle-ci mérite un billet dans cette arène technique car Ippon Technologies vient d&#8217;acquérir un hébergeur spécialisé Java, pour renforcer ses offres Run, Cloud et Devops.</p> <p>Le choix d’Ippon Technologies s’est naturellement porté sur Atomes &#8211; http://www.atomes.com -, l’hébergeur Java de référence en <span style="color:#777"> . . . &#8594; Lire la suite: <a href="http://blog.ippon.fr/2012/12/05/ippon-technologies-acquiert-atomes-et-renforce-son-offre-cloud/">Business &#8211; Ippon Technologies acquiert Atomes et renforce son offre Cloud</a></span>]]></description>
+            <content:encoded><![CDATA[<p>Nous n&#8217;avons pas pour habitude d&#8217;utiliser le blog pour des news business mais celle-ci mérite un billet dans cette arène technique car Ippon Technologies vient d&#8217;acquérir un hébergeur spécialisé Java, pour renforcer ses offres Run, Cloud et Devops.</p>
+<div>
+<p>Le choix d’Ippon Technologies s’est naturellement porté sur Atomes &#8211; <a title="Atomes" href="http://www.atomes.com/accueil" target="_blank">http://www.atomes.com</a> -, l’hébergeur Java de référence en France, qui dispose d’une expertise logicielle Java / JVM en plus de l’expertise système / matériel / réseau. C’est aussi le fruit d’une collaboration de plus de 4 ans entre les deux entreprises, qui ont déjà plusieurs succès en commun à leurs actifs : CCIP, Carrefour, Dhatim, Groupe La Poste, Intellinium&#8230;,sur des applications Java critiques avec des solutions intégrées telles que Liferay ou Alfresco.</p>
+<div>
+<p>Atomes est le spécialiste de l’hébergement et de l’infogérance d’applications Java EE en France. La société gère les infrastructures nécessaires à la mise en ligne d’applications Java EE critiques. Depuis 2007, Atomes accompagne ses clients dans le cycle d’exploitation de leurs services : conception, installation, paramétrage, exploitation, réversibilité.</p>
+<p>L’une de ses forces d&#8217;Atomes réside dans la lecture critique d’une «Stack-Trace» : en cas d’incident de production, cette expertise fait toute la différence avec un hébergeur classique car en plus d’une résolution rapide de l’incident, ses experts apportent une réponse qualifiée aux équipes de développement.<br />
+Atomes dispose par ailleurs d’une infrastructure de haut niveau : Datacenters de tiers III et tiers IV, Cloud privé OpenStack et Xen Cloud Platform, provisioning d’infrastructures Puppet, monitoring de dernière génération, haute-disponibilité, PRA et sécurité.</p>
+</div>
+<p>Dès aujourd’hui, Atomes porte l’offre Devops, Run et Cloud au sein du groupe Ippon Technologies, proposant ainsi à nos clients :</p>
+<ul>
+<li>Des services d’hébergement à la demande : virtualisé, dédié, cloud privé, cloud public,</li>
+<li>Des services d’infogérance 24/7,</li>
+<li>Des services de conseil sur les sujets Run, Devops et Cloud.</li>
+</ul>
+<p>Ippon Technologies va donc attaquer 2013 avec :</p>
+<ul>
+<li>Une offre front renforcée par <a href="http://www.ippon-mobile.fr/" target="_blank">Ippon Mobile</a>,</li>
+<li>Une offre back solide qui est le point fort historique d&#8217;Ippon et que nous avons pu renforcer avec par exemple un <a href="http://tatami.ippon.fr/tatami/presentation" target="_blank">Tatami</a> déployé en SaaS sur Cassandra,</li>
+<li>Une offre hébergement et cloud renforcée par <a href="http://www.atomes.com/accueil" target="_blank">Atomes</a>.</li>
+<li>Nos offres Agile et Devops (avec des inputs Ippon et Atomes) qui viennent soutenir tous ces projets.</li>
+</ul>
+<p>Cette couverture du cycle complet en Java va permettre à Ippon Technologies de se positionner en tant que partenaire &#8220;end to end&#8221; des projets critiques de nos clients en 2013. Nous pouvons nous engager du Design jusqu&#8217;au Run avec une offre 100% Ippon et des garanties fortes en terme de &#8220;Time To Market&#8221;.</p>
+<p>Vous verrez donc au fil des semaines de nouveaux articles sur le blog sur des sujets Cloud et Devops autour de Puppet, Xen ou OpenStack.</p>
+<p>Si vous souhaitez de plus amples informations sur cette offre n&#8217;hésitez pas à nous contacter :</p>
+<ul>
+<li>Business : Geoffray Gruel &#8211; ggruel(at)ippon.fr</li>
+<li>Technique : Yann Vigara &#8211; yvigara(at)atomes.com</li>
+</ul>
+</div>
+<!-- Start Shareaholic ClassicBookmarks Automatic --><!-- End Shareaholic ClassicBookmarks Automatic --><img src="http://feeds.feedburner.com/~r/LeBlogDesExpertsJ2ee/~4/wK-Y47WGZBQ" height="1" width="1"/>]]></content:encoded>
+            <wfw:commentRss>http://blog.ippon.fr/2012/12/05/ippon-technologies-acquiert-atomes-et-renforce-son-offre-cloud/feed/</wfw:commentRss>
+        <slash:comments>0</slash:comments>
+        <feedburner:origLink>http://blog.ippon.fr/2012/12/05/ippon-technologies-acquiert-atomes-et-renforce-son-offre-cloud/</feedburner:origLink></item>
+        <item>
+        <title>Ippevent Mobilité – Applications mobiles – ouverture des inscriptions</title>
+        <link>http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/GcJYERHTfoQ/</link>
+        <comments>http://blog.ippon.fr/2012/12/03/ippevent-mobilite-applications-mobiles-ouverture-des-inscriptions/#comments</comments>
+        <pubDate>Mon, 03 Dec 2012 17:00:05 +0000</pubDate>
+        <dc:creator>Communication Ippon Technologies</dc:creator>
+                <category><![CDATA[Expertise Java]]></category>
+        <category><![CDATA[application mobile]]></category>
+        <category><![CDATA[développement]]></category>
+        <category><![CDATA[ios]]></category>
+        <category><![CDATA[Ippevent]]></category>
+        <category><![CDATA[POC]]></category>
+
+        <guid isPermaLink="false">http://blog.ippon.fr/?p=7143</guid>
+        <description><![CDATA[ <p>Ippon Technologies vous accueille le Jeudi 20 décembre 2012 à partir de 19h00 pour une soirée Mobile First dans les locaux d&#8217;Ippon Technologies.</p> <p>Les consultants mobiles d&#8217;Ippon reviennent sur les grands projets qui ont rythmé l&#8217;année.</p> <p>Vous découvrirez des projets sous iOs, Android&#8230; Des applications natives et hybrides&#8230; Un socle d&#8217;architecture&#8230;.le tout appliqué au <span style="color:#777"> . . . &#8594; Lire la suite: <a href="http://blog.ippon.fr/2012/12/03/ippevent-mobilite-applications-mobiles-ouverture-des-inscriptions/">Ippevent Mobilité &#8211; Applications mobiles &#8211; ouverture des inscriptions</a></span>]]></description>
+            <content:encoded><![CDATA[<div style="width: 100%; text-align: left;">
+<p>Ippon Technologies vous accueille <strong>le Jeudi 20 décembre 2012 à partir de 19h00</strong> pour une soirée Mobile First dans les locaux d&#8217;Ippon Technologies.</p>
+<p>Les consultants mobiles d&#8217;Ippon reviennent sur les grands projets qui ont rythmé l&#8217;année.</p>
+<p>Vous découvrirez des projets sous iOs, Android&#8230; Des applications natives et hybrides&#8230; Un socle d&#8217;architecture&#8230;.le tout appliqué au secteur des médias, de centres commerciaux et à l&#8217;environnement bancaire.</p>
+<p><strong>Programme de la soirée :</strong></p>
+<p>- <strong>&#8220;Le développement natif iOS versus développement d&#8217;application mobile hybride&#8221;</strong> par Nicolas Guillot, consultant mobile.</p>
+<p><a title="site information judopro" href="http://www.judopro.fr/" target="_blank">Judopro</a> est à la fois une application native (iPad) et hybride (Android). Il vous présentera les principaux écueils rencontrés. Pour finir, il effectuera un comparatif des deux techniques de développement.</p>
+<p>- <strong>&#8220;L&#8217;adaptation des services métiers pour le développement mobile&#8221;</strong> par Lorys Pognon, architecte mobile.</p>
+<p>Lorys s&#8217;appuyera sur un projet de mise en place de l&#8217;architecture d’un socle pour les futurs développements sous iOS pour un environnement bancaire</p>
+<p>- <strong>&#8220;Application iOs de services au sein des centres commerciaux&#8221;</strong> par Raphaël Despinasse, Scrum Master.</p>
+<p>Les 3 interventions seront suivies d&#8217;un buffet pour continuer à échanger dans un cadre Encore plus convivial.</p>
+</div>
+<div style="width: 100%; text-align: left;"><iframe frameborder="0" height="214" marginheight="5" marginwidth="5" scrolling="auto" src="http://www.eventbrite.com/tickets-external?eid=4964954312&amp;ref=etckt&amp;v=2" width="100%"></iframe></div>
+<div style="font-family: Helvetica, Arial; font-size: 10px; padding: 5px 0 5px; margin: 2px; width: 100%; text-align: left;"><a style="color: #ddd; text-decoration: none;" href="http://www.eventbrite.com/r/etckt" target="_blank">Vendre des billets en ligne</a> <span style="color: #ddd;">à travers</span> <a style="color: #ddd; text-decoration: none;" href="http://www.eventbrite.com?ref=etckt" target="_blank">Eventbrite</a></div>
+<div style="font-family: Helvetica, Arial; font-size: 10px; padding: 5px 0 5px; margin: 2px; width: 100%; text-align: left;">
+<p><strong>L&#8217;essentiel </strong></p>
+<p>Ippevent &#8211; Retour d&#8217;expérience Applications Mobiles</p>
+<p>Date : Jeudi 20 décembre 2012</p>
+<p>Heure : 19h00 &#8211; 22h00</p>
+<p>Lieu : Ippon Technologies &#8211; 90 rue Baudin, Levallois Perret</p>
+<p>Comment venir : Métro Pont de Levallois (l.3) &#8211; Transilien Clichy Levallois</p>
+<p>Des questions ? marketing@ippon.fr</p>
+<p>Suivez-nous : <a title="twitter ippon technologies" href="https://twitter.com/ippontech" target="_blank">@ippontech</a> &#8211; <a title="blog ippon technologies" href="http://blog.ippon.fr/" target="_blank">http://blog.ippon.fr/</a> &#8211; <a title="Ippon Mobile" href="http://www.ippon-mobile.fr/" target="_blank">www.ippon-mobile.fr</a></p>
+</div>
+<!-- Start Shareaholic ClassicBookmarks Automatic --><!-- End Shareaholic ClassicBookmarks Automatic --><img src="http://feeds.feedburner.com/~r/LeBlogDesExpertsJ2ee/~4/GcJYERHTfoQ" height="1" width="1"/>]]></content:encoded>
+            <wfw:commentRss>http://blog.ippon.fr/2012/12/03/ippevent-mobilite-applications-mobiles-ouverture-des-inscriptions/feed/</wfw:commentRss>
+        <slash:comments>0</slash:comments>
+        <feedburner:origLink>http://blog.ippon.fr/2012/12/03/ippevent-mobilite-applications-mobiles-ouverture-des-inscriptions/</feedburner:origLink></item>
+    </channel>
+</rss>

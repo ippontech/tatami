@@ -2,16 +2,16 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 @Service
 public class StatusUpdateService {
 
-    private final Log log = LogFactory.getLog(StatusUpdateService.class);
+    private static final Logger log = LoggerFactory.getLogger(StatusUpdateService.class);
 
-    private final static Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s]+");
+    private static final Pattern PATTERN_LOGIN = Pattern.compile("@[^\\s,\\p{Punct}]+");
 
     private static final Pattern PATTERN_HASHTAG = Pattern.compile("(^|\\s)#([^\\s !\"#$%&\'()*+,./:;<=>?@\\\\\\[\\]^_`{|}~-]+)");
 
@@ -49,7 +49,7 @@ public class StatusUpdateService {
     private TimelineRepository timelineRepository;
 
     @Inject
-    private MentionlineRepository mentionlineRepository;
+    private MentionService mentionService;
 
     @Inject
     private UserlineRepository userlineRepository;
@@ -88,65 +88,99 @@ public class StatusUpdateService {
     private SearchService searchService;
 
     @Inject
-    private MailService mailService;
-
-    @Inject
-    private UserRepository userRepository;
-
-    @Inject
     private DomainlineRepository domainlineRepository;
 
     @Inject
     private StatusAttachmentRepository statusAttachmentRepository;
 
-    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
-        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null);
+    @Inject
+    private AtmosphereService atmosphereService;
+
+    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
 
-    public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds) {
-        createStatus(content, false, group, "", "", "", attachmentIds, null);
+    public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds) {
+        createStatus(content, statusPrivate, null, "", "", "", attachmentIds);
+    }
+
+    public void postStatusToGroup(String content, Group group, Collection<String> attachmentIds, String geoLocalization) {
+        createStatus(content, false, group, "", "", "", attachmentIds, null, geoLocalization);
     }
 
     public void postStatusAsUser(String content, User user) {
-        createStatus(content, false, null, "", "", "", null, user);
+        createStatus(content, false, null, "", "", "", null, user, null);
     }
 
-    public void replyToStatus(String content, String replyTo) throws ArchivedGroupException, ReplyStatusException {
-        Status originalStatus = statusRepository.findStatusById(replyTo);
-        if (originalStatus == null) {
+    public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
+        AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
+        if (abstractStatus != null &&
+                !abstractStatus.getType().equals(StatusType.STATUS) &&
+                !abstractStatus.getType().equals(StatusType.SHARE) &&
+                !abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+
+            log.debug("Cannot reply to a status of this type");
             throw new ReplyStatusException();
         }
+        if (abstractStatus != null &&
+                abstractStatus.getType().equals(StatusType.SHARE)) {
+
+            log.debug("Replacing the share by the original status");
+            Share share = (Share) abstractStatus;
+            AbstractStatus abstractRealStatus = statusRepository.findStatusById(share.getOriginalStatusId());
+            abstractStatus = abstractRealStatus;
+        } else if (abstractStatus != null &&
+                abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+
+            log.debug("Replacing the announcement by the original status");
+            Announcement announcement = (Announcement) abstractStatus;
+            AbstractStatus abstractRealStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
+            abstractStatus = abstractRealStatus;
+        }
+
+        Status status = (Status) abstractStatus;
         Group group = null;
-        if (originalStatus.getGroupId() != null) {
-            group = groupService.getGroupById(originalStatus.getDomain(), originalStatus.getGroupId());
+        if (status.getGroupId() != null) {
+            group = groupService.getGroupById(status.getDomain(), status.getGroupId());
 
             if (group.isArchivedGroup()) {
                 throw new ArchivedGroupException();
             }
         }
-        if (!originalStatus.getReplyTo().equals("")) {
+        if (!status.getReplyTo().equals("")) {
+            log.debug("Replacing the status by the status at the origin of the disucssion");
             // Original status is also a reply, replying to the real original status instead
-            Status realOriginalStatus = statusRepository.findStatusById(originalStatus.getDiscussionId());
+            AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(status.getDiscussionId());
+            if (abstractRealOriginalStatus == null ||
+                    !abstractRealOriginalStatus.getType().equals(StatusType.STATUS)) {
+
+                throw new ReplyStatusException();
+            }
+            Status realOriginalStatus = (Status) abstractRealOriginalStatus;
+
             Status replyStatus = createStatus(
                     content,
                     realOriginalStatus.getStatusPrivate(),
                     group,
                     realOriginalStatus.getStatusId(),
-                    originalStatus.getStatusId(),
-                    originalStatus.getUsername());
+                    status.getStatusId(),
+                    status.getUsername(),
+                    attachmentIds);
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
         } else {
+            log.debug("Replying directly to the status at the origin of the disucssion");
             // The original status of the discussion is the one we reply to
             Status replyStatus =
                     createStatus(content,
-                            originalStatus.getStatusPrivate(),
+                            status.getStatusPrivate(),
                             group,
-                            replyTo,
-                            replyTo,
-                            originalStatus.getUsername());
+                            status.getStatusId(),
+                            status.getStatusId(),
+                            status.getUsername(),
+                            attachmentIds);
 
-            discussionRepository.addReplyToDiscussion(originalStatus.getStatusId(), replyStatus.getStatusId());
+            discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
         }
     }
 
@@ -155,7 +189,8 @@ public class StatusUpdateService {
                                 Group group,
                                 String discussionId,
                                 String replyTo,
-                                String replyToUsername) {
+                                String replyToUsername,
+                                Collection<String> attachmentIds) {
 
         return createStatus(
                 content,
@@ -164,8 +199,8 @@ public class StatusUpdateService {
                 discussionId,
                 replyTo,
                 replyToUsername,
-                new ArrayList<String>(),
-                null);
+                attachmentIds,
+                null, null);
     }
 
     private Status createStatus(String content,
@@ -175,13 +210,14 @@ public class StatusUpdateService {
                                 String replyTo,
                                 String replyToUsername,
                                 Collection<String> attachmentIds,
-                                User user) {
+                                User user,
+                                String geoLocalization) {
 
         content = StringEscapeUtils.unescapeHtml(content);
         long startTime = 0;
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             startTime = Calendar.getInstance().getTimeInMillis();
-            log.debug("Creating new status : " + content);
+            log.debug("Creating new status : {}", content);
         }
         String currentLogin;
         if (user == null) {
@@ -189,20 +225,18 @@ public class StatusUpdateService {
         } else {
             currentLogin = user.getLogin();
         }
-        String username = DomainUtil.getUsernameFromLogin(currentLogin);
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
         Status status =
                 statusRepository.createStatus(currentLogin,
-                        username,
-                        domain,
                         statusPrivate,
                         group,
                         attachmentIds,
                         content,
                         discussionId,
                         replyTo,
-                        replyToUsername);
+                        replyToUsername,
+                        geoLocalization);
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
@@ -212,7 +246,7 @@ public class StatusUpdateService {
         }
 
         // add status to the timeline
-        timelineRepository.addStatusToTimeline(currentLogin, status);
+        addStatusToTimelineAndNotify(currentLogin, status);
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
@@ -224,7 +258,7 @@ public class StatusUpdateService {
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status);
+            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -245,31 +279,31 @@ public class StatusUpdateService {
             addToCompanyWall(status, group);
         }
 
-        if (log.isDebugEnabled()) {
+        if (log.isInfoEnabled()) {
             long finishTime = Calendar.getInstance().getTimeInMillis();
-            log.debug("Status created in " + (finishTime - startTime) + "ms.");
+            log.info("Status created in " + (finishTime - startTime) + "ms.");
         }
         return status;
     }
 
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
-            grouplineRepository.addStatusToGroupline(status, group.getGroupId());
+            grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId());
             Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
             for (String groupMemberLogin : groupMemberLogins) {
-                timelineRepository.addStatusToTimeline(groupMemberLogin, status);
+                addStatusToTimelineAndNotify(groupMemberLogin, status);
             }
             if (isPublicGroup(group)) { // for people not following the group but following the user
                 for (String followerLogin : followersForUser) {
                     if (!groupMemberLogins.contains(followerLogin)) {
-                        timelineRepository.addStatusToTimeline(followerLogin, status);
+                        addStatusToTimelineAndNotify(followerLogin, status);
                     }
                 }
             }
         } else { // only people following the user
             for (String followerLogin : followersForUser) {
-                timelineRepository.addStatusToTimeline(followerLogin, status);
+                addStatusToTimelineAndNotify(followerLogin, status);
             }
         }
     }
@@ -277,7 +311,7 @@ public class StatusUpdateService {
 
     private void addToCompanyWall(Status status, Group group) {
         if (isPublicGroup(group)) {
-            domainlineRepository.addStatusToDomainline(status, status.getDomain());
+            domainlineRepository.addStatusToDomainline(status.getDomain(), status.getStatusId());
         }
     }
 
@@ -292,10 +326,8 @@ public class StatusUpdateService {
         while (m.find()) {
             String tag = m.group(2);
             if (tag != null && !tag.isEmpty() && !tag.contains("#")) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Found tag : " + tag);
-                }
-                taglineRepository.addStatusToTagline(status, tag);
+                log.debug("Found tag : {}", tag);
+                taglineRepository.addStatusToTagline(tag, status);
                 tagCounterRepository.incrementTagCounter(status.getDomain(), tag);
                 //Excludes the Tatami Bot from the global trend
                 if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
@@ -317,9 +349,7 @@ public class StatusUpdateService {
                     !mentionedUsername.equals(currentLogin) &&
                     !followersForUser.contains(mentionedUsername)) {
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Mentionning : " + mentionedUsername);
-                }
+                log.debug("Mentionning : {}", mentionedUsername);
                 String mentionedLogin =
                         DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
 
@@ -327,10 +357,10 @@ public class StatusUpdateService {
                 if (!isPublicGroup(group)) {
                     Collection<String> groupIds = userGroupRepository.findGroups(mentionedLogin);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                        mentionUser(status, mentionedLogin);
+                        mentionUser(mentionedLogin, status);
                     }
                 } else { // This is a public status
-                    mentionUser(status, mentionedLogin);
+                    mentionUser(mentionedLogin, status);
                 }
             }
         }
@@ -342,13 +372,13 @@ public class StatusUpdateService {
 
         if (isPublicGroup(group)) { // This is a public status
             for (String followerLogin : followersForTag) {
-                timelineRepository.addStatusToTimeline(followerLogin, status);
+                addStatusToTimelineAndNotify(followerLogin, status);
             }
-        } else {  // This is private status
+        } else {  // This is a private status
             for (String followerLogin : followersForTag) {
                 Collection<String> groupIds = userGroupRepository.findGroups(followerLogin);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                    timelineRepository.addStatusToTimeline(followerLogin, status);
+                    addStatusToTimelineAndNotify(followerLogin, status);
                 }
             }
         }
@@ -356,20 +386,11 @@ public class StatusUpdateService {
 
     /**
      * A status that mentions a user is put in the user's mentionline and in his timeline.
-     * The mentioned user can also be notified by email.
+     * The mentioned user can also be notified by email or iOS push.
      */
-    private void mentionUser(Status status, String mentionedLogin) {
-        mentionlineRepository.addStatusToMentionline(mentionedLogin, status);
-        timelineRepository.addStatusToTimeline(mentionedLogin, status);
-        User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
-
-        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-            if (status.getStatusPrivate()) { // Private status
-                mailService.sendUserPrivateMessageEmail(status, mentionnedUser);
-            } else {
-                mailService.sendUserMentionEmail(status, mentionnedUser);
-            }
-        }
+    private void mentionUser(String mentionedLogin, Status status) {
+        addStatusToTimelineAndNotify(mentionedLogin, status);
+        mentionService.mentionUser(mentionedLogin, status);
     }
 
     private String extractUsernameWithoutAt(String dest) {
@@ -378,5 +399,13 @@ public class StatusUpdateService {
 
     private boolean isPublicGroup(Group group) {
         return group == null || group.isPublicGroup();
+    }
+
+    /**
+     * Adds the status to the timeline and notifies the user with Atmosphere.
+     */
+    private void addStatusToTimelineAndNotify(String login, Status status) {
+        timelineRepository.addStatusToTimeline(login, status.getStatusId());
+        atmosphereService.notifyUser(login, status);
     }
 }

@@ -8,12 +8,14 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.MailDigestRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.dto.StatusDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -24,7 +26,7 @@ import java.util.*;
 @Service
 public class MailDigestService {
 
-    private static final Log log = LogFactory.getLog(MailDigestService.class);
+    private static final Logger log = LoggerFactory.getLogger(MailDigestService.class);
 
     private final static int MAX_STATUS_DAILY_DIGEST = 10;
     private final static int MAX_STATUS_WEEKLY_DIGEST = 10;
@@ -58,9 +60,7 @@ public class MailDigestService {
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         for (Domain d : domains) {
-            log.info("Sending daily digest for domain " + d +
-                    " and day " + day);
-
+            log.info("Sending daily digest for domain {} and day {}", d, day);
             int pagination = 0;
             List<String> logins;
             do {
@@ -69,7 +69,15 @@ public class MailDigestService {
                 pagination = pagination + logins.size();
 
                 for (String login : logins) {
-                    handleDailyDigestPageForLogin(login);
+                    try {
+                        handleDailyDigestPageForLogin(login);
+                    } catch (Exception e) {
+                        log.warn("An error has occured when generating daily digest for user " + login + ": " + e.getMessage());
+                        StringWriter stack = new StringWriter();
+                        PrintWriter pw = new PrintWriter(stack);
+                        e.printStackTrace(pw);
+                        log.debug("{}", stack.toString());
+                    }
                 }
             } while (logins.size() > 0);
         }
@@ -96,10 +104,7 @@ public class MailDigestService {
             String day = String.valueOf(i);
 
             for (Domain d : domains) {
-
-                log.info("Sending weekly digest for domain " + d +
-                        " and day " + i);
-
+                log.info("Sending weekly digest for domain {} and day {}", d, i);
                 int pagination = 0;
                 List<String> logins;
                 do {
@@ -109,9 +114,16 @@ public class MailDigestService {
                     pagination = pagination + logins.size();
 
                     for (String login : logins) {
-                        handleWeeklyDigestPageForLogin(login);
+                        try {
+                            handleWeeklyDigestPageForLogin(login);
+                        } catch (Exception e) {
+                            log.warn("An error has occured when generating weekly digest for user " + login + ": " + e.getMessage());
+                            StringWriter stack = new StringWriter();
+                            PrintWriter pw = new PrintWriter(stack);
+                            e.printStackTrace(pw);
+                            log.debug("{}", stack.toString());
+                        }
                     }
-
                 } while (logins.size() > 0);
             }
         }
@@ -180,13 +192,13 @@ public class MailDigestService {
      */
     private int getStatusesForDigest(final User user, final Date since_date,
                                      int nbStatus, List<StatusDTO> digestStatuses) {
-        String max_id = null;
+        String finish = null;
         boolean dateReached = false;
         List<StatusDTO> allStatuses = new ArrayList<StatusDTO>(50);
 
-        // collect all statuses since 'since_date' from te timeline
-        do {
-            Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, max_id);
+        // collect all statuses since 'since_date' from the timeline
+        while (!dateReached) {
+            Collection<StatusDTO> statuses = timelineService.getUserTimeline(user.getLogin(), 200, null, finish);
             statuses.size();
             int count = 0;
             if (statuses.isEmpty()) {
@@ -194,7 +206,6 @@ public class MailDigestService {
             }
 
             for (StatusDTO status : statuses) {
-
                 if (status.getStatusDate().before(since_date)) {
                     dateReached = true;
                     break;
@@ -206,10 +217,10 @@ public class MailDigestService {
                 }
                 count++;
                 if (count == statuses.size() && !dateReached) {
-                    max_id = status.getStatusId();
+                    finish = status.getStatusId();
                 }
             }
-        } while (!dateReached);
+        }
 
         int nbStatusTotal = allStatuses.size();
         if (nbStatusTotal > 0) {

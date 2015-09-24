@@ -43,8 +43,10 @@ useradd -m -s /bin/bash $USER
 mkdir -p $TATAMI_DIR
 mkdir -p $TATAMI_DIR/application
 mkdir -p $TATAMI_DIR/maven
-mkdir -p $TATAMI_DIR/lucene
+mkdir -p $TATAMI_DIR/data
+mkdir -p $TATAMI_DIR/data/elasticsearch
 mkdir -p $TATAMI_DIR/log
+mkdir -p $TATAMI_DIR/log/elasticsearch
 
 #################################
 ## Download Application

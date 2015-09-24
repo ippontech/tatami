@@ -1,18 +1,12 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.DomainlineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Collection;
+import java.util.List;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAINLINE_CF;
 
@@ -35,21 +29,17 @@ public class CassandraDomainlineRepository extends AbstractCassandraLineReposito
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToDomainline(Status status, String domain) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(
-                domain,
-                DOMAINLINE_CF,
-                HFactory.createColumn(
-                        UUID.fromString(status.getStatusId()),
-                        "",
-                        COLUMN_TTL,
-                        UUIDSerializer.get(),
-                        StringSerializer.get()));
+    public void addStatusToDomainline(String domain, String statusId) {
+        addStatus(domain, DOMAINLINE_CF, statusId, COLUMN_TTL);
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getDomainline(String domain, int size, String since_id, String max_id) {
-        return getLineFromCF(DOMAINLINE_CF, domain, size, since_id, max_id);
+    public void removeStatusFromDomainline(String domain, Collection<String> statusIdsToDelete) {
+        removeStatuses(domain, DOMAINLINE_CF, statusIdsToDelete);
+    }
+
+    @Override
+    public List<String> getDomainline(String domain, int size, String start, String finish) {
+        return getLineFromCF(DOMAINLINE_CF, domain, size, start, finish);
     }
 }

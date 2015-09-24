@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
+import java.io.Serializable;
 
 /**
  * A user.
@@ -20,7 +21,7 @@ import javax.validation.groups.Default;
  */
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements Serializable {
 
     @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
@@ -63,10 +64,6 @@ public class User {
     @JsonIgnore
     private String openIdUrl;
 
-    @Column(name = "theme")
-    @JsonIgnore
-    private String theme;
-
     @Column(name = "preferences_mention_email")
     @JsonIgnore
     private Boolean preferencesMentionEmail;
@@ -86,15 +83,23 @@ public class User {
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
-    @Column(name = "isNew")
-    @JsonIgnore
-    private Boolean isNew;
+    @Column(name="activated")
+    private Boolean activated=true;
 
     private long statusCount;
 
     private long friendsCount;
 
     private long followersCount;
+
+
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
 
     public String getLogin() {
         return login;
@@ -176,14 +181,6 @@ public class User {
         this.openIdUrl = openIdUrl;
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
     public Boolean getPreferencesMentionEmail() {
         return preferencesMentionEmail;
     }
@@ -192,20 +189,12 @@ public class User {
         this.preferencesMentionEmail = preferencesMentionEmail;
     }
 
-    public Boolean getIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(Boolean isNew) {
-        this.isNew = isNew;
-    }
-
     public long getAttachmentsSize() {
         return attachmentsSize;
     }
 
     public void setAttachmentsSize(long attachmentsSize) {
-        this.attachmentsSize = attachmentsSize;
+        this.attachmentsSize = attachmentsSize < 0 ? 0 : attachmentsSize;
     }
 
     public String getRssUid() {
@@ -286,16 +275,15 @@ public class User {
                 ", jobTitle='" + jobTitle + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", openIdUrl='" + openIdUrl + '\'' +
-                ", theme='" + theme + '\'' +
                 ", preferencesMentionEmail=" + preferencesMentionEmail +
                 ", rssUid=" + rssUid +
                 ", dailyDigestSubscription=" + dailyDigestSubscription +
                 ", weeklyDigestSubscription=" + weeklyDigestSubscription +
                 ", attachmentsSize=" + attachmentsSize +
+                ", activated=" + activated +
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
-                ", isNew=" + isNew +
                 '}';
     }
 }

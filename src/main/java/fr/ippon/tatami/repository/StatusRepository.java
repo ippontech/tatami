@@ -1,7 +1,7 @@
 package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
+import fr.ippon.tatami.domain.status.*;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collection;
@@ -14,22 +14,33 @@ import java.util.Collection;
 public interface StatusRepository {
 
     Status createStatus(String login,
-                        String username,
-                        String domain,
                         boolean statusPrivate,
                         Group group,
                         Collection<String> attachmentIds,
                         String content,
                         String discussionId,
                         String replyTo,
-                        String replyToUsername) throws ConstraintViolationException;
+                        String replyToUsername,
+                        String geoLocalization) throws ConstraintViolationException;
 
-    void removeStatus(Status status);
+    Share createShare(String login,
+                      String originalStatusId);
+
+    Announcement createAnnouncement(String login,
+                                    String originalStatusId);
+
+    MentionFriend createMentionFriend(String login,
+                                      String followerLogin);
+
+    MentionShare createMentionShare(String login,
+                                    String originalStatusId);
+
+    void removeStatus(AbstractStatus status);
 
     /**
-     * Retrieve a persisted status's informations
+     * Retrieve a persisted status.
      *
      * @return null if status was removed
      */
-    Status findStatusById(String statusId);
+    AbstractStatus findStatusById(String statusId);
 }

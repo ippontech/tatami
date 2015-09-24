@@ -11,6 +11,8 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -31,6 +33,8 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
  */
 @Repository
 public class CassandraRegistrationRepository implements RegistrationRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(CassandraRegistrationRepository.class);
 
     private final static String ROW_KEY = "registration_key";
 
@@ -73,6 +77,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
      * Other limitation : if a login is associated to multiple registrationKey
      */
     public Map<String, String> _getAllRegistrationKeyByLogin() {
+        log.warn("Calling _getAllRegistrationKeyByLogin() is only for testing purposes!");
         Map<String, String> registrationKeyByLogin = Maps.newHashMap();
         SliceQuery<String, String, String> sliceQuery = HFactory.createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), StringSerializer.get(), StringSerializer.get());
@@ -88,6 +93,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
         for (HColumn<String, String> hColumn : columns) {
             // WARN : here we don't handle multiple registrationKey for one login
             registrationKeyByLogin.put(hColumn.getValue(), hColumn.getName());
+            log.debug("Key={}|Value={}", hColumn.getValue(), hColumn.getName());
         }
         return registrationKeyByLogin;
     }

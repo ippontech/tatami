@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.3</version>
     <packaging>war</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
@@ -36,191 +36,114 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- Spring profiles available : tatamibot, metrics -->
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
-                <tatami.lucene.language>French</tatami.lucene.language>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
-            </properties>
-        </profile>
-        <profile>
-            <id>elasticsearch</id>
-            <properties>
-                <!-- Spring profiles available : tatamibot, metrics -->
-                <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>elasticsearch</tatami.search.engine>
-                <tatami.elasticsearch.engine.mode>remote</tatami.elasticsearch.engine.mode>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
-            </properties>
-        </profile>
-        <profile>
-            <id>elasticsearch-embedded</id>
-            <properties>
-                <!-- Spring profiles available : tatamibot, metrics -->
-                <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>elasticsearch</tatami.search.engine>
-                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
-                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
-                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
-                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.enabled>false</tatami.metrics.enabled>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
-            </properties>
-        </profile>
-        <profile>
-            <id>preprod</id>
-            <properties>
-                <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>INFO</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
-                <tatami.smtp.port>25</tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>                
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>/opt/tatami/lucene</tatami.lucene.path.data>
-                <tatami.lucene.language>French</tatami.lucene.language>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>ro.isdc.wro4j</groupId>
-                        <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>${maven.wro4j.version}</version>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>exec</goal>
                                 </goals>
+                                <configuration>
+                                    <executable>${project.npm.bin}/grunt</executable>
+                                    <arguments>
+                                        <argument>dev</argument>
+                                    </arguments>
+                                </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <targetGroups>all,vendor</targetGroups>
-                            <minimize>false</minimize>
-                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
-                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
-                            <ignoreMissingResources>false</ignoreMissingResources>
-                            <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>ro.isdc.wro4j</groupId>
-                                <artifactId>wro4j-extensions</artifactId>
-                                <version>${maven.wro4j.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
+            <id>uglified</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${project.npm.bin}/grunt</executable>
+                                    <arguments>
+                                        <argument>minify</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>elasticsearch-remote</id>
+            <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
+                <spring.profiles.active></spring.profiles.active>
+                <tatami.elasticsearch.engine.mode>remote</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
+            </properties>
+        </profile>
+        <profile>
+            <id>preprod</id>
+            <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
+                <spring.profiles.active>apple-push</spring.profiles.active>
+                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
+                <logback.loglevel>DEBUG</logback.loglevel>
+                <logback.appender>PAPERTRAIL</logback.appender>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
+                <ehcache.maxBytesLocalHeap>128M</ehcache.maxBytesLocalHeap>
+                <tatami.url>http://sandbox.tatamisoft.com</tatami.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
+                <tatami.smtp.port>25</tatami.smtp.port>
+                <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
+                <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
+                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
+                <logback.loglevel>INFO</logback.loglevel>
+                <logback.appender>PAPERTRAIL</logback.appender>
+                <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
+                <logback.syslogHost.port>38143</logback.syslogHost.port>
                 <ehcache.maxBytesLocalHeap>512M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>https://tatami.ippon.fr</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host>mail.ippon.fr</tatami.smtp.host>
+                <tatami.url>https://localhost</tatami.url>
+                <tatami.ldapauth.url>ldap://10.55.0.4:389</tatami.ldapauth.url>
+                <tatami.smtp.host>localhost</tatami.smtp.host>
                 <tatami.smtp.port>25</tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
                 <tatami.smtp.from>tatami@ippon.fr</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
                 <tatami.google.analytics.key>UA-10959780-3</tatami.google.analytics.key>
                 <tatami.wro4j.enabled>true</tatami.wro4j.enabled>
                 <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
                 <tatami.connection.security>https</tatami.connection.security>
-                <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>/opt/tatami/data/lucene</tatami.lucene.path.data>
-                <tatami.lucene.language>French</tatami.lucene.language>
+                <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+                <tatami.elasticsearch.path.data>/opt/tatami/data/elasticsearch</tatami.elasticsearch.path.data>
+                <tatami.elasticsearch.path.log>/opt/tatami/log/elasticsearch</tatami.elasticsearch.path.log>
+                <tatami.elasticsearch.http.enabled>false</tatami.elasticsearch.http.enabled>
                 <tatami.automatic.registration>false</tatami.automatic.registration>
                 <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
                 <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
@@ -228,31 +151,25 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>ro.isdc.wro4j</groupId>
-                        <artifactId>wro4j-maven-plugin</artifactId>
-                        <version>${maven.wro4j.version}</version>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
                         <executions>
                             <execution>
-                                <phase>compile</phase>
+                                <id>insert-version</id>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <executable>scripts/insertBuildVersion.sh</executable>
+                                    <arguments>
+                                        <argument>${project.version}</argument>
+                                        <argument>${buildNumber}</argument>
+                                    </arguments>
+                                </configuration>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>exec</goal>
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <targetGroups>all,vendor</targetGroups>
-                            <minimize>false</minimize>
-                            <destinationFolder>${basedir}/src/main/webapp/WEB-INF/generated-wro4j</destinationFolder>
-                            <contextFolder>${basedir}/src/main/webapp</contextFolder>
-                            <ignoreMissingResources>false</ignoreMissingResources>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>ro.isdc.wro4j</groupId>
-                                <artifactId>wro4j-extensions</artifactId>
-                                <version>${maven.wro4j.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
@@ -260,63 +177,20 @@
         <profile>
             <id>stress-tests</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>WARN</log4j.loglevel>
+                <logback.loglevel>WARN</logback.loglevel>
+                <logback.appender>CONSOLE</logback.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>false</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
-                <tatami.lucene.language>French</tatami.lucene.language>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
         </profile>
         <profile>
             <id>uitest</id>
             <properties>
+                <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
-                <jetty.port>8080</jetty.port>
-                <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <log4j.loglevel>DEBUG</log4j.loglevel>
-                <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
-                <tatami.version>${project.version}</tatami.version>
-                <tatami.url>http://localhost:8080</tatami.url>
-                <tatami.ldapauth.url>ldap://localhost:389/dc=ippon,dc=fr</tatami.ldapauth.url>
-                <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
-                <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
-                <tatami.smtp.host></tatami.smtp.host>
-                <tatami.smtp.port></tatami.smtp.port>
-                <tatami.smtp.user></tatami.smtp.user>
-                <tatami.smtp.password></tatami.smtp.password>
-                <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
-                <tatami.smtp.tls></tatami.smtp.tls>
-                <tatami.google.analytics.key></tatami.google.analytics.key>
-                <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
-                <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
-                <tatami.connection.security>any</tatami.connection.security>
-                <tatami.search.engine>lucene</tatami.search.engine>
-                <tatami.lucene.path.data>target/lucene</tatami.lucene.path.data>
-                <tatami.lucene.language>French</tatami.lucene.language>
-                <tatami.automatic.registration>false</tatami.automatic.registration>
-                <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
-                <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
             </properties>
             <build>
                 <testResources>
@@ -327,7 +201,7 @@
                         <directory>src/integration/resources</directory>
                     </testResource>
                 </testResources>
-                <plugins>
+                <plugins>   
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
@@ -407,7 +281,6 @@
                                     <goal>start</goal>
                                 </goals>
                             </execution>
-                            <!-- TODO : add stop also ? -->
                         </executions>
                     </plugin>
                     <plugin>
@@ -509,19 +382,72 @@
     </profiles>
 
     <properties>
+        <!-- Default project properties -->
+        <jetty.port>8080</jetty.port>
+        <jetty.scanIntervalSeconds>1</jetty.scanIntervalSeconds>
+        <logback.loglevel>DEBUG</logback.loglevel>
+        <logback.appender>CONSOLE</logback.appender>
+        <logback.syslogHost>localhost</logback.syslogHost>
+        <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
+        <tatami.version>${project.version}</tatami.version>
+        <tatami.url>http://localhost:8080</tatami.url>
+        <tatami.ldapauth.url>ldap://directory:389</tatami.ldapauth.url>
+        <tatami.ldapauth.searchbase>dc=ippon,dc=fr</tatami.ldapauth.searchbase>
+        <tatami.ldapauth.searchfilter>(uid={0})</tatami.ldapauth.searchfilter>
+        <tatami.smtp.host></tatami.smtp.host>
+        <tatami.smtp.port></tatami.smtp.port>
+        <tatami.smtp.user></tatami.smtp.user>
+        <tatami.smtp.password></tatami.smtp.password>
+        <tatami.smtp.from>tatami@localhost</tatami.smtp.from>
+        <tatami.smtp.tls></tatami.smtp.tls>
+        <tatami.google.analytics.key></tatami.google.analytics.key>
+        <tatami.wro4j.enabled>false</tatami.wro4j.enabled>
+        <tatami.message.reloading.enabled>true</tatami.message.reloading.enabled>
+        <tatami.connection.security>any</tatami.connection.security>
+        <tatami.elasticsearch.engine.mode>embedded</tatami.elasticsearch.engine.mode>
+        <tatami.elasticsearch.path.data>target/elasticsearch</tatami.elasticsearch.path.data>
+        <tatami.elasticsearch.path.log>target/elasticsearch/log</tatami.elasticsearch.path.log>
+        <tatami.elasticsearch.http.enabled>true</tatami.elasticsearch.http.enabled>
+        <tatami.automatic.registration>false</tatami.automatic.registration>
+        <tatami.metrics.graphite.host></tatami.metrics.graphite.host>
+        <tatami.metrics.graphite.port>2003</tatami.metrics.graphite.port>
+
+        <tatami.google.clientId></tatami.google.clientId>
+        <tatami.google.clientSecret></tatami.google.clientSecret>
+
+        <!--Test configurations: Sonar, unit test, code coverage --> 
+
+        <project.npm.bin>${project.basedir}/node_modules/.bin</project.npm.bin>
+        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
+        <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
+        <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.testresult.directory}/coverage/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
+
+
+        <sonar.sources>${project.basedir}/src/main/</sonar.sources>
+        <sonar.tests>${project.basedir}/src/test/</sonar.tests>
+        <sonar.javascript.lcov.reportPath>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.javascript.lcov.reportPath>
+        <sonar.javascript.jstestdriver.reportsPath>${project.testresult.directory}/karma</sonar.javascript.jstestdriver.reportsPath>
+
+        <sonar.exclusions>src/main/webapp/assets/**.*</sonar.exclusions>
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.6</java.version>
 
         <!-- Dependencies -->
-        <spring.version>3.2.2.RELEASE</spring.version>
+        <spring.version>3.2.3.RELEASE</spring.version>
         <spring.security.version>3.1.3.RELEASE</spring.security.version>
         <elasticsearch.version>0.20.6</elasticsearch.version>
         <aspectj.version>1.6.11</aspectj.version>
-        <slf4j.version>1.5.8</slf4j.version>
-        <httpclient.core.version>4.1</httpclient.core.version>
-        <hector.version>1.1-3</hector.version>
-        <hector.mapper.version>3.1-07</hector.mapper.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <logback.version>1.0.13</logback.version>
+        <httpclient.core.version>4.2.2</httpclient.core.version> <!-- pour compatiblité selenium -->
+        <httpclient.client.version>4.2.2</httpclient.client.version> <!-- pour compatiblité selenium -->
+        <cassandra.version>1.2.6</cassandra.version>
+        <hector.version>1.1-4</hector.version>
+        <hector.mapper.version>3.1-09</hector.mapper.version>
         <persistence.api.version>1.0.2</persistence.api.version>
         <javax.inject.version>1</javax.inject.version>
         <javax.servlet.api.version>3.0.1</javax.servlet.api.version>
@@ -532,35 +458,50 @@
         <jodatime.version>2.1</jodatime.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.3</commons.io.version>
-        <junit.version>4.9</junit.version>
-        <cassandra.unit.version>1.1.2.1</cassandra.unit.version>
+        <junit.version>4.11</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <awaitility.version>1.3.5</awaitility.version>
+        <cassandra.unit.version>1.2.0.1</cassandra.unit.version>
         <mockito.version>1.9.0</mockito.version>
         <rome.version>1.0</rome.version>
         <pegdown.version>1.2.1</pegdown.version>
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
-        <camel.version>2.10.4</camel.version>
+        <camel.version>2.11.0</camel.version>
 
-        <selenium.version>2.25.0</selenium.version>
+        <selenium.version>2.31.0</selenium.version>
 
         <!-- Maven plugins -->
         <maven.compiler.version>3.0</maven.compiler.version>
         <maven.enforcer.version>1.2</maven.enforcer.version>
         <maven.surefire.version>2.14</maven.surefire.version>
         <maven.war.version>2.3</maven.war.version>
-        <maven.jetty.version>8.1.10.v20130312</maven.jetty.version>
-        <maven.cassandra.version>1.2.0-1</maven.cassandra.version>
-        <maven.wro4j.version>1.6.2</maven.wro4j.version>
+        <maven.jetty.version>8.1.13.v20130916</maven.jetty.version>
+        <maven.cassandra.version>1.2.1-1</maven.cassandra.version>
+        <maven.wro4j.version>1.7.0</maven.wro4j.version>
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
+
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
             <url>http://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
+
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
@@ -582,13 +523,13 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.yammer.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-            <version>${yammer.metrics.version}</version>
+            <groupId>com.notnoop.apns</groupId>
+            <artifactId>apns</artifactId>
+            <version>0.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.metrics</groupId>
-            <artifactId>metrics-log4j</artifactId>
+            <artifactId>metrics-core</artifactId>
             <version>${yammer.metrics.version}</version>
         </dependency>
         <dependency>
@@ -662,6 +603,19 @@
             <artifactId>joda-time</artifactId>
             <version>${jodatime.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
@@ -703,32 +657,14 @@
             <version>${camel.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.cassandra</groupId>
-            <artifactId>cassandra-all</artifactId>
-            <version>1.2.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>jetty</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>jetty-util</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>${httpclient.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.client.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.javamail</groupId>
@@ -761,8 +697,8 @@
         </dependency>
         <dependency>
             <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-spring</artifactId>
-            <version>1.0.1</version>
+            <artifactId>atmosphere-annotations</artifactId>
+            <version>1.1.0.RC3</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
@@ -808,7 +744,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
@@ -892,12 +828,47 @@
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-oauth</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>spring-security-pac4j</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>${rome.version}</version>
         </dependency>
 
         <!-- Test dependencies -->
+
+        <dependency>
+            <groupId>org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>${cassandra.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -911,9 +882,27 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -921,6 +910,12 @@
             <artifactId>cassandra-unit</artifactId>
             <version>${cassandra.unit.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-all</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -928,10 +923,16 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test</artifactId>
+            <version>${camel.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <!-- Tatami must be configured at the root context (/) of the application server -->
-        <finalName>ROOT</finalName>
+        <finalName>root</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -949,6 +950,18 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/node_modules/karma-phantomjs-launcher</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
             <plugin>
@@ -975,11 +988,34 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <shortRevisionLength>7</shortRevisionLength>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
-                    <argLine>-XX:MaxPermSize=128m -Xmx256m</argLine>
+                    <reportsDirectory>${project.testresult.directory}/surefire-reports</reportsDirectory>
+                    <argLine>-XX:MaxPermSize=128m -Xmx256m ${surefireArgLine}</argLine>
+                    <skipTests>${skip.unit.tests}</skipTests>
+                    <!-- Force alphabetical order to have a reproducible build -->
+                    <runOrder>alphabetical</runOrder>
+                    <!-- 
+                      <runOrder>reversealphabetical</runOrder>
+                      -->
                 </configuration>
             </plugin>
             <plugin>
@@ -993,6 +1029,7 @@
                         </manifest>
                         <manifestEntries>
                             <Implementation-Version>${project.version}</Implementation-Version>
+                            <git-SHA-1>${buildNumber}</git-SHA-1>
                             <Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
                         </manifestEntries>
                     </archive>
@@ -1013,6 +1050,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cassandra-maven-plugin</artifactId>
                 <version>${maven.cassandra.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cassandra</groupId>
+                        <artifactId>cassandra-all</artifactId>
+                        <version>${cassandra.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -1036,6 +1080,28 @@
                         <contextPath>/</contextPath>
                     </webApp>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    
+                    <execution>
+                        <id>install-phantomjs</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>karma-phantomjs-launcher</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -1070,7 +1136,71 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>com.github.klieber</groupId>
+                <artifactId>phantomjs-maven-plugin</artifactId>
+                <version>0.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>1.9.8</version>
+                    <skip>${js-tests.skip}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.kelveden</groupId>
+                <artifactId>maven-karma-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <karmaExecutable>${project.basedir}/node_modules/.bin/karma</karmaExecutable>
+                    <configFile>${project.basedir}/karma.ci.conf.js</configFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.4.201502262128</version>
+                <executions>
+                    <execution>
+                        <id>pre-unit-tests</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
+                            <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
+                            <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>

@@ -2,9 +2,10 @@ package fr.ippon.tatami.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Avatar {
+public class Avatar implements Serializable {
 
     private String avatarId;
 

@@ -1,8 +1,8 @@
 package fr.ippon.tatami.config;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.thrift.transport.TTransportException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 
@@ -27,7 +27,7 @@ import java.io.IOException;
 @ImportResource("classpath:META-INF/spring/applicationContext-*.xml")
 public class ApplicationConfiguration {
 
-    private final Log log = LogFactory.getLog(ApplicationConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(ApplicationConfiguration.class);
 
     @Inject
     private Environment env;
@@ -38,12 +38,13 @@ public class ApplicationConfiguration {
      * Spring profiles can be configured with a system property -Dspring.profiles.active=your-active-profile
      * <p/>
      * Available profiles are :
+     * - "apple-push" : for enabling Apple Push notifications
      * - "metrics" : for enabling Yammer Metrics
      * - "tatamibot" : for enabling the Tatami bot
      */
     @PostConstruct
     public void initTatami() throws IOException, TTransportException {
-        log.debug("Looking for Spring profiles... Available profiles are \"metrics\" and \"tatamibot\"");
+        log.debug("Looking for Spring profiles... Available profiles are \"metrics\", \"tatamibot\" and \"apple-push\"");
         if (env.getActiveProfiles().length == 0) {
             log.debug("No Spring profile configured, running with default configuration");
         } else {
@@ -53,13 +54,9 @@ public class ApplicationConfiguration {
         }
         Constants.VERSION = env.getRequiredProperty("tatami.version");
         Constants.GOOGLE_ANALYTICS_KEY = env.getProperty("tatami.google.analytics.key");
-        if ("true".equals(env.getProperty("tatami.wro4j.enabled"))) {
-            Constants.WRO4J_ENABLED = true;
-        }
-        log.info("Tatami v. " + Constants.VERSION + " started!");
-        if (log.isDebugEnabled()) {
-            log.debug("Google Analytics key : " + Constants.GOOGLE_ANALYTICS_KEY);
-            log.debug("WRO4J enabled : " + Constants.WRO4J_ENABLED);
-        }
+
+        log.info("Tatami v. {} started!", Constants.VERSION);
+        log.debug("Google Analytics key : {}", Constants.GOOGLE_ANALYTICS_KEY);
+
     }
 }

@@ -40,7 +40,6 @@ public class TimelineServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetAuthenticateUserUserlineWithEmptyLoginSet() throws Exception {
-        String login = "userWithStatus@ippon.fr";
         String username = "userWithStatus";
         mockAuthenticationOnTimelineServiceWithACurrentUser("userWithStatus@ippon.fr");
         Collection<StatusDTO> status = timelineService.getUserline("", 10, null, null);

@@ -1,10 +1,9 @@
 package fr.ippon.tatami.security;
 
-import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +26,7 @@ import java.util.Collection;
 @Component("userDetailsService")
 public class TatamiUserDetailsService implements UserDetailsService {
 
-    private final Log log = LogFactory.getLog(TatamiUserDetailsService.class);
+    private final Logger log = LoggerFactory.getLogger(TatamiUserDetailsService.class);
 
     private final Collection<GrantedAuthority> userGrantedAuthorities = new ArrayList<GrantedAuthority>();
 
@@ -58,7 +57,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
             adminUsers = new ArrayList<String>(Arrays.asList(adminUsersArray));
             if (log.isDebugEnabled()) {
                 for (String admin : adminUsers) {
-                    log.debug("Initialization : user \"" + admin + "\" is an administrator");
+                    log.debug("Initialization : user \"{}\" is an administrator", admin);
                 }
             }
         }
@@ -66,35 +65,29 @@ public class TatamiUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
-        if (log.isDebugEnabled()) {
-            log.debug("Authenticating " + login + " with Cassandra");
-        }
+        log.debug("Authenticating {} with Cassandra", login);
         String lowercaseLogin = login.toLowerCase();
         User userFromCassandra = userService.getUserByLogin(lowercaseLogin);
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
         }
-        TatamiUserDetails userDetails = getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
-        String theme = userFromCassandra.getTheme();
-        if (theme == null) {
-            theme = Constants.DEFAULT_THEME;
+        else if ( userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false ) {
+            throw new UsernameNotFoundException("User " + lowercaseLogin + " is deactivated. Contact administrator for further details." );
         }
-        userDetails.setTheme(theme);
-        return userDetails;
+        return getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
     }
 
-    protected TatamiUserDetails getTatamiUserDetails(String login, String password) {
+    protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
         Collection<GrantedAuthority> grantedAuthorities;
         if (adminUsers.contains(login)) {
-            if (log.isDebugEnabled()) {
-                log.debug("User \"" + login + "\" is an administrator");
-            }
+            log.debug("User \"{}\" is an administrator", login);
+
             grantedAuthorities = adminGrantedAuthorities;
         } else {
             grantedAuthorities = userGrantedAuthorities;
         }
 
-        return new TatamiUserDetails(login, password,
+        return new org.springframework.security.core.userdetails.User(login, password,
                 grantedAuthorities);
     }
 }

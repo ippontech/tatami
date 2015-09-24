@@ -1,24 +1,20 @@
 package fr.ippon.tatami.bot.processor;
 
-import com.sun.syndication.feed.synd.SyndFeedImpl;
-import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.TatamibotConfigurationRepository;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
+import org.apache.camel.Body;
+import org.apache.camel.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
 @Component
-public class TatamiStatusProcessor implements Processor {
+public class TatamiStatusProcessor {
 
-    private final Log log = LogFactory.getLog(TatamiStatusProcessor.class);
+    private final Logger log = LoggerFactory.getLogger(TatamiStatusProcessor.class);
 
     @Inject
     private StatusUpdateService statusUpdateService;
@@ -26,28 +22,16 @@ public class TatamiStatusProcessor implements Processor {
     @Inject
     private UserService userService;
 
-    @Inject
-    private TatamibotConfigurationRepository tatamibotConfigurationRepository;
+    public void sendStatus(@Body String content, @Header("login") String login) throws Exception {
 
-    @Override
-    public void process(Exchange exchange) throws Exception {
-        String content = exchange.getIn().getBody(String.class);
-        String login = exchange.getIn().getHeader("login").toString();
         User tatamiBotUser = userService.getUserByLogin(login);
-        if (log.isDebugEnabled()) {
-            log.debug("Posting content to Tatami : " + content);
-        }
+
+        log.debug("Posting content to Tatami : {}", content);
+
+
+        // TODO : handle posting in group ...
+
         statusUpdateService.postStatusAsUser(content, tatamiBotUser);
 
-        String tatamibotConfigurationId = (String) exchange.getIn().getHeader("tatamibotConfigurationId");
-        TatamibotConfiguration tatamibotConfiguration =
-                tatamibotConfigurationRepository.findTatamibotConfigurationById(tatamibotConfigurationId);
-
-        SyndFeedImpl feed = (SyndFeedImpl) exchange.getIn().getHeader("CamelRssFeed");
-
-        DateTime lastUpdateDate = new DateTime(feed.getPublishedDate());
-
-        tatamibotConfiguration.setLastUpdateDate(lastUpdateDate.toDate());
-        tatamibotConfigurationRepository.updateTatamibotConfiguration(tatamibotConfiguration);
     }
 }

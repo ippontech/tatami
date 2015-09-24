@@ -85,22 +85,26 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
         assertEquals(1, groupService.getGroupsForUser(user).size());
         assertEquals(0, groupService.getGroupsForUser(member).size());
 
-        Collection<UserGroupDTO> members = groupService.getMembersForGroup(groupId);
+        Collection<UserGroupDTO> members = groupService.getMembersForGroup(groupId, user.getLogin());
         assertEquals(1, members.size());
 
         groupService.addMemberToGroup(member, group);
-        members = groupService.getMembersForGroup(groupId);
+        members = groupService.getMembersForGroup(groupId, user.getLogin());
         assertEquals(2, members.size());
 
         assertEquals(1, groupService.getGroupsForUser(user).size());
         assertEquals(1, groupService.getGroupsForUser(member).size());
 
         groupService.removeMemberFromGroup(member, group);
-        members = groupService.getMembersForGroup(groupId);
+        members = groupService.getMembersForGroup(groupId, user.getLogin());
         assertEquals(1, members.size());
 
         assertEquals(1, groupService.getGroupsForUser(user).size());
         assertEquals(0, groupService.getGroupsForUser(member).size());
+
+        // Clean up
+        groupService.removeMemberFromGroup(user, group);
+        assertEquals(0, groupService.getGroupsForUser(user).size());
     }
 
     private void mockAuthentication(String login) {

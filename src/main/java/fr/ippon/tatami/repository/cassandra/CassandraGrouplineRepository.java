@@ -1,18 +1,12 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import fr.ippon.tatami.domain.SharedStatusInfo;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.repository.GrouplineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Collection;
+import java.util.List;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE_CF;
 
@@ -33,21 +27,17 @@ public class CassandraGrouplineRepository extends AbstractCassandraLineRepositor
     private Keyspace keyspaceOperator;
 
     @Override
-    public void addStatusToGroupline(Status status, String groupId) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(
-                groupId,
-                GROUPLINE_CF,
-                HFactory.createColumn(
-                        UUID.fromString(status.getStatusId()),
-                        "",
-                        UUIDSerializer.get(),
-                        StringSerializer.get()));
-
+    public void addStatusToGroupline(String groupId, String statusId) {
+        addStatus(groupId, GROUPLINE_CF, statusId);
     }
 
     @Override
-    public Map<String, SharedStatusInfo> getGroupline(String groupId, int size, String since_id, String max_id) {
-        return getLineFromCF(GROUPLINE_CF, groupId, size, since_id, max_id);
+    public void removeStatusesFromGroupline(String groupId, Collection<String> statusIdsToDelete) {
+        removeStatuses(groupId, GROUPLINE_CF, statusIdsToDelete);
+    }
+
+    @Override
+    public List<String> getGroupline(String groupId, int size, String start, String finish) {
+        return getLineFromCF(GROUPLINE_CF, groupId, size, start, finish);
     }
 }

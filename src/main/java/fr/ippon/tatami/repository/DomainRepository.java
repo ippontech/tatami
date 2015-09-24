@@ -20,5 +20,7 @@ public interface DomainRepository {
 
     List<String> getLoginsInDomain(String domain, int pagination);
 
+    List<String> getLoginsInDomain(String domain);
+
     Set<Domain> getAllDomains();
 }

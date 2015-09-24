@@ -1,10 +1,11 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.Status;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
+import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.domain.status.StatusType;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.StatusRepository;
 import fr.ippon.tatami.repository.UserRepository;
@@ -14,8 +15,8 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ import static me.prettyprint.hector.api.factory.HFactory.createRangeSlicesQuery;
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminService {
 
-    private static final Log log = LogFactory.getLog(AdminService.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminService.class);
 
     @Inject
     private DomainRepository domainRepository;
@@ -84,7 +85,7 @@ public class AdminService {
     private void loadProperty(Map<String, String> properties, String key) {
         try {
             properties.put(key, env.getProperty(key));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             properties.put(key, "(Invalid value)");
         }
     }
@@ -113,19 +114,15 @@ public class AdminService {
         Collection<Domain> domains = domainRepository.getAllDomains();
         int groupCount = 0;
         for (Domain domain : domains) {
-            int paginationId = 0;
-            boolean moreUsers = true;
-            while (moreUsers) {
-                List<String> logins = domainRepository.getLoginsInDomain(domain.getName(), paginationId);
-                if (logins.size() <= Constants.PAGINATION_SIZE) {
-                    moreUsers = false;
+            log.debug("Indexing domain: " + domain.getName());
+            List<String> logins = domainRepository.getLoginsInDomain(domain.getName());
+            Collection<User> users = new ArrayList<User>();
+            for (String login : logins) {
+                User user = userRepository.findUserByLogin(login);
+                if (user == null) {
+                    log.warn("User defined in domain was not found in the user respository: " + login);
                 } else {
-                    logins = logins.subList(0, Constants.PAGINATION_SIZE);
-                }
-                paginationId += Constants.PAGINATION_SIZE;
-                Collection<User> users = new ArrayList<User>();
-                for (String login : logins) {
-                    User user = userRepository.findUserByLogin(login);
+                    log.debug("Indexing user: {}", login);
                     users.add(user);
                     Collection<Group> groups = groupService.getGroupsWhereUserIsAdmin(user);
                     for (Group group : groups) {
@@ -133,9 +130,9 @@ public class AdminService {
                         groupCount++;
                     }
                 }
-                searchService.addUsers(users);
-                log.info("The search engine indexed " + logins.size() + " users.");
             }
+            searchService.addUsers(users);
+            log.info("The search engine indexed " + logins.size() + " users.");
         }
         log.info("The search engine indexed " + groupCount + " groups.");
 
@@ -162,15 +159,18 @@ public class AdminService {
             }
             Collection<Status> statuses = new ArrayList<Status>();
             for (Row<String, String, String> row : rows) {
-                Status status = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
-                if (status != null) {  // if a status has been removed, it is returned as null
+                AbstractStatus abstractStatus = statusRepository.findStatusById(row.getKey()); // This makes 2 calls to the same row
+                if (abstractStatus != null && // if a status has been removed, it is returned as null
+                        abstractStatus.getType().equals(StatusType.STATUS)) { // Only index standard statuses
+
+                    Status status = (Status) abstractStatus;
                     if (status.getStatusPrivate() == null || !status.getStatusPrivate()) {
                         statuses.add(status);
                     }
                 }
             }
             searchService.addStatuses(statuses); // This should be batched for optimum performance
-            log.info("The search engine indexed " + rows.size() + " rows in " + (Calendar.getInstance().getTimeInMillis() - startTime) + " ms.");
+            log.info("The search engine indexed " + statuses.size() + " statuses in " + (Calendar.getInstance().getTimeInMillis() - startTime) + " ms.");
         }
         log.info("Search engine index rebuilt in " + (Calendar.getInstance().getTimeInMillis() - fullIndexStartTime) + " ms.");
     }

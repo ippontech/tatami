@@ -4,8 +4,8 @@ import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.UserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Julien Dubois
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class HomeController {
 
-    private final Log log = LogFactory.getLog(HomeController.class);
+    private final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     @Inject
     private UserService userService;
@@ -35,30 +34,23 @@ public class HomeController {
     @Inject
     private Environment env;
 
-    @RequestMapping(value = "/")
-    public ModelAndView home(@RequestParam(required = false) String tag, @RequestParam(required = false) String search) {
-        ModelAndView mv = new ModelAndView("home");
-        User currentUser = authenticationService.getCurrentUser();
-        mv.addObject("user", currentUser);
-        mv.addObject("authenticatedUsername", currentUser.getUsername());
-        mv.addObject("tag", tag);
-        mv.addObject("search", search);
-        return mv;
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(required = false) String action, HttpServletRequest request) {
+    public ModelAndView login(@RequestParam(required = false) String action) {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("action", action);
         return mv;
     }
 
-    @RequestMapping(value = { "/new/**", "/new", "/new/" }, method = RequestMethod.GET)
-    public ModelAndView newUI(@RequestParam(required = false) String ios) {
-        ModelAndView mv = new ModelAndView("new");
+    @RequestMapping(value = {"/", "/home/**", "/home", "/home/"}, method = RequestMethod.GET)
+    public ModelAndView home(@RequestParam(required = false) String ios) {
+        ModelAndView mv = new ModelAndView("home");
         User currentUser = authenticationService.getCurrentUser();
         mv.addObject("user", currentUser);
-        mv.addObject("ios", (ios != null));
+        if (ios == null) {
+            mv.addObject("ios", false);
+        } else {
+            mv.addObject("ios", true);
+        }
         return mv;
     }
 
@@ -94,20 +86,14 @@ public class HomeController {
         }
         email = email.toLowerCase();
         if (userService.getUserByLogin(email) != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("User " + email + " already exists.");
-            }
+            log.debug("User {} already exists.", email);
             return "redirect:/tatami/login";
         }
         if (email.equals(Constants.TATAMIBOT_NAME)) {
-            if (log.isDebugEnabled()) {
-                log.debug("E-mail " + email + " can only be used by the Tatami Bot.");
-            }
+            log.debug("E-mail {} can only be used by the Tatami Bot.", email);
             return "redirect:/tatami/login";
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Creating user " + email);
-        }
+        log.debug("Creating user {}", email);
         User user = new User();
         user.setLogin(email);
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
@@ -118,7 +104,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/lostpassword", method = RequestMethod.POST)
-    public String lostpassword(@RequestParam String email) {
+    public String lostPassword(@RequestParam String email) {
         email = email.toLowerCase();
         User user = userService.getUserByLogin(email);
         if (user == null) {
@@ -137,15 +123,24 @@ public class HomeController {
         return "terms_of_service";
     }
 
+    @RequestMapping(value = "/presentation", method = RequestMethod.GET)
+    public String presentation() {
+        return "presentation";
+    }
+
+    @RequestMapping(value = "/license", method = RequestMethod.GET)
+    public String license() {
+        return "license";
+    }
+
     /**
-     * This maps any GET request to /tatami/[subpath]
-     * to the jsp named [subpath].jsp.
+     * This maps any GET request to /tatami/customization/[subpath]
+     * to the jsp named /customization/[subpath].jsp.
      * <p/>
      * It allows adding easily new pages with tatamiCustomization
      */
-    @RequestMapping(value = "/{subPath}", method = RequestMethod.GET)
+    @RequestMapping(value = "/customization/{subPath}", method = RequestMethod.GET)
     public String anyOtherSubPath(@PathVariable String subPath) {
-        return subPath;
+        return "/customization/" + subPath;
     }
-
 }

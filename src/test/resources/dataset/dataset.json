@@ -354,7 +354,7 @@
                     "key":"ippon.fr",
                     "columns":[
                         {
-                            "name":"jdubois",
+                            "name":"jdubois@ippon.fr",
                             "value":""
                         },
                         {
@@ -866,6 +866,10 @@
                             "value":"utf8(userWithStatus)"
                         },
                         {
+                            "name":"domain",
+                            "value":"utf8(ippon.fr)"
+                        },
+                        {
                             "name":"content",
                             "value":"utf8(Tatami is fully Open Source)"
                         },
@@ -982,6 +986,17 @@
             "keyType":"BytesType",
             "comparatorType":"BytesType",
             "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"Registration",
+            "keyType":"UTF8Type",
+            "comparatorType":"BytesType",
+            "defaultColumnValueType":"BytesType"
+        },
+        {
+            "name":"UserTags",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type"
         }
     ]
 }

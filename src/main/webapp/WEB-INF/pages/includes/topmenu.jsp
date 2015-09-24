@@ -1,196 +1,221 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div id='tatami-topmenu' class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="/tatami/">
-                <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>" width="22px" height="23px">
-                <fmt:message key="tatami.title"/>
-            </a>
-
-            <div class="nav-collapse collapse">
-                <ul class="nav pull-left">
-                    <li>
-                        <a href="/tatami/">
-                            <i class="icon-home icon-white"></i>
-                            <fmt:message key="tatami.home"/>
-                        </a>
-                    </li>
-                </ul>
-                <sec:authorize access="isAuthenticated()">
-                    <ul class="nav pull-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-user icon-white"></i> <fmt:message
-                                    key="tatami.menu.account"/>
-                                <b class="caret"></b>
+<c:if test="${ios == null || !ios}">
+    <div id="navbar" class="navbar noRadius">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/tatami/home">
+            <img src="/img/company-logo.png" alt="<fmt:message key="tatami.logo"/>">
+            <fmt:message key="tatami.title"/>
+        </a>
+    <c:if test="${currentPage != null && currentPage == 'home'}">
+        <button type="button" class="editTatam btn btn-primary navbar-toggle navbar-edit">
+            <i class="close glyphicon glyphicon-pencil"></i>
+        </button>
+    </c:if>
+        <div class="nav-collapse navbar-responsive-collapse collapse">
+            <ul class="nav">
+                <li>
+                    <c:if test="${currentPage != null && currentPage == 'home'}">
+                      <a href="#/home/timeline">
+                    </c:if>
+                    <c:if test="${currentPage == null || currentPage != 'home'}">
+                      <a href="/tatami/home/timeline">
+                    </c:if>
+                    <span>
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        <span class="hidden-tablet">
+                            <fmt:message key="tatami.timeline"/>
+                        </span>
+                    </span>
+                    </a>
+                </li>
+                <li class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span class="hidden-tablet">
+                            <fmt:message key="tatami.menu.about"/>
+                        </span>
+                        <b class="caret"></b>
+                    </span>
+                    </a>
+                    <ul class="dropdown-menu closed">
+                        <li>
+                            <a href="/tatami/presentation">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <fmt:message key="tatami.menu.presentation"/>
                             </a>
-                            <ul class="dropdown-menu closed">
+                        </li>
+                        <li>
+                            <a href="/tatami/tos">
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <fmt:message key="tatami.menu.tos"/>
+                            </a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a>
+                                <span class="glyphicon glyphicon-flag"></span>
+                                <fmt:message key="tatami.menu.language"/>
+                            </a>
+                            <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/tatami/account/#/profile">
-                                        <i class="icon-user"></i> <fmt:message
-                                            key="tatami.menu.profile"/>
+                                    <a href="?language=en">
+                                        <fmt:message key="tatami.menu.language.en"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/tatami/account/#/preferences">
-                                        <i class="icon-picture"></i> <fmt:message
-                                            key="tatami.menu.preferences"/></a>
-                                </li>
-                                <li>
-                                    <a href="/tatami/account/#/password">
-                                        <i class="icon-lock"></i> <fmt:message
-                                            key="tatami.menu.password"/>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="/tatami/account/#/files">
-                                        <i class="icon-file"></i> <fmt:message
-                                            key="tatami.menu.files"/></a>
-                                </li>
-                                <li>
-                                    <a href="/tatami/account/#/users">
-                                        <i class="icon-globe"></i> <fmt:message
-                                            key="tatami.menu.directory"/></a>
-                                </li>
-                                <li>
-                                    <a href="/tatami/account/#/groups">
-                                        <i class="icon-th-large"></i> <fmt:message
-                                            key="tatami.menu.groups"/></a>
-                                </li>
-                                <li>
-                                    <a href="/tatami/account/#/tags">
-                                        <i class="icon-tags"></i> <fmt:message
-                                            key="tatami.menu.tags"/></a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="/tatami/account/#/status_of_the_day">
-                                        <i class="icon-signal"></i> <fmt:message
-                                            key="tatami.menu.status.of.the.day"/></a>
-                                </li>
-                                <li>
-                                    <a href="/tatami/company">
-                                        <i class="icon-briefcase"></i> <fmt:message
-                                            key="tatami.menu.company.wall"/></a>
-                                </li>
-                                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="/tatami/admin">
-                                            <i class="icon-wrench"></i> Administration</a>
-                                    </li>
-                                </sec:authorize>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="/tatami/logout">
-                                        <i class="icon-off"></i> <fmt:message
-                                            key="tatami.logout"/>
+                                    <a href="?language=fr">
+                                        <fmt:message key="tatami.menu.language.fr"/>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                    </ul>
-                    <ul class="nav pull-right" style="display: none" id="help-menu">
+                        <li class="divider"></li>
                         <li>
-                            <a href="#" id="help-tour">
-                                <i class="icon-question-sign icon-white" ></i> <fmt:message
-                                    key="tatami.help"/>
+                            <a href="/tatami/license">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <fmt:message key="tatami.menu.license"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami/issues" target="_blank">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                                <fmt:message key="tatami.github.issues"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami" target="_blank">
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <fmt:message key="tatami.github.fork"/>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="http://www.ippon.fr/" target="_blank">
+                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                <fmt:message key="tatami.ippon.website"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.ippon.fr/" target="_blank">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <fmt:message key="tatami.ippon.blog"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/ippontech" target="_blank">
+                                <span class="glyphicon glyphicon-bullhorn"></span>
+                                <fmt:message key="tatami.ippon.twitter.follow"/>
                             </a>
                         </li>
                     </ul>
+                </li>
+            </ul>
 
-                </sec:authorize>
-                <ul class="nav pull-left">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="icon-info-sign icon-white"></i> <fmt:message key="tatami.menu.about"/>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu closed">
-                            <li>
-                                <a href="/tatami/presentation">
-                                    <i class="icon-eye-open"></i> <fmt:message
-                                        key="tatami.menu.presentation"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tatami/tos">
-                                    <i class="icon-briefcase"></i> <fmt:message
-                                        key="tatami.menu.tos"/>
-                                </a>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#">
-                                    <i class="icon-flag"></i>
-                                    <fmt:message key="tatami.menu.language"/></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a tabindex="-1" href="<%=request.getContextPath()%>?language=en">
-                                            <fmt:message key="tatami.menu.language.en"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="<%=request.getContextPath()%>?language=fr">
-                                            <fmt:message key="tatami.menu.language.fr"/>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="/tatami/license">
-                                    <i class="icon-info-sign"></i> <fmt:message
-                                        key="tatami.menu.license"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/ippontech/tatami/issues" target="_blank">
-                                    <i class="icon-inbox"></i> <fmt:message key="tatami.github.issues"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/ippontech/tatami" target="_blank">
-                                    <i class="icon-wrench"></i> <fmt:message key="tatami.github.fork"/>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="http://www.ippon.fr" target="_blank">
-                                    <i class="icon-exclamation-sign"></i> <fmt:message
-                                        key="tatami.ippon.website"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://blog.ippon.fr" target="_blank">
-                                    <i class="icon-pencil"></i> <fmt:message key="tatami.ippon.blog"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/ippontech" target="_blank">
-                                    <i class="icon-bullhorn"></i> <fmt:message
-                                        key="tatami.ippon.twitter.follow"/>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <sec:authorize access="isAuthenticated()">
-                    <form class="navbar-search pull-right" id="searchHeader">
-                        <input id="fullSearchText" class="search-query input-block-level" autocomplete="off" placeholder="<fmt:message key="tatami.menu.search"/>"
-                               name="search" type="text">
-                    </form>
-                </sec:authorize>
-            </div>
+            <c:if test="${currentPage != null && currentPage == 'home'}">
+            <sec:authorize ifAnyGranted="ROLE_USER">
+            <ul class="nav pull-right">
+                <li class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="hidden-tablet">
+                            <fmt:message key="tatami.menu.account"/>
+                        </span>
+                        <b class="caret"></b>
+                    </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/tatami/account/#/profile">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <fmt:message key="tatami.menu.profile"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tatami/account/#/preferences">
+                                <span class="glyphicon glyphicon-picture"></span>
+                                <fmt:message key="tatami.menu.preferences"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tatami/account/#/password">
+                                <span class="glyphicon glyphicon-lock"></span>
+                                <fmt:message key="tatami.menu.password"/>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/tatami/account/#/files">
+                                <span class="glyphicon glyphicon-file"></span>
+                                <fmt:message key="tatami.menu.files"/>
+                            </a>
+                            <a href="/tatami/account/#/users">
+                                <span class="glyphicon glyphicon-globe"></span>
+                                <fmt:message key="tatami.menu.directory"/>
+                            </a>
+                            <a href="/tatami/account/#/groups">
+                                <span class="glyphicon glyphicon-th-large"></span>
+                                <fmt:message key="tatami.menu.groups"/>
+                            </a>
+                            <a href="/tatami/account/#/tags">
+                                <span class="glyphicon glyphicon-tags"></span>
+                                <fmt:message key="tatami.menu.tags"/>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/tatami/account/#/status_of_the_day">
+                                <span class="glyphicon glyphicon-signal"></span>
+                                <fmt:message key="tatami.menu.status.of.the.day"/>
+                            </a>
+                            <a href="/tatami/home#company">
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <fmt:message key="tatami.menu.company.wall"/>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/tatami/logout">
+                                <span class="glyphicon glyphicon-off"></span>
+                                <fmt:message key="tatami.logout"/>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="hidden-phone">
+                    <button id="editTatam" class="editTatam btn btn-primary navbar-form">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <span class="visible-desktop">
+                            <fmt:message key="tatami.tatam.publish"/>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <a href="#" id="help-tour">
+                        <span>
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <span class="hidden-tablet">
+                                <fmt:message key="tatami.status.help.title"/>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <form id="searchform" class="navbar-form pull-right col-span-4" action="">
+                <input name="search" type="text" class="col-span-12" id="searchinput" placeholder="<fmt:message key="tatami.search.placeholder"/>" autocomplete="off">
+                <span class="deleteicon"><i class="glyphicon glyphicon-remove-sign"></i></span>
+            </form>
+            </sec:authorize>
+            </c:if>
         </div>
     </div>
-</div>
-
-<jsp:include page="template-search-engine.jsp"/>
+</c:if>

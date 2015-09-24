@@ -1,12 +1,16 @@
 package fr.ippon.tatami.service.dto;
 
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.StatusType;
+import fr.ippon.tatami.repository.SharesRepository;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -14,7 +18,7 @@ import java.util.Date;
 /**
  * DTO to present a "complete" status to the presentation layer.
  */
-public class StatusDTO {
+public class StatusDTO implements Serializable {
 
     private static final DateTimeFormatter iso8601Formatter = ISODateTimeFormat.dateTime();
 
@@ -41,13 +45,19 @@ public class StatusDTO {
      */
     private String timelineId;
 
+    private StatusType type;
+
     private String username;
 
     private boolean statusPrivate;
 
+    private boolean activated;
+
     private String groupId;
 
     private String groupName;
+
+    private String geoLocalization;
 
     private boolean publicGroup;
 
@@ -88,6 +98,24 @@ public class StatusDTO {
      */
     private String sharedByUsername;
 
+    private boolean shareByMe;
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public boolean isShareByMe() {
+        return shareByMe;
+    }
+
+    public void setShareByMe(boolean shareByMe) {
+        this.shareByMe = shareByMe;
+    }
+
     public String getISO8601StatusDate() {
         return this.iso8601StatusDate;
     }
@@ -110,6 +138,14 @@ public class StatusDTO {
 
     public void setTimelineId(String timelineId) {
         this.timelineId = timelineId;
+    }
+
+    public StatusType getType() {
+        return type;
+    }
+
+    public void setType(StatusType type) {
+        this.type = type;
     }
 
     public String getUsername() {
@@ -182,21 +218,26 @@ public class StatusDTO {
 
     public void setStatusDate(Date statusDate) {
         this.statusDate = statusDate;
-        DateTime dateTime = new DateTime(statusDate);
-        Period period =
-                new Period(statusDate.getTime(),
-                        Calendar.getInstance().getTimeInMillis());
+        if (statusDate != null) {
+            DateTime dateTime = new DateTime(statusDate);
+            Period period =
+                    new Period(statusDate.getTime(),
+                            Calendar.getInstance().getTimeInMillis());
 
-        if (period.getMonths() < 1) { // Only format if it is more than 1 month old
-            this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            if (period.getMonths() < 1) { // Only format if it is more than 1 month old
+                this.iso8601StatusDate = iso8601Formatter.print(dateTime);
+            } else {
+                this.iso8601StatusDate = "";
+            }
+
+            if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
+                this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
+            } else {
+                this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            }
         } else {
             this.iso8601StatusDate = "";
-        }
-
-        if (period.getYears() == 0) { // Only print the year if it is more than 1 year old
-            this.prettyPrintStatusDate = basicDateFormatter.print(dateTime);
-        } else {
-            this.prettyPrintStatusDate = oldDateFormatter.print(dateTime);
+            this.prettyPrintStatusDate = "";
         }
     }
 
@@ -264,6 +305,14 @@ public class StatusDTO {
         this.sharedByUsername = sharedByUsername;
     }
 
+    public String getGeoLocalization() {
+        return geoLocalization;
+    }
+
+    public void setGeoLocalization(String geoLocalization) {
+        this.geoLocalization = geoLocalization;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -285,13 +334,15 @@ public class StatusDTO {
         return "StatusDTO{" +
                 "statusId='" + statusId + '\'' +
                 ", timelineId='" + timelineId + '\'' +
+                ", type=" + type +
                 ", username='" + username + '\'' +
                 ", statusPrivate=" + statusPrivate +
                 ", groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
+                ", geoLocalization='" + geoLocalization + '\'' +
                 ", publicGroup=" + publicGroup +
-                ", attachmentIds=" + attachmentIds +
                 ", attachments=" + attachments +
+                ", attachmentIds=" + attachmentIds +
                 ", content='" + content + '\'' +
                 ", statusDate=" + statusDate +
                 ", iso8601StatusDate='" + iso8601StatusDate + '\'' +
@@ -304,6 +355,7 @@ public class StatusDTO {
                 ", favorite=" + favorite +
                 ", detailsAvailable=" + detailsAvailable +
                 ", sharedByUsername='" + sharedByUsername + '\'' +
+                ", shareByMe='" + shareByMe + '\'' +
                 '}';
     }
 }
