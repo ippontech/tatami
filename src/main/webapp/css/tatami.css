@@ -303,6 +303,7 @@ div.jGrowl-notification{
 
 .profile-card > .img {
     margin-right: 5px;
+    background-size: contain;
 }
 
 /*.tatam, .useritem {*/
