@@ -67,6 +67,9 @@ public class FileController {
     @Inject
     private AuthenticationService authenticationService;
 
+    @Inject
+    private TatamiMimeTypeFileTypeMap fileTypeMap;
+
     @PostConstruct
     public void init() {
         this.tatamiUrl = env.getProperty("tatami.url");
@@ -89,6 +92,7 @@ public class FileController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.sendRedirect("/tatami/file/file_not_found");
         } else {
+            response.setContentType(fileTypeMap.getContentType(attachment.getFilename()));
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
