@@ -4,7 +4,11 @@
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
     <version>4.0.3</version>
-    <packaging>war</packaging>
+    <modules>
+        <module>web</module>
+        <module>services</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <description>Tatami is an enterprise micro-blogging platform</description>
     <inceptionYear>2012</inceptionYear>
@@ -39,56 +43,8 @@
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${project.npm.bin}/grunt</executable>
-                                    <arguments>
-                                        <argument>dev</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
-        <profile>
-            <id>uglified</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${project.npm.bin}/grunt</executable>
-                                    <arguments>
-                                        <argument>minify</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+
         <profile>
             <id>elasticsearch-remote</id>
             <properties>
@@ -482,6 +438,7 @@
         <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
+
     <repositories>
 
         <repository>
@@ -1154,23 +1111,7 @@
                     <skip>${js-tests.skip}</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.kelveden</groupId>
-                <artifactId>maven-karma-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <karmaExecutable>${project.basedir}/node_modules/.bin/karma</karmaExecutable>
-                    <configFile>${project.basedir}/karma.ci.conf.js</configFile>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

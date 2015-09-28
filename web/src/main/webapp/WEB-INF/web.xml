@@ -1,0 +1,62 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="true">
+
+    <!--
+     Remove classpath scanning (from servlet 3.0) in order to speed jetty startup :
+     metadata-complete="true" above + empty absolute ordering below
+     -->
+    <absolute-ordering>
+        <!--
+           Empty absolute ordering is necessary to completely desactivate classpath scanning
+            -->
+    </absolute-ordering>
+
+    <display-name>Tatami</display-name>
+
+    <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
+    <listener>
+        <listener-class>fr.ippon.fr.ippon.tatami.web.init.WebConfigurer</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>GzipFilter</filter-name>
+        <filter-class>fr.ippon.fr.ippon.tatami.web.filter.TatamiGzipFilter</filter-class>
+    </filter>
+    
+    <filter>
+    	<filter-name>CharacterEncodingFilter</filter-name>
+    	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    	<init-param>
+    		<param-name>encoding</param-name>
+    		<param-value>UTF-8</param-value>
+    	</init-param>
+    	<init-param>
+    		<param-name>forceEncoding</param-name>
+    		<param-value>true</param-value>
+    	</init-param>
+    </filter>
+    
+    <filter-mapping>
+    	<filter-name>CharacterEncodingFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>GzipFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/tatami/errors/500</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/tatami/errors/404</location>
+    </error-page>
+
+</web-app>

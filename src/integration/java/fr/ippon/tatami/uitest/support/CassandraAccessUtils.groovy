@@ -1,6 +1,6 @@
 package fr.ippon.tatami.uitest.support;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
+import static ColumnFamilyKeys.REGISTRATION_CF;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 
-import fr.ippon.tatami.config.CassandraConfiguration;
+import CassandraConfiguration;
 
 @Singleton(lazy=true)
 public class CassandraAccessUtils {
