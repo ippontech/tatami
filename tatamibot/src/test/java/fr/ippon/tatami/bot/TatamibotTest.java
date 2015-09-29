@@ -1,5 +1,6 @@
 package fr.ippon.tatami.bot;
 
+import com.jayway.awaitility.Awaitility;
 import fr.ippon.tatami.bot.config.TatamibotConfiguration;
 import fr.ippon.tatami.bot.processor.LastUpdateDateTatamibotConfigurationUpdater;
 import fr.ippon.tatami.bot.processor.TatamiStatusProcessor;
@@ -16,7 +17,10 @@ import org.apache.camel.model.FromDefinition;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.processor.idempotent.MemoryIdempotentRepository;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.collection.IsCollectionWithSize;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
@@ -80,8 +84,8 @@ public class TatamibotTest extends CamelTestSupport {
         ReflectionTestUtils.setField(commonRouteBuilder, "lastUpdateDateTatamibotConfigurationUpdater", lastUpdateDateTatamibotConfigurationUpdater);
 
         // common mock configuration :
-        when(userService.getUserByLogin("tatamibot@ippon.fr")).thenReturn(tatamibotUser);
-        when(tatamibotConfigurationRepository.findTatamibotConfigurationById(Mockito.anyString())).thenReturn(new TatamibotConfiguration());
+        Mockito.when(userService.getUserByLogin("tatamibot@ippon.fr")).thenReturn(tatamibotUser);
+        Mockito.when(tatamibotConfigurationRepository.findTatamibotConfigurationById(Mockito.anyString())).thenReturn(new TatamibotConfiguration());
     }
 
     @Test
@@ -92,24 +96,24 @@ public class TatamibotTest extends CamelTestSupport {
 
         setupAndLaunchContext(configuration);
 
-        await().until(statusUpdateServiceWasCallAtLeast3Times());
+        Awaitility.await().until(statusUpdateServiceWasCallAtLeast3Times());
 
         String msg1 = "[Ippevent Mobilité – Applications mobiles – ouverture des inscriptions](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/GcJYERHTfoQ/)";
         String msg2 = "[Business – Ippon Technologies acquiert Atomes et renforce son offre Cloud](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/wK-Y47WGZBQ/)";
         String msg3 = "[Les Méthodes Agiles – Définition de l’Agilité](http://feedproxy.google.com/~r/LeBlogDesExpertsJ2ee/~3/hSqyt1MCOoo/)";
 
-        verify(statusUpdateService).postStatusAsUser(msg1 + " #BlogIppon", tatamibotUser);
-        verify(statusUpdateService).postStatusAsUser(msg2 + " #BlogIppon", tatamibotUser);
-        verify(statusUpdateService).postStatusAsUser(msg3 + " #BlogIppon", tatamibotUser);
-        verifyNoMoreInteractions(statusUpdateService);
+        Mockito.verify(statusUpdateService).postStatusAsUser(msg1 + " #BlogIppon", tatamibotUser);
+        Mockito.verify(statusUpdateService).postStatusAsUser(msg2 + " #BlogIppon", tatamibotUser);
+        Mockito.verify(statusUpdateService).postStatusAsUser(msg3 + " #BlogIppon", tatamibotUser);
+        Mockito.verifyNoMoreInteractions(statusUpdateService);
 
         // TODO : the repository is updated three times ... 
         ArgumentCaptor<TatamibotConfiguration> argumentCaptor = ArgumentCaptor.forClass(TatamibotConfiguration.class);
-        verify(tatamibotConfigurationRepository, times(3)).updateTatamibotConfiguration(argumentCaptor.capture());
+        Mockito.verify(tatamibotConfigurationRepository, Mockito.times(3)).updateTatamibotConfiguration(argumentCaptor.capture());
         TatamibotConfiguration value = argumentCaptor.getValue();
-        assertThat(value.getLastUpdateDate(), is(DateTime.parse("2012-12-17T17:35:51Z").toDate()));
+        Assert.assertThat(value.getLastUpdateDate(), CoreMatchers.is(DateTime.parse("2012-12-17T17:35:51Z").toDate()));
 
-        assertTrue(idempotentRepository.contains("ippon.fr-" + msg1));
+        Assert.assertTrue(idempotentRepository.contains("ippon.fr-" + msg1));
     }
 
     private Callable<Boolean> statusUpdateServiceWasCallAtLeast3Times() {
@@ -125,8 +129,8 @@ public class TatamibotTest extends CamelTestSupport {
         Domain domain = new Domain();
         domain.setName("ippon.fr");
 
-        when(domainRepository.getAllDomains()).thenReturn(newHashSet(domain));
-        when(tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain("ippon.fr")).thenReturn(newHashSet(configuration));
+        Mockito.when(domainRepository.getAllDomains()).thenReturn(newHashSet(domain));
+        Mockito.when(tatamibotConfigurationRepository.findTatamibotConfigurationsByDomain("ippon.fr")).thenReturn(newHashSet(configuration));
 
         // Note : we have to configure the context ourself as the mocks are used during route creation ..  
         context.addRoutes(commonRouteBuilder);
@@ -145,7 +149,7 @@ public class TatamibotTest extends CamelTestSupport {
         context.start();
 
         List<Route> routes = context.getRoutes();
-        assertThat(routes, hasSize(2));
+        Assert.assertThat(routes, IsCollectionWithSize.hasSize(2));
 //        assertThat(routes.get(0).get, hasItems());
     }
 

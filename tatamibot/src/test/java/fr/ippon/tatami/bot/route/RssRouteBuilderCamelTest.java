@@ -64,7 +64,7 @@ public class RssRouteBuilderCamelTest extends SourceRouteBuilderBaseCamelTest<Rs
         configuration.setTatamibotConfigurationId("TEST_CONFIG_ID");
         configuration.setType(TatamibotConfiguration.TatamibotType.RSS);     // spécifique ... mais pas utilisé ici
         configuration.setDomain("ippon.fr");
-//        configuration.setUrl("http://feeds.feedburner.com/LeBlogDesExpertsJ2ee?format=xml");
+//      configuration.setUrl("http://feeds.feedburner.com/LeBlogDesExpertsJ2ee?format=xml");
         configuration.setUrl(fileUrl);
         configuration.setPollingDelay(60); // not used here
         configuration.setLastUpdateDate(DateTime.parse("2010-01-01T00:00:00").toDate());

@@ -7,6 +7,7 @@
         <groupId>fr.ippon.tatami</groupId>
         <version>4.0.3</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <artifactId>web</artifactId>
@@ -123,7 +124,55 @@
                     </webResources>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/node_modules/karma-phantomjs-launcher</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>install-phantomjs</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>karma-phantomjs-launcher</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>com.github.klieber</groupId>-->
+                <!--<artifactId>phantomjs-maven-plugin</artifactId>-->
+                <!--<version>0.4</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>install</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<version>1.9.8</version>-->
+                    <!--<skip>${js-tests.skip}</skip>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

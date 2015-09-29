@@ -85,7 +85,7 @@ public class CassandraTatamibotConfigurationRepository implements TatamibotConfi
 
         Set<TatamibotConfiguration> configurations = new HashSet<TatamibotConfiguration>();
 
-        ColumnSlice<UUID, String> results = createSliceQuery(keyspaceOperator,
+        ColumnSlice<UUID, String> results = HFactory.createSliceQuery(keyspaceOperator,
                 StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
                 .setColumnFamily(ColumnFamilyKeys.DOMAIN_TATAMIBOT_CF)
                 .setKey(domain)
