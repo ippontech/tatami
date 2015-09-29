@@ -8,7 +8,7 @@ tatami.iws
 .project
 .settings
 target
-web/node_modules/karma-phantomjs-launcher
+web/node_modules/
 src/main/webapp/WEB-INF/generated-wro4j
 .merge_file*
 .DS_Store

@@ -131,7 +131,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${project.basedir}/node_modules/karma-phantomjs-launcher</directory>
+                            <directory>${project.basedir}/node_modules/</directory>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
                     </filesets>
@@ -143,13 +143,12 @@
                 <version>1.2.1</version>
                 <executions>
                     <execution>
-                        <id>install-phantomjs</id>
+                        <id>install-npm-dependencies</id>
                         <phase>generate-sources</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
-                                <argument>karma-phantomjs-launcher</argument>
                             </arguments>
                         </configuration>
                         <goals>
