@@ -79,7 +79,7 @@
         </profile>
     </profiles>
     <build>
-        <finalName>tatami-${version}</finalName>
+        <finalName>tatami-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.kelveden</groupId>

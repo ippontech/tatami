@@ -12,7 +12,7 @@
     <artifactId>services</artifactId>
 
     <build>
-        <finalName>tatami-services-${version}</finalName>
+        <finalName>tatami-services-${project.version}</finalName>
     </build>
 
 </project>

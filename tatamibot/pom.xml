@@ -19,7 +19,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>tatamibot-${version}</finalName>
+        <finalName>tatamibot-${project.version}</finalName>
     </build>
 
 </project>
