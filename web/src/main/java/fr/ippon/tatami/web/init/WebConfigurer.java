@@ -53,7 +53,7 @@ import java.util.EnumSet;
  *
  *     &lt;!-- All the Servlets and Filters are configured by this ServletContextListener : -->
  *     &lt;listener>
- *         &lt;listener-class>fr.ippon.fr.ippon.tatami.web.init.WebConfigurer&lt;/listener-class>
+ *         &lt;listener-class>fr.ippon.tatami.web.init.WebConfigurer&lt;/listener-class>
  *     &lt;/listener>
  *
  * &lt;/web-app>
@@ -130,7 +130,7 @@ public class WebConfigurer implements ServletContextListener {
                 servletContext.addServlet("atmosphereServlet", new AtmosphereServlet());
 
         atmosphereServlet.setAsyncSupported(true);
-        atmosphereServlet.setInitParameter("org.atmosphere.cpr.packages", "fr.ippon.fr.ippon.tatami.web.atmosphere");
+        atmosphereServlet.setInitParameter("org.atmosphere.cpr.packages", "fr.ippon.tatami.web.atmosphere");
         atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcasterCacheClass", UUIDBroadcasterCache.class.getName());
         atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.shareableThreadPool", "true");
         atmosphereServlet.setInitParameter("org.atmosphere.cpr.broadcaster.maxProcessingThreads", "10");

@@ -6,7 +6,7 @@
          http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        profile="tatamibot">
 
-    <context:component-scan base-package="fr.ippon.fr.ippon.tatami.bot"/>
+    <context:component-scan base-package="fr.ippon.tatami.bot"/>
 
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
         <contextScan/>

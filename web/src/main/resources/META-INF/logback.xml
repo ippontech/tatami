@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>[%p] %c - %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYNC_PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>${logback.syslogHost}</syslogHost>
+        <port>${logback.syslogHost.port}</port>
+        <facility>LOCAL7</facility>
+        <suffixPattern>[%thread] %logger %msg</suffixPattern>
+    </appender>
+
+    <appender name="PAPERTRAIL" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SYNC_PAPERTRAIL"/>
+    </appender>
+
+    <logger name="fr.ippon.tatami" level="${logback.loglevel}"/>
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="com.yammer.metrics" level="WARN"/>
+    <logger name="com.notnoop" level="WARN"/>
+    <logger name="me.prettyprint" level="WARN"/>
+    <logger name="net.sf.ehcache" level="WARN"/>
+    <logger name="netty" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="org.atmosphere" level="WARN"/>
+    <logger name="org.elasticsearch" level="WARN"/>
+    <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.openid4java" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.cache" level="WARN"/>
+    <logger name="ro.isdc" level="WARN"/>
+
+    <root level="${logback.loglevel}">
+        <appender-ref ref="${logback.appender}"/>
+    </root>
+
+</configuration>

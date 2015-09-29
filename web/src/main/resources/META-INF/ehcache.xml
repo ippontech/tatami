@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         name="CM1"
+         updateCheck="false"
+         maxBytesLocalHeap="${ehcache.maxBytesLocalHeap}">
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            eternal="false"
+            overflowToDisk="false"
+            />
+
+    <cache name="status-cache"/>
+
+    <cache name="user-cache"/>
+
+    <cache name="user-prefix-cache"/>
+
+    <cache name="group-prefix-cache"/>
+
+    <cache name="group-user-cache"/>
+
+    <cache name="group-cache"/>
+
+    <cache name="favorites-cache"/>
+
+    <cache name="shared-cache"/>
+
+    <cache name="friends-cache"/>
+
+    <cache name="followers-cache"/>
+
+    <cache name="dayline-cache"
+           timeToLiveSeconds="60">
+    </cache>
+
+    <cache name="trends-cache"
+           timeToLiveSeconds="300">
+    </cache>
+
+    <cache name="user-trends-cache"
+           timeToLiveSeconds="300">
+    </cache>
+
+    <cache name="domain-tags-cache"
+           timeToLiveSeconds="300">
+    </cache>
+
+    <cache name="suggest-users-cache"
+           timeToLiveSeconds="1800">
+    </cache>
+
+    <cache name="suggest-groups-cache"
+           timeToLiveSeconds="1800">
+    </cache>
+
+    <cache name="avatar-cache"
+           timeToIdleSeconds="1800"/>
+
+    <cache name="attachment-cache"
+           maxBytesLocalHeap="75%"
+           timeToIdleSeconds="600"/>
+
+</ehcache>
+

@@ -18,12 +18,12 @@
 
     <!-- All the Servlets and Filters are configured by this ServletContextListener : -->
     <listener>
-        <listener-class>fr.ippon.fr.ippon.tatami.web.init.WebConfigurer</listener-class>
+        <listener-class>fr.ippon.tatami.web.init.WebConfigurer</listener-class>
     </listener>
 
     <filter>
         <filter-name>GzipFilter</filter-name>
-        <filter-class>fr.ippon.fr.ippon.tatami.web.filter.TatamiGzipFilter</filter-class>
+        <filter-class>fr.ippon.tatami.web.filter.TatamiGzipFilter</filter-class>
     </filter>
     
     <filter>
