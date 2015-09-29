@@ -14,8 +14,9 @@ src/main/webapp/WEB-INF/generated-wro4j
 .DS_Store
 phantomjsdriver.log
 *.log
-*.CONCAT.js
-*.min.html
-*.min.js
-*MIN.css
-
+web/src/main/webapp/app/**/*.CONCAT.js
+web/src/main/webapp/app/**/*.min.html
+web/src/main/webapp/app/**/*.min.js
+web/src/main/webapp/app/**/*.MIN.css
+web/src/main/webapp/app/**/*.min.css
+web/src/main/webapp/css/tatami.min.css
