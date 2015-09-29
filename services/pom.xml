@@ -11,6 +11,8 @@
 
     <artifactId>services</artifactId>
 
-
+    <build>
+        <finalName>tatami-services-${version}</finalName>
+    </build>
 
 </project>

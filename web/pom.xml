@@ -79,6 +79,7 @@
         </profile>
     </profiles>
     <build>
+        <finalName>tatami-${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.kelveden</groupId>
@@ -157,22 +158,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>com.github.klieber</groupId>-->
-                <!--<artifactId>phantomjs-maven-plugin</artifactId>-->
-                <!--<version>0.4</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>install</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<version>1.9.8</version>-->
-                    <!--<skip>${js-tests.skip}</skip>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+
         </plugins>
     </build>
 
