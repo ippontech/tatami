@@ -68,6 +68,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'fail': 'Your authentication has failed! Are you sure you used the correct password?',
                 'passwordEmailSent': 'An e-mail has been sent to you, with instructions to generate a new password.',
                 'unregisteredEmail': 'This e-mail address is not registered in Tatami.',
+                'registrationFailure': 'User registration failed. That email already is in use.',
                 'register': {
                     'title': 'Register',
                     'line1': 'A confirmation email will be sent to the address you provide.',

@@ -20,3 +20,4 @@ web/src/main/webapp/app/**/*.min.js
 web/src/main/webapp/app/**/*.MIN.css
 web/src/main/webapp/app/**/*.min.css
 web/src/main/webapp/css/tatami.min.css
+src/main/webapp/app/shared/footer/FooterView.html.sed.del
