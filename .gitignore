@@ -18,4 +18,7 @@ phantomjsdriver.log
 *.min.html
 *.min.js
 *MIN.css
+node_modules/.bin/phantomjs
+node_modules/phantomjs/
+src/main/webapp/app/shared/footer/FooterView.html.sed.del
 
