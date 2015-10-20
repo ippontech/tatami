@@ -1,4 +1,4 @@
-#parse("./common.vm")
+#parse("./common")
 #msg("registration.greeting") ${user.Login},
 
 #msg("registration.text1")

@@ -59,7 +59,7 @@ public class MailService {
 
     // TODO: this can be used for external mail template configuration
     private final String templateRoot = "/META-INF/tatami/mails/";
-    private final String templateSuffix = "Email.vm";
+    private final String templateSuffix = "Email";
 
     @Inject
     private VelocityEngine velocityEngine;

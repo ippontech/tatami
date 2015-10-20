@@ -1,4 +1,4 @@
-#parse("common.vm")
+#parse("common")
 #msg("userPrivateMessage.greeting") ${user.Username},
 
 #msg("userPrivateMessage.text1") @${status.Username} :

@@ -86,7 +86,7 @@
         </profile>
     </profiles>
     <build>
-        <finalName>tatami-${project.version}</finalName>
+       <!-- <finalName>tatami-${project.version}</finalName> -->
         <plugins>
             <plugin>
                 <groupId>com.kelveden</groupId>
@@ -164,10 +164,23 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <resourceBundles>
+                                <resourceBundle>fr.ippon.tatami:services:${project.version}</resourceBundle>
+                            </resourceBundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-
-
 </project>

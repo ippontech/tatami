@@ -1,4 +1,4 @@
-#parse("common.vm")
+#parse("common")
 #msg("invitationMessage.greeting"),
 
 ${user} #msg("invitationMessage.text1")

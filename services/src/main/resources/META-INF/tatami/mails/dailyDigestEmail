@@ -1,4 +1,4 @@
-#parse("common.vm")
+#parse("common")
 #msg("dailyDigest.greeting") ${user.Login},
 
 #if ($statuses.size() == 1)
