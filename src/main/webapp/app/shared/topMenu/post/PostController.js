@@ -131,10 +131,10 @@ PostModule.controller('PostController', [
             $scope.$state.go('^');
         };
 
-        // Handles closing the modal via escape and clicking outside the modal
-        //$modalInstance.result.finally(function() {
-        //    $scope.$state.go('^');
-        //});
+        //Handles closing the modal via escape and clicking outside the modal
+        $modalInstance.result.finally(function() {
+            //$scope.$state.go('^');
+        });
 
 
         /**
