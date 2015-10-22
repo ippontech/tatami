@@ -5,6 +5,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
         $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.min.html',
             controller: 'PostController',
+            backdrop: 'static',
             keyboard: true,
             resolve: {
                 curStatus: ['StatusService', function(StatusService) {
@@ -23,6 +24,7 @@ PostModule.config(['$stateProvider', function($stateProvider) {
        $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.min.html',
             controller: 'PostController',
+           backdrop: 'static',
             keyboard: true,
             resolve: {
                 curStatus: ['StatusService', function(StatusService) {
