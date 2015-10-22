@@ -1,9 +1,9 @@
 package fr.ippon.tatami.uitest.support;
 
-import fr.ippon.tatami.config.Constants;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.cassandra.CassandraCounterRepository;
-import fr.ippon.tatami.repository.cassandra.CassandraUserRepository;
+import Constants;
+import User;
+import CassandraCounterRepository;
+import CassandraUserRepository;
 
 @Singleton
 public class AccountUtils {

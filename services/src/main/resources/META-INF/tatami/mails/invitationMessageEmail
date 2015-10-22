@@ -1,0 +1,12 @@
+#parse("common")
+#msg("invitationMessage.greeting"),
+
+${user} #msg("invitationMessage.text1")
+
+#msg("invitationMessage.text2")
+
+${invitationUrl}
+
+#msg("invitationMessage.text3")
+
+#msg("email.signature")

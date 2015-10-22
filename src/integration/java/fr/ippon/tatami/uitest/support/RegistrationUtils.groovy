@@ -1,6 +1,6 @@
 package fr.ippon.tatami.uitest.support;
 
-import fr.ippon.tatami.repository.cassandra.CassandraRegistrationRepository;
+import CassandraRegistrationRepository;
 
 @Singleton
 public class RegistrationUtils {

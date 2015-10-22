@@ -29,8 +29,8 @@ Installation for developers
 - Point your terminal to the directory you cloned Tatami to.
     - Type `npm install`
     - You may need to give root user permissions: `sudo !!`
-- Run Cassandra from Maven : `mvn cassandra:run`
-- Run Jetty from Maven : `mvn jetty:run`
+- Run Cassandra with Maven : `mvn cassandra:run`
+- Run Jetty from tatami/web with Maven: `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
 
 
