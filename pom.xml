@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.ippon.tatami</groupId>
     <artifactId>tatami</artifactId>
-    <version>4.0.3</version>
+    <version>4.0.4</version>
 
     <modules>
         <module>web</module>
@@ -912,7 +912,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
