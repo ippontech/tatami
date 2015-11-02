@@ -15,6 +15,12 @@ public class ErrorController {
 
     private final Logger log = LoggerFactory.getLogger(ErrorController.class);
 
+    @RequestMapping(value = "/errors/403")
+    public String pageForbidden(HttpServletRequest request) {
+        log.debug("403 error : {}", request.getAttribute("javax.servlet.forward.request_uri"));
+        return "errors/403";
+    }
+
     @RequestMapping(value = "/errors/404")
     public String pageNotFound(HttpServletRequest request) {
         log.debug("404 error : {}", request.getAttribute("javax.servlet.forward.request_uri"));

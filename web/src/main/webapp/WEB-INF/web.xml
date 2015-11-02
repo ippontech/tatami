@@ -55,6 +55,11 @@
     </error-page>
 
     <error-page>
+        <error-code>403</error-code>
+        <location>/tatami/errors/403</location>
+    </error-page>
+
+    <error-page>
         <error-code>404</error-code>
         <location>/tatami/errors/404</location>
     </error-page>
