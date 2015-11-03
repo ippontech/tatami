@@ -170,6 +170,13 @@
                                 <span translate="tatami.home.menu.account.companyTimeline"></span>
                             </a>
                         </li>
+                        <li ng-if="isAdmin" class="divider"></li>
+                        <li ng-if="isAdmin">
+                            <a ui-sref="tatami.adminUsers">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span translate="tatami.home.menu.account.registeredUsers"></span>
+                            </a>
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a ng-click="logout()">

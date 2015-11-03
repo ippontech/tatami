@@ -188,6 +188,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'account': {
                         'title': 'Account',
                         'companyTimeline': 'Company Timeline',
+                        'registeredUsers': 'Registered Users',
                         'logout': 'Logout'
                     }
                 },
@@ -649,6 +650,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'account': {
                         'title': 'Compte',
                         'companyTimeline': 'Timeline de votre enterprise',
+                        'registeredUsers': 'Utilisateurs enregistrés',
                         'logout': 'Déconnexion'
                     }
                 },

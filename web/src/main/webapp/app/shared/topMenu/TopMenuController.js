@@ -6,9 +6,11 @@ TopMenuModule.controller('TopMenuController', [
     'amMoment',
     'UserSession',
     'SearchService',
-    function($scope, $window, $http, $translate, amMoment, UserSession, SearchService) {
+    'userRoles',
+    function($scope, $window, $http, $translate, amMoment, UserSession, SearchService, userRoles) {
         $scope.current = {};
         $scope.current.searchString = '';
+        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.$on('start-tour', function() {
             $scope.tour.restart(true);
