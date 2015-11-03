@@ -35,7 +35,9 @@ public class UserDTO implements Serializable {
 
     private boolean isYou = false;
 
-    private boolean isActivated=true;
+    private boolean isActivated = true;
+
+    private boolean isAdmin = false;
 
     public boolean isActivated() {
         return isActivated;
@@ -147,6 +149,14 @@ public class UserDTO implements Serializable {
 
     public void setYou(boolean you) {
         isYou = you;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override

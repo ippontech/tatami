@@ -108,7 +108,14 @@ TatamiApp.config(['$resourceProvider', '$locationProvider', '$urlRouterProvider'
                 views: {
                     'topMenu@': {
                         templateUrl: 'app/shared/topMenu/TopMenuView.min.html',
-                        controller: 'TopMenuController'
+                        controller: 'TopMenuController',
+                        resolve: {
+                            userRoles: ['$http', function ($http) {
+                                return $http({method: 'GET', url: '/tatami/rest/account/admin'}).then(function (result) {
+                                    return result.data;
+                                });
+                            }]
+                        }
                     },
                     '': {
                         templateUrl: 'index.html'

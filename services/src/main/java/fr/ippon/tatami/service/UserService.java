@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.dto.UserDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
@@ -14,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.cache.annotation.CacheEvict;
@@ -81,6 +83,9 @@ public class UserService {
     private MailDigestRepository mailDigestRepository;
 
     @Inject
+    private TatamiUserDetailsService tatamiUserDetailsService;
+
+    @Inject
     Environment env;
 
     public User getUserByLogin(String login) {
@@ -116,13 +121,15 @@ public class UserService {
         return users;
     }
 
-    public List<User> getUsersForCurrentDomain(int pagination) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UserDTO> getUsersForCurrentDomain(int pagination) {
         User currentUSer = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUSer.getLogin());
         List<String> logins = domainRepository.getLoginsInDomain(domain, pagination);
-        List<User> users = new ArrayList<User>();
+        List<UserDTO> users = new ArrayList<UserDTO>();
         for (String login : logins) {
-            User user = getUserByLogin(login);
+            UserDTO user = getUserDTOFromUser(getUserByLogin(login));
+            user.setIsAdmin(tatamiUserDetailsService.isAdmin(login));
             users.add(user);
         }
         return users;

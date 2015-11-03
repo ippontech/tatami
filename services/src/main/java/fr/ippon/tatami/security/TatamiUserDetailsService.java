@@ -79,7 +79,7 @@ public class TatamiUserDetailsService implements UserDetailsService {
 
     protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
         Collection<GrantedAuthority> grantedAuthorities;
-        if (adminUsers.contains(login)) {
+        if (isAdmin(login)) {
             log.debug("User \"{}\" is an administrator", login);
 
             grantedAuthorities = adminGrantedAuthorities;
@@ -89,5 +89,9 @@ public class TatamiUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(login, password,
                 grantedAuthorities);
+    }
+
+    public Boolean isAdmin(String login) {
+        return adminUsers != null && adminUsers.contains(login);
     }
 }

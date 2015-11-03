@@ -1015,3 +1015,7 @@ div.jGrowl-notification {
     right: 10px;
     bottom: 50%;
 }
+
+#adminUsers td {
+    vertical-align: middle;
+}

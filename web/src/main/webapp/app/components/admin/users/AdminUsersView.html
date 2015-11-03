@@ -1,0 +1,16 @@
+<div id="mainPanel" class="container">
+    <table id="adminUsers" class="table table-striped">
+        <tr>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Admin</th>
+        </tr>
+        <tr ng-repeat="user in users" class="user">
+            <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50" width="50"></td>
+            <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{ user.firstName || 'firstName' }} {{ user.lastName || 'lastName' }}</a></td>
+            <td>{{ user.login }}</td>
+            <td>{{ user.admin ? 'Yes' : 'No' }}</td>
+        </tr>
+    </table>
+</div>

@@ -17,5 +17,21 @@ AdminModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }]
             },
             controller: 'AdminController'
+        })
+        .state('tatami.adminUsers',{
+            url: '/admin/users',
+            templateUrl: '/app/components/admin/users/AdminUsersView.min.html',
+            resolve: {
+                users: ['UserService', '$state', function(UserService, $state) {
+                    return UserService.query().$promise.then(function(success) {
+                        return success;
+                    }, function(err) {
+                        if(err.status === 500) {
+                            $state.transitionTo('tatami.accessdenied', null, { location: false });
+                        }
+                    });
+                }]
+            },
+            controller: 'AdminUsersController'
         });
 }]);

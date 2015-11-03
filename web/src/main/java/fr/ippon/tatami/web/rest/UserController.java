@@ -99,7 +99,7 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
+    public Collection<UserDTO> getAll(@RequestParam(required = false) Integer pagination) {
         if (pagination == null) {
             pagination = 0;
         }
