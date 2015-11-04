@@ -173,7 +173,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void testGetUsersForCurrentDomain() {
         mockAuthenticationOnUserService("jdubois@ippon.fr");
-        Collection<User> users = userService.getUsersForCurrentDomain(0);
+        Collection<UserDTO> users = userService.getUsersForCurrentDomain(0);
         assertTrue(users.size() > 10);
     }
 
