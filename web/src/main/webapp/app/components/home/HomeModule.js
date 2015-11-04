@@ -116,6 +116,10 @@ HomeModule.config(['$stateProvider', function ($stateProvider) {
                 'homeBodyContent@tatami.home': {
                     templateUrl: 'app/shared/lists/status/withoutContext/StatusListView.min.html',
                     controller: 'StatusListController'
+                },
+                'topMenu@': {
+                    templateUrl: 'app/shared/topMenu/TopMenuView.min.html',
+                    controller: 'TopMenuController'
                 }
             },
             resolve: {
