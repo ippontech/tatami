@@ -1,5 +1,5 @@
 TatamiApp.config(['$translateProvider', function($translateProvider) {
-  
+
     $translateProvider.translations('en', {
         'tatami': {
             'pageNotFound': 'Page not found.',
@@ -66,8 +66,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'resetPassword': 'Reset password',
                 'tos': 'Terms of Service',
                 'fail': 'Your authentication has failed! Are you sure you used the correct password?',
-                'passwordEmailSent': 'An e-mail has been sent to you, with instructions to generate a new password.',
-                'unregisteredEmail': 'This e-mail address is not registered in Tatami.',
+                'passwordEmailSent': 'An email has been sent to you, with instructions to generate a new password.',
+                'unregisteredEmail': 'This email address is not registered in Tatami.',
                 'registrationFailure': 'User registration failed. That email already is in use.',
                 'register': {
                     'title': 'Register',
@@ -84,9 +84,9 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'login': 'Login using Google Apps'
                 },
                 'validation': 'E-mail validation',
-                'passwordSuccess': 'Your e-mail has been validated. Your password will be e-mailed to you.',
+                'passwordSuccess': 'Your email has been validated. Your password will be emailed to you.',
                 'returnHome': 'Go to the home page',
-                'registrationEmail': 'Thank you! A registration e-mail has been sent to you.'
+                'registrationEmail': 'Thank you! A registration email has been sent to you.'
             },
 
             'about': {
@@ -317,7 +317,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'statusesWith': 'Statuses with'
                 }
             },
-            
+
             //Account View
             'account': {
                 // Profile Tab
@@ -484,30 +484,30 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'bulletPoint4': 'envoyé à un groupe auquel vous êtes abonné(e)',
                     'afterBP1': 'Si elle est vide, ne vous inquiétez pas, elle sera mise à jour dès que vous commencez à suivre d\'autres utilisateurs!',
                     'afterBP2': 'Lors de l\'affichage d\'un message, vous pouvez y répondre et le marquer comme favori pour le retrouver plus facilement.',
-                    'afterBP3': 'Si un message avait déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail: ce sera plus facile de suivre la conversation sur Tatami.'
+                    'afterBP3': 'Si un message avait déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail : ce sera plus facile de suivre la conversation sur Tatami.'
                 },
                 'post': {
                     'title': 'Envoyer un message',
                     'line1': 'C\'est ici que vous écrivez les messages que vous souhaitez partager',
                     'bulletPoint1': 'tous les messages sont publics par défaut. Ils seront affichés à tous les utilisateurs qui vous suivent',
-                    'bulletPoint2': 'pour écrire un message, vous devez utiliser #hashtags: cela signifie tout simplement l\'ajout d\'un «#» au début de mots importants qui peut être utilisé pour trouver votre message',
-                    'bulletPoint3': 'en mentionnant, ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom: ils seront informés que vous vous adressez à eux'
+                    'bulletPoint2': 'pour écrire un message, vous pouvez utiliser de #hashtags : cela signifie tout simplement l\'ajout d\'un «#» au début des mots importants qui peuvent ensuite être utilisé pour trouver votre message',
+                    'bulletPoint3': 'pour mentionner ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom : ils seront informés que vous vous adressez à eux'
                 },
                 'groups': {
                     'title': 'Groupes',
                     'line1': 'Ceci est la liste des groupes auquel vous appartenez.',
-                    'line2': 'Vous pouvez trouver et vous abonner à, groupe public dans la page Account/Groupes (menu en haut à droite).',
-                    'line3': 'Il y a aussi des groupes privés: pour eux vous ne pouvez pas vous inscrire: le propriétaire du groupe doit vous ajouter en tant que membre.'
+                    'line2': 'Vous pouvez trouver et vous abonner à des groupe public dans la page Account/Groupes (menu en haut à droite).',
+                    'line3': 'Il y a aussi des groupes privés : vous ne pouvez pas vous y inscrire;  le propriétaire du groupe doit vous ajouter en tant que membre.'
                 },
                 'trends': {
                     'title': 'Tendances',
-                    'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-le pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
+                    'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-la pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
                 },
                 'whoToFollow': {
                     'title': 'Utilisateurs suggérées',
                     'line1': 'Ceci est une liste d\'utilisateurs qui partagent des intérêts communs avec vous et que vous pourriez suivre.',
-                    'line2': 'Si vous êtes un nouvel utilisateur, cette liste est probablement vide: Tatami a besoin de temps pour apprendre qui vous êtes afin de vous proposer des utilisateurs',
-                    'line3': 'Et n\'oubliez pas d\'utiliser des #hashtags dans vos messages, il rend tout plus facile!'
+                    'line2': 'Si vous êtes un nouvel utilisateur, cette liste est probablement vide : Tatami a besoin de temps pour apprendre qui vous êtes afin de vous proposer des utilisateurs',
+                    'line3': 'Et n\'oubliez pas d\'utiliser des #hashtags dans vos messages, cela rend tout plus facile !'
                 },
                 'next': 'Suivant',
                 'previous': 'Précédent',
@@ -527,8 +527,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'resetPassword': 'Nouveau mot de passe',
                 'tos': 'Conditions de service',
                 'fail': 'Votre authentification a échoué ! Etes-vous sûr que vous avez utilisé un mot de passe correct ?',
-                'passwordEmailSent': 'Un e-mail vous a été envoyé, avec des instructions pour créer un nouveau mot de passe.',
-                'unregisteredEmail': 'Cette adresse e-mail n\'est pas enregistrée dans Tatami.',
+                'passwordEmailSent': 'Un email vous a été envoyé, avec des instructions pour créer un nouveau mot de passe.',
+                'unregisteredEmail': 'Cette adresse email n\'est pas enregistrée dans Tatami.',
                 'register': {
                     'title': 'Enregistré',
                     'line1': 'Un email de confirmation sera envoyé à l\'adresse fournie.',
@@ -539,13 +539,13 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'title': 'Google Apps Login',
                     'line1': 'Cette fonction est pour les utilisateurs de Google Apps pour de travail, qui ont leur nom de domaine de travail géré par Google Apps.',
                     'link': 'Pour plus d\'informations sur Google Apps pour le travail, cliquez ici.',
-                    'line2': 'Si oui ou non vous avez déjà un compte Tatami, vous pouvez vous connecter avec votre compte Google Apps.',
-                    'line3': "Votre e-mail sera fourni par Google et le nom du domaine de votre e-mail sera utilisé pour vous permettre de rejoindre l'espace privé de votre entreprise.",
+                    'line2': 'Que vous ayez déjà ou pas un compte, vous pouvez vous connecter avec votre compte Google Apps.',
+                    'line3': "Votre email sera fourni par Google et le nom du domaine de votre email sera utilisé pour vous permettre de rejoindre l'espace privé de votre entreprise.",
                     'login': 'Login avec Google Apps'
                 },
 
-                'validation': 'Validation e-mail',
-                'passwordSuccess': 'Votre e-mail a été validé. Votre mot de passe vous sera envoyé par e-mail.',
+                'validation': 'Validation email',
+                'passwordSuccess': 'Votre email a été validé. Votre mot de passe vous sera envoyé par email.',
                 'returnHome': 'Allez à la page d\'accueil',
                 'registrationEmail': 'Merci ! Un e-amil de confirmation vous a été envoyé.'
             },
@@ -564,7 +564,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'line4': 'Discuter et répondre à vos collègues',
                         'line5': 'Ajouter des informations importantes dans vos favoris',
                         'line6': 'Chercher des informations utiles avec notre moteur de recherche intégré',
-                        'line7': 'Utiliser les mots-dièses lors de votre recherche',
+                        'line7': 'Utiliser les #hashtags lors de votre recherche',
                         'line8': "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
                         'line9': 'Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues'
                     },
@@ -577,7 +577,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'row3': {
                         'title': "Installation et intégration facile avec l'infrastructure informatique de votre entreprise",
                         'line1': 'Application standard Java',
-                        'line2': 'Vos données vous appartient, pas à votre fournisseur SaaS!',
+                        'line2': 'Vos données vous appartiennent et ne sont pas à votre fournisseur SaaS !',
                         'line3': 'Intégration avec votre dossier LDAP',
                         'line4': 'Intégration avec Google Apps',
                         'line5': 'Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises',
@@ -588,12 +588,12 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'row4': {
                         'title': "Egalement disponible en mode SaaS, entièrement géré par Ippon Technologies",
                         'line1': "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l'utiliser directement",
-                        'line2': 'Mode multi-entreprise sécurisé: chaque entreprise dispose de son propre espace privé',
-                        'line3': 'Cryptage SSL 256 bits: tous les transferts de données sont entièrement sécurisé'
+                        'line2': 'Mode multi-entreprise sécurisé : chaque entreprise dispose de son propre espace privé',
+                        'line3': 'Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé'
                     },
                     'row5': {
-                        'title': 'Besoin de plus d\'informations sur notre produit?',
-                        'line1': 'Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 01 46 12 48 48 ou par courriel à'
+                        'title': 'Besoin de plus d\'informations sur notre produit ?',
+                        'line1': 'Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 1 46 12 48 48 ou par email à'
                     }
                 },
 
@@ -627,13 +627,13 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'title': 'Information',
                         'version' : 'Version',
                         'presentation': 'Présentation',
-                        'tos': 'Conditions de service',
+                        'tos': 'Conditions générales d\'utilisation',
                         'language': {
                             'language': 'Language',
                             'en': 'English',
                             'fr': 'Français'
                         },
-                        'license': 'License du source code',
+                        'license': 'Licence du source code',
                         'github': {
                             'issues': 'Envoyer un rapport de bug',
                             'fork': 'Fork Tatami sur Github'
@@ -662,9 +662,9 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'update': 'Mettre à jour votre statut',
                     'replyTo': 'Répondre',
                     'preview': 'Prévisualisation',
-                    'edit': 'Editer',
+                    'edit': 'Éditer',
                     'characters': {
-                        'left': 'Caractères restants:'
+                        'left': 'Caractères restants :'
                     },
                     'options': 'Options',
                     'shareLocation': 'Partager votre localisation',
@@ -700,8 +700,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'reply': 'Répondre',
                     'share': 'Partager',
                     'favorite': 'Favoris',
-                    'delete': 'Suprimer',
-                    'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut?',
+                    'delete': 'Supprimer',
+                    'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut ?',
                     'sharedYour': 'a partagé votre statut',
                     'followed': 'vous suit',
                     'shared': 'partagé',
@@ -723,7 +723,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 // Group View
                 'group': {
                     'join': 'Joindre',
-                    'joined': 'Joined',
+                    'joined': 'a rejoins',
                     'leave': 'Quitter',
                     'manage': 'Gérer',
                     'statuses': 'Statuts',
@@ -765,7 +765,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'lastName': 'Nom',
                         'email': 'Email',
                         'jobTitle': 'Titre',
-                        'phoneNumber': 'Numero de telephone',
+                        'phoneNumber': 'Numéro de téléphone',
                         'statuses': 'Statuts',
                         'following': 'Abonnement',
                         'followers': 'Abonné',
@@ -790,15 +790,15 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'firstName': 'Prénom',
                     'lastName': 'Nom',
                     'jobTitle': 'Titre de travail',
-                    'phoneNumber': 'Numero de telephone',
-                    'delete': 'Supprimez votre compte',
+                    'phoneNumber': 'Numéro de téléphone',
+                    'delete': 'Supprimer votre compte',
                     'confirmDelete': 'Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?',
                     'save': 'Votre profil a été sauvé'
                 },
 
                 // Preferences Tab
                 'preferences': {
-                    'title': 'Preferences',
+                    'title': 'Préférences',
                     'notifications': 'Notifications',
                     'notification': {
                         'email': {
@@ -811,7 +811,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                             'link': 'Lien de votre RSS fils d\'actualité'
                         }
                     },
-                    'save': 'Vos préférences ont été sauvegardées'
+                    'save': 'Vos préférences ont été enregistrées'
                 },
 
                 // Password Tab
@@ -830,7 +830,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'filename': 'Nom de fichier',
                     'size': 'Taille',
                     'date': 'Date',
-                    'delete': 'Supprimez'
+                    'delete': 'Supprimer'
                 },
 
                 // Users Tab
@@ -838,7 +838,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'title': 'Utilisateur',
                     'following': 'Abonné',
                     'recommended': 'Recommandé',
-                    'search': 'Recherchez',
+                    'search': 'Rechercher',
                     'deactivated': 'Cet utilisateur est désactivé'
                 },
 
@@ -863,7 +863,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'archive': 'Voulez-vous archiver ce groupe?',
                     'allowArchive': 'Oui, ce groupe devrait être archivé',
                     'denyArchive': 'Non, ce groupe est encore utilisé',
-                    'archiveWarning': 'Attention: Groupe archivé sont en lecture seule',
+                    'archiveWarning': 'Attention : les groupe archivés sont en lecture seule',
                     'addMember': 'Ajouter un membre',
                     'username': 'Username',
                     'role': 'Rôle',
@@ -882,7 +882,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'tags': {
                     'title': 'Tags',
                     'trends': 'Tendances',
-                    'search': 'Recherchez',
+                    'search': 'Rechercher',
                     'tag': 'Tag',
                     'follow': 'Abonné',
                     'following': 'Abonnement',
