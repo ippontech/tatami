@@ -316,9 +316,7 @@ public class ElasticsearchSearchService implements SearchService {
         delete(user, userMapper);
     }
 
-
     @Override
-    @Cacheable("user-prefix-cache")
     public Collection<String> searchUserByPrefix(String domain, String prefix) {
         return searchByPrefix(domain, prefix, DEFAULT_TOP_N_SEARCH_USER, userMapper);
     }

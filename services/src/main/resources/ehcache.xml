@@ -16,8 +16,6 @@
 
     <cache name="user-cache"/>
 
-    <cache name="user-prefix-cache"/>
-
     <cache name="group-prefix-cache"/>
 
     <cache name="group-user-cache"/>

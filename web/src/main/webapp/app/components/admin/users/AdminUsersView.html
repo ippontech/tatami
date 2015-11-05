@@ -1,14 +1,28 @@
 <div id="mainPanel" class="container">
+    <div class="col-span-4" style="margin:20px 5px;padding:0">
+        <div class="input-group">
+            <input ng-model="search" ng-change="searchUsers()" type="text"
+                   placeholder="{{ 'tatami.login.email' | translate }}" autofocus>
+
+            <div class="input-group-btn">
+                <button class="btn btn-info" ng-click="searchUsers()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </div>
+    </div>
     <table id="adminUsers" class="table table-striped">
         <tr>
-            <th>Picture</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Admin</th>
+            <th style="width:10%;">Picture</th>
+            <th style="width:40%;">Name</th>
+            <th style="width:40%;">Email</th>
+            <th style="width:10%;">Admin</th>
         </tr>
         <tr ng-repeat="user in users" class="user">
-            <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50" width="50"></td>
-            <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{ user.firstName || 'firstName' }} {{ user.lastName || 'lastName' }}</a></td>
+            <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50"
+                     width="50"></td>
+            <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{
+                user.firstName || 'firstName' }} {{ user.lastName || 'lastName' }}</a></td>
             <td>{{ user.login }}</td>
             <td>{{ user.admin ? 'Yes' : 'No' }}</td>
         </tr>
