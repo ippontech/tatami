@@ -11,6 +11,12 @@
             </div>
         </div>
     </div>
+    <div class="col-span-2" style="margin:20px 5px;padding:0">
+        <label style="line-height: 34px;margin: 0;cursor: pointer;">
+            {{ 'tatami.admin.adminOnly' | translate }}&nbsp;
+            <input ng-model="adminOnly" type="checkbox"/>
+        </label>
+    </div>
     <table id="adminUsers" class="table table-striped">
         <tr>
             <th translate="tatami.admin.avatar" style="width:10%;"></th>
@@ -18,13 +24,16 @@
             <th translate="tatami.login.email" style="width:40%;"></th>
             <th translate="tatami.account.groups.admin" style="width:10%;"></th>
         </tr>
-        <tr ng-repeat="user in users" class="user">
+        <tr ng-repeat="user in users | filter:toggleAdmin" class="user">
             <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50"
                      width="50"></td>
             <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{
-                user.firstName || ('tatami.home.profile.sidebar.firstName' | translate) }} {{ user.lastName || ('tatami.home.profile.sidebar.lastName' | translate) }}</a></td>
+                user.firstName || ('tatami.home.profile.sidebar.firstName' | translate) }} {{
+                user.lastName || ('tatami.home.profile.sidebar.lastName' | translate) }}</a></td>
             <td>{{ user.login }}</td>
-            <td>{{ user.admin ? ('tatami.admin.yes' | translate) : ('tatami.admin.no' | translate) }}</td>
+            <td>{{ user.admin ? ('tatami.admin.yes' | translate) : ('tatami.admin.no' | translate)
+                }}
+            </td>
         </tr>
     </table>
 </div>

@@ -11,5 +11,9 @@ AdminModule.controller('AdminUsersController', [
             } else {
                 $scope.users = UserService.searchUsers({ q:$scope.search });
             }
-        }
+        };
+
+        $scope.toggleAdmin = function(user) {
+            return !$scope.adminOnly || user.admin;
+        };
     }]);
