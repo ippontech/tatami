@@ -129,7 +129,6 @@ public class UserService {
         List<UserDTO> users = new ArrayList<UserDTO>();
         for (String login : logins) {
             UserDTO user = getUserDTOFromUser(getUserByLogin(login));
-            user.setIsAdmin(tatamiUserDetailsService.isAdmin(login));
             users.add(user);
         }
         return users;
@@ -474,6 +473,7 @@ public class UserService {
         friend.setFriendsCount(user.getFriendsCount());
         friend.setFollowersCount(user.getFollowersCount());
         friend.setActivated(user.getActivated());
+        friend.setIsAdmin(tatamiUserDetailsService.isAdmin(friend.getLogin()));
         return friend;
     }
 }
