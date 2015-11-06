@@ -13,18 +13,18 @@
     </div>
     <table id="adminUsers" class="table table-striped">
         <tr>
-            <th style="width:10%;">Picture</th>
-            <th style="width:40%;">Name</th>
-            <th style="width:40%;">Email</th>
-            <th style="width:10%;">Admin</th>
+            <th translate="tatami.admin.avatar" style="width:10%;"></th>
+            <th translate="tatami.account.groups.name" style="width:40%;"></th>
+            <th translate="tatami.login.email" style="width:40%;"></th>
+            <th translate="tatami.account.groups.admin" style="width:10%;"></th>
         </tr>
         <tr ng-repeat="user in users" class="user">
             <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50"
                      width="50"></td>
             <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{
-                user.firstName || 'firstName' }} {{ user.lastName || 'lastName' }}</a></td>
+                user.firstName || ('tatami.home.profile.sidebar.firstName' | translate) }} {{ user.lastName || ('tatami.home.profile.sidebar.lastName' | translate) }}</a></td>
             <td>{{ user.login }}</td>
-            <td>{{ user.admin ? 'Yes' : 'No' }}</td>
+            <td>{{ user.admin ? ('tatami.admin.yes' | translate) : ('tatami.admin.no' | translate) }}</td>
         </tr>
     </table>
 </div>

@@ -457,7 +457,10 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'confirm': 'Are you sure you want to re-index Search Engine?',
                 'success': 'Search engine re-indexation has succeeded.',
                 'deactivate': 'Deactivate',
-                'activate': 'Activate'
+                'activate': 'Activate',
+                'avatar': 'Avatar',
+                'yes': 'Yes',
+                'no': 'No'
             }
         }
     });
@@ -919,7 +922,10 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'confirm': 'Êtes-vous sûr que vous voulez ré-indexer les moteurs de recherche?',
                 'success': 'La ré-indexation du moteur de recherche a réussi.',
                 'deactivate': 'Désactiver',
-                'activate': 'Activer'
+                'activate': 'Activer',
+                'avatar': 'Avatar',
+                'yes': 'Oui',
+                'no': 'Non'
             }
         }
     });

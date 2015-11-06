@@ -1,10 +1,8 @@
 AdminModule.controller('AdminUsersController', [
     '$scope',
-    '$translate',
-    '$window',
     'UserService',
     'users',
-    function($scope, $translate, $window, UserService, users) {
+    function($scope, UserService, users) {
         $scope.users = users;
 
         $scope.searchUsers = function() {
