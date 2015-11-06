@@ -24,10 +24,9 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldCreateAStatus() {
-        String login = "jdubois@ippon.fr";
         String content = "content";
 
-        Status created = statusRepository.createStatus(login, false, null, new ArrayList<String>(),
+        Status created = statusRepository.createStatus("uuser@ippon.fr", false, null, new ArrayList<String>(),
                 content, "", "", "", "48.54654, 3.87987987");
         assertThat(created, notNullValue());
     }
@@ -47,31 +46,25 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentNull() {
-        String login = "jdubois@ippon.fr";
-        String username = "jdubois";
-        String domain = "ippon.fr";
         String content = null;
 
         Status status = new Status();
         status.setContent(content);
-        status.setLogin(login);
+        status.setLogin(defaultUser);
 
-        statusRepository.createStatus(login, false, null, new ArrayList<String>(),
+        statusRepository.createStatus(defaultUser, false, null, new ArrayList<String>(),
                 content, "", "", "", null);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void shouldNotCreateAStatusBecauseContentEmpty() {
-        String login = "jdubois@ippon.fr";
-        String username = "jdubois";
-        String domain = "ippon.fr";
         String content = "";
 
         Status status = new Status();
         status.setContent(content);
-        status.setLogin(login);
+        status.setLogin(defaultUser);
 
-        statusRepository.createStatus(login, false, null, new ArrayList<String>(),
+        statusRepository.createStatus(defaultUser, false, null, new ArrayList<String>(),
                 content, "", "", "", null);
     }
 
@@ -85,11 +78,8 @@ public class StatusRepositoryTest extends AbstractCassandraTatamiTest {
 
         Status status = new Status();
         status.setContent(content);
-        String login = "jdubois@ippon.fr";
-        String username = "jdubois";
-        String domain = "ippon.fr";
 
-        statusRepository.createStatus(login, false, null, new ArrayList<String>(),
+        statusRepository.createStatus(defaultUser, false, null, new ArrayList<String>(),
                 content, "", "", "", null);
     }
 }

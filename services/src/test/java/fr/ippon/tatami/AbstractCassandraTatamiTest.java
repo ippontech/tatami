@@ -17,6 +17,12 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -45,8 +51,15 @@ public abstract class AbstractCassandraTatamiTest {
 
     protected static Client client = null;
 
+    protected static String defaultUser = "jdubois@ippon.fr";
+
+    protected static String defaultDomain = "ippon.fr";
+
     @Inject
     private CounterRepository counterRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -79,16 +92,24 @@ public abstract class AbstractCassandraTatamiTest {
 
     protected User constructAUser(String login, String firstName, String lastName) {
         User user = new User();
-        user.setLogin(login);
+        user.setLogin(login.toLowerCase());
         user.setPassword("");
-        user.setUsername(DomainUtil.getUsernameFromLogin(login));
-        user.setDomain(DomainUtil.getDomainFromLogin(login));
+        user.setUsername(DomainUtil.getUsernameFromLogin(user.getLogin()));
+        user.setDomain(DomainUtil.getDomainFromLogin(user.getLogin()));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setJobTitle("web developer");
         counterRepository.createStatusCounter(user.getLogin());
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
+
+        // Create the security context
+        UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+
         return user;
     }
 

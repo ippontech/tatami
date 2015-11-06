@@ -36,7 +36,7 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
         String groupId = groups.iterator().next().getGroupId();
 
-        Group group = groupService.getGroupById("ippon.fr", groupId);
+        Group group = groupService.getGroupById(defaultDomain, groupId);
         assertEquals(groupName, group.getName());
         assertEquals(groupDescription, group.getDescription());
         assertTrue(group.isPublicGroup());
@@ -45,9 +45,9 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void createGroup() {
-        mockAuthentication("jdubois@ippon.fr");
+        mockAuthentication(defaultUser);
 
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
+        User user = userService.getUserByLogin(defaultUser);
         assertEquals(0, groupService.getGroupsForUser(user).size());
 
         String groupName = "Group name";

@@ -25,16 +25,15 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void testSearchTags() {
-        mockAuthentication("currentuser@domain.com");
-        String domain = "domain.com";
-        Collection<String> tags = trendService.searchTags(domain, "Te", 1);
+        mockAuthentication(defaultUser);
+        Collection<String> tags = trendService.searchTags(defaultDomain, "Te", 1);
         assertEquals(0, tags.size());
-        tags = trendService.searchTags(domain, "Test", 1);
+        tags = trendService.searchTags(defaultDomain, "Test", 1);
         assertEquals(0, tags.size());
         statusUpdateService.postStatus("Message #Test", false, new ArrayList<String>(), null);
-        tags = trendService.searchTags(domain, "Te", 1);
+        tags = trendService.searchTags(defaultDomain, "Te", 1);
         assertEquals(1, tags.size());
-        tags = trendService.searchTags(domain, "Test", 1);
+        tags = trendService.searchTags(defaultDomain, "Test", 1);
         assertEquals(1, tags.size());
     }
 
@@ -113,8 +112,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void testPrivateMessagesNotInTrends() {
-        String login = "currentuser@domain.com";
-        mockAuthentication(login);
+        mockAuthentication(defaultUser);
 
         for (int i = 0; i < 5; i++) {
             statusUpdateService.postStatus("@anotheruser private message " + i + " #NoTrend", true, new ArrayList<String>(), null);
@@ -131,7 +129,7 @@ public class TrendServiceTest extends AbstractCassandraTatamiTest {
             fail("#NoTrend should not have been trending");
         }
 
-        trendService.getTrendsForUser(login);
+        trendService.getTrendsForUser(defaultUser);
         foundTrend = false;
         for (Trend trend : trends) {
             if (trend.getTag().equals("NoTrend")) {

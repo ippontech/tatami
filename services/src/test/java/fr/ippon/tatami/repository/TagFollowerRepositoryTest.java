@@ -15,14 +15,12 @@ public class TagFollowerRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void addNewFollowerForTag() {
-        String domain = "ippon.fr";
-        String login = "jdubois@ippon.fr";
         String tag = "tag";
-        Collection<String> followers = tagFollowerRepository.findFollowers(domain, tag);
+        Collection<String> followers = tagFollowerRepository.findFollowers(defaultDomain, tag);
         assertEquals(0, followers.size());
-        tagFollowerRepository.addFollower(domain, tag, login);
-        followers = tagFollowerRepository.findFollowers(domain, tag);
+        tagFollowerRepository.addFollower(defaultDomain, tag, defaultUser);
+        followers = tagFollowerRepository.findFollowers(defaultDomain, tag);
         assertEquals(1, followers.size());
-        assertEquals(login, followers.iterator().next());
+        assertEquals(defaultUser, followers.iterator().next());
     }
 }

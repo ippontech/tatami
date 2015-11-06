@@ -29,6 +29,10 @@
                         {
                             "name":"domain",
                             "value":"ippon.fr"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
@@ -54,11 +58,15 @@
                         {
                             "name":"domain",
                             "value":"ippon.fr"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"timelineUser@ippon.fr",
+                    "key":"timelineuser@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -79,11 +87,15 @@
                         {
                             "name":"domain",
                             "value":"ippon.fr"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoHasGroup@ippon.fr",
+                    "key":"userwhohasgroup@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -104,11 +116,15 @@
                         {
                             "name":"domain",
                             "value":"ippon.fr"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoWantToFollow@ippon.fr",
+                    "key":"userwhowanttofollow@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -121,11 +137,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoWantToFollow"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoWillBeFollowed@ippon.fr",
+                    "key":"userwhowillbefollowed@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -138,11 +158,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoWillBeFollowed"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoFollow@ippon.fr",
+                    "key":"userwhofollow@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -155,11 +179,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoFollow"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoIsFollowed@ippon.fr",
+                    "key":"userwhoisfollowed@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -172,11 +200,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoIsFollowed"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoWantToForget@ippon.fr",
+                    "key":"userwhowanttoforget@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -189,11 +221,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoWantToForget"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userToForget@ippon.fr",
+                    "key":"usertoforget@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -206,11 +242,15 @@
                         {
                             "name":"lastName",
                             "value":"ToForget"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWithStatus@ippon.fr",
+                    "key":"userwithstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"username",
@@ -231,11 +271,15 @@
                         {
                             "name":"lastName",
                             "value":"WithUserline"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoPostStatus@ippon.fr",
+                    "key":"userwhopoststatus@ippon.fr",
                     "columns":[
                         {
                             "name":"username",
@@ -256,11 +300,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoPostStatus"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoReadStatus@ippon.fr",
+                    "key":"userwhoreadstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -273,11 +321,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoReadStatus"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
+                    "key":"userwhoshouldbefoundbysimilarsearch@ippon.fr",
                     "columns":[
                         {
                             "name":"avatar",
@@ -290,11 +342,15 @@
                         {
                             "name":"lastName",
                             "value":"WhoShouldBeFoundBySimilarSearch"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "key":"userwhosubscribetodigests@ippon.fr",
                     "columns":[
                         {
                             "name":"username",
@@ -315,11 +371,44 @@
                         {
                             "name":"lastName",
                             "value":"WhoSubscribeToDigests"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 },
                 {
-                    "key":"userWhoPostForDigests@ippon.fr",
+                    "key":"userwhosubscribetoweeklydigests@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"userWhoSubscribeToWeeklyDigests"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"ippon.fr"
+                        },
+                        {
+                            "name":"avatar",
+                            "value":"avatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"WhoSubscribeToWeeklyDigests"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
+                        }
+                    ]
+                },
+                {
+                    "key":"userwhopostfordigests@ippon.fr",
                     "columns":[
                         {
                             "name":"username",
@@ -340,6 +429,39 @@
                         {
                             "name":"lastName",
                             "value":"WhoPostForDigests"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
+                        }
+                    ]
+                },
+                {
+                    "key":"currentuser@domain.com",
+                    "columns":[
+                        {
+                            "name":"username",
+                            "value":"currentuser"
+                        },
+                        {
+                            "name":"domain",
+                            "value":"domain.com"
+                        },
+                        {
+                            "name":"avatar",
+                            "value":"avatar"
+                        },
+                        {
+                            "name":"firstName",
+                            "value":"User"
+                        },
+                        {
+                            "name":"lastName",
+                            "value":"currentuser"
+                        },
+                        {
+                            "name":"password",
+                            "value":""
                         }
                     ]
                 }
@@ -362,59 +484,59 @@
                             "value":""
                         },
                         {
-                            "name":"timelineUser@ippon.fr",
+                            "name":"timelineuser@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoHasGroup@ippon.fr",
+                            "name":"userwhohasgroup@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoWantToFollow@ippon.fr",
+                            "name":"userwhowanttofollow@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoWillBeFollowed@ippon.fr",
+                            "name":"userwhowillbefollowed@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoFollow@ippon.fr",
+                            "name":"userwhofollow@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoIsFollowed@ippon.fr",
+                            "name":"userwhoisfollowed@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoWantToForget@ippon.fr",
+                            "name":"userwhowanttoforget@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userToForget@ippon.fr",
+                            "name":"usertoforget@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWithStatus@ippon.fr",
+                            "name":"userwithstatus@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoPostStatus@ippon.fr",
+                            "name":"userwhopoststatus@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoReadStatus@ippon.fr",
+                            "name":"userwhoreadstatus@ippon.fr",
                             "value":""
                         },
                         {
-                            "name":"userWhoShouldBeFoundBySimilarSearch@ippon.fr",
+                            "name":"userwhoshouldbefoundbysimilarsearch@ippon.fr",
                             "value":""
                         },
                         {
-                            "name": "userWhoSubscribeToDigests@ippon.fr",
+                            "name": "userwhosubscribetodigests@ippon.fr",
                             "value": ""
                         },
                         {
-                            "name":"userWhoPostForDigests@ippon.fr",
+                            "name":"userwhopostfordigests@ippon.fr",
                             "value" : ""
                         }
                     ]
@@ -453,7 +575,7 @@
                     ]
                 },
                 {
-                    "key":"timelineUser@ippon.fr",
+                    "key":"timelineuser@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -470,7 +592,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoHasGroup@ippon.fr",
+                    "key":"userwhohasgroup@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -487,7 +609,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoWantToFollow@ippon.fr",
+                    "key":"userwhowanttofollow@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -504,7 +626,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoWillBeFollowed@ippon.fr",
+                    "key":"userwhowillbefollowed@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -521,41 +643,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoFollow@ippon.fr",
-                    "columns":[
-                        {
-                            "name":"STATUS_COUNTER",
-                            "value":"0"
-                        },
-                        {
-                            "name":"FOLLOWERS_COUNTER",
-                            "value":"0"
-                        },
-                        {
-                            "name":"FRIENDS_COUNTER",
-                            "value":"1"
-                        }
-                    ]
-                },
-                {
-                    "key":"userWhoIsFollowed@ippon.fr",
-                    "columns":[
-                        {
-                            "name":"STATUS_COUNTER",
-                            "value":"0"
-                        },
-                        {
-                            "name":"FOLLOWERS_COUNTER",
-                            "value":"1"
-                        },
-                        {
-                            "name":"FRIENDS_COUNTER",
-                            "value":"0"
-                        }
-                    ]
-                },
-                {
-                    "key":"userWhoWantToForget@ippon.fr",
+                    "key":"userwhofollow@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -572,7 +660,7 @@
                     ]
                 },
                 {
-                    "key":"userToForget@ippon.fr",
+                    "key":"userwhoisfollowed@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -589,7 +677,41 @@
                     ]
                 },
                 {
-                    "key":"userWithStatus@ippon.fr",
+                    "key":"userwhowanttoforget@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"1"
+                        }
+                    ]
+                },
+                {
+                    "key":"usertoforget@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"0"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"1"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"0"
+                        }
+                    ]
+                },
+                {
+                    "key":"userwithstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -601,12 +723,12 @@
                         },
                         {
                             "name":"FRIENDS_COUNTER",
-                            "value":"0"
+                            "value":"3"
                         }
                     ]
                 },
                 {
-                    "key":"userWhoPostStatus@ippon.fr",
+                    "key":"userwhopoststatus@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -623,7 +745,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoReadStatus@ippon.fr",
+                    "key":"userwhoreadstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -640,7 +762,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoSubscribeToDigests@ippon.fr",
+                    "key":"userwhosubscribetodigests@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -657,7 +779,7 @@
                     ]
                 },
                 {
-                    "key":"userWhoPostForDigests@ippon.fr",
+                    "key":"userwhopostfordigests@ippon.fr",
                     "columns":[
                         {
                             "name":"STATUS_COUNTER",
@@ -670,6 +792,23 @@
                         {
                             "name":"FRIENDS_COUNTER",
                             "value":"0"
+                        }
+                    ]
+                },
+                {
+                    "key":"uuser@ippon.fr",
+                    "columns":[
+                        {
+                            "name":"STATUS_COUNTER",
+                            "value":"2"
+                        },
+                        {
+                            "name":"FOLLOWERS_COUNTER",
+                            "value":"3"
+                        },
+                        {
+                            "name":"FRIENDS_COUNTER",
+                            "value":"4"
                         }
                     ]
                 }
@@ -682,28 +821,28 @@
             "defaultColumnValueType":"LongType",
             "rows":[
                 {
-                    "key":"userWhoFollow@ippon.fr",
+                    "key":"userwhofollow@ippon.fr",
                     "columns":[
                         {
-                            "name":"userWhoIsFollowed@ippon.fr",
+                            "name":"userwhoisfollowed@ippon.fr",
                             "value":"0"
                         }
                     ]
                 },
                 {
-                    "key":"userWhoWantToForget@ippon.fr",
+                    "key":"userwhowanttoforget@ippon.fr",
                     "columns":[
                         {
-                            "name":"userToForget@ippon.fr",
+                            "name":"usertoforget@ippon.fr",
                             "value":"0"
                         }
                     ]
                 },
                 {
-                    "key":"userWhoReadStatus@ippon.fr",
+                    "key":"userwhoreadstatus@ippon.fr",
                     "columns":[
                         {
-                            "name":"userWhoPostStatus@ippon.fr",
+                            "name":"userwhopoststatus@ippon.fr",
                             "value":"0"
                         }
                     ]
@@ -717,10 +856,10 @@
             "defaultColumnValueType":"LongType",
             "rows":[
                 {
-                    "key":"userWhoPostStatus@ippon.fr",
+                    "key":"userwhopoststatus@ippon.fr",
                     "columns":[
                         {
-                            "name":"userWhoReadStatus@ippon.fr",
+                            "name":"userwhoreadstatus@ippon.fr",
                             "value":"0"
                         }
                     ]
@@ -734,7 +873,7 @@
             "defaultColumnValueType":"UTF8Type",
             "rows":[
                 {
-                    "key":"userWhoPostStatus@ippon.fr"
+                    "key":"userwhopoststatus@ippon.fr"
                 }
             ]
         },
@@ -783,7 +922,7 @@
             "defaultColumnValueType":"UTF8Type",
             "rows":[
                 {
-                    "key":"userWithStatus@ippon.fr",
+                    "key":"userwithstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"fa2bd770-9848-11e1-a6ca-e0f847068d52",
@@ -804,7 +943,7 @@
             "defaultColumnValueType":"UTF8Type",
             "rows":[
                 {
-                    "key":"userWithStatus@ippon.fr",
+                    "key":"userwithstatus@ippon.fr",
                     "columns":[
                         {
                             "name":"fa2bd770-9848-11e1-a6ca-e0f847068d52",
@@ -834,7 +973,7 @@
                     "columns":[
                         {
                             "name":"login",
-                            "value":"utf8(userWithStatus@ippon.fr)"
+                            "value":"utf8(userwithstatus@ippon.fr)"
                         },
                         {
                             "name":"username",
@@ -859,7 +998,7 @@
                     "columns":[
                         {
                             "name":"login",
-                            "value":"utf8(userWithStatus@ippon.fr)"
+                            "value":"utf8(userwithstatus@ippon.fr)"
                         },
                         {
                             "name":"username",

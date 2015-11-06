@@ -23,7 +23,7 @@ public class DomainUtil {
     }
 
     public static String getLoginFromUsernameAndDomain(String username, String domain) {
-        return username + "@" + domain;
+        return (username + "@" + domain).toLowerCase();
     }
 
     public static String getUsernameFromLogin(String login) {

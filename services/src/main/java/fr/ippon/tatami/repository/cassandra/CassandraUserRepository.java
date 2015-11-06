@@ -81,7 +81,7 @@ public class CassandraUserRepository implements UserRepository {
     public User findUserByLogin(String login) {
         User user;
         try {
-            user = em.find(User.class, login);
+            user = em.find(User.class, login.toLowerCase());
         } catch (Exception e) {
             log.debug("Exception while looking for user {} : {}", login, e.toString());
             return null;

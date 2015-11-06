@@ -4,6 +4,8 @@ import fr.ippon.tatami.AbstractCassandraTatamiTest;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.dto.UserDTO;
+
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -28,7 +30,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetAUserByLogin() {
-        User user = userService.getUserByLogin("jdubois@ippon.fr");
+        User user = userService.getUserByLogin(defaultUser);
         assertThat(user, notNullValue());
         assertThat(user.getAvatar(), is("avatar"));
         assertThat(user.getFirstName(), is("Julien"));
@@ -43,11 +45,11 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldGetAUserProfileByLogin() {
-        mockAuthenticationOnUserService("jdubois@ippon.fr");
-        User user = userService.getUserByUsername("jdubois");
+        mockAuthenticationOnUserService("userwithstatus@ippon.fr");
+        User user = userService.getUserByUsername("userwithstatus");
         assertThat(user.getStatusCount(), is(2L));
-        assertThat(user.getFollowersCount(), is(3L));
-        assertThat(user.getFriendsCount(), is(4L));
+        assertThat(user.getFollowersCount(), is(1L));
+        assertThat(user.getFriendsCount(), is(3L));
     }
 
     @Test
@@ -76,13 +78,12 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void createUserWithUsernameAndDomain() {
-        mockAuthenticationOnUserService("currentuser@domain.com");
-
         String login = "username@domain.com";
         User user = new User();
         user.setLogin(login);
         userService.createUser(user);
 
+        mockAuthenticationOnUserService(login);
         User createdUser = userService.getUserByUsername("username");
 
         assertThat(createdUser.getUsername(), is("username"));
@@ -93,7 +94,6 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldCreateAUser() {
-        mockAuthenticationOnUserService("currentuser@ippon.fr");
         String login = "nuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
@@ -106,6 +106,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         user.setAvatar(avatar);
 
         userService.createUser(user);
+        mockAuthenticationOnUserService(login);
 
         /* verify */
         User userToBeTheSame = userService.getUserByUsername("nuser");
@@ -157,13 +158,12 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
     @Test
     public void testGetUsersByLogin() {
         String login1 = "uuser@ippon.fr";
-        String login2 = "jdubois@ippon.fr";
 
         Collection<String> logins = new ArrayList<String>();
         logins.add(login1);
-        logins.add(login2);
+        logins.add(defaultUser);
 
-        mockAuthenticationOnUserService(login2);
+        mockAuthenticationOnUserService(defaultUser);
 
         Collection<User> users = userService.getUsersByLogin(logins);
 
@@ -172,33 +172,31 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void testGetUsersForCurrentDomain() {
-        mockAuthenticationOnUserService("jdubois@ippon.fr");
+        mockAuthenticationOnUserService(defaultUser);
         Collection<UserDTO> users = userService.getUsersForCurrentDomain(0);
         assertTrue(users.size() > 10);
     }
 
     @Test
     public void testUpdatePassword() {
-        String login = "jdubois@ippon.fr";
-        mockAuthenticationOnUserService(login);
+        mockAuthenticationOnUserService(defaultUser);
 
-        User testUser = userService.getUserByLogin(login);
-        assertNull(testUser.getPassword());
+        User testUser = userService.getUserByLogin(defaultUser);
+        assertTrue(StringUtils.isEmpty(testUser.getPassword()));
 
         testUser.setPassword("newPassword");
         userService.updatePassword(testUser);
 
-        testUser = userService.getUserByLogin(login);
+        testUser = userService.getUserByLogin(defaultUser);
         assertNotNull(testUser.getPassword());
         assertNotEquals("newPassword", testUser.getPassword());
     }
 
     @Test
     public void testBuildUserDTOList() {
-        String login = "jdubois@ippon.fr";
-        mockAuthenticationOnUserService(login);
+        mockAuthenticationOnUserService(defaultUser);
 
-        User testUser = userService.getUserByLogin(login);
+        User testUser = userService.getUserByLogin(defaultUser);
         Collection<User> users = new ArrayList<User>();
         users.add(testUser);
 
