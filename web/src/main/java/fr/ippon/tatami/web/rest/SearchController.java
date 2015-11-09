@@ -169,18 +169,16 @@ public class SearchController {
     @ResponseBody
     @Timed
     public Collection<UserDTO> searchUsers(@RequestParam("q") String query) {
-        String prefix = query.toLowerCase();
+        String prefix = query.toLowerCase().trim();
 
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
-        Collection<User> users;
+        Collection<User> users = new ArrayList<User>();
 
-        if (query != null && !query.equals("")) {
+        if (StringUtils.isNotEmpty(query)) {
             this.log.debug("REST request to find users starting with : {}", prefix);
             users = userService.getUsersByLogin(logins);
-        } else {
-            users = new ArrayList<User>();
         }
         return userService.buildUserDTOList(users);
 
