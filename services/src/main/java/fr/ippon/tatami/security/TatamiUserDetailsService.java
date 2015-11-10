@@ -70,28 +70,25 @@ public class TatamiUserDetailsService implements UserDetailsService {
         User userFromCassandra = userService.getUserByLogin(lowercaseLogin);
         if (userFromCassandra == null) {
             throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found in Cassandra");
+        } else if (userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false) {
+            throw new UsernameNotFoundException("User " + lowercaseLogin + " is deactivated. Contact administrator for further details.");
         }
-        else if ( userFromCassandra.getActivated() != null && userFromCassandra.getActivated() == false ) {
-            throw new UsernameNotFoundException("User " + lowercaseLogin + " is deactivated. Contact administrator for further details." );
-        }
-        return getTatamiUserDetails(lowercaseLogin, userFromCassandra.getPassword());
+        return getTatamiUserDetails(userFromCassandra);
     }
 
-    protected org.springframework.security.core.userdetails.User getTatamiUserDetails(String login, String password) {
-        Collection<GrantedAuthority> grantedAuthorities;
-        if (isAdmin(login)) {
-            log.debug("User \"{}\" is an administrator", login);
+    protected org.springframework.security.core.userdetails.User getTatamiUserDetails(User user) {
+        Collection<GrantedAuthority> grantedAuthorities = userGrantedAuthorities;
 
+        if (user.getAdmin() || isSuperAdmin(user.getLogin())) {
+            log.debug("User \"{}\" is an administrator", user.getLogin());
             grantedAuthorities = adminGrantedAuthorities;
-        } else {
-            grantedAuthorities = userGrantedAuthorities;
         }
 
-        return new org.springframework.security.core.userdetails.User(login, password,
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
                 grantedAuthorities);
     }
 
-    public Boolean isAdmin(String login) {
+    public Boolean isSuperAdmin(String login) {
         return adminUsers != null && adminUsers.contains(login);
     }
 }

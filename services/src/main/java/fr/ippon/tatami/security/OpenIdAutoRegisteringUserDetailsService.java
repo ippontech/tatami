@@ -96,7 +96,7 @@ public class OpenIdAutoRegisteringUserDetailsService implements
         user.setLastName(lastName);
         userService.createUser(user);
 
-        return userDetailsService.getTatamiUserDetails(login, user.getPassword());
+        return userDetailsService.getTatamiUserDetails(user);
     }
 
     private String getAttributeValue(OpenIDAuthenticationToken token, String name) {

@@ -459,9 +459,10 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'deactivate': 'Deactivate',
                 'activate': 'Activate',
                 'avatar': 'Avatar',
-                'yes': 'Yes',
-                'no': 'No',
-                'adminOnly': 'Administrator only'
+                'promote': 'Promote',
+                'demote': 'Demote',
+                'adminOnly': 'Administrator only',
+                'toggleAdminSuccess': 'Operation done'
             }
         }
     });
@@ -925,9 +926,10 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'deactivate': 'Désactiver',
                 'activate': 'Activer',
                 'avatar': 'Avatar',
-                'yes': 'Oui',
-                'no': 'Non',
-                'adminOnly': 'Administrateur seulement'
+                'promote': 'Promouvoir',
+                'demote': 'Destituer',
+                'adminOnly': 'Administrateur seulement',
+                'toggleAdminSuccess': 'Opération effectuée'
             }
         }
     });

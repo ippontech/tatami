@@ -1,31 +1,43 @@
 package fr.ippon.tatami.service;
 
-import fr.ippon.tatami.config.Constants;
-import fr.ippon.tatami.domain.DigestType;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.*;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetailsService;
-import fr.ippon.tatami.service.dto.UserDTO;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.service.util.RandomUtil;
-import org.springframework.security.access.annotation.Secured;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.cache.annotation.CacheEvict;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+
+import fr.ippon.tatami.config.Constants;
+import fr.ippon.tatami.domain.DigestType;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.repository.DomainRepository;
+import fr.ippon.tatami.repository.FavoritelineRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
+import fr.ippon.tatami.repository.FriendRepository;
+import fr.ippon.tatami.repository.MailDigestRepository;
+import fr.ippon.tatami.repository.RegistrationRepository;
+import fr.ippon.tatami.repository.RssUidRepository;
+import fr.ippon.tatami.repository.TimelineRepository;
+import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.UserlineRepository;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetailsService;
+import fr.ippon.tatami.service.dto.UserDTO;
+import fr.ippon.tatami.service.exception.ToggleAdminException;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.service.util.RandomUtil;
 
 /**
  * Manages the application's users.
@@ -141,14 +153,20 @@ public class UserService {
         user.setDomain(currentUser.getDomain());
         user.setAvatar(currentUser.getAvatar());
         user.setAttachmentsSize(currentUser.getAttachmentsSize());
-        try {
-            userRepository.updateUser(user);
-            searchService.removeUser(user);
-            searchService.addUser(user);
-        } catch (ConstraintViolationException cve) {
-            log.info("Constraint violated while updating user " + user + " : " + cve);
-            throw cve;
+
+        updateUserWithSearch(user);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void toggleAdmin(String login, Boolean admin) throws ToggleAdminException {
+        // Avoid demote of a hard coded admin
+        if (!admin && tatamiUserDetailsService.isSuperAdmin(login)) {
+            throw new ToggleAdminException("You can't demote " + login + " as he is a super admin (hard coded) !");
         }
+
+        User user = userRepository.findUserByLogin(login);
+        user.setAdmin(admin);
+        updateUserWithSearch(user);
     }
 
     public void updatePassword(User user) {
@@ -192,10 +210,11 @@ public class UserService {
         user.setPhoneNumber("");
         user.setPreferencesMentionEmail(true);
         user.setWeeklyDigestSubscription(true);
+        user.setAdmin(tatamiUserDetailsService.isSuperAdmin(login));
 
-        counterRepository.createStatusCounter(user.getLogin());
-        counterRepository.createFriendsCounter(user.getLogin());
-        counterRepository.createFollowersCounter(user.getLogin());
+        counterRepository.createStatusCounter(login);
+        counterRepository.createFriendsCounter(login);
+        counterRepository.createFollowersCounter(login);
         userRepository.createUser(user);
 
         // Add to the searchStatus engine
@@ -473,7 +492,18 @@ public class UserService {
         friend.setFriendsCount(user.getFriendsCount());
         friend.setFollowersCount(user.getFollowersCount());
         friend.setActivated(user.getActivated());
-        friend.setIsAdmin(tatamiUserDetailsService.isAdmin(friend.getLogin()));
+        friend.setIsAdmin(user.getAdmin() || tatamiUserDetailsService.isSuperAdmin(user.getLogin()));
         return friend;
+    }
+
+    private void updateUserWithSearch(User user) {
+        try {
+            userRepository.updateUser(user);
+            searchService.removeUser(user);
+            searchService.addUser(user);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating user " + user + " : " + cve);
+            throw cve;
+        }
     }
 }

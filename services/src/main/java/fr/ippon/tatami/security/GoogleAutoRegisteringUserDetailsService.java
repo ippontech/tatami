@@ -85,7 +85,7 @@ public class GoogleAutoRegisteringUserDetailsService implements AuthenticationUs
         log.debug("User: {}", user);
         userService.createUser(user);
 
-        return userDetailsService.getTatamiUserDetails(login, user.getPassword());
+        return userDetailsService.getTatamiUserDetails(user);
     }
 
     private String getAttributeValue(ClientAuthenticationToken token, String name) {

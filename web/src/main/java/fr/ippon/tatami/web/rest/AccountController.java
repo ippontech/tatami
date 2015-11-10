@@ -1,13 +1,9 @@
 package fr.ippon.tatami.web.rest;
 
 import com.yammer.metrics.annotation.Timed;
-import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.Preferences;
-import fr.ippon.tatami.web.rest.dto.UserPassword;
+
 import org.apache.commons.lang.StringEscapeUtils;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -21,9 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.exception.ToggleAdminException;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.Preferences;
+import fr.ippon.tatami.web.rest.dto.UserPassword;
 
 /*
  * REST controller for managing users.
@@ -223,4 +230,27 @@ public class AccountController {
             return null;
         }
     }
+
+    /**
+     * POST  /account/admin -> Promote/demote as admin an user
+     */
+    @RequestMapping(value = "/rest/account/admin",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    public Map<String, String> toggleAdmin(@RequestBody User user, HttpServletResponse httpResponse) throws JSONException {
+        Map<String, String> response = new HashMap<String, String>();
+        try {
+            if (authenticationService.getCurrentUser().equals(user)) {
+                throw new ToggleAdminException("You can't demote yourself !");
+            }
+            userService.toggleAdmin(user.getLogin(), user.getAdmin());
+        } catch (ToggleAdminException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.put("error", e.getMessage());
+        }
+        return response;
+    }
+
 }

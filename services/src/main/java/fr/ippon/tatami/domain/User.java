@@ -1,6 +1,8 @@
 package fr.ippon.tatami.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -84,7 +86,10 @@ public class User implements Serializable {
     private long attachmentsSize;
 
     @Column(name="activated")
-    private Boolean activated=true;
+    private Boolean activated = true;
+
+    @Column(name="admin")
+    private Boolean admin = false;
 
     private long statusCount;
 
@@ -101,10 +106,12 @@ public class User implements Serializable {
         this.activated = activated;
     }
 
+    @JsonIgnore
     public String getLogin() {
         return login;
     }
 
+    @JsonProperty
     public void setLogin(String login) {
         this.login = login;
     }
@@ -245,6 +252,13 @@ public class User implements Serializable {
         this.dailyDigestSubscription = dailyDigestSubscription;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -284,6 +298,7 @@ public class User implements Serializable {
                 ", statusCount=" + statusCount +
                 ", friendsCount=" + friendsCount +
                 ", followersCount=" + followersCount +
+                ", admin=" + admin +
                 '}';
     }
 }

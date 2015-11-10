@@ -94,8 +94,8 @@ public class TatamiLdapAuthenticationProvider extends LdapAuthenticationProvider
         }
 
         // The real authentication object uses the login, and not the username
-        org.springframework.security.core.userdetails.User realUser = userDetailsService.getTatamiUserDetails(login,
-                authentication.getCredentials().toString());
+        user.setPassword(authentication.getCredentials().toString());
+        org.springframework.security.core.userdetails.User realUser = userDetailsService.getTatamiUserDetails(user);
 
         return
                 new UsernamePasswordAuthenticationToken(realUser, authentication.getCredentials(),

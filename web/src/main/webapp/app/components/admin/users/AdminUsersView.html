@@ -24,15 +24,15 @@
             <th translate="tatami.login.email" style="width:40%;"></th>
             <th translate="tatami.account.groups.admin" style="width:10%;"></th>
         </tr>
-        <tr ng-repeat="user in users | filter:toggleAdmin" class="user">
+        <tr ng-repeat="user in users | filter:isAdmin" class="user">
             <td><img class="nomargin avatar img-rounded" ng-src="{{ user.avatarURL }}" height="50"
                      width="50"></td>
             <td><a ui-sref="tatami.home.profile.statuses({ username: user.username })">{{
                 user.firstName || ('tatami.home.profile.sidebar.firstName' | translate) }} {{
                 user.lastName || ('tatami.home.profile.sidebar.lastName' | translate) }}</a></td>
             <td>{{ user.login }}</td>
-            <td>{{ user.admin ? ('tatami.admin.yes' | translate) : ('tatami.admin.no' | translate)
-                }}
+            <td style="text-align: center;">
+                <button class="btn btn-{{ user.admin ? 'danger' : 'success' }} btn-small" type="button" ng-click="toggleAdmin(user)">{{ user.admin ? ('tatami.admin.demote' | translate) : ('tatami.admin.promote' | translate) }}</button>
             </td>
         </tr>
     </table>
