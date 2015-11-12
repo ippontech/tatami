@@ -467,47 +467,47 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
             'pageNotFound': 'Page non trouvée.',
 
             'welcome': {
-                'title': 'Bienvenue sur Tatami',
-                'message': 'Votre timeline est vide! Avez-vous besoin d\'aide pour apprendre à utilizer Tatami? Veuillez cliquer sur le bouton ci-dessous pour lancer une présentation.',
+                'title': 'Bienvenue sur Tatami !',
+                'message': 'Votre timeline est vide ! Avez-vous besoin d\'aide pour apprendre à utiliser Tatami ? Veuillez cliquer sur le bouton ci-dessous pour lancer une présentation.',
                 'presentation': 'Lancer la présentation',
                 'help': {
                     'title': 'Aide',
-                    'line1': 'Bienvenue sur l\'aide en ligne!',
-                    'line2':' Suivez les étapes suivantes pour une présentation des principales caractéristiques de Tatami .'
+                    'line1': 'Bienvenue sur l\'aide en ligne !',
+                    'line2':' Suivez les étapes suivantes pour une présentation des principales caractéristiques de Tatami.'
                 },
                 'timeline': {
                     'title': 'Timeline',
-                    'line1': 'Ceci est votre timeline. Il affiche tous les messages',
-                    'bulletPoint1': 'vous mentionner ou envoyé en privé à vous',
-                    'bulletPoint2': 'envoyé par les utilisateurs que vous suivez',
-                    'bulletPoint3': 'envoyé par vous-même ',
-                    'bulletPoint4': 'envoyé à un groupe auquel vous êtes abonné(e)',
-                    'afterBP1': 'Si elle est vide, ne vous inquiétez pas, elle sera mise à jour dès que vous commencez à suivre d\'autres utilisateurs!',
+                    'line1': 'Ceci est votre timeline. Elle affiche tous les messages',
+                    'bulletPoint1': 'vous mentionnant ou qu\'on vous a envoyé en privé',
+                    'bulletPoint2': 'envoyés par les utilisateurs que vous suivez',
+                    'bulletPoint3': 'que vous avez envoyé',
+                    'bulletPoint4': 'envoyés à un groupe auquel vous êtes abonné(e)',
+                    'afterBP1': 'Si elle est vide, ne vous inquiétez pas, elle sera mise à jour dès que vous commencerez à suivre d\'autres utilisateurs!',
                     'afterBP2': 'Lors de l\'affichage d\'un message, vous pouvez y répondre et le marquer comme favori pour le retrouver plus facilement.',
-                    'afterBP3': 'Si un message avait déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail : ce sera plus facile de suivre la conversation sur Tatami.'
+                    'afterBP3': 'Si un message a déjà obtenu quelques réponses, vous pouvez voir tous les détails en cliquant sur detail : ce sera plus facile de suivre la conversation sur Tatami.'
                 },
                 'post': {
                     'title': 'Envoyer un message',
                     'line1': 'C\'est ici que vous écrivez les messages que vous souhaitez partager',
                     'bulletPoint1': 'tous les messages sont publics par défaut. Ils seront affichés à tous les utilisateurs qui vous suivent',
-                    'bulletPoint2': 'pour écrire un message, vous pouvez utiliser de #hashtags : cela signifie tout simplement l\'ajout d\'un «#» au début des mots importants qui peuvent ensuite être utilisé pour trouver votre message',
-                    'bulletPoint3': 'pour mentionner ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom : ils seront informés que vous vous adressez à eux'
+                    'bulletPoint2': 'pour écrire un message, vous pouvez utiliser des #hashtags : cela signifie tout simplement l\'ajout d\'un «#» au début des mots importants qui peuvent ensuite être utilisé pour trouver votre message',
+                    'bulletPoint3': 'pour mentionner ou répondre à d\'autres utilisateurs, vous devez ajouter un @ au début de leur nom : ils seront informés que vous vous adressez à eux'
                 },
                 'groups': {
                     'title': 'Groupes',
                     'line1': 'Ceci est la liste des groupes auquel vous appartenez.',
                     'line2': 'Vous pouvez trouver et vous abonner à des groupe public dans la page Account/Groupes (menu en haut à droite).',
-                    'line3': 'Il y a aussi des groupes privés : vous ne pouvez pas vous y inscrire;  le propriétaire du groupe doit vous ajouter en tant que membre.'
+                    'line3': 'Il y a aussi des groupes privés : vous ne pouvez pas vous y inscrire;  le propriétaire du groupe doit vous ajouter en tant que membre.'
                 },
                 'trends': {
                     'title': 'Tendances',
-                    'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-la pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatami!'
+                    'line1': 'Cette liste représente les #hashtag qui sont les plus souvent utilisés sur Tatami. Utilisez-la pour découvrir ce qui ce passe et quels sont les sujets les plus chauds sur Tatam !'
                 },
                 'whoToFollow': {
                     'title': 'Utilisateurs suggérées',
                     'line1': 'Ceci est une liste d\'utilisateurs qui partagent des intérêts communs avec vous et que vous pourriez suivre.',
-                    'line2': 'Si vous êtes un nouvel utilisateur, cette liste est probablement vide : Tatami a besoin de temps pour apprendre qui vous êtes afin de vous proposer des utilisateurs',
-                    'line3': 'Et n\'oubliez pas d\'utiliser des #hashtags dans vos messages, cela rend tout plus facile !'
+                    'line2': 'Si vous êtes un nouvel utilisateur, cette liste est probablement vide : Tatami a besoin de temps pour apprendre qui vous êtes afin de vous proposer des utilisateurs',
+                    'line3': 'Et n\'oubliez pas d\'utiliser des #hashtags dans vos messages, cela rend tout plus facile !'
                 },
                 'next': 'Suivant',
                 'previous': 'Précédent',
@@ -523,14 +523,14 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'email': 'Email',
                 'password': 'Mot de passe',
                 'remember': 'Se souvenir de moi',
-                'forgotPassword': 'Mot de passe oublié ?',
+                'forgotPassword': 'Mot de passe oublié ?',
                 'resetPassword': 'Nouveau mot de passe',
                 'tos': 'Conditions de service',
-                'fail': 'Votre authentification a échoué ! Etes-vous sûr que vous avez utilisé un mot de passe correct ?',
+                'fail': 'Votre authentification a échoué ! Etes-vous sûr que vous avez utilisé un mot de passe correct ?',
                 'passwordEmailSent': 'Un email vous a été envoyé, avec des instructions pour créer un nouveau mot de passe.',
                 'unregisteredEmail': 'Cette adresse email n\'est pas enregistrée dans Tatami.',
                 'register': {
-                    'title': 'Enregistré',
+                    'title': 'S\'enregistrer',
                     'line1': 'Un email de confirmation sera envoyé à l\'adresse fournie.',
                     'line2': "Le domaine de votre email détermine l'espace de l'entreprise que vous allez rejoindre. Par exemple, les utilisateurs ayant une adresse email@ippon.fr vont joindre l'espace privé Ippon.",
                     'line3': "Si vous êtes le premier employé de votre entreprise à se joindre à Tatami, l'espace privé de votre entreprise sera automatiquement créé."
@@ -546,38 +546,38 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
 
                 'validation': 'Validation email',
                 'passwordSuccess': 'Votre email a été validé. Votre mot de passe vous sera envoyé par email.',
-                'returnHome': 'Allez à la page d\'accueil',
-                'registrationEmail': 'Merci ! Un e-mail de confirmation vous a été envoyé.'
+                'returnHome': 'Aller à la page d\'accueil',
+                'registrationEmail': 'Merci ! Un email de confirmation vous a été envoyé.'
             },
 
             'about': {
                 // Presentation Page
                 'presentation': {
-                    'title': 'Qu\'est-ce que Tatami ?',
+                    'title': 'Qu\'est-ce que Tatami ?',
                     'devices': 'Appareils',
                     'openSource': 'Open Source',
                     'row1': {
                         'title': 'Un réseau social d\'entreprise privé',
                         'line1': 'Mettre à jour votre statut afin d\'informer vos collègues',
-                        'line2': "S'abonner aux timelines des autres employés",
+                        'line2': "S'abonner aux timelines des autres collègues",
                         'line3': 'Partager des informations importantes aux personnes qui vous suivent',
                         'line4': 'Discuter et répondre à vos collègues',
                         'line5': 'Ajouter des informations importantes dans vos favoris',
                         'line6': 'Chercher des informations utiles avec notre moteur de recherche intégré',
                         'line7': 'Utiliser les #hashtags lors de votre recherche',
                         'line8': "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
-                        'line9': 'Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues'
+                        'line9': 'Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues.'
                     },
                     'row2': {
-                        'title': 'Fonctionne partout !',
-                        'line1': 'Application web dynamique (HTML5): rien à installer, un navigateur moderne suffit !',
-                        'line2': "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
+                        'title': 'Fonctionne partout !',
+                        'line1': 'Application web dynamique (HTML5) : rien à installer, un navigateur moderne suffit !',
+                        'line2': "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs : l'application s'adapte automatiquement à l'écran de votre appareil",
                         'line3': 'Restez connecté avec votre entreprise où que vous soyez'
                     },
                     'row3': {
                         'title': "Installation et intégration facile avec l'infrastructure informatique de votre entreprise",
                         'line1': 'Application standard Java',
-                        'line2': 'Vos données vous appartiennent et ne sont pas à votre fournisseur SaaS !',
+                        'line2': 'Vos données vous appartiennent et ne sont pas à votre fournisseur SaaS !',
                         'line3': 'Intégration avec votre dossier LDAP',
                         'line4': 'Intégration avec Google Apps',
                         'line5': 'Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises',
@@ -588,12 +588,12 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'row4': {
                         'title': "Egalement disponible en mode SaaS, entièrement géré par Ippon Technologies",
                         'line1': "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l'utiliser directement",
-                        'line2': 'Mode multi-entreprise sécurisé : chaque entreprise dispose de son propre espace privé',
-                        'line3': 'Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé'
+                        'line2': 'Mode multi-entreprise sécurisé : chaque entreprise dispose de son propre espace privé',
+                        'line3': 'Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé'
                     },
                     'row5': {
-                        'title': 'Besoin de plus d\'informations sur notre produit ?',
-                        'line1': 'Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 1 46 12 48 48 ou par email à'
+                        'title': 'Besoin de plus d\'informations sur notre produit ?',
+                        'line1': 'Notre équipe de vente est impatiente de vous entendre ! Appelez-nous au +33 1 46 12 48 48 ou par email à'
                     }
                 },
 
@@ -629,7 +629,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'presentation': 'Présentation',
                         'tos': 'Conditions générales d\'utilisation',
                         'language': {
-                            'language': 'Language',
+                            'language': 'Langue',
                             'en': 'English',
                             'fr': 'Français'
                         },
@@ -664,7 +664,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'preview': 'Prévisualisation',
                     'edit': 'Éditer',
                     'characters': {
-                        'left': 'Caractères restants :'
+                        'left': 'Caractères restants :'
                     },
                     'options': 'Options',
                     'shareLocation': 'Partager votre localisation',
@@ -675,7 +675,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                         'file': 'Déposez vos fichiers ici'
                     },
                     'markdown': 'Markdown Supported',
-                    'button': 'Post'
+                    'button': 'Poster'
                 },
 
                 // Home Sidebar View
@@ -701,7 +701,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'share': 'Partager',
                     'favorite': 'Favoris',
                     'delete': 'Supprimer',
-                    'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut ?',
+                    'confirmDelete': 'Êtes-vous sûr de vouloir supprimer ce statut ?',
                     'sharedYour': 'a partagé votre statut',
                     'followed': 'vous suit',
                     'shared': 'partagé',
