@@ -306,48 +306,16 @@
                 </plugins>
             </build>
             <dependencies>
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-core</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-cassandra</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-thrift</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-cql</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-queue</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-recipes</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                    <!--<groupId>com.netflix.astyanax</groupId>-->
-                    <!--<artifactId>astyanax-entity-mapper</artifactId>-->
-                    <!--<version>3.8.0</version>-->
-                    <!--<scope>compile</scope>-->
-                <!--</dependency>-->
+                <dependency>
+                    <groupId>com.datastax.cassandra</groupId>
+                    <artifactId>cassandra-driver-core</artifactId>
+                    <version>${datastax.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.datastax.cassandra</groupId>
+                    <artifactId>cassandra-driver-mapping</artifactId>
+                    <version>${datastax.version}</version>
+                </dependency>
                 <dependency>
                     <groupId>com.rometools</groupId>
                     <artifactId>rome</artifactId>
@@ -498,6 +466,7 @@
         <velocity.version>1.7</velocity.version>
         <yammer.metrics.version>2.2.0</yammer.metrics.version>
         <camel.version>2.11.0</camel.version>
+        <datastax.version>2.1.9</datastax.version>
 
         <selenium.version>2.31.0</selenium.version>
 
@@ -538,48 +507,16 @@
     </prerequisites>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-core</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-cassandra</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-thrift</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-cql</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-queue</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-recipes</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.netflix.astyanax</groupId>-->
-            <!--<artifactId>astyanax-entity-mapper</artifactId>-->
-            <!--<version>3.8.0</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-core</artifactId>
+            <version>${datastax.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-mapping</artifactId>
+            <version>${datastax.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>

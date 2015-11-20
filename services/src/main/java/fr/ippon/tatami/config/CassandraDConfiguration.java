@@ -1,13 +1,14 @@
 package fr.ippon.tatami.config;
 
-import com.netflix.astyanax.AstyanaxContext;
-import com.netflix.astyanax.Cluster;
-import com.netflix.astyanax.Keyspace;
-import com.netflix.astyanax.connectionpool.NodeDiscoveryType;
-import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
-import com.netflix.astyanax.connectionpool.impl.CountingConnectionPoolMonitor;
-import com.netflix.astyanax.impl.AstyanaxConfigurationImpl;
-import com.netflix.astyanax.thrift.ThriftFamilyFactory;
+//import com.netflix.astyanax.AstyanaxContext;
+//import com.netflix.astyanax.Cluster;
+//import com.netflix.astyanax.Keyspace;
+//import com.netflix.astyanax.connectionpool.NodeDiscoveryType;
+//import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
+//import com.netflix.astyanax.connectionpool.impl.CountingConnectionPoolMonitor;
+//import com.netflix.astyanax.impl.AstyanaxConfigurationImpl;
+//import com.netflix.astyanax.thrift.ThriftFamilyFactory;
+import me.prettyprint.hector.api.Keyspace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -22,65 +23,47 @@ import javax.inject.Inject;
  *
  * @author Julien Dubois
  */
-public class CassandraAConfiguration {
+public class CassandraDConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(CassandraAConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(CassandraDConfiguration.class);
 
     @Inject
     private Environment env;
 
-    private Cluster myCluster;
+//    private Cluster myCluster;
 
     @PreDestroy
     public void destroy() {
         log.info("Closing Hector connection pool");
-        AstyanaxContext<Keyspace> context = new AstyanaxContext.Builder()
-                .forCluster("ClusterName")
-                .forKeyspace("KeyspaceName")
-                .withAstyanaxConfiguration(new AstyanaxConfigurationImpl()
-                        .setDiscoveryType(NodeDiscoveryType.RING_DESCRIBE)
-                )
-                .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
-                        .setPort(9160)
-                        .setMaxConnsPerHost(1)
-                        .setSeeds("127.0.0.1:9160")
-                )
-                .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
-                .buildKeyspace(ThriftFamilyFactory.getInstance());
-
-        context.start();
-        Keyspace keyspace = context.getClient();
-//        myCluster.getConnectionManager().shutdown();
-//        AstyanaxContext.
 //        HFactory.shutdownCluster(myCluster);
     }
 
 //    @Bean
     public Keyspace keyspaceOperator() {
         log.info("Configuring Cassandra keyspace");
-        String cassandraHost = env.getProperty("cassandra.host");
-        String cassandraClusterName = env.getProperty("cassandra.clusterName");
-        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
-        AstyanaxContext<Keyspace> context = new AstyanaxContext.Builder()
-                .forCluster(cassandraClusterName)
-                .forKeyspace(cassandraKeyspace)
-                .withAstyanaxConfiguration(new AstyanaxConfigurationImpl()
-                        .setDiscoveryType(NodeDiscoveryType.RING_DESCRIBE)
-                        .setCqlVersion("3.3.0")
-                        .setTargetCassandraVersion("2.2")
-                )
-                .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
-                        .setPort(9142)
-                        .setMaxConnsPerHost(1)
-                        .setSeeds(cassandraHost)
-                )
-                .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
-                .buildKeyspace(ThriftFamilyFactory.getInstance());
-        context.start();
-        Keyspace keyspace = context.getClient();
-        keyspace.getColumnFamilyProperties()
+//        String cassandraHost = env.getProperty("cassandra.host");
+//        String cassandraClusterName = env.getProperty("cassandra.clusterName");
+//        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
+//        AstyanaxContext<Keyspace> context = new AstyanaxContext.Builder()
+//                .forCluster(cassandraClusterName)
+//                .forKeyspace(cassandraKeyspace)
+//                .withAstyanaxConfiguration(new AstyanaxConfigurationImpl()
+//                        .setDiscoveryType(NodeDiscoveryType.RING_DESCRIBE)
+//                        .setCqlVersion("3.3.0")
+//                        .setTargetCassandraVersion("2.2")
+//                )
+//                .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
+//                        .setPort(9142)
+//                        .setMaxConnsPerHost(1)
+//                        .setSeeds(cassandraHost)
+//                )
+//                .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
+//                .buildKeyspace(ThriftFamilyFactory.getInstance());
+//        context.start();
+//        Keyspace keyspace = context.getClient();
 
-        return keyspace;
+        return null;
+    }
 //
 //        CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
 //        cassandraHostConfigurator.setMaxActive(100);
