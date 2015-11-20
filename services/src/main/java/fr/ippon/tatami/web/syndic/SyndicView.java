@@ -1,8 +1,8 @@
 package fr.ippon.tatami.web.syndic;
 
-import com.sun.syndication.feed.rss.Channel;
-import com.sun.syndication.feed.rss.Content;
-import com.sun.syndication.feed.rss.Item;
+import com.rometools.rome.feed.rss.Channel;
+import com.rometools.rome.feed.rss.Content;
+import com.rometools.rome.feed.rss.Item;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.pegdown.PegDownProcessor;
 import org.slf4j.Logger;
