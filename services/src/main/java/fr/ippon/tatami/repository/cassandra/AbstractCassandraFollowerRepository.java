@@ -54,6 +54,6 @@ public abstract class AbstractCassandraFollowerRepository {
     }
 
     public Collection<String> findFollowers(String key) {
-        return null;
+        return new ArrayList<>();
     }
 }

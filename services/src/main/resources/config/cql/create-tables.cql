@@ -1,6 +1,5 @@
 
 CREATE TABLE IF NOT EXISTS user (
-    id varchar,
     login varchar,
     password varchar,
     username varchar,

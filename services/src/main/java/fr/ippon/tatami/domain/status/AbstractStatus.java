@@ -2,13 +2,14 @@ package fr.ippon.tatami.domain.status;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Parent class for all statuses.
  */
 public interface AbstractStatus extends Serializable {
 
-    String getStatusId();
+    UUID getStatusId();
 
     StatusType getType();
 

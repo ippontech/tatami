@@ -32,7 +32,7 @@ public class MentionService {
      * The mentioned user can also be notified by email.
      */
     public void mentionUser(String mentionedLogin, Status status) {
-        mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId());
+        mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId().toString());
 
         User mentionnedUser = userRepository.findUserByLogin(mentionedLogin);
 

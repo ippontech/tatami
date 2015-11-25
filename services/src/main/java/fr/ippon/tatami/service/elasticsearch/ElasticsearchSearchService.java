@@ -164,7 +164,7 @@ public class ElasticsearchSearchService implements SearchService {
     private final ElasticsearchMapper<Status> statusMapper = new ElasticsearchMapper<Status>() {
         @Override
         public String id(Status status) {
-            return status.getStatusId();
+            return status.getStatusId().toString();
         }
 
         @Override

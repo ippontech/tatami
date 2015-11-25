@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * A status.
@@ -20,7 +21,7 @@ import java.util.Date;
 @Table(name="status")
 public class Status implements AbstractStatus {
     @PartitionKey
-    private String statusId;
+    private UUID statusId;
 
     @NotNull
     @Column
@@ -55,11 +56,11 @@ public class Status implements AbstractStatus {
     @Column
     private boolean removed;
 
-    public String getStatusId() {
+    public UUID getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
+    public void setStatusId(UUID statusId) {
         this.statusId = statusId;
     }
 

@@ -171,7 +171,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 10; i++) {
             String content = "temporary status " + i +  " #ippon";
-            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
+            statusUpdateService.postStatus(content, false, new ArrayList<>(),null);
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);

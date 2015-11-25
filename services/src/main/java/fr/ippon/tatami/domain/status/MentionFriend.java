@@ -5,13 +5,14 @@ import com.datastax.driver.mapping.annotations.PartitionKey;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Mention a user that someone started following him.
  */
 public class MentionFriend implements AbstractStatus {
     @PartitionKey
-    private String statusId;
+    private UUID statusId;
 
     @NotNull
     @Column
@@ -46,11 +47,11 @@ public class MentionFriend implements AbstractStatus {
     @Column
     private boolean removed;
 
-    public String getStatusId() {
+    public UUID getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
+    public void setStatusId(UUID statusId) {
         this.statusId = statusId;
     }
 

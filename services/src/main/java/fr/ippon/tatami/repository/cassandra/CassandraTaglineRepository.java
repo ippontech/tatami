@@ -27,7 +27,7 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
 
     @Override
     public void addStatusToTagline(String tag, Status status) {
-        addStatus(getKey(status.getDomain(), tag), TAGLINE_CF, status.getStatusId());
+        addStatus(getKey(status.getDomain(), tag), TAGLINE_CF, status.getStatusId().toString());
     }
 
     @Override

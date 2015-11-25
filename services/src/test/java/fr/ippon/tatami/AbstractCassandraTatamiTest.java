@@ -48,6 +48,7 @@ public abstract class AbstractCassandraTatamiTest {
     private static final Object lock = new Object();
 
     protected static Client client = null;
+    protected static Session session = null;
 
     @Inject
     private CounterRepository counterRepository;
@@ -58,7 +59,7 @@ public abstract class AbstractCassandraTatamiTest {
             if (!isInitialized) {
                 EmbeddedCassandraServerHelper.startEmbeddedCassandra();
                 Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
-                Session session = cluster.connect();
+                session = cluster.connect();
                 CQLDataLoader dataLoader = new CQLDataLoader(session);
                 dataLoader.load(new ClassPathCQLDataSet("config/cql/create-tables.cql", true, "testTatami"));
 //
@@ -78,6 +79,8 @@ public abstract class AbstractCassandraTatamiTest {
                 isInitialized = true;
             }
         }
+        CQLDataLoader dataLoader = new CQLDataLoader(session);
+        dataLoader.load(new ClassPathCQLDataSet("dataset/dataset.cql",true,"testTatami"));
     }
 
     @AfterClass

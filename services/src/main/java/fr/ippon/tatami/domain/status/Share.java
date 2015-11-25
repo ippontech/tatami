@@ -5,6 +5,7 @@ import com.datastax.driver.mapping.annotations.PartitionKey;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * A status that is shared.
@@ -12,7 +13,7 @@ import java.util.Date;
 public class Share implements AbstractStatus {
 
     @PartitionKey
-    private String statusId;
+    private UUID statusId;
 
     @NotNull
     @Column
@@ -47,11 +48,11 @@ public class Share implements AbstractStatus {
     @Column
     private boolean removed;
 
-    public String getStatusId() {
+    public UUID getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
+    public void setStatusId(UUID statusId) {
         this.statusId = statusId;
     }
 

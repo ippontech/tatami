@@ -35,34 +35,6 @@ public class CassandraStatusRepository implements StatusRepository {
 
     private final Logger log = LoggerFactory.getLogger(CassandraStatusRepository.class);
 
-    @Inject
-    Session session;
-
-    private Mapper<Status> mapper;
-
-
-    private static final String LOGIN = "login";
-    private static final String TYPE = "type";
-    private static final String USERNAME = "username";
-    private static final String DOMAIN = "domain";
-    private static final String STATUS_DATE = "statusDate";
-
-    //Normal status
-    private static final String STATUS_PRIVATE = "statusPrivate";
-    private static final String GROUP_ID = "groupId";
-    private static final String HAS_ATTACHMENTS = "hasAttachments";
-    private static final String CONTENT = "content";
-    private static final String DISCUSSION_ID = "discussionId";
-    private static final String REPLY_TO = "replyTo";
-    private static final String REPLY_TO_USERNAME = "replyToUsername";
-    private static final String REMOVED = "removed";
-    private static final String GEO_LOCALIZATION = "geoLocalization";
-
-    //Share, Mention Share & Announcement
-    private static final String ORIGINAL_STATUS_ID = "originalStatusId";
-
-    //Mention Friend
-    private static final String FOLLOWER_LOGIN = "followerLogin";
 
     //Bean validation
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -86,6 +58,12 @@ public class CassandraStatusRepository implements StatusRepository {
 
 
     private PreparedStatement deleteByIdStmt;
+
+
+    @Inject
+    Session session;
+
+    private Mapper<Status> mapper;
 
     @PostConstruct
     public void init() {
@@ -112,21 +90,22 @@ public class CassandraStatusRepository implements StatusRepository {
             throws ConstraintViolationException {
 
         Status status = new Status();
-        status.setStatusId(UUIDs.random().toString());
+        status.setStatusId(UUIDs.random());
         status.setLogin(login);
         status.setType(StatusType.STATUS);
         String username = DomainUtil.getUsernameFromLogin(login);
         status.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         status.setDomain(domain);
+        status.setStatusPrivate(statusPrivate);
 
         status.setContent(content);
 
         Set<ConstraintViolation<Status>> constraintViolations = validator.validate(status);
         if (!constraintViolations.isEmpty()) {
-//            if (log.isDebugEnabled()) {
-                constraintViolations.forEach(e -> log.info("Constraint violation: {}", e.getMessage()));
-//            }
+            if (log.isDebugEnabled()) {
+                constraintViolations.forEach(e -> log.debug("Constraint violation: {}", e.getMessage()));
+            }
             throw new ConstraintViolationException(new HashSet<>(constraintViolations));
         }
         if (group != null) {
@@ -152,6 +131,7 @@ public class CassandraStatusRepository implements StatusRepository {
         if(geoLocalization!=null) {
             status.setGeoLocalization(geoLocalization);
         }
+        status.setStatusDate(new Date());
         BatchStatement batch = new BatchStatement();
         batch.add(mapper.saveQuery(status));
         session.execute(batch);
@@ -279,7 +259,7 @@ public class CassandraStatusRepository implements StatusRepository {
         if (rs.isExhausted()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(rs.one().getString("statusId"))
+        return Optional.ofNullable(rs.one().getUUID("statusId"))
                 .map(id -> Optional.ofNullable(mapper.get(id)))
                 .get();
     }
@@ -295,7 +275,7 @@ public class CassandraStatusRepository implements StatusRepository {
             log.trace("Finding status : " + statusId);
         }
         BoundStatement stmt = findOneByIdStmt.bind();
-        stmt.setString("statusId", statusId);
+        stmt.setUUID("statusId", UUID.fromString(statusId));
         Status status = null;
         Optional<Status> optionalStatus = findOneFromIndex(stmt);
         if (optionalStatus != null) {
@@ -424,10 +404,10 @@ public class CassandraStatusRepository implements StatusRepository {
         if (status.getType().equals(StatusType.STATUS)) {
             if (StringUtils.isNotBlank(status.getReplyTo())) {
                 detailsAvailable = true;
-            } else if (discussionRepository.hasReply(status.getStatusId())) {
-                detailsAvailable = true;
-            } else if (sharesRepository.hasBeenShared(status.getStatusId())) {
-                detailsAvailable = true;
+//            } else if (discussionRepository.hasReply(status.getStatusId())) {
+//                detailsAvailable = true;
+//            } else if (sharesRepository.hasBeenShared(status.getStatusId())) {
+//                detailsAvailable = true;
             }
         }
         return detailsAvailable;
