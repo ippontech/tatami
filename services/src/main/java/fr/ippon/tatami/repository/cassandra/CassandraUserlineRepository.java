@@ -2,9 +2,6 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.repository.UserlineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -48,8 +45,8 @@ public class CassandraUserlineRepository extends AbstractCassandraLineRepository
 
     @Override
     public void deleteUserline(String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.addDeletion(login, USERLINE_CF);
-        mutator.execute();
+//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+//        mutator.addDeletion(login, USERLINE_CF);
+//        mutator.execute();
     }
 }

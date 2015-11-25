@@ -1,14 +1,12 @@
 package fr.ippon.tatami.domain;
 
+import com.datastax.driver.mapping.annotations.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
@@ -19,15 +17,15 @@ import java.io.Serializable;
  *
  * @author Julien Dubois
  */
-@Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User implements Serializable {
+
 
     @NotEmpty(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @NotNull(message = "Login is mandatory.", groups = {ContraintsUserCreation.class, Default.class})
     @Email(message = "Email is invalid.")
-    @Id
     @JsonIgnore
+    @PartitionKey
     private String login;
 
     @Column(name = "password")
@@ -86,10 +84,13 @@ public class User implements Serializable {
     @Column(name="activated")
     private Boolean activated=true;
 
+    @Transient
     private long statusCount;
 
+    @Transient
     private long friendsCount;
 
+    @Transient
     private long followersCount;
 
 

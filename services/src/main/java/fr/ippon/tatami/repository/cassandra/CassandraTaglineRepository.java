@@ -2,11 +2,6 @@ package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.TaglineRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
-import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -29,8 +24,6 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
 @Repository
 public class CassandraTaglineRepository extends AbstractCassandraLineRepository implements TaglineRepository {
 
-    @Inject
-    private Keyspace keyspaceOperator;
 
     @Override
     public void addStatusToTagline(String tag, Status status) {
@@ -39,16 +32,16 @@ public class CassandraTaglineRepository extends AbstractCassandraLineRepository 
 
     @Override
     public void removeStatusesFromTagline(String tag, String domain, Collection<String> statusIdsToDelete) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        for (String statusId : statusIdsToDelete) {
-            mutator.addDeletion(
-                    getKey(domain, tag),
-                    TAGLINE_CF,
-                    UUID.fromString(statusId),
-                    UUIDSerializer.get());
-
-        }
-        mutator.execute();
+//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
+//        for (String statusId : statusIdsToDelete) {
+//            mutator.addDeletion(
+//                    getKey(domain, tag),
+//                    TAGLINE_CF,
+//                    UUID.fromString(statusId),
+//                    UUIDSerializer.get());
+//
+//        }
+//        mutator.execute();
 
     }
 

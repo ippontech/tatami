@@ -1,6 +1,5 @@
 package fr.ippon.tatami.config;
 
-import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
@@ -21,6 +20,7 @@ import java.io.IOException;
         AsyncConfiguration.class,
         CacheConfiguration.class,
         CassandraConfiguration.class,
+        CassandraDataAutoConfiguration.class,
         SearchConfiguration.class,
         MailConfiguration.class,
         MetricsConfiguration.class})
@@ -43,7 +43,7 @@ public class ApplicationConfiguration {
      * - "tatamibot" : for enabling the Tatami bot
      */
     @PostConstruct
-    public void initTatami() throws IOException, TTransportException {
+    public void initTatami() throws IOException {
         log.debug("Looking for Spring profiles... Available profiles are \"metrics\", \"tatamibot\" and \"apple-push\"");
         if (env.getActiveProfiles().length == 0) {
             log.debug("No Spring profile configured, running with default configuration");

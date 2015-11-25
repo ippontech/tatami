@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository.cassandra;
 
 import javax.inject.Inject;
 
-import me.prettyprint.hom.EntityManagerImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,36 +21,34 @@ public class CassandraDomainConfigurationRepository implements DomainConfigurati
 
     private final Logger log = LoggerFactory.getLogger(CassandraDomainConfigurationRepository.class);
     
-    @Inject
-    private EntityManagerImpl em;
 
     @Override
     public void updateDomainConfiguration(DomainConfiguration domainConfiguration) {
         setDefaultValues(domainConfiguration);
-        em.persist(domainConfiguration);
+//        em.persist(domainConfiguration);
     }
 
     @Override
     public DomainConfiguration findDomainConfigurationByDomain(String domain) {
-        DomainConfiguration domainConfiguration;
-        try {
-            domainConfiguration = em.find(DomainConfiguration.class, domain);
-        } catch (Exception e) {
-
-            log.debug("Exception while looking for domain {} : {}", domain, e.toString());
-
-            return null;
-        }
-        if (domainConfiguration == null) {
-            domainConfiguration = new DomainConfiguration();
-            domainConfiguration.setDomain(domain);
-            setDefaultValues(domainConfiguration);
-            em.persist(domainConfiguration);
-        }
-        if (domain.equals("ippon.fr")) {
-            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSUSCRIPTION);
-            domainConfiguration.setStorageSize(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSIZE);
-        }
+        DomainConfiguration domainConfiguration = null;
+//        try {
+//            domainConfiguration = em.find(DomainConfiguration.class, domain);
+//        } catch (Exception e) {
+//
+//            log.debug("Exception while looking for domain {} : {}", domain, e.toString());
+//
+//            return null;
+//        }
+//        if (domainConfiguration == null) {
+//            domainConfiguration = new DomainConfiguration();
+//            domainConfiguration.setDomain(domain);
+//            setDefaultValues(domainConfiguration);
+////            em.persist(domainConfiguration);
+//        }
+//        if (domain.equals("ippon.fr")) {
+//            domainConfiguration.setSubscriptionLevel(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSUSCRIPTION);
+//            domainConfiguration.setStorageSize(DomainConfiguration.SubscriptionAndStorageSizeOptions.IPPONSIZE);
+//        }
         return domainConfiguration;
     }
 

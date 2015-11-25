@@ -196,8 +196,8 @@ public class TimelineService {
                 User statusUser = userService.getUserByLogin(abstractStatus.getLogin());
                 if (statusUser != null) {
                     // Security check
-                    // bypass the security check when no user is logged in 
-                    // => for non-authenticated rss access 
+                    // bypass the security check when no user is logged in
+                    // => for non-authenticated rss access
                     if ((currentUser != null) && !statusUser.getDomain().equals(currentUser.getDomain())) {
                         throw new DomainViolationException("User " + currentUser + " tried to access " +
                                 " status : " + abstractStatus);

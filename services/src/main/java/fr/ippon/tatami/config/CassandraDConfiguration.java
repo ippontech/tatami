@@ -2,7 +2,6 @@ package fr.ippon.tatami.config;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import me.prettyprint.hector.api.Keyspace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

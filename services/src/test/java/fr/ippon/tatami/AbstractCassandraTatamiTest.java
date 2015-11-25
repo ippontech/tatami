@@ -1,11 +1,15 @@
 package fr.ippon.tatami;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.test.application.ApplicationTestConfiguration;
 import fr.ippon.tatami.test.application.WebApplicationTestConfiguration;
+import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.DataLoader;
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.dataset.json.ClassPathJsonDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.elasticsearch.client.Client;
@@ -53,28 +57,32 @@ public abstract class AbstractCassandraTatamiTest {
         synchronized (lock) {
             if (!isInitialized) {
                 EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-                // create structure and load data
-                String clusterName = "Tatami cluster";
-                String host = "localhost:9171";
-                DataLoader dataLoader = new DataLoader(clusterName, host);
-                dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
-
-                final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-                builder.put("cluster.name", clusterName);
-
-                final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
-                client = node.client();
-
+                Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
+                Session session = cluster.connect();
+                CQLDataLoader dataLoader = new CQLDataLoader(session);
+                dataLoader.load(new ClassPathCQLDataSet("config/cql/create-tables.cql", true, "testTatami"));
+//
+//                EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+//                // create structure and load data
+//                String clusterName = "Tatami cluster";
+//                String host = "localhost:9171";
+//                DataLoader dataLoader = new DataLoader(clusterName, host);
+//                dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
+//
+//                final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
+//                builder.put("cluster.name", clusterName);
+//
+//                final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
+//                client = node.client();
+//
                 isInitialized = true;
             }
         }
     }
 
     @AfterClass
-    public static void afterClass() throws Exception {
-        if (client != null) {
-            client.close();
-        }
+    public static void cleanupServer() {
+        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
     protected User constructAUser(String login, String firstName, String lastName) {
