@@ -188,7 +188,7 @@ public class ElasticsearchSearchService implements SearchService {
                     .field("content", status.getContent());
 
             if (status.getGroupId() != null) {
-                Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
+                Group group = groupDetailsRepository.getGroupDetails(UUID.fromString(status.getGroupId()));
                 source.field("groupId", status.getGroupId());
                 source.field("publicGroup", group.isPublicGroup());
             }
@@ -326,7 +326,7 @@ public class ElasticsearchSearchService implements SearchService {
     private final ElasticsearchMapper<Group> groupMapper = new ElasticsearchMapper<Group>() {
         @Override
         public String id(Group group) {
-            return group.getGroupId();
+            return group.getGroupId().toString();
         }
 
         @Override
@@ -368,7 +368,7 @@ public class ElasticsearchSearchService implements SearchService {
         Collection<String> ids = searchByPrefix(domain, prefix, size, groupMapper);
         List<Group> groups = new ArrayList<Group>(ids.size());
         for (String id : ids) {
-            groups.add(groupDetailsRepository.getGroupDetails(id));
+            groups.add(groupDetailsRepository.getGroupDetails(UUID.fromString(id)));
         }
         return groups;
     }

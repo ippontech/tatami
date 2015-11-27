@@ -1,6 +1,7 @@
 package fr.ippon.tatami.repository;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The Group members Repository.
@@ -9,11 +10,11 @@ import java.util.Map;
  */
 public interface GroupMembersRepository {
 
-    void addMember(String groupId, String login);
+    void addMember(UUID groupId, String login);
 
-    void addAdmin(String groupId, String login);
+    void addAdmin(UUID groupId, String login);
 
-    void removeMember(String groupId, String login);
+    void removeMember(UUID groupId, String login);
 
-    Map<String, String> findMembers(String groupId);
+    Map<String, String> findMembers(UUID groupId);
 }

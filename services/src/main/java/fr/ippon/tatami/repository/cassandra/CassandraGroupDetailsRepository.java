@@ -4,9 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_DETAILS_CF;
+import java.util.UUID;
 
 /**
  * Cassandra implementation of the Group Details repository.
@@ -41,7 +39,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
     }
 
     @Override
-    public void editGroupDetails(String groupId, String name, String description, boolean archivedGroup) {
+    public void editGroupDetails(UUID groupId, String name, String description, boolean archivedGroup) {
 //        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 //        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(NAME,
 //                name, StringSerializer.get(), StringSerializer.get()));
@@ -52,7 +50,7 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
     }
 
     @Override
-    public Group getGroupDetails(String groupId) {
+    public Group getGroupDetails(UUID groupId) {
         Group group = new Group();
         group.setGroupId(groupId);
         group.setPublicGroup(false);

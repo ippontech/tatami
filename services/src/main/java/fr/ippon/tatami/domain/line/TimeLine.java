@@ -11,22 +11,11 @@ import java.util.UUID;
  */
 @Table(name="timeline")
 public class TimeLine {
-    @PartitionKey
-    private UUID id;
-
     @Column
     private String login;
 
     @Column
     private UUID statusId;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;

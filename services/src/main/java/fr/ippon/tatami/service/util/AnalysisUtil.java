@@ -10,12 +10,12 @@ public class AnalysisUtil {
     private static final int RESULTS_SIZE = 20;
 
     public static void incrementKeyCounterInMap(Map<String, Integer> map, String key) {
-        if (map.containsKey(key)) {
+        if (map.containsKey(key.toString())) {
             Integer total = map.get(key);
             total++;
-            map.put(key, total);
+            map.put(key.toString(), total);
         } else {
-            map.put(key, 1);
+            map.put(key.toString(), 1);
         }
     }
 

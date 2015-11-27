@@ -11,7 +11,7 @@ public class ColumnFamilyKeys {
 
     public static final String USER_CF = "User";
 
-    public static final String FRIENDS_CF = "Friends";
+    public static final String FRIENDS = "friends";
 
     public static final String FOLLOWERS_CF = "Followers";
 
@@ -25,13 +25,13 @@ public class ColumnFamilyKeys {
 
     public static final String FAVLINE_CF = "Favline";
 
-    public static final String TAGLINE_CF = "Tagline";
+    public static final String TAGLINE = "Tagline";
 
     public static final String TIMELINE_CF = "Timeline";
 
     public static final String TIMELINE_SHARES_CF = "TimelineShares";
 
-    public static final String MENTIONLINE_CF = "Mentionline";
+    public static final String MENTIONLINE = "mentionLine";
 
     public static final String USERLINE_CF = "Userline";
 
@@ -67,7 +67,7 @@ public class ColumnFamilyKeys {
 
     public static final String GROUP_COUNTER_CF = "GroupCounter";
 
-    public static final String GROUPLINE_CF = "Groupline";
+    public static final String GROUPLINE = "Groupline";
 
     public static final String TATAMIBOT_DUPLICATE_CF = "TatamiBotDuplicate";
 
@@ -79,7 +79,7 @@ public class ColumnFamilyKeys {
 
     public static final String DOMAIN_CONFIGURATION_CF = "DomainConfiguration";
 
-    public static final String DOMAINLINE_CF = "Domainline";
+    public static final String DOMAINLINE = "domainLine";
 
     public static final String DOMAIN_TATAMIBOT_CF = "DomainTatamibot";
 

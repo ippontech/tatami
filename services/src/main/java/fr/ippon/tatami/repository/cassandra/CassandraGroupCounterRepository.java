@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-
-import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_COUNTER_CF;
+import java.util.UUID;
 
 /**
  * Cassandra implementation of the Group Counter repository.
@@ -24,7 +22,7 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
 
 
     @Override
-    public long getGroupCounter(String domain, String groupId) {
+    public long getGroupCounter(String domain, UUID groupId) {
 //        CounterQuery<String, String> counter =
 //                new ThriftCounterColumnQuery<String, String>(keyspaceOperator,
 //                        StringSerializer.get(),
@@ -38,13 +36,13 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
     protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
 
     @Override
-    public void incrementGroupCounter(String domain, String groupId) {
+    public void incrementGroupCounter(String domain, UUID groupId) {
 //        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 //        mutator.incrementCounter(domain, GROUP_COUNTER_CF, groupId, 1);
     }
 
     @Override
-    public void decrementGroupCounter(String domain, String groupId) {
+    public void decrementGroupCounter(String domain, UUID groupId) {
 //        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 //        mutator.decrementCounter(domain, GROUP_COUNTER_CF, groupId, 1);
     }

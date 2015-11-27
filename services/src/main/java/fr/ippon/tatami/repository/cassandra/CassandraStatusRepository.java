@@ -90,7 +90,7 @@ public class CassandraStatusRepository implements StatusRepository {
             throws ConstraintViolationException {
 
         Status status = new Status();
-        status.setStatusId(UUIDs.random());
+        status.setStatusId(UUIDs.timeBased());
         status.setLogin(login);
         status.setType(StatusType.STATUS);
         String username = DomainUtil.getUsernameFromLogin(login);
@@ -109,8 +109,8 @@ public class CassandraStatusRepository implements StatusRepository {
             throw new ConstraintViolationException(new HashSet<>(constraintViolations));
         }
         if (group != null) {
-            String groupId = group.getGroupId();
-            status.setGroupId(groupId);
+            UUID groupId = group.getGroupId();
+            status.setGroupId(groupId.toString());
         }
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
@@ -278,7 +278,7 @@ public class CassandraStatusRepository implements StatusRepository {
         stmt.setUUID("statusId", UUID.fromString(statusId));
         Status status = null;
         Optional<Status> optionalStatus = findOneFromIndex(stmt);
-        if (optionalStatus != null) {
+        if (optionalStatus.isPresent()) {
             status = optionalStatus.get();
         }
 //        return user;
@@ -393,10 +393,9 @@ public class CassandraStatusRepository implements StatusRepository {
     @CacheEvict(value = "status-cache", key = "#status.statusId")
     public void removeStatus(AbstractStatus status) {
         log.debug("Removing Status : {}", status);
-
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.addDeletion(status.getStatusId(), ColumnFamilyKeys.STATUS_CF);
-//        mutator.execute();
+        BatchStatement batch = new BatchStatement();
+        batch.add(deleteByIdStmt.bind().setUUID("statusId", status.getStatusId()));
+        session.execute(batch);
     }
 
     private boolean computeDetailsAvailable(Status status) {

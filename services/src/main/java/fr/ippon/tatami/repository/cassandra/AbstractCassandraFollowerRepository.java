@@ -36,14 +36,6 @@ public abstract class AbstractCassandraFollowerRepository {
 //        mutator.delete(key, getFollowersCF(), followerKey, StringSerializer.get());
 //    }
 //
-//    Collection<String> findFollowers(String key) {
-//        ColumnFamilyResult<String, String> result = template.queryColumns(key);
-//        Collection<String> followers = new ArrayList<String>();
-//        for (String columnName : result.getColumnNames()) {
-//            followers.add(columnName);
-//        }
-//        return followers;
-//    }
 
     protected abstract String getFollowersCF();
 
@@ -51,9 +43,5 @@ public abstract class AbstractCassandraFollowerRepository {
     }
 
     public void removeFollower(String key, String login) {
-    }
-
-    public Collection<String> findFollowers(String key) {
-        return new ArrayList<>();
     }
 }

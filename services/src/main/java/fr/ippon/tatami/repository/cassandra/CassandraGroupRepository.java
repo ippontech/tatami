@@ -1,12 +1,20 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.GroupRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_CF;
+import java.util.UUID;
+
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 
 /**
  * Cassandra implementation of the Group repository.
@@ -21,35 +29,41 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_CF;
 @Repository
 public class CassandraGroupRepository implements GroupRepository {
 
-//    @Inject
+    @Inject
+    Session session;
 
     @Override
-    public String createGroup(String domain) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        String groupId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
-//        mutator.insert(domain, GROUP_CF, HFactory.createColumn(groupId,
-//                "", StringSerializer.get(), StringSerializer.get()));
-//
-        return null;
+    public UUID createGroup(String domain, String name, String description, boolean publicGroup) {
+        UUID groupId = UUIDs.timeBased();
+        Statement statement = QueryBuilder.insertInto("group")
+                .value("id", groupId)
+                .value("domain", domain)
+                .value("name",name)
+                .value("description", description)
+                .value("publicGroup",publicGroup);
+        session.execute(statement);
+        return groupId;
     }
 
     @Override
-    public Group getGroupById(String domain, String groupId) {
-//        ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
-//        HColumn<String, String> column =
-//                query.setColumnFamily(GROUP_CF)
-//                        .setKey(domain)
-//                        .setName(groupId)
-//                        .execute()
-//                        .get();
-
-//        if (column != null) {
-//            Group group = new Group();
-//            group.setDomain(domain);
-//            group.setGroupId(groupId);
-//            return group;
-//        } else {
+    public Group getGroupById(String domain, UUID groupId) {
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from("group")
+                .where(eq("id", groupId))
+                .and(eq("domain", domain));
+        ResultSet results = session.execute(statement);
+        Row row = results.one();
+        if (row != null) {
+            Group group = new Group();
+            group.setGroupId(row.getUUID("id"));
+            group.setName(row.getString("name"));
+            group.setDomain(row.getString("domain"));
+            group.setDescription(row.getString("description"));
+            group.setPublicGroup(row.getBool("publicGroup"));
+            return group;
+        } else {
             return null;
-//        }
+        }
     }
 }

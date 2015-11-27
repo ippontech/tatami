@@ -4,13 +4,14 @@ package fr.ippon.tatami.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * A group.
  */
 public class Group implements Comparable<Group>, Serializable, Cloneable {
 
-    private String groupId;
+    private UUID groupId;
 
     private boolean publicGroup;
 
@@ -29,11 +30,11 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
 
     private boolean administrator;
 
-    public String getGroupId() {
+    public UUID getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(UUID groupId) {
         this.groupId = groupId;
     }
 

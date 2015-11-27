@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,7 +142,7 @@ public class StatusUpdateService {
         Status status = (Status) abstractStatus;
         Group group = null;
         if (status.getGroupId() != null) {
-            group = groupService.getGroupById(status.getDomain(), status.getGroupId());
+            group = groupService.getGroupById(status.getDomain(), UUID.fromString(status.getGroupId()));
 
             if (group.isArchivedGroup()) {
                 throw new ArchivedGroupException();
@@ -355,7 +356,7 @@ public class StatusUpdateService {
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
                 if (!isPublicGroup(group)) {
-                    Collection<String> groupIds = userGroupRepository.findGroups(mentionedLogin);
+                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedLogin);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                         mentionUser(mentionedLogin, status);
                     }
@@ -376,7 +377,7 @@ public class StatusUpdateService {
             }
         } else {  // This is a private status
             for (String followerLogin : followersForTag) {
-                Collection<String> groupIds = userGroupRepository.findGroups(followerLogin);
+                Collection<UUID> groupIds = userGroupRepository.findGroups(followerLogin);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                     addStatusToTimelineAndNotify(followerLogin, status);
                 }

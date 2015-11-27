@@ -1,5 +1,7 @@
 package fr.ippon.tatami.repository;
 
+import java.util.UUID;
+
 /**
  * The Group Counter Repository.
  *
@@ -7,11 +9,11 @@ package fr.ippon.tatami.repository;
  */
 public interface GroupCounterRepository {
 
-    long getGroupCounter(String domain, String groupId);
+    long getGroupCounter(String domain, UUID groupId);
 
-    void incrementGroupCounter(String domain, String groupId);
+    void incrementGroupCounter(String domain, UUID groupId);
 
-    void decrementGroupCounter(String domain, String groupId);
+    void decrementGroupCounter(String domain, UUID groupId);
 
     void deleteGroupCounter(String domain, String groupId);
 }

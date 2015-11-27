@@ -2,6 +2,8 @@ package fr.ippon.tatami.repository;
 
 import fr.ippon.tatami.domain.Group;
 
+import java.util.UUID;
+
 /**
  * The Group Details Repository.
  *
@@ -11,7 +13,7 @@ public interface GroupDetailsRepository {
 
     void createGroupDetails(String groupId, String name, String description, boolean publicGroup);
 
-    Group getGroupDetails(String groupId);
+    Group getGroupDetails(UUID groupId);
 
-    void editGroupDetails(String groupId, String name, String description, boolean archivedGroup);
+    void editGroupDetails(UUID groupId, String name, String description, boolean archivedGroup);
 }

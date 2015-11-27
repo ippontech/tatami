@@ -106,7 +106,7 @@ public class CassandraConfiguration {
 //            cluster.addKeyspace(keyspaceDef, true);
 //
 //            addColumnFamily(cluster, ColumnFamilyKeys.USER_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.FRIENDS_CF, 0);
+//            addColumnFamily(cluster, ColumnFamilyKeys.FRIENDS, 0);
 //            addColumnFamily(cluster, ColumnFamilyKeys.FOLLOWERS_CF, 0);
 //            addColumnFamily(cluster, ColumnFamilyKeys.STATUS_CF, 0);
 //            addColumnFamily(cluster, ColumnFamilyKeys.DOMAIN_CF, 0);
@@ -129,17 +129,17 @@ public class CassandraConfiguration {
 //
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_CF, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_SHARES_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.MENTIONLINE_CF, 0);
+//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.MENTIONLINE, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USERLINE_CF, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USERLINE_SHARES_CF, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.FAVLINE_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TAGLINE_CF, 0);
+//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TAGLINE, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TRENDS_CF, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USER_TRENDS_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.GROUPLINE_CF, 0);
+//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.GROUPLINE, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USER_ATTACHMENT_CF, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.STATUS_ATTACHMENT_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.DOMAINLINE_CF, 0);
+//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.DOMAINLINE, 0);
 //            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.DOMAIN_TATAMIBOT_CF, 0);
 //
 //            addColumnFamilyCounter(cluster, ColumnFamilyKeys.COUNTER_CF, 0);

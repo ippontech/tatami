@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.gt;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.lt;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
 
@@ -45,13 +43,21 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     private PreparedStatement findByLoginStmt;
 
+    private PreparedStatement deleteByIdStmt;
+
+
     @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Status.class);
         findByLoginStmt = session.prepare(
                 "SELECT * " +
                         "FROM timeline " +
-                        "WHERE login = :login");
+                        "WHERE key = :key");
+
+        deleteByIdStmt = session.prepare("DELETE FROM timeline " +
+                "WHERE key = :key " +
+                "AND status = :statusId");
+
     }
 
 
@@ -66,12 +72,12 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public void addStatusToTimeline(String login, String statusId) {
-        addStatus(login, TIMELINE_CF, statusId);
+        addStatus(login,TIMELINE_CF,statusId);
     }
 
     @Override
     public void removeStatusesFromTimeline(String login, Collection<String> statusIdsToDelete) {
-        removeStatuses(login, TIMELINE_CF, statusIdsToDelete);
+        removeStatuses(login,TIMELINE_CF,statusIdsToDelete);
     }
 
     @Override
@@ -92,66 +98,7 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public List<String> getTimeline(String login, int size, String start, String finish) {
-
-        Where where = QueryBuilder.select()
-                .column("status")
-                .from("timeline")
-                .where(eq("login", login));
-        if(finish != null) {
-            where.and(lt("status",UUID.fromString(finish)));
-        } else if(start != null) {
-            where.and(gt("status",UUID.fromString(start)));
-        }
-        Statement statement = where;
-        if (size > 0) {
-            statement.setFetchSize(size);
-        }
-        ResultSet results = session.execute(statement);
-        return results
-                .all()
-                .stream()
-                .map(e -> e.getUUID("status").toString())
-                .collect(Collectors.toList());
-//        for ( Row row : results ) {
-//            System.out.println("Song: " + row.getString("artist"));
-//        }
-//        return getLineFromCF(TIMELINE_CF, login, size, start, finish);
-        //        if (finish != null) {
-//            ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                    StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                    .setColumnFamily(cf)
-//                    .setKey(login)
-//                    .setRange(UUID.fromString(finish), null, true, size)
-//                    .execute()
-//                    .get();
-//
-//            result = query.getColumns().subList(1, query.getColumns().size());
-//        } else if (start != null) {
-//            ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                    StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                    .setColumnFamily(cf)
-//                    .setKey(login)
-//                    .setRange(null, UUID.fromString(start), true, size)
-//                    .execute()
-//                    .get();
-//
-//            int maxIndex = query.getColumns().size() - 1;
-//            if (maxIndex < 0) {
-//                maxIndex = 0;
-//            }
-//            result = query.getColumns().subList(0, maxIndex);
-//        } else {
-//            ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                    StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                    .setColumnFamily(cf)
-//                    .setKey(login)
-//                    .setRange(null, null, true, size)
-//                    .execute()
-//                    .get();
-//
-//            result = query.getColumns();
-//        }
-
+        return getLineFromTable(TIMELINE_CF,login,size,start,finish);
     }
 
     @Override
@@ -159,5 +106,10 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 //        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
 //        mutator.addDeletion(login, TIMELINE_CF);
 //        mutator.execute();
+    }
+
+    @Override
+    public PreparedStatement getDeleteByIdStmt() {
+        return deleteByIdStmt;
     }
 }

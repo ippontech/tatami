@@ -2,6 +2,7 @@ package fr.ippon.tatami.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The Groupline Repository.
@@ -13,7 +14,7 @@ public interface GrouplineRepository {
     /**
      * Add a status to the Group line.
      */
-    void addStatusToGroupline(String groupId, String statusId);
+    void addStatusToGroupline(UUID groupId, String statusId);
 
     /**
      * Remove a collection of statuses from the Group line.

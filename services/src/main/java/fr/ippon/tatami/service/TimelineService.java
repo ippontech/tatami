@@ -189,7 +189,7 @@ public class TimelineService {
             usergroups = Collections.emptyList();
             favoriteLine = Collections.emptyList();
         }
-        Collection<StatusDTO> statuses = new ArrayList<StatusDTO>(line.size());
+        Collection<StatusDTO> statuses = new ArrayList<>(line.size());
         for (String statusId : line) {
             AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
             if (abstractStatus != null) {
@@ -300,7 +300,7 @@ public class TimelineService {
      * permission to see them.
      */
     private Collection<String> findStatusesToCleanUp(List<String> statuses, Collection<StatusDTO> dtos) {
-        Collection<String> statusIdsToCleanUp = new ArrayList<String>();
+        Collection<String> statusIdsToCleanUp = new ArrayList<>();
         for (String statusId : statuses) {
             boolean statusToDelete = true;
             for (StatusDTO statusDTO : dtos) {
@@ -327,7 +327,7 @@ public class TimelineService {
         boolean hiddenStatus = false;
         if (status.getGroupId() != null) {
             statusDTO.setGroupId(status.getGroupId());
-            Group group = groupService.getGroupById(statusUser.getDomain(), statusDTO.getGroupId());
+            Group group = groupService.getGroupById(statusUser.getDomain(), UUID.fromString(statusDTO.getGroupId()));
             // if this is a private group and the user is not part of it, he cannot see the status
             if (!group.isPublicGroup() && !usergroups.contains(group)) {
                 hiddenStatus = true;

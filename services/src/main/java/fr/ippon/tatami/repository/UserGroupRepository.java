@@ -2,6 +2,7 @@ package fr.ippon.tatami.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The User group Repository.
@@ -10,13 +11,13 @@ import java.util.List;
  */
 public interface UserGroupRepository {
 
-    void addGroupAsMember(String login, String groupId);
+    void addGroupAsMember(String login, UUID groupId);
 
-    void addGroupAsAdmin(String login, String groupId);
+    void addGroupAsAdmin(String login, UUID groupId);
 
-    void removeGroup(String login, String groupId);
+    void removeGroup(String login, UUID groupId);
 
-    List<String> findGroups(String login);
+    List<UUID> findGroups(String login);
 
-    Collection<String> findGroupsAsAdmin(String login);
+    Collection<UUID> findGroupsAsAdmin(String login);
 }
