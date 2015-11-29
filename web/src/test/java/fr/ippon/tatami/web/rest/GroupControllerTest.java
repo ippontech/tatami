@@ -80,7 +80,7 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
 
         assertEquals(1, groups.size());
 
-        String groupId = groups.iterator().next().getGroupId();
+        String groupId = groups.iterator().next().getGroupId().toString();
 
         mockMvc.perform(get("/rest/groups/" + groupId)
                 .accept(MediaType.APPLICATION_JSON))

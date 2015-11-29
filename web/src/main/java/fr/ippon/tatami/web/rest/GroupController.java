@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * REST controller for managing groups.
@@ -73,7 +74,7 @@ public class GroupController {
     public Group getGroup(@PathVariable("groupId") String groupId) {
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        Group publicGroup = groupService.getGroupById(domain, groupId);
+        Group publicGroup = groupService.getGroupById(domain, UUID.fromString(groupId));
         if (publicGroup != null && publicGroup.isPublicGroup()) {
             Group result = getGroupFromUser(currentUser, groupId);
             Group groupClone = (Group) publicGroup.clone();
@@ -236,7 +237,7 @@ public class GroupController {
     public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
         User currentUser = authenticationService.getCurrentUser();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
 
@@ -245,7 +246,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId, currentUser.getLogin());
+            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getLogin());
         }
         return users;
     }
@@ -261,7 +262,7 @@ public class GroupController {
     public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
 
@@ -270,7 +271,7 @@ public class GroupController {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(groupId, currentUser.getLogin());
+            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getLogin());
         }
 
         for (UserGroupDTO user : users) {
@@ -301,7 +302,7 @@ public class GroupController {
     public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
         User userToAdd = userService.getUserByUsername(username);
 
         UserGroupDTO dto = null;
@@ -313,10 +314,10 @@ public class GroupController {
         } else {
             if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAdd)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToAdd);
+                dto = groupService.getMembersForGroup(UUID.fromString(groupId), userToAdd);
             } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
-                dto = groupService.getMembersForGroup(groupId, userToAdd);
+                dto = groupService.getMembersForGroup(UUID.fromString(groupId), userToAdd);
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             }
@@ -335,7 +336,7 @@ public class GroupController {
     public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = authenticationService.getCurrentUser();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), groupId);
+        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
         User userToremove = userService.getUserByUsername(username);
 
         UserGroupDTO dto = null;
@@ -349,10 +350,10 @@ public class GroupController {
         } else {
             if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(UUID.fromString(groupId), userToremove);
             } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
-                groupService.getMembersForGroup(groupId, userToremove);
+                groupService.getMembersForGroup(UUID.fromString(groupId), userToremove);
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return false;
