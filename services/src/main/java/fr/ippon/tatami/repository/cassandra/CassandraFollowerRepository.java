@@ -54,14 +54,14 @@ public class CassandraFollowerRepository extends AbstractCassandraFollowerReposi
     public Collection<String> findFollowersForUser(String login) {
 
         Statement statement = QueryBuilder.select()
-                .column("followerLogin")
+                .column("login")
                 .from("followers")
-                .where(eq("login", login));
+                .where(eq("key", login));
         ResultSet results = session.execute(statement);
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("followerLogin"))
+                .map(e -> e.getString("login"))
                 .collect(Collectors.toList());
     }
 

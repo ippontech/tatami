@@ -1,5 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.repository.TrendRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,7 +13,11 @@ import org.springframework.util.Assert;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.ttl;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.TRENDS_CF;
 
 /**
@@ -28,22 +37,19 @@ public class CassandraTrendRepository implements TrendRepository {
 
     private final static int TRENDS_NUMBER_OF_TAGS = 100;
 
+    @Inject
+    Session session;
+
 
     @Override
     @CacheEvict(value = "domain-tags-cache", key = "#domain")
     public void addTag(String domain, String tag) {
-//        HColumn<UUID, String> column =
-//                HFactory.createColumn(
-//                        TimeUUIDUtils.getUniqueTimeUUIDinMillis(),
-//                        tag,
-//                        COLUMN_TTL,
-//                        UUIDSerializer.get(),
-//                        StringSerializer.get());
-//
-//        Mutator<String> mutator =
-//                HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//
-//        mutator.insert(domain, TRENDS_CF, column);
+        Statement statement = QueryBuilder.insertInto("trends")
+                .value("domain", domain)
+                .value("id", UUIDs.timeBased())
+                .value("tag", tag)
+                .using(ttl(COLUMN_TTL));
+        session.execute(statement);
     }
 
     @Override
@@ -53,44 +59,37 @@ public class CassandraTrendRepository implements TrendRepository {
 
     @Override
     public List<String> getRecentTags(String domain, int maxNumber) {
-//        ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(TRENDS_CF)
-//                .setKey(domain)
-//                .setRange(null, null, true, maxNumber)
-//                .execute()
-//                .get();
-//
-//        List<String> result = new ArrayList<String>();
-//        String tag;
-//        for (HColumn<UUID, String> column : query.getColumns()) {
-//            tag = column.getValue();
-//            result.add(tag);
-//        }
-//        return result;
-        return null;
+        Statement statement = QueryBuilder.select()
+                .column("tag")
+                .from("trends")
+                .where(eq("domain", domain))
+                .orderBy(desc("id"))
+                .limit(maxNumber);
+
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .map(e -> e.getString("tag"))
+                .collect(Collectors.toList());
     }
 
     @Cacheable(value = "domain-tags-cache", key = "#domain")
     public Collection<String> getDomainTags(String domain) {
-        Assert.hasLength(domain);
+        Statement statement = QueryBuilder.select()
+                .column("tag")
+                .from("trends")
+                .where(eq("domain", domain))
+                .orderBy(desc("id"))
+                .limit(TRENDS_NUMBER_OF_TAGS);
 
-//        final ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(TRENDS_CF)
-//                .setKey(domain)
-//                .setRange(null, null, true, TRENDS_NUMBER_OF_TAGS)
-//                .execute()
-//                .get();
-//
-//        final Map<String, String> result = new HashMap<String, String>();
-//        String tag;
-//        for (HColumn<UUID, String> column : query.getColumns()) {
-//            tag = column.getValue();
-//            result.put(tag.toLowerCase(), tag);
-//        }
-//        return result.values();
-        return null;
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .map(e -> e.getString("tag"))
+                .collect(Collectors.toList());
+
     }
 
 }

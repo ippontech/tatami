@@ -38,7 +38,6 @@ INSERT INTO user (login , avatar , firstname , lastname ) VALUES('userToForget@i
 INSERT INTO user (login , avatar , firstname , lastname ) VALUES('userWhoReadStatus@ippon.fr','avatar','User','WhoReadStatus');
 INSERT INTO user (login , avatar , firstname , lastname ) VALUES('userWhoShouldBeFoundBySimilarSearch@ippon.fr','avatar','User','WhoShouldBeFoundBySimilarSearch');
 
-
 CREATE TABLE IF NOT EXISTS status (
     statusId timeuuid,
     type varchar,
@@ -56,6 +55,8 @@ CREATE TABLE IF NOT EXISTS status (
     replyTo varchar,
     replyToUsername varchar,
     detailsAvailable boolean,
+    originalStatusId timeuuid,
+    followerLogin varchar,
     PRIMARY KEY(statusId)
 );
 
@@ -79,26 +80,27 @@ INSERT INTO timeline (key,status) VALUES ('userWithStatus@ippon.fr',f97d6470-984
 CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
     login varchar,
+    created timeuuid,
     PRIMARY KEY(domainId, login)
 );
 
 
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','jdubois@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','uuser@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','timelineUser@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoHasGroup@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoWantToFollow@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoWillBeFollowed@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoFollow@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoIsFollowed@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoWantToForget@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userToForget@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWithStatus@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoPostStatus@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoReadStatus@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoShouldBeFoundBySimilarSearch@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoSubscribeToDigests@ippon.fr');
-INSERT INTO domain (domainId, login) VALUES ('ippon.fr','userWhoPostForDigests@ippon.fr');
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','jdubois@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','uuser@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','timelineUser@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoHasGroup@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoWantToFollow@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoWillBeFollowed@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoFollow@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoIsFollowed@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoWantToForget@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userToForget@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWithStatus@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoPostStatus@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoReadStatus@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoShouldBeFoundBySimilarSearch@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoSubscribeToDigests@ippon.fr',now());
+INSERT INTO domain (domainId, login,created) VALUES ('ippon.fr','userWhoPostForDigests@ippon.fr',now());
 
 
 CREATE TABLE IF NOT EXISTS counter (
@@ -139,13 +141,12 @@ INSERT INTO friends (login, friendLogin) VALUES ('userWhoWantToForget@ippon.fr',
 INSERT INTO friends (login, friendLogin) VALUES ('userWhoReadStatus@ippon.fr','userWhoPostStatus@ippon.fr');
 
 CREATE TABLE IF NOT EXISTS followers (
+    key varchar,
     login varchar,
-    followerLogin varchar,
-    PRIMARY KEY(login,followerLogin)
+    PRIMARY KEY(key,login)
 );
 
-
-INSERT INTO followers (login, followerLogin) VALUES ('userWhoPostStatus@ippon.fr','userWhoReadStatus@ippon.fr');
+INSERT INTO followers (key,login) VALUES ('userWhoPostStatus@ippon.fr','userWhoReadStatus@ippon.fr');
 
 
 CREATE TABLE IF NOT EXISTS dayline (
@@ -186,13 +187,12 @@ CREATE TABLE IF NOT EXISTS shares (
 INSERT INTO shares (status,login) VALUES (f97d6470-9847-11e1-a6ca-e0f847068d52,'john_doe');
 
 CREATE TABLE IF NOT EXISTS tagFollowers (
-    tagDomain varchar,
+    key varchar,
     login varchar,
-    statusCount counter,
-    PRIMARY KEY(tagDomain, login)
+    PRIMARY KEY(key, login)
 );
 
-UPDATE tagFollowers SET statusCount = statusCount+0 WHERE tagDomain = 'test-ippon.fr' AND login = 'jdubois@ippon.fr';
+INSERT INTO tagFollowers (key,login) VALUES ('test-ippon.fr' ,'jdubois@ippon.fr');
 
 
 CREATE TABLE IF NOT EXISTS favline (
@@ -240,3 +240,41 @@ CREATE TABLE IF NOT EXISTS groupMember (
     role varchar,
     PRIMARY KEY(groupId, login)
 );
+
+CREATE TABLE IF NOT EXISTS userTags (
+    login varchar,
+    friendLogin varchar,
+    time timestamp,
+    PRIMARY KEY(login, friendLogin)
+);
+
+CREATE TABLE IF NOT EXISTS trends (
+    domain varchar,
+    id timeuuid,
+    tag varchar,
+    PRIMARY KEY(domain, id)
+);
+
+CREATE TABLE IF NOT EXISTS userTrends (
+    login varchar,
+    id timeuuid,
+    tag varchar,
+    PRIMARY KEY(login, id)
+);
+
+CREATE TABLE IF NOT EXISTS avatar (
+    id timeuuid,
+    filename varchar,
+    content blob,
+    size bigint,
+    creation_date timestamp,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS mailDigest (
+    digestId varchar,
+    login varchar,
+    created timestamp,
+    PRIMARY KEY(digestId,login)
+);
+

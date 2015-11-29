@@ -18,4 +18,12 @@ public interface AbstractStatus extends Serializable {
     Date getStatusDate();
 
     String getGeoLocalization();
+
+    void setStatusId(UUID uuid);
+
+    void setStatusDate(Date date);
+
+    String getUsername();
+
+    String getDomain();
 }

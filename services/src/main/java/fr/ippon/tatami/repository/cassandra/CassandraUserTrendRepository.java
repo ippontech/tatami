@@ -1,11 +1,19 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.repository.UserTrendRepository;
 import org.springframework.stereotype.Repository;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 
 
 /**
@@ -25,61 +33,52 @@ public class CassandraUserTrendRepository implements UserTrendRepository {
 
     private final static int TRENDS_NUMBER_OF_TAGS = 50;
 
-//    @Inject
-//    private Keyspace keyspaceOperator;
+    @Inject
+    private Session session;
 
     @Override
     public void addTag(String login, String tag) {
-//        HColumn<UUID, String> column =
-//                HFactory.createColumn(
-//                        TimeUUIDUtils.getUniqueTimeUUIDinMillis(),
-//                        tag,
-//                        COLUMN_TTL,
-//                        UUIDSerializer.get(),
-//                        StringSerializer.get());
-//
-//        Mutator<String> mutator =
-//                HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//
-//        mutator.insert(login, ColumnFamilyKeys.USER_TRENDS_CF, column);
+        Statement statement = QueryBuilder.insertInto("userTrends")
+                .value("login", login)
+                .value("id", UUIDs.timeBased())
+                .value("tag", tag)
+                .using(ttl(COLUMN_TTL));
+        session.execute(statement);
     }
 
     @Override
     public List<String> getRecentTags(String login) {
-//        ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(ColumnFamilyKeys.USER_TRENDS_CF)
-//                .setKey(login)
-//                .setRange(null, null, true, TRENDS_NUMBER_OF_TAGS)
-//                .execute()
-//                .get();
-//
-//        List<String> result = new ArrayList<String>();
-//        for (HColumn<UUID, String> column : query.getColumns()) {
-//            String tag = column.getValue();
-//            result.add(tag);
-//        }
-//        return result;
-        return null;
+        Statement statement = QueryBuilder.select()
+                .column("tag")
+                .from("userTrends")
+                .where(eq("login", login))
+                .orderBy(desc("id"))
+                .limit(TRENDS_NUMBER_OF_TAGS);
+
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .map(e -> e.getString("tag"))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<String> getUserRecentTags(String login, Date endDate,
                                                 int nbRecentTags) {
-//        ColumnSlice<UUID, String> query = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), UUIDSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(ColumnFamilyKeys.USER_TRENDS_CF)
-//                .setKey(login)
-//                .setRange(null, TimeUUIDUtils.getTimeUUID(endDate.getTime()), true, nbRecentTags)
-//                .execute()
-//                .get();
-//        Map<String, String> result = new HashMap<String, String>();
-//        String tag;
-//        for (HColumn<UUID, String> column : query.getColumns()) {
-//            tag = column.getValue();
-//            result.put(tag.toLowerCase(), tag);
-//        }
-//        return result.values();
-        return null;
+        Statement statement = QueryBuilder.select()
+                .column("tag")
+                .from("userTrends")
+                .where(eq("login", login))
+                .and(gt("id",UUIDs.endOf(endDate.getTime())))
+                .orderBy(desc("id"))
+                .limit(nbRecentTags);
+
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .map(e -> e.getString("tag"))
+                .collect(Collectors.toList());
     }
 }

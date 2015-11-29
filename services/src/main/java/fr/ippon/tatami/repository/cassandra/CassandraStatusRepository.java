@@ -1,6 +1,8 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import com.datastax.driver.core.*;
+import com.datastax.driver.core.querybuilder.Insert;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
@@ -148,15 +150,36 @@ public class CassandraStatusRepository implements StatusRepository {
         share.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         share.setDomain(domain);
-//        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(share);
-//
-//        updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
-//        share.setOriginalStatusId(originalStatusId);
-//
-//        log.debug("Persisting Share : {}", share);
-//
-//        template.update(updater);
+
+        Insert inserter = this.createBaseStatus(share);
+        share.setOriginalStatusId(originalStatusId);
+        inserter = inserter.value("originalStatusId",UUID.fromString(originalStatusId));
+        log.debug("Persisting Share : {}", share);
+        session.execute(inserter);
         return share;
+    }
+
+    private Insert createBaseStatus(AbstractStatus abstractStatus) {
+
+        abstractStatus.setStatusId(UUIDs.timeBased());
+        abstractStatus.setStatusDate(Calendar.getInstance().getTime());
+        if (abstractStatus.getLogin() == null) {
+            throw new IllegalStateException("Login cannot be null for status: " + abstractStatus);
+        }
+        if (abstractStatus.getUsername() == null) {
+            throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
+        }
+        if (abstractStatus.getDomain() == null) {
+            throw new IllegalStateException("Domain cannot be null for status: " + abstractStatus);
+        }
+
+        return QueryBuilder.insertInto("status")
+                .value("statusId",abstractStatus.getStatusId())
+                .value("statusDate",abstractStatus.getStatusDate())
+                .value("login", abstractStatus.getLogin())
+                .value("username",abstractStatus.getUsername())
+                .value("domain",abstractStatus.getDomain())
+                .value("type",abstractStatus.getType().name());
     }
 
     @Override
@@ -168,14 +191,12 @@ public class CassandraStatusRepository implements StatusRepository {
         announcement.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         announcement.setDomain(domain);
-//        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(announcement);
-//
-//        updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
-//        announcement.setOriginalStatusId(originalStatusId);
-//
-//        log.debug("Persisting Announcement : {}", announcement);
-//
-//        template.update(updater);
+
+        Insert inserter = this.createBaseStatus(announcement);
+        announcement.setOriginalStatusId(originalStatusId);
+        inserter = inserter.value("originalStatusId",UUID.fromString(originalStatusId));
+        log.debug("Persisting Announcement : {}", announcement);
+        session.execute(inserter);
         return announcement;
     }
 
@@ -188,14 +209,12 @@ public class CassandraStatusRepository implements StatusRepository {
         mentionFriend.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         mentionFriend.setDomain(domain);
-//        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(mentionFriend);
-//
-//        updater.setString(FOLLOWER_LOGIN, followerLogin);
-//
-//
-//        log.debug("Persisting MentionFriend : {}", mentionFriend);
-//
-//        template.update(updater);
+
+        Insert inserter = this.createBaseStatus(mentionFriend);
+        mentionFriend.setFollowerLogin(followerLogin);
+        inserter = inserter.value("followerLogin",followerLogin);
+        log.debug("Persisting Announcement : {}", mentionFriend);
+        session.execute(inserter);
         return mentionFriend;
     }
 
@@ -208,15 +227,13 @@ public class CassandraStatusRepository implements StatusRepository {
         mentionShare.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         mentionShare.setDomain(domain);
-//        ColumnFamilyUpdater<String, String> updater = this.createBaseStatus(mentionShare);
-//
-//        updater.setString(ORIGINAL_STATUS_ID, originalStatusId);
-//        mentionShare.setOriginalStatusId(originalStatusId);
-//
-//
-//        log.debug("Persisting MentionShare : {}", mentionShare);
-//
-//        template.update(updater);
+
+        Insert inserter = this.createBaseStatus(mentionShare);
+        mentionShare.setOriginalStatusId(originalStatusId);
+        inserter = inserter.value("originalStatusId",UUID.fromString(originalStatusId));
+        log.debug("Persisting Announcement : {}", mentionShare);
+        session.execute(inserter);
+
         return mentionShare;
     }
 
@@ -281,47 +298,6 @@ public class CassandraStatusRepository implements StatusRepository {
         if (optionalStatus.isPresent()) {
             status = optionalStatus.get();
         }
-//        return user;
-
-//        ColumnFamilyResult<String, String> result = template.queryColumns(statusId);
-//
-//        if (result.hasResults() == false) {
-//            return null; // No status was found
-//        }
-//        Status status = null;
-//        String type = result.getString(TYPE);
-//        if (type == null || type.equals(StatusType.STATUS.name())) {
-//            status = findStatus(result, statusId);
-//        } else if (type.equals(StatusType.SHARE.name())) {
-//            status = findShare(result);
-//        } else if (type.equals(StatusType.ANNOUNCEMENT.name())) {
-//            status = findAnnouncement(result);
-//        } else if (type.equals(StatusType.MENTION_FRIEND.name())) {
-//            status = findMentionFriend(result);
-//        } else if (type.equals(StatusType.MENTION_SHARE.name())) {
-//            status = findMentionShare(result);
-//        } else {
-//            throw new IllegalStateException("Status has an unknown type: " + type);
-//        }
-//        if (status == null) { // Status was not found, or was removed
-//            return null;
-//        }
-//        status.setStatusId(statusId);
-//        status.setLogin(result.getString(LOGIN));
-//        status.setUsername(result.getString(USERNAME));
-//
-//        String domain = result.getString(DOMAIN);
-//        if (domain != null) {
-//            status.setDomain(domain);
-//        } else {
-//            throw new IllegalStateException("Status cannot have a null domain: " + status);
-//        }
-//
-//        status.setStatusDate(result.getDate(STATUS_DATE));
-//        Boolean removed = result.getBoolean(REMOVED);
-//        if (removed != null) {
-//            status.setRemoved(removed);
-//        }
         return status;
     }
 

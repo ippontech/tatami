@@ -1,5 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.repository.DomainRepository;
@@ -7,7 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAIN_CF;
 
 /**
@@ -23,13 +31,17 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAIN_CF;
 @Repository
 public class CassandraDomainRepository implements DomainRepository {
 
-//    @Inject
+    public static final String DOMAIN_ID = "domainId";
+    @Inject
+    private Session session;
 
     @Override
     public void addUserInDomain(String domain, String login) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(domain, DOMAIN_CF, HFactory.createColumn(login,
-//                Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
+        Statement statement = QueryBuilder.insertInto("domain")
+                .value(DOMAIN_ID, domain)
+                .value("login", login)
+                .value("created", UUIDs.timeBased());
+        session.execute(statement);
     }
 
     @Override
@@ -39,71 +51,76 @@ public class CassandraDomainRepository implements DomainRepository {
 
     @Override
     public void deleteUserInDomain(String domain, String login) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.delete(domain, DOMAIN_CF, login, StringSerializer.get());
+        Statement statement = QueryBuilder.delete()
+                .from("domain")
+                .where(eq(DOMAIN_ID,domain))
+                .and(eq("login",login));
+        session.execute(statement);
     }
 
     @Override
     public List<String> getLoginsInDomain(String domain, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
-        List<String> logins = new ArrayList<String>();
-//        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(DOMAIN_CF)
-//                .setKey(domain)
-//                .setRange(null, null, false, maxColumns)
-//                .execute()
-//                .get();
+        Statement statement = QueryBuilder.select()
+                .column("login")
+                .from("domain")
+                .where(eq(DOMAIN_ID, domain))
+                .limit(maxColumns+1);
 
-        int index = 0;
-//        for (HColumn<String, String> column : result.getColumns()) {
-//            // We take one more item, to display (or not) the "next" button if there is an item after the displayed list.
-//            if (index > maxColumns) {
-//                break;
-//            }
-//            if (index >= pagination) {
-//                logins.add(column.getName());
-//            }
-//            index++;
-//        }
-        return logins;
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .skip(pagination)
+                .map(e -> e.getString("login"))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<String> getLoginsInDomain(String domain) {
-        List<String> logins = new ArrayList<String>();
-//        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(DOMAIN_CF)
-//                .setKey(domain)
-//                .setRange(null, null, false, Integer.MAX_VALUE)
-//                .execute()
-//                .get();
-//
-//        for (HColumn<String, String> column : result.getColumns()) {
-//            logins.add(column.getName());
-//        }
-        return logins;
+        Statement statement = QueryBuilder.select()
+                .column("login")
+                .from("domain")
+                .where(eq(DOMAIN_ID, domain));
+
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .map(e -> e.getString("login"))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Set<Domain> getAllDomains() {
-        Set<Domain> domains = new HashSet<Domain>();
-//        RangeSlicesQuery<String, String, String> query = createRangeSlicesQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(DOMAIN_CF)
-//                .setRange(null, null, false, Integer.MAX_VALUE)
-//                .setRowCount(Constants.CASSANDRA_MAX_ROWS);
-//
-//        QueryResult<OrderedRows<String, String, String>> result = query.execute();
-//        List<Row<String, String, String>> rows = result.get().getList();
-//        for (Row<String, String, String> row : rows) {
-//            Domain domain = new Domain();
-//            domain.setName(row.getKey());
-//            domain.setNumberOfUsers(row.getColumnSlice().getColumns().size());
-//
-//            domains.add(domain);
-//        }
-        return domains;
+        Statement statement = QueryBuilder.select()
+                .distinct()
+                .column(DOMAIN_ID)
+                .from("domain");
+
+        ResultSet results = session.execute(statement);
+        Set<Domain> domainMaps = new HashSet<>();
+
+        for (Row result : results) {
+            String domainId = result.getString(DOMAIN_ID);
+            Domain domain = new Domain();
+            domain.setName(domainId);
+            domain.setNumberOfUsers((int)getCountForDomain(domain.getName()));
+            domainMaps.add(domain);
+        }
+        return domainMaps;
+    }
+
+    private long getCountForDomain(String name) {
+        Statement statement = QueryBuilder.select()
+                .countAll()
+                .from("domain")
+                .where(eq(DOMAIN_ID,name));
+
+        ResultSet results = session.execute(statement);
+        if (!results.isExhausted()) {
+            return results.one().getLong(0);
+        }
+        return 0L;
     }
 }

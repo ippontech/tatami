@@ -55,30 +55,17 @@ public abstract class AbstractCassandraTatamiTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        synchronized (lock) {
-            if (!isInitialized) {
+//        synchronized (lock) {
+//            if (!isInitialized) {
                 EmbeddedCassandraServerHelper.startEmbeddedCassandra();
                 Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
                 session = cluster.connect();
-                CQLDataLoader dataLoader = new CQLDataLoader(session);
-                dataLoader.load(new ClassPathCQLDataSet("config/cql/create-tables.cql", true, "testTatami"));
-//
-//                EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-//                // create structure and load data
-//                String clusterName = "Tatami cluster";
-//                String host = "localhost:9171";
-//                DataLoader dataLoader = new DataLoader(clusterName, host);
-//                dataLoader.load(new ClassPathJsonDataSet("dataset/dataset.json"));
-//
-//                final ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-//                builder.put("cluster.name", clusterName);
-//
-//                final Node node = NodeBuilder.nodeBuilder().settings(builder.build()).local(true).node();
-//                client = node.client();
-//
+//                CQLDataLoader dataLoader = new CQLDataLoader(session);
+//                dataLoader.load(new ClassPathCQLDataSet("config/cql/create-tables.cql", true, "testTatami"));
+
                 isInitialized = true;
-            }
-        }
+//            }
+//        }
         CQLDataLoader dataLoader = new CQLDataLoader(session);
         dataLoader.load(new ClassPathCQLDataSet("dataset/dataset.cql",true,"testTatami"));
     }

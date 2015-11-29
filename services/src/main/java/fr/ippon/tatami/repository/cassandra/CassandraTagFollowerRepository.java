@@ -44,11 +44,10 @@ public class CassandraTagFollowerRepository
 
     @Override
     public Collection<String> findFollowers(String domain, String tag) {
-
         Statement statement = QueryBuilder.select()
                 .column("login")
                 .from("tagFollowers")
-                .where(eq("tagDomain", getKey(domain, tag)));
+                .where(eq("key", getKey(domain, tag)));
         ResultSet results = session.execute(statement);
         return results
                 .all()

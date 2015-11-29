@@ -1,5 +1,11 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.repository.AvatarRepository;
 import org.slf4j.Logger;
@@ -8,8 +14,13 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
 import java.util.Date;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.addAll;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.AVATAR_CF;
 
 @Repository
@@ -22,40 +33,31 @@ public class CassandraAvatarRepository implements AvatarRepository {
     private final String SIZE = "size";
     private final String CREATION_DATE = "creation_date";
 
+    @Inject
+    private Session session;
+
 
 
     @Override
     public void createAvatar(Avatar avatar) {
-
-//        String avatarId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
-//        log.debug("Creating avatar : {}", avatar);
-//
-//
-//        avatar.setAvatarId(avatarId);
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//
-//        mutator.insert(avatarId, AVATAR_CF, HFactory.createColumn(CONTENT,
-//                avatar.getContent(), StringSerializer.get(), BytesArraySerializer.get()));
-//
-//        mutator.insert(avatarId, AVATAR_CF, HFactory.createColumn(FILENAME,
-//                avatar.getFilename(), StringSerializer.get(), StringSerializer.get()));
-//
-//        mutator.insert(avatarId, AVATAR_CF, HFactory.createColumn(SIZE,
-//                avatar.getSize(), StringSerializer.get(), LongSerializer.get()));
-//
-//        mutator.insert(avatarId, AVATAR_CF, HFactory.createColumn(CREATION_DATE,
-//                avatar.getCreationDate(), StringSerializer.get(), DateSerializer.get()));
-
+        avatar.setAvatarId(UUIDs.timeBased().toString());
+        Statement statement = QueryBuilder.insertInto("avatar")
+                .value("id", avatar.getAvatarId())
+                .value(FILENAME, avatar.getFilename())
+                .value(CONTENT, avatar.getContent())
+                .value(SIZE,avatar.getSize())
+                .value(CREATION_DATE,avatar.getCreationDate());
+        session.execute(statement);
     }
 
     @Override
     @CacheEvict(value = "avatar-cache")
     public void removeAvatar(String avatarId) {
         log.debug("Avatar deleted : {}", avatarId);
-
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.addDeletion(avatarId, AVATAR_CF);
-//        mutator.execute();
+        Statement statement = QueryBuilder.delete()
+                .from("avatar")
+                .where(eq("id", UUID.fromString(avatarId)));
+        session.execute(statement);
     }
 
     @Override
@@ -68,21 +70,16 @@ public class CassandraAvatarRepository implements AvatarRepository {
 
         Avatar avatar = this.findAttachmentMetadataById(avatarId);
 
-        if (avatar == null) {
-            return null;
+        if (avatar != null) {
+            Statement statement = QueryBuilder.select()
+                    .column(CONTENT)
+                    .from("avatar")
+                    .where(eq("id", UUID.fromString(avatarId)));
+
+            ResultSet results = session.execute(statement);
+            avatar.setContent(results.one().getBytes(CONTENT).array());
         }
 
-//        ColumnQuery<String, String, byte[]> queryAttachment = HFactory.createColumnQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), BytesArraySerializer.get());
-//
-//        HColumn<String, byte[]> columnAttachment =
-//                queryAttachment.setColumnFamily(AVATAR_CF)
-//                        .setKey(avatarId)
-//                        .setName(CONTENT)
-//                        .execute()
-//                        .get();
-
-//        avatar.setContent(columnAttachment.getValue());
         return avatar;
     }
 
@@ -91,58 +88,24 @@ public class CassandraAvatarRepository implements AvatarRepository {
         if (avatarId == null) {
             return null;
         }
-        Avatar avatar = new Avatar();
-        avatar.setAvatarId(avatarId);
 
-//        ColumnQuery<String, String, String> queryFilename = HFactory.createColumnQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), StringSerializer.get());
-//
-//        HColumn<String, String> columnFilename =
-//                queryFilename.setColumnFamily(AVATAR_CF)
-//                        .setKey(avatarId)
-//                        .setName(FILENAME)
-//                        .execute()
-//                        .get();
+        Statement statement = QueryBuilder.select()
+                .column(FILENAME)
+                .column(SIZE)
+                .column(CREATION_DATE)
+                .from("avatar")
+                .where(eq("id", UUID.fromString(avatarId)));
 
-//        if (columnFilename != null && columnFilename.getValue() != null) {
-//            avatar.setFilename(columnFilename.getValue());
-//        } else {
-//            return null;
-//        }
-
-//        ColumnQuery<String, String, Long> querySize = HFactory.createColumnQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), LongSerializer.get());
-//
-//        HColumn<String, Long> columnSize =
-//                querySize.setColumnFamily(AVATAR_CF)
-//                        .setKey(avatarId)
-//                        .setName(SIZE)
-//                        .execute()
-//                        .get();
-
-//        if (columnSize != null && columnSize.getValue() != null) {
-//            avatar.setSize(columnSize.getValue());
-//        } else {
-//            return null;
-//        }
-//
-//        ColumnQuery<String, String, Date> queryCreationDate = HFactory.createColumnQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), DateSerializer.get());
-//
-//        HColumn<String, Date> columnCreationDate =
-//                queryCreationDate.setColumnFamily(AVATAR_CF)
-//                        .setKey(avatarId)
-//                        .setName(CREATION_DATE)
-//                        .execute()
-//                        .get();
-
-//        if (columnCreationDate != null && columnCreationDate.getValue() != null) {
-//            avatar.setCreationDate(columnCreationDate.getValue());
-//        } else {
-//            avatar.setCreationDate(new Date());
-//        }
-
-        return avatar;
+        ResultSet results = session.execute(statement);
+        if (!results.isExhausted()) {
+            Row row = results.one();
+            Avatar avatar = new Avatar();
+            avatar.setFilename(row.getString(FILENAME));
+            avatar.setSize(row.getLong(SIZE));
+            avatar.setCreationDate(row.getDate(CREATION_DATE));
+            return avatar;
+        }
+        return null;
     }
 
 }

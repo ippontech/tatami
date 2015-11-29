@@ -107,7 +107,7 @@ public class CassandraUserRepository implements UserRepository {
         BoundStatement stmt = findOneByLoginStmt.bind();
         stmt.setString("login", login);
         Optional<User> optionalUser = findOneFromIndex(stmt);
-        if (optionalUser != null) {
+        if (optionalUser.isPresent()) {
             user = optionalUser.get();
             user.setStatusCount(counterRepository.getStatusCounter(login));
             user.setFollowersCount(counterRepository.getFollowersCounter(login));
