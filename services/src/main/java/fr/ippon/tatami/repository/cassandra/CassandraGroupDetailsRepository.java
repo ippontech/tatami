@@ -1,10 +1,22 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.utils.UUIDs;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.GroupDetailsRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Inject;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
 
 /**
  * Cassandra implementation of the Group Details repository.
@@ -23,60 +35,47 @@ public class CassandraGroupDetailsRepository implements GroupDetailsRepository {
     private static final String PUBLIC_GROUP = "publicGroup";
     private static final String ARCHIVED_GROUP = "archivedGroup";
 
-//    @Inject
+    @Inject
+    private Session session;
 
     @Override
     public void createGroupDetails(String groupId, String name, String description, boolean publicGroup) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(NAME,
-//                name, StringSerializer.get(), StringSerializer.get()));
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(DESCRIPTION,
-//                description, StringSerializer.get(), StringSerializer.get()));
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(PUBLIC_GROUP,
-//                (Boolean.valueOf(publicGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
-//                Boolean.FALSE.toString(), StringSerializer.get(), StringSerializer.get()));
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.GROUP_DETAILS_CF)
+                .value("groupId", UUID.fromString(groupId))
+                .value(NAME, name)
+                .value(DESCRIPTION, description)
+                .value(PUBLIC_GROUP, publicGroup)
+                .value(ARCHIVED_GROUP,false);
+        session.execute(statement);
     }
 
     @Override
     public void editGroupDetails(UUID groupId, String name, String description, boolean archivedGroup) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(NAME,
-//                name, StringSerializer.get(), StringSerializer.get()));
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(DESCRIPTION,
-//                description, StringSerializer.get(), StringSerializer.get()));
-//        mutator.insert(groupId, GROUP_DETAILS_CF, HFactory.createColumn(ARCHIVED_GROUP,
-//                (Boolean.valueOf(archivedGroup)).toString(), StringSerializer.get(), StringSerializer.get()));
+        Statement statement = QueryBuilder.update(ColumnFamilyKeys.GROUP_DETAILS_CF)
+                .with(set(NAME,name))
+                .and(set(DESCRIPTION,description))
+                .and(set(ARCHIVED_GROUP,archivedGroup))
+                .where(eq("groupId",groupId));
+        session.execute(statement);
     }
 
     @Override
     public Group getGroupDetails(UUID groupId) {
-        Group group = new Group();
-        group.setGroupId(groupId);
-        group.setPublicGroup(false);
-//        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(GROUP_DETAILS_CF)
-//                .setKey(groupId)
-//                .setRange(null, null, false, 4)
-//                .execute()
-//                .get();
-//
-//        for (HColumn<String, String> column : result.getColumns()) {
-//            if (column.getName().equals(NAME)) {
-//                group.setName(column.getValue());
-//            } else if (column.getName().equals(DESCRIPTION)) {
-//                group.setDescription(column.getValue());
-//            } else if (column.getName().equals(PUBLIC_GROUP)) {
-//                if (column.getValue().equals(Boolean.TRUE.toString())) {
-//                    group.setPublicGroup(true);
-//                }
-//            } else if (column.getName().equals(ARCHIVED_GROUP)) {
-//                if (column.getValue().equals(Boolean.TRUE.toString())) {
-//                    group.setArchivedGroup(true);
-//                }
-//            }
-//        }
-        return group;
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from(ColumnFamilyKeys.GROUP_DETAILS_CF)
+                .where(eq("groupId", groupId));
+
+        ResultSet results = session.execute(statement);
+        Row row =  results.one();
+        if (row != null) {
+            Group group = new Group();
+            group.setName(row.getString(NAME));
+            group.setDescription(row.getString(DESCRIPTION));
+            group.setPublicGroup(row.getBool(PUBLIC_GROUP));
+            group.setArchivedGroup(row.getBool(ARCHIVED_GROUP));
+            return group;
+        }
+        return null;
     }
 }

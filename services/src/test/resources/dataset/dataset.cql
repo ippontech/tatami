@@ -311,3 +311,12 @@ CREATE TABLE IF NOT EXISTS groupCounter (
     counter counter,
     PRIMARY KEY(domain,groupId)
 );
+
+CREATE TABLE IF NOT EXISTS groupDetails (
+    groupId timeuuid,
+    name varchar,
+    description varchar,
+    publicGroup boolean,
+    archivedGroup boolean,
+    PRIMARY KEY(groupId)
+);
