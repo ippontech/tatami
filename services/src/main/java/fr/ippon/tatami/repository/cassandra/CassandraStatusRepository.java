@@ -6,6 +6,7 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
+import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -36,6 +37,29 @@ import java.util.*;
 public class CassandraStatusRepository implements StatusRepository {
 
     private final Logger log = LoggerFactory.getLogger(CassandraStatusRepository.class);
+
+    private static final String LOGIN = "login";
+    private static final String TYPE = "type";
+    private static final String USERNAME = "username";
+    private static final String DOMAIN = "domain";
+    private static final String STATUS_DATE = "statusDate";
+
+    //Normal status
+    private static final String STATUS_PRIVATE = "statusPrivate";
+    private static final String GROUP_ID = "groupId";
+    private static final String HAS_ATTACHMENTS = "hasAttachments";
+    private static final String CONTENT = "content";
+    private static final String DISCUSSION_ID = "discussionId";
+    private static final String REPLY_TO = "replyTo";
+    private static final String REPLY_TO_USERNAME = "replyToUsername";
+    private static final String REMOVED = "removed";
+    private static final String GEO_LOCALIZATION = "geoLocalization";
+
+    //Share, Mention Share & Announcement
+    private static final String ORIGINAL_STATUS_ID = "originalStatusId";
+
+    //Mention Friend
+    private static final String FOLLOWER_LOGIN = "followerLogin";
 
 
     //Bean validation
@@ -237,39 +261,6 @@ public class CassandraStatusRepository implements StatusRepository {
         return mentionShare;
     }
 
-//    private ColumnFamilyUpdater<String, String> createBaseStatus(AbstractStatus abstractStatus) {
-//        // Generate statusId and statusDate for all statuses
-//        String statusId = TimeUUIDUtils.getUniqueTimeUUIDinMillis().toString();
-//        abstractStatus.setStatusId(statusId);
-//        ColumnFamilyUpdater<String, String> updater = template.createUpdater(statusId);
-//
-//        Date statusDate = Calendar.getInstance().getTime();
-//        updater.setDate(STATUS_DATE, statusDate);
-//        abstractStatus.setStatusDate(statusDate);
-//
-//        // Persist common data : login, username, domain, type
-//        String login = abstractStatus.getLogin();
-//        if (login == null) {
-//            throw new IllegalStateException("Login cannot be null for status: " + abstractStatus);
-//        }
-//        updater.setString(LOGIN, login);
-//
-//        String username = abstractStatus.getUsername();
-//        if (username == null) {
-//            throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
-//        }
-//        updater.setString(USERNAME, username);
-//
-//        String domain = abstractStatus.getDomain();
-//        if (domain == null) {
-//            throw new IllegalStateException("Domain cannot be null for status: " + abstractStatus);
-//        }
-//        updater.setString(DOMAIN, domain);
-//
-//        updater.setString(TYPE, abstractStatus.getType().name());
-//
-//        return updater;
-//    }
 
     private Optional<Status> findOneFromIndex(BoundStatement stmt) {
         ResultSet rs = session.execute(stmt);
@@ -293,77 +284,112 @@ public class CassandraStatusRepository implements StatusRepository {
         }
         BoundStatement stmt = findOneByIdStmt.bind();
         stmt.setUUID("statusId", UUID.fromString(statusId));
-        Status status = null;
-        Optional<Status> optionalStatus = findOneFromIndex(stmt);
-        if (optionalStatus.isPresent()) {
-            status = optionalStatus.get();
+        ResultSet rs = session.execute(stmt);
+        if (rs.isExhausted()) {
+            return null;
+        }
+        Row row = rs.one();
+        AbstractStatus status = null;
+        String type = row.getString(TYPE);
+        if (type == null || type.equals(StatusType.STATUS.name())) {
+            status = findStatus(row, statusId);
+        } else if (type.equals(StatusType.SHARE.name())) {
+            status = findShare(row);
+        } else if (type.equals(StatusType.ANNOUNCEMENT.name())) {
+            status = findAnnouncement(row);
+        } else if (type.equals(StatusType.MENTION_FRIEND.name())) {
+            status = findMentionFriend(row);
+        } else if (type.equals(StatusType.MENTION_SHARE.name())) {
+            status = findMentionShare(row);
+        } else {
+            throw new IllegalStateException("Status has an unknown type: " + type);
+        }
+        if (status == null) { // Status was not found, or was removed
+            return null;
+        }
+        status.setStatusId(UUID.fromString(statusId));
+        status.setLogin(row.getString(LOGIN));
+        status.setUsername(row.getString(USERNAME));
+
+        String domain = row.getString(DOMAIN);
+        if (domain != null) {
+            status.setDomain(domain);
+        } else {
+            throw new IllegalStateException("Status cannot have a null domain: " + status);
+        }
+
+        status.setStatusDate(row.getDate(STATUS_DATE));
+        Boolean removed = row.getBool(REMOVED);
+        if (removed != null) {
+            status.setRemoved(removed);
+        }
+        return status;
+
+    }
+
+    private AbstractStatus findMentionShare(Row result) {
+        MentionShare mentionShare = new MentionShare();
+        mentionShare.setType(StatusType.MENTION_SHARE);
+        mentionShare.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        return mentionShare;
+    }
+
+    private AbstractStatus findMentionFriend(Row result) {
+        MentionFriend mentionFriend = new MentionFriend();
+        mentionFriend.setType(StatusType.MENTION_FRIEND);
+        mentionFriend.setFollowerLogin(result.getString(FOLLOWER_LOGIN));
+        return mentionFriend;
+    }
+
+    private AbstractStatus findAnnouncement(Row result) {
+        Announcement announcement = new Announcement();
+        announcement.setType(StatusType.ANNOUNCEMENT);
+        announcement.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        return announcement;
+    }
+
+    private AbstractStatus findShare(Row result) {
+        Share share = new Share();
+        share.setType(StatusType.SHARE);
+        share.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        return share;
+    }
+
+    private AbstractStatus findStatus(Row result, String statusId) {
+        Status status = new Status();
+        status.setStatusId(UUID.fromString(statusId));
+        status.setType(StatusType.STATUS);
+        status.setContent(result.getString(CONTENT));
+        status.setStatusPrivate(result.getBool(STATUS_PRIVATE));
+        status.setGroupId(result.getString(GROUP_ID));
+        status.setHasAttachments(result.getBool(HAS_ATTACHMENTS));
+        status.setDiscussionId(result.getString(DISCUSSION_ID));
+        status.setReplyTo(result.getString(REPLY_TO));
+        status.setReplyToUsername(result.getString(REPLY_TO_USERNAME));
+        status.setGeoLocalization(result.getString(GEO_LOCALIZATION));
+        status.setRemoved(result.getBool(REMOVED));
+        if (status.isRemoved()) {
+            return null;
+        }
+        status.setDetailsAvailable(computeDetailsAvailable(status));
+        if (status.getHasAttachments() != null && status.getHasAttachments()) {
+            Collection<String> attachmentIds = statusAttachmentRepository.findAttachmentIds(statusId);
+            Collection<Attachment> attachments = new ArrayList<>();
+            for (String attachmentId : attachmentIds) {
+                Attachment attachment = attachmentRepository.findAttachmentMetadataById(attachmentId);
+                if (attachment != null) {
+                    // We copy everything excepted the attachment content, as we do not want it in the status cache
+                    Attachment attachmentCopy = new Attachment();
+                    attachmentCopy.setAttachmentId(attachmentId);
+                    attachmentCopy.setSize(attachment.getSize());
+                    attachmentCopy.setFilename(attachment.getFilename());
+                    attachments.add(attachment);
+                }
+            }
+            status.setAttachments(attachments);
         }
         return status;
     }
-
-//    private Status findStatus(ColumnFamilyResult<String, String> result, String statusId) {
-//        Status status = new Status();
-//        status.setStatusId(statusId);
-//        status.setType(StatusType.STATUS);
-//        status.setContent(result.getString(CONTENT));
-//        status.setStatusPrivate(result.getBoolean(STATUS_PRIVATE));
-//        status.setGroupId(result.getString(GROUP_ID));
-//        status.setHasAttachments(result.getBoolean(HAS_ATTACHMENTS));
-//        status.setDiscussionId(result.getString(DISCUSSION_ID));
-//        status.setReplyTo(result.getString(REPLY_TO));
-//        status.setReplyToUsername(result.getString(REPLY_TO_USERNAME));
-//        status.setGeoLocalization(result.getString(GEO_LOCALIZATION));
-//        status.setRemoved(result.getBoolean(REMOVED));
-//        if (status.getRemoved() == Boolean.TRUE) {
-//            return null;
-//        }
-//        status.setDetailsAvailable(computeDetailsAvailable(status));
-//        if (status.getHasAttachments() != null && status.getHasAttachments()) {
-//            Collection<String> attachmentIds = statusAttachmentRepository.findAttachmentIds(statusId);
-//            Collection<Attachment> attachments = new ArrayList<Attachment>();
-//            for (String attachmentId : attachmentIds) {
-//                Attachment attachment = attachmentRepository.findAttachmentMetadataById(attachmentId);
-//                if (attachment != null) {
-//                    // We copy everything excepted the attachment content, as we do not want it in the status cache
-//                    Attachment attachmentCopy = new Attachment();
-//                    attachmentCopy.setAttachmentId(attachmentId);
-//                    attachmentCopy.setSize(attachment.getSize());
-//                    attachmentCopy.setFilename(attachment.getFilename());
-//                    attachments.add(attachment);
-//                }
-//            }
-//            status.setAttachments(attachments);
-//        }
-//        return status;
-//    }
-//
-//    private Share findShare(ColumnFamilyResult<String, String> result) {
-//        Share share = new Share();
-//        share.setType(StatusType.SHARE);
-//        share.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
-//        return share;
-//    }
-//
-//    private Announcement findAnnouncement(ColumnFamilyResult<String, String> result) {
-//        Announcement announcement = new Announcement();
-//        announcement.setType(StatusType.ANNOUNCEMENT);
-//        announcement.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
-//        return announcement;
-//    }
-//
-//    private MentionFriend findMentionFriend(ColumnFamilyResult<String, String> result) {
-//        MentionFriend mentionFriend = new MentionFriend();
-//        mentionFriend.setType(StatusType.MENTION_FRIEND);
-//        mentionFriend.setFollowerLogin(result.getString(FOLLOWER_LOGIN));
-//        return mentionFriend;
-//    }
-//
-//    private MentionShare findMentionShare(ColumnFamilyResult<String, String> result) {
-//        MentionShare mentionShare = new MentionShare();
-//        mentionShare.setType(StatusType.MENTION_SHARE);
-//        mentionShare.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
-//        return mentionShare;
-//    }
 
     @Override
     @CacheEvict(value = "status-cache", key = "#status.statusId")

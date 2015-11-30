@@ -26,4 +26,12 @@ public interface AbstractStatus extends Serializable {
     String getUsername();
 
     String getDomain();
+
+    void setLogin(String string);
+
+    void setUsername(String string);
+
+    void setDomain(String domain);
+
+    void setRemoved(Boolean removed);
 }
