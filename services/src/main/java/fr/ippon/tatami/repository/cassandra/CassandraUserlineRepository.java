@@ -4,6 +4,7 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.mapping.MappingManager;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.status.Share;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.UserlineRepository;
@@ -73,9 +74,9 @@ public class CassandraUserlineRepository extends AbstractCassandraLineRepository
 
     @Override
     public void deleteUserline(String login) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.addDeletion(login, USERLINE_CF);
-//        mutator.execute();
+        Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.USERLINE_CF)
+                .where(eq("login", login));
+        session.execute(statement);
     }
 
     @Override
