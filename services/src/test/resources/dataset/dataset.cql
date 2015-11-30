@@ -344,3 +344,9 @@ CREATE TABLE IF NOT EXISTS statusAttachment (
     created timestamp,
     PRIMARY KEY(statusId,attachmentId)
 );
+
+CREATE TABLE IF NOT EXISTS tagCounter (
+    key varchar,
+    TAG_COUNTER counter,
+    PRIMARY KEY(key)
+);

@@ -1,5 +1,7 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
@@ -34,14 +36,17 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
 
     @Override
     public long getGroupCounter(String domain, UUID groupId) {
-//        CounterQuery<String, String> counter =
-//                new ThriftCounterColumnQuery<String, String>(keyspaceOperator,
-//                        StringSerializer.get(),
-//                        StringSerializer.get());
-//
-//        counter.setColumnFamily(GROUP_COUNTER_CF).setKey(domain).setName(groupId);
-//        return counter.execute().get().getValue();
-        return 0;
+        Statement statement = QueryBuilder.select()
+                .column("counter")
+                .from(ColumnFamilyKeys.GROUP_COUNTER_CF)
+                .where(eq(domain, domain))
+                .and(eq("groupId",groupId));
+        ResultSet results = session.execute(statement);
+        if (!results.isExhausted()) {
+            return results.one().getLong("counter");
+        } else {
+            return 0;
+        }
     }
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
