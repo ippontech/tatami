@@ -320,3 +320,8 @@ CREATE TABLE IF NOT EXISTS groupDetails (
     archivedGroup boolean,
     PRIMARY KEY(groupId)
 );
+
+CREATE TABLE IF NOT EXISTS TatamiBotDuplicate (
+    Default key,
+    PRIMARY KEY(Default)
+);
