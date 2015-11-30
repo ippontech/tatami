@@ -337,3 +337,4 @@ CREATE TABLE IF NOT EXISTS rss (
     login varchar,
     PRIMARY KEY(rss_uid)
 );
+

@@ -1,5 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.repository.SharesRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -9,7 +14,10 @@ import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.SHARES_CF;
 
 /**
@@ -26,47 +34,42 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.SHARES_CF;
 @Repository
 public class CassandraSharesRepository implements SharesRepository {
 
-//    @Inject
+    @Inject
+    private Session session;
 
     @Override
     @CacheEvict(value = "shared-cache", key = "#statusId")
     public void newShareByLogin(String statusId, String sharedByLogin) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(statusId, SHARES_CF,
-//                HFactory.createColumn(
-//                        Calendar.getInstance().getTimeInMillis(),
-//                        sharedByLogin,
-//                        LongSerializer.get(),
-//                        StringSerializer.get()));
+        Statement statement = QueryBuilder.insertInto(SHARES_CF)
+                .value("status", UUID.fromString(statusId))
+                .value("login",sharedByLogin);
+        session.execute(statement);
     }
 
    @Override
    @Cacheable("shared-cache")
     public Collection<String> findLoginsWhoSharedAStatus(String statusId) {
-//        ColumnSlice<Long, String> result = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(SHARES_CF)
-//                .setKey(statusId)
-//                .setRange(null, null, false, 100) // Limit to 100 logins
-//                .execute()
-//                .get();
-
-        Collection<String> sharedByLogins = new LinkedHashSet<String>();
-//        for (HColumn<Long, String> column : result.getColumns()) {
-//            sharedByLogins.add(column.getValue());
-//        }
-        return sharedByLogins;
+       Statement statement = QueryBuilder.select()
+               .column("login")
+               .from(SHARES_CF)
+               .where(eq("status", statusId))
+               .limit(100);
+       ResultSet results = session.execute(statement);
+       return results
+               .all()
+               .stream()
+               .map(e -> e.getString("login"))
+               .collect(Collectors.toList());
     }
 
     @Override
     public boolean hasBeenShared(String statusId) {
-//        int zeroOrOne = HFactory.createCountQuery(keyspaceOperator, StringSerializer.get(), LongSerializer.get())
-//                .setColumnFamily(SHARES_CF)
-//                .setKey(statusId)
-//                .setRange(null, null, 1)
-//                .execute()
-//                .get();
-
-        return 0 > 0;
+        Statement statement = QueryBuilder.select()
+                .column("login")
+                .from(SHARES_CF)
+                .where(eq("status", statusId))
+                .limit(1);
+        ResultSet results = session.execute(statement);
+        return !results.isExhausted();
     }
 }
