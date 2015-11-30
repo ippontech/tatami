@@ -283,3 +283,15 @@ CREATE TABLE IF NOT EXISTS timelineShares (
     status timeuuid,
     PRIMARY KEY(key,status)
 );
+
+CREATE TABLE IF NOT EXISTS appleDevice (
+    login varchar,
+    deviceId varchar,
+    PRIMARY KEY(key,deviceId)
+);
+
+CREATE TABLE IF NOT EXISTS appleDeviceUser (
+    deviceId varchar,
+    login varchar,
+    PRIMARY KEY(key,deviceId)
+);
