@@ -322,6 +322,13 @@ CREATE TABLE IF NOT EXISTS groupDetails (
 );
 
 CREATE TABLE IF NOT EXISTS TatamiBotDuplicate (
-    Default key,
+    Default varchar,
     PRIMARY KEY(Default)
 );
+
+CREATE TABLE IF NOT EXISTS Registration (
+    registration_key varchar,
+    login varchar,
+    PRIMARY KEY(registration_key,login)
+);
+
