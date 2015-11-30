@@ -61,21 +61,6 @@ public class CassandraDaylineRepository implements DaylineRepository {
                 .stream()
                 .map(e -> new UserStatusStat(e.getString("username"),e.getLong("statusCount")))
                 .collect(Collectors.toCollection(TreeSet::new));
-
-//        Collection<UserStatusStat> results = new TreeSet<UserStatusStat>();
-//        SliceCounterQuery<String, String> query = createCounterSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(DAYLINE_CF)
-//                .setRange(null, null, false, Integer.MAX_VALUE)
-//                .setKey(key);
-//
-//        CounterSlice<String> queryResult = query.execute().get();
-//
-//        for (HCounterColumn<String> column : queryResult.getColumns()) {
-//            UserStatusStat stat = new UserStatusStat(column.getName(), column.getValue());
-//            results.add(stat);
-//        }
-//        return results;
     }
 
     /**
