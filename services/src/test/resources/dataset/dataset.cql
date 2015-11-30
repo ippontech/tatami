@@ -295,3 +295,12 @@ CREATE TABLE IF NOT EXISTS appleDeviceUser (
     login varchar,
     PRIMARY KEY(key,deviceId)
 );
+CREATE TABLE IF NOT EXISTS attachment (
+    id timeuuid,
+    filename varchar,
+    content blob,
+    thumbnail blob,
+    size bigint,
+    creation_date timestamp,
+    PRIMARY KEY(id,filename)
+);
