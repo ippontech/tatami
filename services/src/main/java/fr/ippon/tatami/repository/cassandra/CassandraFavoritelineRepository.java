@@ -77,8 +77,9 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
 
     @Override
     public void deleteFavoriteline(String login) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.addDeletion(login, FAVLINE_CF);
-//        mutator.execute();
+        Statement statement = QueryBuilder.delete()
+                .from("favline")
+                .where(eq("login",login));
+        session.execute(statement);
     }
 }
