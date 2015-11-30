@@ -1,11 +1,17 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.repository.RssUidRepository;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.RSS_CF;
 
 /**
@@ -20,39 +26,36 @@ public class CassandraRssUidRepository implements RssUidRepository {
 
     private final static String ROW_KEY = "rss_uid";
 
+    @Inject
+    private Session session;
 
     @Override
     public String generateRssUid(String login) {
         String key = RandomUtil.generateRegistrationKey();
-//        HColumn<String, String> column = HFactory.createColumn(key,
-//                login, StringSerializer.get(), StringSerializer.get());
-//
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(ROW_KEY, RSS_CF, column);
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.RSS_CF)
+                .value(ROW_KEY, key)
+                .value("login",login);
+        session.execute(statement);
         return key;
     }
 
     @Override
     public String getLoginByRssUid(String rssUid) {
-//        ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
-//        HColumn<String, String> column =
-//                query.setColumnFamily(RSS_CF)
-//                        .setKey(ROW_KEY)
-//                        .setName(rssUid)
-//                        .execute()
-//                        .get();
-//
-//        if (column != null) {
-//            return column.getValue();
-//        } else {
-//            return null;
-//        }
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from(ColumnFamilyKeys.RSS_CF)
+                .where(eq(ROW_KEY, rssUid));
+        ResultSet results = session.execute(statement);
+        if (!results.isExhausted()) {
+            return results.one().getString("login");
+        }
         return null;
     }
 
     @Override
     public void removeRssUid(String rssUid) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.delete(ROW_KEY, RSS_CF, rssUid, StringSerializer.get());
+        Statement statement = QueryBuilder.delete().from(RSS_CF)
+                .where(eq(ROW_KEY, rssUid));
+        session.execute(statement);
     }
 }

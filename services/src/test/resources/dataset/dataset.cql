@@ -332,3 +332,8 @@ CREATE TABLE IF NOT EXISTS Registration (
     PRIMARY KEY(registration_key,login)
 );
 
+CREATE TABLE IF NOT EXISTS rss (
+    rss_uid varchar,
+    login varchar,
+    PRIMARY KEY(rss_uid)
+);
