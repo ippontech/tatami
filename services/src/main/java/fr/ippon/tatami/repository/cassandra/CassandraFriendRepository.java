@@ -37,7 +37,7 @@ public class CassandraFriendRepository extends AbstractCassandraFriendRepository
     @Override
     @Cacheable("friends-cache")
     public List<String> findFriendsForUser(String login) {
-        return (List<String>) super.findFriends(login);
+        return super.findFriends(login);
     }
 
     @Override
