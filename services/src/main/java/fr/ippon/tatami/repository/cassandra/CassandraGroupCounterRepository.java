@@ -39,7 +39,7 @@ public class CassandraGroupCounterRepository implements GroupCounterRepository {
         Statement statement = QueryBuilder.select()
                 .column("counter")
                 .from(ColumnFamilyKeys.GROUP_COUNTER_CF)
-                .where(eq(domain, domain))
+                .where(eq("domain", domain))
                 .and(eq("groupId",groupId));
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {

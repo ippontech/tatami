@@ -33,5 +33,5 @@ public interface AbstractStatus extends Serializable {
 
     void setDomain(String domain);
 
-    void setRemoved(Boolean removed);
+    void setRemoved(boolean removed);
 }

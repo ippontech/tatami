@@ -367,6 +367,7 @@
                     <version>${selenium.version}</version>
                     <scope>test</scope>
                 </dependency>
+
                 <dependency>
                     <groupId>org.apache.directory.server</groupId>
                     <artifactId>apacheds-all</artifactId>

@@ -52,7 +52,7 @@ public class CassandraSharesRepository implements SharesRepository {
        Statement statement = QueryBuilder.select()
                .column("login")
                .from(SHARES_CF)
-               .where(eq("status", statusId))
+               .where(eq("status", UUID.fromString(statusId)))
                .limit(100);
        ResultSet results = session.execute(statement);
        return results
@@ -67,7 +67,7 @@ public class CassandraSharesRepository implements SharesRepository {
         Statement statement = QueryBuilder.select()
                 .column("login")
                 .from(SHARES_CF)
-                .where(eq("status", statusId))
+                .where(eq("status", UUID.fromString(statusId)))
                 .limit(1);
         ResultSet results = session.execute(statement);
         return !results.isExhausted();

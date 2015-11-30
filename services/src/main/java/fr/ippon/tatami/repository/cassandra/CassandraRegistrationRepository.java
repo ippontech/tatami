@@ -5,9 +5,6 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.google.common.collect.Maps;
-import com.sun.org.glassfish.gmbal.IncludeSubclass;
-import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.repository.RegistrationRepository;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
@@ -47,7 +43,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
     @Override
     public String generateRegistrationKey(String login) {
         String key = RandomUtil.generateRegistrationKey();
-        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.REGISTRATION_CF)
+        Statement statement = QueryBuilder.insertInto(REGISTRATION_CF)
                 .value(ROW_KEY, key)
                 .value("login",login)
                 .using(QueryBuilder.ttl(COLUMN_TTL));
@@ -59,7 +55,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
     public String getLoginByRegistrationKey(String registrationKey) {
         Statement statement = QueryBuilder.select()
                 .all()
-                .from(ColumnFamilyKeys.REGISTRATION_CF)
+                .from(REGISTRATION_CF)
                 .where(eq(ROW_KEY, registrationKey));
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {
@@ -76,7 +72,7 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
     public Map<String, String> _getAllRegistrationKeyByLogin() {
         Statement statement = QueryBuilder.select()
                 .all()
-                .from(ColumnFamilyKeys.REGISTRATION_CF)
+                .from(REGISTRATION_CF)
                 .limit(10000);
         ResultSet results = session.execute(statement);
         Map<String, String> registrationKeyByLogin = new HashMap<>();
