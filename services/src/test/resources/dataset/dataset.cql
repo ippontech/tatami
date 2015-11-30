@@ -304,3 +304,10 @@ CREATE TABLE IF NOT EXISTS attachment (
     creation_date timestamp,
     PRIMARY KEY(id,filename)
 );
+
+CREATE TABLE IF NOT EXISTS groupCounter (
+    domain varchar,
+    groupId timeuuid,
+    counter counter,
+    PRIMARY KEY(domain,groupId)
+);
