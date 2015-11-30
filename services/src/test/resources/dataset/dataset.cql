@@ -350,3 +350,9 @@ CREATE TABLE IF NOT EXISTS tagCounter (
     TAG_COUNTER counter,
     PRIMARY KEY(key)
 );
+
+CREATE TABLE IF NOT EXISTS userAttachment (
+    login varchar,
+    attachmentId timeuuid,
+    PRIMARY KEY(login,attachmentId)
+);
