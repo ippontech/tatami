@@ -3,6 +3,7 @@ package fr.ippon.tatami.repository.cassandra;
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
+import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.domain.status.Share;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public abstract class AbstractCassandraLineRepository {
         session.execute(batch);
     }
 
-    List<String> getLineFromTable(String table, String key, int size, String start, String finish) {
+    protected List<String> getLineFromTable(String table, String key, int size, String start, String finish) {
         Select.Where where = QueryBuilder.select()
                 .column("status")
                 .from(table)
@@ -90,45 +91,35 @@ public abstract class AbstractCassandraLineRepository {
                 .collect(Collectors.toList());
     }
 
-    void shareStatus(String login,
+    protected void shareStatus(String login,
                      Share share,
                      String columnFamily,
                      String sharesColumnFamily) {
 
-//        QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
-//                findByLoginAndStatusId(columnFamily, key, UUID.fromString(share.getOriginalStatusId()));
-//
-//        if (isStatusAlreadyinTimeline.get() == null) {
-//            QueryResult<HColumn<UUID, String>> isStatusAlreadyShared =
-//                    findByLoginAndStatusId(sharesColumnFamily, key, UUID.fromString(share.getOriginalStatusId()));
-//
-//            if (isStatusAlreadyShared.get() == null) {
-//                Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//
-//                mutator.insert(key, columnFamily, HFactory.createColumn(UUID.fromString(share.getStatusId()),
-//                        "", UUIDSerializer.get(), StringSerializer.get()));
-//
-//                mutator.insert(key, sharesColumnFamily, HFactory.createColumn(UUID.fromString(share.getOriginalStatusId()),
-//                        "", UUIDSerializer.get(), StringSerializer.get()));
-//            } else {
-//
-//                log.debug("Shared status {} is already shared in {}", share.getOriginalStatusId(), columnFamily);
-//
-//            }
-//        } else {
-//
-//            log.debug("Shared status {} is already present in {}", share.getOriginalStatusId(), columnFamily);
-//
-//        }
+        if (!findByLoginAndStatusId(columnFamily,login,share.getStatusId()) &&
+                !findByLoginAndStatusId(sharesColumnFamily,login,share.getStatusId())) {
+            Statement statement = QueryBuilder.insertInto(columnFamily)
+                    .value("key", login)
+                    .value("status", share.getStatusId());
+            session.execute(statement);
+            statement = QueryBuilder.insertInto(sharesColumnFamily)
+                    .value("key", login)
+                    .value("status", share.getStatusId());
+            session.execute(statement);
+        } else {
+            log.debug("Shared status {} is already present in {}", share.getOriginalStatusId(), columnFamily);
+
+        }
     }
 
-//    QueryResult<String> findByLoginAndStatusId(String columnFamily, String key, UUID statusId) {
-//        ColumnQuery<String, UUID, String> columnQuery =
-//                HFactory.createColumnQuery(keyspaceOperator, StringSerializer.get(),
-//                        UUIDSerializer.get(), StringSerializer.get());
-//
-//        columnQuery.setColumnFamily(columnFamily).setKey(key).setName(statusId);
-//        return columnQuery.execute();
-//        return null;
-//    }
+    protected boolean findByLoginAndStatusId(String columnFamily, String key, UUID statusId) {
+        Statement statement = QueryBuilder.select()
+                .column("login")
+                .from(columnFamily)
+                .where(eq("key", key))
+                .and(eq("status",statusId));
+
+        ResultSet results = session.execute(statement);
+        return !results.isExhausted();
+    }
 }

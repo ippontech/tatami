@@ -278,3 +278,8 @@ CREATE TABLE IF NOT EXISTS mailDigest (
     PRIMARY KEY(digestId,login)
 );
 
+CREATE TABLE IF NOT EXISTS timelineShares (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key,status)
+);

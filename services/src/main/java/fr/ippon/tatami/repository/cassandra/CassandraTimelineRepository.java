@@ -4,6 +4,7 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Select.Where;
+import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.domain.status.Announcement;
@@ -63,11 +64,7 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public boolean isStatusInTimeline(String login, String statusId) {
-//        QueryResult<HColumn<UUID, String>> isStatusAlreadyinTimeline =
-//                findByLoginAndStatusId(TIMELINE_CF, login, UUID.fromString(statusId));
-//
-//        return isStatusAlreadyinTimeline.get() != null;
-        return false;
+        return findByLoginAndStatusId(TIMELINE_CF,login,UUID.fromString(statusId));
     }
 
     @Override
@@ -87,13 +84,12 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public void announceStatusToTimeline(String announcedByLogin, List<String> logins, Announcement announcement) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//
-//        for (String login : logins) {
-//            mutator.addInsertion(login, TIMELINE_CF, HFactory.createColumn(UUID.fromString(announcement.getStatusId()),
-//                    "", UUIDSerializer.get(), StringSerializer.get()));
-//        }
-//        mutator.execute();
+        PreparedStatement insertAnnouncementPreparedStatement = session.prepare(
+                "INSERT INTO timeline (key, status) VALUES (?, ?);");
+
+        BatchStatement batch = new BatchStatement();
+        logins.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
+        session.executeAsync(batch);
     }
 
     @Override
@@ -103,9 +99,10 @@ public class CassandraTimelineRepository extends AbstractCassandraLineRepository
 
     @Override
     public void deleteTimeline(String login) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.addDeletion(login, TIMELINE_CF);
-//        mutator.execute();
+        Statement statement = QueryBuilder.delete()
+                .from(TIMELINE_CF)
+                .where(eq("key",login));
+        session.execute(statement);
     }
 
     @Override
