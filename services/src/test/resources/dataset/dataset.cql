@@ -338,3 +338,9 @@ CREATE TABLE IF NOT EXISTS rss (
     PRIMARY KEY(rss_uid)
 );
 
+CREATE TABLE IF NOT EXISTS statusAttachment (
+    statusId timeuuid,
+    attachmentId timeuuid,
+    created timestamp,
+    PRIMARY KEY(statusId,attachmentId)
+);
