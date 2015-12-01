@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS user (
     login varchar,
     password varchar,
@@ -22,7 +21,7 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS status (
-    statusId uuid,
+    statusId timeuuid,
     type varchar,
     login varchar,
     username varchar,
@@ -38,26 +37,31 @@ CREATE TABLE IF NOT EXISTS status (
     replyTo varchar,
     replyToUsername varchar,
     detailsAvailable boolean,
+    originalStatusId timeuuid,
+    followerLogin varchar,
     PRIMARY KEY(statusId)
 );
 
+
+
 CREATE TABLE IF NOT EXISTS timeline (
-    login varchar,
-    status uuid,
-    PRIMARY KEY(login, status)
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key,status)
 );
 
 CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
     login varchar,
+    created timeuuid,
     PRIMARY KEY(domainId, login)
 );
 
 CREATE TABLE IF NOT EXISTS counter (
     login varchar,
-    STATUS_COUNTER int,
-    FOLLOWERS_COUNTER int,
-    FRIENDS_COUNTER int,
+    STATUS_COUNTER counter,
+    FOLLOWERS_COUNTER counter,
+    FRIENDS_COUNTER counter,
     PRIMARY KEY(login)
 );
 
@@ -68,46 +72,200 @@ CREATE TABLE IF NOT EXISTS friends (
 );
 
 CREATE TABLE IF NOT EXISTS followers (
+    key varchar,
     login varchar,
-    followerLogin varchar,
-    PRIMARY KEY(login,followerLogin)
-);
-
-CREATE TABLE IF NOT EXISTS favline (
-    login varchar,
-    status uuid,
-    PRIMARY KEY(login, status)
+    PRIMARY KEY(key,login)
 );
 
 CREATE TABLE IF NOT EXISTS dayline (
     domainDay varchar,
     username varchar,
-    statusCount int,
+    statusCount counter,
     PRIMARY KEY(domainDay, username)
 );
 
 CREATE TABLE IF NOT EXISTS tagline (
-    tagDomain varchar,
-    statusId uuid,
-    statusCount int,
-    PRIMARY KEY(tagDomain, statusId)
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS userline (
-    login varchar,
-    status uuid,
-    PRIMARY KEY(login, status)
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS shares (
-    status uuid,
+    status timeuuid,
     login varchar,
     PRIMARY KEY(status, login)
 );
 
 CREATE TABLE IF NOT EXISTS tagFollowers (
-    tagDomain varchar,
+    key varchar,
     login varchar,
-    statusCount int,
-    PRIMARY KEY(tagDomain, login)
+    PRIMARY KEY(key, login)
+);
+
+CREATE TABLE IF NOT EXISTS favline (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+
+CREATE TABLE IF NOT EXISTS domainline (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+
+CREATE TABLE IF NOT EXISTS mentionline (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+CREATE TABLE IF NOT EXISTS groupline (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+
+CREATE TABLE IF NOT EXISTS group (
+    id timeuuid,
+    domain varchar,
+    name varchar,
+    description varchar,
+    publicGroup boolean,
+    PRIMARY KEY(id, domain)
+);
+
+CREATE TABLE IF NOT EXISTS userGroup (
+    login varchar,
+    groupId timeuuid,
+    role varchar,
+    PRIMARY KEY(login, groupId)
+);
+
+CREATE TABLE IF NOT EXISTS groupMember (
+    groupId timeuuid,
+    login varchar,
+    role varchar,
+    PRIMARY KEY(groupId, login)
+);
+
+CREATE TABLE IF NOT EXISTS userTags (
+    login varchar,
+    friendLogin varchar,
+    time timestamp,
+    PRIMARY KEY(login, friendLogin)
+);
+
+CREATE TABLE IF NOT EXISTS trends (
+    domain varchar,
+    id timeuuid,
+    tag varchar,
+    PRIMARY KEY(domain, id)
+);
+
+CREATE TABLE IF NOT EXISTS userTrends (
+    login varchar,
+    id timeuuid,
+    tag varchar,
+    PRIMARY KEY(login, id)
+);
+
+CREATE TABLE IF NOT EXISTS avatar (
+    id timeuuid,
+    filename varchar,
+    content blob,
+    size bigint,
+    creation_date timestamp,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS mailDigest (
+    digestId varchar,
+    login varchar,
+    created timestamp,
+    PRIMARY KEY(digestId,login)
+);
+
+CREATE TABLE IF NOT EXISTS timelineShares (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key,status)
+);
+
+CREATE TABLE IF NOT EXISTS appleDevice (
+    login varchar,
+    deviceId varchar,
+    PRIMARY KEY(login,deviceId)
+);
+
+CREATE TABLE IF NOT EXISTS appleDeviceUser (
+    deviceId varchar,
+    login varchar,
+    PRIMARY KEY(deviceId,login)
+);
+CREATE TABLE IF NOT EXISTS attachment (
+    id timeuuid,
+    filename varchar,
+    content blob,
+    thumbnail blob,
+    size bigint,
+    creation_date timestamp,
+    PRIMARY KEY(id,filename)
+);
+
+CREATE TABLE IF NOT EXISTS groupCounter (
+    domain varchar,
+    groupId timeuuid,
+    counter counter,
+    PRIMARY KEY(domain,groupId)
+);
+
+CREATE TABLE IF NOT EXISTS groupDetails (
+    groupId timeuuid,
+    name varchar,
+    description varchar,
+    publicGroup boolean,
+    archivedGroup boolean,
+    PRIMARY KEY(groupId)
+);
+
+CREATE TABLE IF NOT EXISTS TatamiBotDuplicate (
+    Default varchar,
+    PRIMARY KEY(Default)
+);
+
+CREATE TABLE IF NOT EXISTS Registration (
+    registration_key varchar,
+    login varchar,
+    PRIMARY KEY(registration_key,login)
+);
+
+CREATE TABLE IF NOT EXISTS rss (
+    rss_uid varchar,
+    login varchar,
+    PRIMARY KEY(rss_uid)
+);
+
+CREATE TABLE IF NOT EXISTS statusAttachment (
+    statusId timeuuid,
+    attachmentId timeuuid,
+    created timestamp,
+    PRIMARY KEY(statusId,attachmentId)
+);
+
+CREATE TABLE IF NOT EXISTS tagCounter (
+    key varchar,
+    TAG_COUNTER counter,
+    PRIMARY KEY(key)
+);
+
+CREATE TABLE IF NOT EXISTS userAttachment (
+    login varchar,
+    attachmentId timeuuid,
+    PRIMARY KEY(login,attachmentId)
 );

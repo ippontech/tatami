@@ -56,7 +56,7 @@
         </script>
     </c:if>
 
-    <sec:authorize ifAnyGranted="ROLE_USER">
+    <sec:authorize access="hasAnyRole">
         <c:if test="${not empty user.rssUid}">
             <link rel="alternate" type="application/rss+xml" title="RSS"
                   href="/tatami/syndic/${user.rssUid}" />

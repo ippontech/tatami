@@ -1,9 +1,6 @@
 package fr.ippon.tatami.config;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.QueryOptions;
-import com.datastax.driver.core.SocketOptions;
+import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.LatencyAwarePolicy;
 import com.datastax.driver.core.policies.LoadBalancingPolicy;
 import com.datastax.driver.core.policies.ReconnectionPolicy;
@@ -76,125 +73,8 @@ public class CassandraConfiguration {
     @PreDestroy
     public void destroy() {
         log.info("Closing Hector connection pool");
-//        myCluster.getConnectionManager().shutdown();
-//        HFactory.shutdownCluster(myCluster);
     }
 
-//    @Bean
-//    public Keyspace keyspaceOperator() {
-//        log.info("Configuring Cassandra keyspace");
-//        String cassandraHost = env.getProperty("cassandra.hostName");
-//        String cassandraClusterName = env.getProperty("cassandra.cluster");
-//        String cassandraKeyspace = env.getProperty("cassandra.keyspace");
-//
-//        CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(cassandraHost);
-//        cassandraHostConfigurator.setMaxActive(100);
-//        if (env.acceptsProfiles(Constants.SPRING_PROFILE_METRICS)) {
-//            log.debug("Cassandra Metrics monitoring enabled");
-//            HOpTimer hOpTimer = new MetricsOpTimer(cassandraClusterName);
-//            cassandraHostConfigurator.setOpTimer(hOpTimer);
-//        }
-//        ThriftCluster cluster = new ThriftCluster(cassandraClusterName, cassandraHostConfigurator);
-//        this.myCluster = cluster; // Keep a pointer to the cluster, as Hector is buggy and can't find it again...
-//        ConfigurableConsistencyLevel consistencyLevelPolicy = new ConfigurableConsistencyLevel();
-//        consistencyLevelPolicy.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
-//
-//        KeyspaceDefinition keyspaceDef = cluster.describeKeyspace(cassandraKeyspace);
-//        if (keyspaceDef == null) {
-//            log.warn("Keyspace \" {} \" does not exist, creating it!", cassandraKeyspace);
-//            keyspaceDef = new ThriftKsDef(cassandraKeyspace);
-//            cluster.addKeyspace(keyspaceDef, true);
-//
-//            addColumnFamily(cluster, ColumnFamilyKeys.USER_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.FRIENDS, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.FOLLOWERS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.STATUS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.DOMAIN_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.REGISTRATION_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.RSS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.MAILDIGEST_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.SHARES_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.DISCUSSION_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.USER_TAGS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.TAG_FOLLOWERS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.GROUP_MEMBERS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.USER_GROUPS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.GROUP_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.GROUP_DETAILS_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.ATTACHMENT_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.AVATAR_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.DOMAIN_CONFIGURATION_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.TATAMIBOT_CONFIGURATION_CF, 0);
-//            addColumnFamily(cluster, ColumnFamilyKeys.APPLE_DEVICE_CF, 0);
-//
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_SHARES_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.MENTIONLINE, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USERLINE_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USERLINE_SHARES_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.FAVLINE_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TAGLINE, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TRENDS_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USER_TRENDS_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.GROUPLINE, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.USER_ATTACHMENT_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.STATUS_ATTACHMENT_CF, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.DOMAINLINE, 0);
-//            addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.DOMAIN_TATAMIBOT_CF, 0);
-//
-//            addColumnFamilyCounter(cluster, ColumnFamilyKeys.COUNTER_CF, 0);
-//            addColumnFamilyCounter(cluster, ColumnFamilyKeys.TAG_COUNTER_CF, 0);
-//            addColumnFamilyCounter(cluster, ColumnFamilyKeys.GROUP_COUNTER_CF, 0);
-//            addColumnFamilyCounter(cluster, ColumnFamilyKeys.DAYLINE_CF, 0);
-//
-//            //Tatami Bot CF
-//            addColumnFamily(cluster, ColumnFamilyKeys.TATAMIBOT_DUPLICATE_CF, 0);
-//        }
-//        return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
-//        return null;
-//    }
-
-//    @Bean
-//    public EntityManagerImpl entityManager(Keyspace keyspace) {
-//        return null;
-////        String[] packagesToScan = {"fr.ippon.tatami.domain", "fr.ippon.tatami.bot.config"};
-////        return new EntityManagerImpl(keyspace, packagesToScan);
-//    }
-
-//    private void addColumnFamily(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
-//
-//        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
-//
-//        ColumnFamilyDefinition cfd =
-//                HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
-//
-//        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
-//        cluster.addColumnFamily(cfd);
-//    }
-//
-//    private void addColumnFamilySortedbyUUID(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
-//
-//        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
-//
-//        ColumnFamilyDefinition cfd =
-//                HFactory.createColumnFamilyDefinition(cassandraKeyspace, cfName);
-//
-//        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
-//        cfd.setComparatorType(ComparatorType.UUIDTYPE);
-//        cluster.addColumnFamily(cfd);
-//    }
-//
-//
-//    private void addColumnFamilyCounter(ThriftCluster cluster, String cfName, int rowCacheKeysToSave) {
-//        String cassandraKeyspace = this.env.getProperty("cassandra.keyspace");
-//
-//        ThriftCfDef cfd =
-//                new ThriftCfDef(cassandraKeyspace, cfName, ComparatorType.UTF8TYPE);
-//
-//        cfd.setRowCacheKeysToSave(rowCacheKeysToSave);
-//        cfd.setDefaultValidationClass(ComparatorType.COUNTERTYPE.getClassName());
-//        cluster.addColumnFamily(cfd);
-//    }
 
 
 
@@ -203,16 +83,6 @@ public class CassandraConfiguration {
     BeanFactory beanFactory;
 
 
-    com.datastax.driver.core.Cluster cluster;
-
-    @Bean
-    public com.datastax.driver.core.Cluster cluster() {
-//        if (this.cluster == null) {
-//            this.cluster = createCluster();
-//        }
-//        return cluster;
-        return null;
-    }
 
     /**
      * Parse the load balancing policy.
@@ -591,8 +461,268 @@ public class CassandraConfiguration {
 
         // Manage the contact points
         builder.addContactPoints(StringUtils.commaDelimitedListToStringArray(env.getProperty(CASSANDRA_CONTACT_POINTS)));
+        com.datastax.driver.core.Cluster cluster = builder.build();
 
-        return builder.build();
+        try {
+            validateKeyspace(cluster);
+        } catch (Exception e) {
+            log.error("Could not validate keyspace",e);
+        }
+
+        return cluster;
+    }
+
+    private void validateKeyspace(Cluster cluster) throws Exception {
+        Session session = cluster.newSession();
+        String keyspace = env.getProperty("cassandra.keyspace");
+        ResultSet results = session.execute("SELECT * FROM system.schema_keyspaces " +
+                "WHERE keyspace_name = '"+keyspace+"';");
+        if (results.isExhausted()) {
+            session.execute("CREATE KEYSPACE "+keyspace+" WITH replication " +
+                    "= {'class':'SimpleStrategy', 'replication_factor':3};");
+            createTables(session, keyspace);
+            session.close();
+        }
+
+    }
+
+    private void createTables(Session session, String keyspace) {
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".user (\n" +
+                "    login varchar,\n" +
+                "    password varchar,\n" +
+                "    username varchar,\n" +
+                "    firstname varchar,\n" +
+                "    lastname varchar,\n" +
+                "    domain varchar,\n" +
+                "    activated boolean,\n" +
+                "    avatar varchar,\n" +
+                "    jobTitle varchar,\n" +
+                "    activation_key varchar,\n" +
+                "    reset_key varchar,\n" +
+                "    phoneNumber varchar,\n" +
+                "    openIdUrl varchar,\n" +
+                "    preferences_mention_email boolean,\n" +
+                "    rssUid varchar,\n" +
+                "    weekly_digest_subscription boolean,\n" +
+                "    daily_digest_subscription boolean,\n" +
+                "    attachmentsSize bigint,\n" +
+                "    PRIMARY KEY(login)\n" +
+                ");");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".status (\n" +
+                "    statusId timeuuid,\n" +
+                "    type varchar,\n" +
+                "    login varchar,\n" +
+                "    username varchar,\n" +
+                "    domain varchar,\n" +
+                "    statusDate timestamp,\n" +
+                "    geoLocalization varchar,\n" +
+                "    removed boolean,\n" +
+                "    groupId varchar,\n" +
+                "    statusPrivate boolean,\n" +
+                "    hasAttachments boolean,\n" +
+                "    content varchar,\n" +
+                "    discussionId varchar,\n" +
+                "    replyTo varchar,\n" +
+                "    replyToUsername varchar,\n" +
+                "    detailsAvailable boolean,\n" +
+                "    originalStatusId timeuuid,\n" +
+                "    followerLogin varchar,\n" +
+                "    PRIMARY KEY(statusId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".timeline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key,status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".domain (\n" +
+                "    domainId varchar,\n" +
+                "    login varchar,\n" +
+                "    created timeuuid,\n" +
+                "    PRIMARY KEY(domainId, login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".counter (\n" +
+                "    login varchar,\n" +
+                "    STATUS_COUNTER counter,\n" +
+                "    FOLLOWERS_COUNTER counter,\n" +
+                "    FRIENDS_COUNTER counter,\n" +
+                "    PRIMARY KEY(login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".friends (\n" +
+                "    login varchar,\n" +
+                "    friendLogin varchar,\n" +
+                "    PRIMARY KEY(login,friendLogin)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".followers (\n" +
+                "    key varchar,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(key,login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".dayline (\n" +
+                "    domainDay varchar,\n" +
+                "    username varchar,\n" +
+                "    statusCount counter,\n" +
+                "    PRIMARY KEY(domainDay, username)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".tagline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".shares (\n" +
+                "    status timeuuid,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(status, login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".tagFollowers (\n" +
+                "    key varchar,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(key, login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".favline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".domainline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".mentionline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupline (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".group (\n" +
+                "    id timeuuid,\n" +
+                "    domain varchar,\n" +
+                "    name varchar,\n" +
+                "    description varchar,\n" +
+                "    publicGroup boolean,\n" +
+                "    PRIMARY KEY(id, domain)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userGroup (\n" +
+                "    login varchar,\n" +
+                "    groupId timeuuid,\n" +
+                "    role varchar,\n" +
+                "    PRIMARY KEY(login, groupId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupMember (\n" +
+                "    groupId timeuuid,\n" +
+                "    login varchar,\n" +
+                "    role varchar,\n" +
+                "    PRIMARY KEY(groupId, login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userTags (\n" +
+                "    login varchar,\n" +
+                "    friendLogin varchar,\n" +
+                "    time timestamp,\n" +
+                "    PRIMARY KEY(login, friendLogin)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".trends (\n" +
+                "    domain varchar,\n" +
+                "    id timeuuid,\n" +
+                "    tag varchar,\n" +
+                "    PRIMARY KEY(domain, id)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userTrends (\n" +
+                "    login varchar,\n" +
+                "    id timeuuid,\n" +
+                "    tag varchar,\n" +
+                "    PRIMARY KEY(login, id)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".avatar (\n" +
+                "    id timeuuid,\n" +
+                "    filename varchar,\n" +
+                "    content blob,\n" +
+                "    size bigint,\n" +
+                "    creation_date timestamp,\n" +
+                "    PRIMARY KEY(id)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".mailDigest (\n" +
+                "    digestId varchar,\n" +
+                "    login varchar,\n" +
+                "    created timestamp,\n" +
+                "    PRIMARY KEY(digestId,login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".timelineShares (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key,status)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".appleDevice (\n" +
+                "    login varchar,\n" +
+                "    deviceId varchar,\n" +
+                "    PRIMARY KEY(login,deviceId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".appleDeviceUser (\n" +
+                "    deviceId varchar,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(deviceId,login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".attachment (\n" +
+                "    id timeuuid,\n" +
+                "    filename varchar,\n" +
+                "    content blob,\n" +
+                "    thumbnail blob,\n" +
+                "    size bigint,\n" +
+                "    creation_date timestamp,\n" +
+                "    PRIMARY KEY(id,filename)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupCounter (\n" +
+                "    domain varchar,\n" +
+                "    groupId timeuuid,\n" +
+                "    counter counter,\n" +
+                "    PRIMARY KEY(domain,groupId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupDetails (\n" +
+                "    groupId timeuuid,\n" +
+                "    name varchar,\n" +
+                "    description varchar,\n" +
+                "    publicGroup boolean,\n" +
+                "    archivedGroup boolean,\n" +
+                "    PRIMARY KEY(groupId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".TatamiBotDuplicate (\n" +
+                "    Default varchar,\n" +
+                "    PRIMARY KEY(Default)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".Registration (\n" +
+                "    registration_key varchar,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(registration_key,login)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".rss (\n" +
+                "    rss_uid varchar,\n" +
+                "    login varchar,\n" +
+                "    PRIMARY KEY(rss_uid)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".statusAttachment (\n" +
+                "    statusId timeuuid,\n" +
+                "    attachmentId timeuuid,\n" +
+                "    created timestamp,\n" +
+                "    PRIMARY KEY(statusId,attachmentId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".tagCounter (\n" +
+                "    key varchar,\n" +
+                "    TAG_COUNTER counter,\n" +
+                "    PRIMARY KEY(key)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userAttachment (\n" +
+                "    login varchar,\n" +
+                "    attachmentId timeuuid,\n" +
+                "    PRIMARY KEY(login,attachmentId)\n" +
+                ");\n");
     }
 
     @Bean

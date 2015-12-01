@@ -237,7 +237,7 @@
             <button class="btn-link status-action status-action-favorite button-ios">
                 <i class="glyphicon glyphicon-star"></i> <fmt:message key="tatami.user.status.favorite"/>
             </button>
-            <sec:authorize ifAnyGranted="ROLE_ADMIN">
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <@ if (statusPrivate == false && groupId == '') { @>
                 <button class="btn-link status-action status-action-announce button-ios"
                         confirmation-text='<p><fmt:message key="tatami.user.status.confirm.announce"/></p><p class="text-center">
@@ -728,7 +728,7 @@
             </small>
         </a>
         <@ if(desactivable) { @>
-        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
             <span class="desactivateUser pointer pull-right label label-<@ if(activated) { @>danger<@ } else {@>success<@} @>">
               <span class="glyphicon glyphicon-<@= (activated)? 'minus':'plus'@>">
                   <@= (activated)? '<fmt:message key="tatami.user.desactivate"/>':'<fmt:message key="tatami.user.activate"/>'@>

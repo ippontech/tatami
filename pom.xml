@@ -109,7 +109,7 @@
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.port>80</jetty.port>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>PAPERTRAIL</logback.appender>
                 <logback.syslogHost>logs.papertrailapp.com</logback.syslogHost>
                 <logback.syslogHost.port>38143</logback.syslogHost.port>
@@ -163,7 +163,7 @@
                 <!-- Spring profiles available : tatamibot, metrics, apple-push -->
                 <spring.profiles.active></spring.profiles.active>
                 <jetty.scanIntervalSeconds>0</jetty.scanIntervalSeconds>
-                <logback.loglevel>WARN</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
                 <logback.appender>CONSOLE</logback.appender>
                 <ehcache.maxBytesLocalHeap>64M</ehcache.maxBytesLocalHeap>
                 <tatami.automatic.registration>true</tatami.automatic.registration>
@@ -513,6 +513,18 @@
     </prerequisites>
 
     <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -917,11 +929,11 @@
             <version>2.0.4</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-simple</artifactId>-->
-            <!--<version>1.7.7</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
