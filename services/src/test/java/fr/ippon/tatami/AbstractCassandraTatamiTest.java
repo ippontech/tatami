@@ -2,6 +2,8 @@ package fr.ippon.tatami;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.TableMetadata;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -27,6 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -52,27 +55,32 @@ public abstract class AbstractCassandraTatamiTest {
 
     @Inject
     private CounterRepository counterRepository;
+    private static Cluster cluster;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-//        synchronized (lock) {
-//            if (!isInitialized) {
+        synchronized (lock) {
+            if (!isInitialized) {
                 EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-                Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
+                cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
                 session = cluster.connect();
-//                CQLDataLoader dataLoader = new CQLDataLoader(session);
-//                dataLoader.load(new ClassPathCQLDataSet("config/cql/create-tables.cql", true, "testTatami"));
-
+                CQLDataLoader dataLoader = new CQLDataLoader(session);
+                dataLoader.load(new ClassPathCQLDataSet("dataset/dataset.cql",true,false,"testTatami"));
                 isInitialized = true;
-//            }
-//        }
-        CQLDataLoader dataLoader = new CQLDataLoader(session);
-        dataLoader.load(new ClassPathCQLDataSet("dataset/dataset.cql",true,"testTatami"));
+            } else {
+                CQLDataLoader dataLoader = new CQLDataLoader(session);
+                dataLoader.load(new ClassPathCQLDataSet("dataset/dataset.cql",false,false,"testTatami"));
+
+            }
+        }
     }
 
     @AfterClass
     public static void cleanupServer() {
-        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+        Collection<TableMetadata> tables = cluster.getMetadata().getKeyspace("testTatami").getTables();
+        tables.forEach(table ->
+                session.execute(QueryBuilder.truncate(table)));
+//        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
     protected User constructAUser(String login, String firstName, String lastName) {

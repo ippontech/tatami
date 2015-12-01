@@ -478,7 +478,7 @@ public class CassandraConfiguration {
         ResultSet results = session.execute("SELECT * FROM system.schema_keyspaces " +
                 "WHERE keyspace_name = '"+keyspace+"';");
         if (results.isExhausted()) {
-            session.execute("CREATE KEYSPACE "+keyspace+" WITH replication " +
+            session.execute("CREATE KEYSPACE IF NOT EXISTS "+keyspace+" WITH replication " +
                     "= {'class':'SimpleStrategy', 'replication_factor':3};");
             createTables(session, keyspace);
             session.close();
