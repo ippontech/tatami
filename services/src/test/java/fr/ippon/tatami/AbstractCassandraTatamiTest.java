@@ -80,7 +80,6 @@ public abstract class AbstractCassandraTatamiTest {
         Collection<TableMetadata> tables = cluster.getMetadata().getKeyspace("testTatami").getTables();
         tables.forEach(table ->
                 session.execute(QueryBuilder.truncate(table)));
-//        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
     protected User constructAUser(String login, String firstName, String lastName) {
