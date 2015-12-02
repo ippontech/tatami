@@ -8,6 +8,7 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.repository.AvatarRepository;
+import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,11 +42,15 @@ public class CassandraAvatarRepository implements AvatarRepository {
 
     @Override
     public void createAvatar(Avatar avatar) {
+        ByteBuffer content = null;
+        if (avatar.getContent() != null) {
+            content = ByteBuffer.wrap(avatar.getContent());
+        }
         avatar.setAvatarId(UUIDs.timeBased().toString());
         Statement statement = QueryBuilder.insertInto("avatar")
-                .value("id", avatar.getAvatarId())
+                .value("id", UUID.fromString(avatar.getAvatarId()))
                 .value(FILENAME, avatar.getFilename())
-                .value(CONTENT, avatar.getContent())
+                .value(CONTENT, content)
                 .value(SIZE,avatar.getSize())
                 .value(CREATION_DATE,avatar.getCreationDate());
         session.execute(statement);

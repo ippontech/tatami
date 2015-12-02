@@ -720,7 +720,7 @@ public class CassandraConfiguration {
                 "    domain varchar,\n" +
                 "    subscriptionLevel varchar,\n" +
                 "    storageSize varchar,\n" +
-                "    adminLogin varchar\n" +
+                "    adminLogin varchar,\n" +
                 "    PRIMARY KEY(domain)\n" +
                 ");\n");
     }

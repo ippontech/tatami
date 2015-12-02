@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS domainConfiguration (
     domain varchar,
     subscriptionLevel varchar,
     storageSize varchar,
-    adminLogin varchar
+    adminLogin varchar,
     PRIMARY KEY(domain)
 );
 

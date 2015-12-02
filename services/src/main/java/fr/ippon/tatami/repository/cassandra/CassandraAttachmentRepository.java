@@ -128,6 +128,7 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
         if (!results.isExhausted()) {
             Row row = results.one();
             Attachment attachment = new Attachment();
+            attachment.setAttachmentId(attachmentId);
             attachment.setFilename(row.getString(FILENAME));
             attachment.setSize(row.getLong(SIZE));
             attachment.setCreationDate(row.getDate(CREATION_DATE));
