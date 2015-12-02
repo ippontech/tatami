@@ -137,7 +137,8 @@ CREATE TABLE IF NOT EXISTS group (
     name varchar,
     description varchar,
     publicGroup boolean,
-    PRIMARY KEY(id, domain)
+    archivedGroup boolean,
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS userGroup (
@@ -223,15 +224,6 @@ CREATE TABLE IF NOT EXISTS groupCounter (
     groupId timeuuid,
     counter counter,
     PRIMARY KEY(domain,groupId)
-);
-
-CREATE TABLE IF NOT EXISTS groupDetails (
-    groupId timeuuid,
-    name varchar,
-    description varchar,
-    publicGroup boolean,
-    archivedGroup boolean,
-    PRIMARY KEY(groupId)
 );
 
 CREATE TABLE IF NOT EXISTS TatamiBotDuplicate (
