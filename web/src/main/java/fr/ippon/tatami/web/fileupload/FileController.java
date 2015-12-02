@@ -224,8 +224,36 @@ public class FileController {
         return uploadedFiles;
 
     }
-	
-	    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
+
+    @RequestMapping(value = "/rest/urlupload/avatar",
+            method = RequestMethod.POST)
+    @ResponseBody
+    @Timed
+    public List<UploadedFile> uploadUrlAvatar(Avatar avatar) throws IOException {
+        if (avatar == null || avatar.getFilename() == null) {
+
+            return null;
+        }
+        if (avatar != null) {
+            avatar = avatarService.createAvatarBasedOnAvatar(avatar);
+        }
+        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        UploadedFile uploadedFile = new UploadedFile(
+                avatar.getAvatarId(),
+                avatar.getFilename(),
+                Long.valueOf(avatar.getSize()).intValue(),
+                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/url");
+        log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
+        uploadedFiles.add(uploadedFile);
+        User user = authenticationService.getCurrentUser();
+        user.setAvatar(avatar.getAvatarId());
+        userRepository.updateUser(user);
+        return uploadedFiles;
+
+    }
+
+
+    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
             method = RequestMethod.POST)
     @ResponseBody
     @Timed

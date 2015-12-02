@@ -15,9 +15,12 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.ByteBuffer;
 
 @Service
 public class AvatarService {
@@ -86,5 +89,29 @@ public class AvatarService {
         log.debug("New Byte size of Avatar : {} Kbits", byteArrayOutputStream.size() / 1024);
 
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
+        User currentUser = authenticationService.getCurrentUser();
+        Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
+        if (dbAvatar != null) {
+            return dbAvatar;
+        } else if (avatar.getFilename().startsWith("http")) {
+            BufferedImage bufferedImage = null;
+            try {
+                URL url = new URL(avatar.getFilename());
+                bufferedImage = ImageIO.read(url);
+            } catch (IOException e) {
+                log.warn("Could not load image : " + avatar.getFilename(), e);
+            }
+            if (bufferedImage != null) {
+                DataBufferByte data = (DataBufferByte) bufferedImage.getRaster().getDataBuffer();
+                byte[] bytes = data.getData();
+                avatar.setSize(bytes.length);
+                avatar.setContent(bytes);
+                avatarRepository.createAvatar(avatar);
+            }
+        }
+        return avatar;
     }
 }

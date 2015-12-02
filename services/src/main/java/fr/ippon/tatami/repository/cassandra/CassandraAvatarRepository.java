@@ -89,6 +89,35 @@ public class CassandraAvatarRepository implements AvatarRepository {
         return avatar;
     }
 
+    @Override
+    public Avatar findAvatarByFilename(String filename) {
+        if (filename == null) {
+            return null;
+        }
+
+        Statement statement = QueryBuilder.select()
+                .column(FILENAME)
+                .column(SIZE)
+                .column(CREATION_DATE)
+                .from("avatar")
+                .where(eq("filename", filename));
+
+        ResultSet results = session.execute(statement);
+        return loadAvatar(results);
+    }
+
+    private Avatar loadAvatar(ResultSet results) {
+        if (!results.isExhausted()) {
+            Row row = results.one();
+            Avatar avatar = new Avatar();
+            avatar.setFilename(row.getString(FILENAME));
+            avatar.setSize(row.getLong(SIZE));
+            avatar.setCreationDate(row.getDate(CREATION_DATE));
+            return avatar;
+        }
+        return null;
+    }
+
 
     Avatar findAttachmentMetadataById(String avatarId) {
         if (avatarId == null) {
@@ -103,15 +132,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
                 .where(eq("id", UUID.fromString(avatarId)));
 
         ResultSet results = session.execute(statement);
-        if (!results.isExhausted()) {
-            Row row = results.one();
-            Avatar avatar = new Avatar();
-            avatar.setFilename(row.getString(FILENAME));
-            avatar.setSize(row.getLong(SIZE));
-            avatar.setCreationDate(row.getDate(CREATION_DATE));
-            return avatar;
-        }
-        return null;
+        return loadAvatar(results);
     }
 
 }
