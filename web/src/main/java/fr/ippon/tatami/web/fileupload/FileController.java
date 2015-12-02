@@ -12,6 +12,7 @@ import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 
+import fr.ippon.tatami.web.rest.dto.AvatarMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -226,15 +227,20 @@ public class FileController {
     }
 
     @RequestMapping(value = "/rest/urlupload/avatar",
-            method = RequestMethod.POST)
+            method = RequestMethod.POST,
+            produces = "application/json")
     @ResponseBody
     @Timed
-    public List<UploadedFile> uploadUrlAvatar(Avatar avatar) throws IOException {
-        if (avatar == null || avatar.getFilename() == null) {
+    public List<UploadedFile> uploadUrlAvatar(@RequestBody AvatarMeta avatarMeta) throws IOException {
+        if (avatarMeta == null || avatarMeta.getFilename() == null) {
 
             return null;
         }
-        if (avatar != null) {
+        Avatar avatar = new Avatar();
+        if (avatarMeta != null) {
+            avatar.setFilename(avatarMeta.getFilename());
+            avatar.setSize(avatarMeta.getSize());
+
             avatar = avatarService.createAvatarBasedOnAvatar(avatar);
         }
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
