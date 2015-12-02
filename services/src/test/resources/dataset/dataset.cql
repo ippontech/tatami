@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS rss (
     PRIMARY KEY(rss_uid)
 );
 
-CREATE TABLE IF NOT EXISTS statusAttachment (
+CREATE TABLE IF NOT EXISTS statusAttachments (
     statusId timeuuid,
     attachmentId timeuuid,
     created timestamp,
@@ -251,10 +251,18 @@ CREATE TABLE IF NOT EXISTS tagCounter (
     PRIMARY KEY(key)
 );
 
-CREATE TABLE IF NOT EXISTS userAttachment (
+CREATE TABLE IF NOT EXISTS userAttachments (
     login varchar,
     attachmentId timeuuid,
     PRIMARY KEY(login,attachmentId)
+);
+
+CREATE TABLE IF NOT EXISTS domainConfiguration (
+    domain varchar,
+    subscriptionLevel varchar,
+    storageSize varchar,
+    adminLogin varchar
+    PRIMARY KEY(domain)
 );
 
 INSERT INTO user (login , avatar , firstname , lastname , username , domain ) VALUES('jdubois@ippon.fr', 'avatar', 'Julien','Dubois','jdubois','ippon.fr');

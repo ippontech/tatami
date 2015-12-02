@@ -700,7 +700,7 @@ public class CassandraConfiguration {
                 "    login varchar,\n" +
                 "    PRIMARY KEY(rss_uid)\n" +
                 ");\n");
-        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".statusAttachment (\n" +
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".statusAttachments (\n" +
                 "    statusId timeuuid,\n" +
                 "    attachmentId timeuuid,\n" +
                 "    created timestamp,\n" +
@@ -711,10 +711,17 @@ public class CassandraConfiguration {
                 "    TAG_COUNTER counter,\n" +
                 "    PRIMARY KEY(key)\n" +
                 ");\n");
-        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userAttachment (\n" +
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userAttachments (\n" +
                 "    login varchar,\n" +
                 "    attachmentId timeuuid,\n" +
                 "    PRIMARY KEY(login,attachmentId)\n" +
+                ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".domainConfiguration (\n" +
+                "    domain varchar,\n" +
+                "    subscriptionLevel varchar,\n" +
+                "    storageSize varchar,\n" +
+                "    adminLogin varchar\n" +
+                "    PRIMARY KEY(domain)\n" +
                 ");\n");
     }
 

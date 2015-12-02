@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.UUID;
 
@@ -43,14 +44,23 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
     @Override
     public void createAttachment(Attachment attachment) {
 
+        ByteBuffer content = null;
+        ByteBuffer thumbnail = null;
+
+        if (attachment.getContent() != null) {
+            content = ByteBuffer.wrap(attachment.getContent());
+        }
+        if (attachment.getThumbnail() != null) {
+            thumbnail = ByteBuffer.wrap(attachment.getThumbnail());
+        }
         UUID attachmentId = UUIDs.timeBased();
         log.debug("Creating attachment : {}", attachment);
         attachment.setAttachmentId(attachmentId.toString());
         Statement statement = QueryBuilder.insertInto(ATTACHMENT_CF)
-                .value("id", attachment.getAttachmentId())
+                .value("id", UUID.fromString(attachment.getAttachmentId()))
                 .value(FILENAME, attachment.getFilename())
-                .value(CONTENT, attachment.getContent())
-                .value(THUMBNAIL, attachment.getThumbnail())
+                .value(CONTENT, content)
+                .value(THUMBNAIL, thumbnail)
                 .value(SIZE,attachment.getSize())
                 .value(CREATION_DATE,attachment.getCreationDate());
         session.execute(statement);
@@ -132,9 +142,14 @@ public class CassandraAttachmentRepository implements AttachmentRepository {
 	@Override
 	public Attachment updateThumbnail(Attachment attach) {
 		log.debug("Updating thumbnail : {}", attach);
+        ByteBuffer thumbnail = null;
+        if (attach.getThumbnail() != null) {
+            thumbnail = ByteBuffer.wrap(attach.getThumbnail());
+        }
         Statement statement = QueryBuilder.update(ATTACHMENT_CF)
-                .with(set(THUMBNAIL, attach.getThumbnail()))
+                .with(set(THUMBNAIL, thumbnail))
                 .where(eq("id", UUID.fromString(attach.getAttachmentId())));
+        session.execute(statement);
         return attach;
 	}
 }

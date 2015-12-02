@@ -60,13 +60,13 @@ public class CassandraStatusAttachmentRepository
         Statement statement = QueryBuilder.select()
                 .column("attachmentId")
                 .from(STATUS_ATTACHMENT_CF)
-                .where(eq("statusId", statusId))
+                .where(eq("statusId", UUID.fromString(statusId)))
                 .limit(Constants.CASSANDRA_MAX_ROWS);
         ResultSet results = session.execute(statement);
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("attachmentId"))
+                .map(e -> e.getUUID("attachmentId").toString())
                 .collect(Collectors.toList());
     }
 }
