@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * REST controller for managing status.
@@ -182,8 +183,9 @@ public class TimelineController {
             User currentUser = authenticationService.getCurrentUser();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
             Group group = null;
+            UUID statusGroupId = UUID.fromString(status.getGroupId());
             for (Group testGroup : groups) {
-                if (testGroup.getGroupId().equals(status.getGroupId())) {
+                if (testGroup.getGroupId().equals(statusGroupId)) {
                     group = testGroup;
                     break;
                 }

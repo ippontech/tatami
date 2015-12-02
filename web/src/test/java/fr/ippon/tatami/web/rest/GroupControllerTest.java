@@ -55,11 +55,11 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(groupController).build();
     }
 
-    @Test
+//    @Test
     public void testNOOP() {
         assertTrue(true);
     }
-//    @Test
+    @Test
     public void testCreateAndArchiveGroup() throws Exception {
 
         // Test group creation

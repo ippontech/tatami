@@ -33,9 +33,6 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     @Inject
-    private GroupDetailsRepository groupDetailsRepository;
-
-    @Inject
     private GroupMembersRepository groupMembersRepository;
 
     @Inject
@@ -69,7 +66,7 @@ public class GroupService {
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
         log.debug("Editing group : {}", group.getGroupId());
-        groupDetailsRepository.editGroupDetails(group.getGroupId(),
+        groupRepository.editGroupDetails(group.getGroupId(),
                 group.getName(),
                 group.getDescription(),
                 group.isArchivedGroup());

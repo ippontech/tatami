@@ -375,9 +375,10 @@ public class GroupController {
     }
 
     private Group getGroupFromUser(User currentUser, String groupId) {
+        UUID uGroupId = UUID.fromString(groupId);
         Collection<Group> groups = groupService.getGroupsForUser(currentUser);
         for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(groupId)) {
+            if (testGroup.getGroupId().equals(uGroupId)) {
                 return testGroup;
             }
         }

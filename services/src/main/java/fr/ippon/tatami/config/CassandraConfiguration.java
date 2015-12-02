@@ -609,6 +609,7 @@ public class CassandraConfiguration {
                 "    name varchar,\n" +
                 "    description varchar,\n" +
                 "    publicGroup boolean,\n" +
+                "    archivedGroup boolean,\n" +
                 "    PRIMARY KEY(id, domain)\n" +
                 ");\n");
         session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".userGroup (\n" +
@@ -684,14 +685,6 @@ public class CassandraConfiguration {
                 "    groupId timeuuid,\n" +
                 "    counter counter,\n" +
                 "    PRIMARY KEY(domain,groupId)\n" +
-                ");\n");
-        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupDetails (\n" +
-                "    groupId timeuuid,\n" +
-                "    name varchar,\n" +
-                "    description varchar,\n" +
-                "    publicGroup boolean,\n" +
-                "    archivedGroup boolean,\n" +
-                "    PRIMARY KEY(groupId)\n" +
                 ");\n");
         session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".TatamiBotDuplicate (\n" +
                 "    Default varchar,\n" +
