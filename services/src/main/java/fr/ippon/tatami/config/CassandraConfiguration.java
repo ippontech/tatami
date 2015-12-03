@@ -650,6 +650,7 @@ public class CassandraConfiguration {
                 "    creation_date timestamp,\n" +
                 "    PRIMARY KEY(id)\n" +
                 ");\n");
+        session.execute("CREATE INDEX ON avatar (filename);");
         session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".mailDigest (\n" +
                 "    digestId varchar,\n" +
                 "    login varchar,\n" +

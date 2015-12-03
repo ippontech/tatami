@@ -28,7 +28,6 @@ import static springfox.documentation.builders.PathSelectors.regex;
         AsyncConfiguration.class,
         CacheConfiguration.class,
         CassandraConfiguration.class,
-        CassandraDataAutoConfiguration.class,
         SearchConfiguration.class,
         MailConfiguration.class,
         MetricsConfiguration.class})
