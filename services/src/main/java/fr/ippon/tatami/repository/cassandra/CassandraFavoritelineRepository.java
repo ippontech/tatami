@@ -79,7 +79,7 @@ public class CassandraFavoritelineRepository implements FavoritelineRepository {
     public void deleteFavoriteline(String login) {
         Statement statement = QueryBuilder.delete()
                 .from("favline")
-                .where(eq("login",login));
+                .where(eq("key",login));
         session.execute(statement);
     }
 }

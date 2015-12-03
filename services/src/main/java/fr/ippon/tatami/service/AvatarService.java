@@ -7,6 +7,7 @@ import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.Date;
 
 @Service
 public class AvatarService {
@@ -97,21 +100,33 @@ public class AvatarService {
         if (dbAvatar != null) {
             return dbAvatar;
         } else if (avatar.getFilename().startsWith("http")) {
-            BufferedImage bufferedImage = null;
+            byte[] bytes = null;
             try {
-                URL url = new URL(avatar.getFilename());
-                bufferedImage = ImageIO.read(url);
-            } catch (IOException e) {
-                log.warn("Could not load image : " + avatar.getFilename(), e);
+                bytes = fetchRemoteFile(avatar.getFilename());
+            } catch (Exception e) {
+                log.warn("Could not load bytes from: " + avatar.getFilename());
             }
-            if (bufferedImage != null) {
-                DataBufferByte data = (DataBufferByte) bufferedImage.getRaster().getDataBuffer();
-                byte[] bytes = data.getData();
-                avatar.setSize(bytes.length);
-                avatar.setContent(bytes);
-                avatarRepository.createAvatar(avatar);
-            }
+            avatar.setSize(bytes.length);
+            avatar.setContent(bytes);
+            avatar.setCreationDate(new Date());
+            avatarRepository.createAvatar(avatar);
         }
         return avatar;
+    }
+
+    private byte[] fetchRemoteFile(String location) throws Exception {
+        URL url = new URL(location);
+        InputStream is = null;
+        byte[] bytes = null;
+        try {
+            is = url.openStream ();
+            bytes = IOUtils.toByteArray(is);
+        } catch (IOException e) {
+            //handle errors
+        }
+        finally {
+            if (is != null) is.close();
+        }
+        return bytes;
     }
 }

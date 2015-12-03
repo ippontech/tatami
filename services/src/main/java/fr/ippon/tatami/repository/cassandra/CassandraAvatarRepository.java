@@ -96,6 +96,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
         }
 
         Statement statement = QueryBuilder.select()
+                .column("id")
                 .column(FILENAME)
                 .column(SIZE)
                 .column(CREATION_DATE)
@@ -110,6 +111,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
         if (!results.isExhausted()) {
             Row row = results.one();
             Avatar avatar = new Avatar();
+            avatar.setAvatarId(row.getUUID("id").toString());
             avatar.setFilename(row.getString(FILENAME));
             avatar.setSize(row.getLong(SIZE));
             avatar.setCreationDate(row.getDate(CREATION_DATE));
@@ -125,6 +127,7 @@ public class CassandraAvatarRepository implements AvatarRepository {
         }
 
         Statement statement = QueryBuilder.select()
+                .column("id")
                 .column(FILENAME)
                 .column(SIZE)
                 .column(CREATION_DATE)

@@ -170,6 +170,7 @@ public class FileController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             // ETag support
+
             response.setHeader(HEADER_ETAG, avatarId); // The attachmentId is unique and should not be modified
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
             if (requestETag != null && requestETag.equals(avatarId)) {
@@ -251,9 +252,11 @@ public class FileController {
                 tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/url");
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
         uploadedFiles.add(uploadedFile);
-        User user = authenticationService.getCurrentUser();
-        user.setAvatar(avatar.getAvatarId());
-        userRepository.updateUser(user);
+        if (avatar.getAvatarId() != null) {
+            User user = authenticationService.getCurrentUser();
+            user.setAvatar(avatar.getAvatarId());
+            userRepository.updateUser(user);
+        }
         return uploadedFiles;
 
     }

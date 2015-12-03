@@ -6,13 +6,18 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static springfox.documentation.builders.PathSelectors.regex;
@@ -57,15 +62,16 @@ public class ApplicationConfiguration {
 
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
-                .genericModelSubstitutes(ResponseEntity.class)
-                .forCodeGeneration(true)
-                .genericModelSubstitutes(ResponseEntity.class)
-                .directModelSubstitute(java.time.LocalDate.class, String.class)
-                .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
-                .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
                 .select()
-                .paths(regex(DEFAULT_INCLUDE_PATTERN))
-                .build();
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+                .directModelSubstitute(LocalDate.class,
+                        String.class)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .useDefaultResponseMessages(false)
+                .enableUrlTemplating(true)
+                .pathMapping("/tatami");
         watch.stop();
         log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
         return docket;
