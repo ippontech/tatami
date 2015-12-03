@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS avatar (
     creation_date timestamp,
     PRIMARY KEY(id)
 );
-CREATE INDEX ON avatar (filename);
+CREATE INDEX IF NOT EXISTS  ON avatar (filename);
 
 CREATE TABLE IF NOT EXISTS mailDigest (
     digestId varchar,
