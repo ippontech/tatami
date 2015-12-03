@@ -85,7 +85,7 @@ public class CassandraUserAttachmentRepository
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("attachmentId").toString())
+                .map(e -> e.getUUID("attachmentId").toString())
                 .collect(Collectors.toList());
 
     }
