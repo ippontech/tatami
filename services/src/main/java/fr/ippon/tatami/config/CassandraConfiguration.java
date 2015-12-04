@@ -598,6 +598,11 @@ public class CassandraConfiguration {
                 "    status timeuuid,\n" +
                 "    PRIMARY KEY(key, status)\n" +
                 ");\n");
+        session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".UserlineShares (\n" +
+                "    key varchar,\n" +
+                "    status timeuuid,\n" +
+                "    PRIMARY KEY(key, status)\n" +
+                ");\n");
         session.execute("CREATE TABLE IF NOT EXISTS "+keyspace+".groupline (\n" +
                 "    key varchar,\n" +
                 "    status timeuuid,\n" +

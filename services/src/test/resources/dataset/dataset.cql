@@ -126,6 +126,12 @@ CREATE TABLE IF NOT EXISTS groupline (
     PRIMARY KEY(key, status)
 );
 
+CREATE TABLE IF NOT EXISTS UserlineShares (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+
 CREATE TABLE IF NOT EXISTS group (
     id timeuuid,
     domain varchar,

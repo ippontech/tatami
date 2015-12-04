@@ -330,7 +330,7 @@ public class CassandraStatusRepository implements StatusRepository {
     private AbstractStatus findMentionShare(Row result) {
         MentionShare mentionShare = new MentionShare();
         mentionShare.setType(StatusType.MENTION_SHARE);
-        mentionShare.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        mentionShare.setOriginalStatusId(result.getUUID(ORIGINAL_STATUS_ID).toString());
         return mentionShare;
     }
 
@@ -344,14 +344,14 @@ public class CassandraStatusRepository implements StatusRepository {
     private AbstractStatus findAnnouncement(Row result) {
         Announcement announcement = new Announcement();
         announcement.setType(StatusType.ANNOUNCEMENT);
-        announcement.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        announcement.setOriginalStatusId(result.getUUID(ORIGINAL_STATUS_ID).toString());
         return announcement;
     }
 
     private AbstractStatus findShare(Row result) {
         Share share = new Share();
         share.setType(StatusType.SHARE);
-        share.setOriginalStatusId(result.getString(ORIGINAL_STATUS_ID));
+        share.setOriginalStatusId(result.getUUID(ORIGINAL_STATUS_ID).toString());
         return share;
     }
 

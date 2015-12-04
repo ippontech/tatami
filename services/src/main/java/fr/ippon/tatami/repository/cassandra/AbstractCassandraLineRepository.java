@@ -114,7 +114,7 @@ public abstract class AbstractCassandraLineRepository {
 
     protected boolean findByLoginAndStatusId(String columnFamily, String key, UUID statusId) {
         Statement statement = QueryBuilder.select()
-                .column("login")
+                .column("key")
                 .from(columnFamily)
                 .where(eq("key", key))
                 .and(eq("status",statusId));
