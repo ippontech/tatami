@@ -261,18 +261,6 @@ public class CassandraStatusRepository implements StatusRepository {
         return mentionShare;
     }
 
-
-    private Optional<Status> findOneFromIndex(BoundStatement stmt) {
-        ResultSet rs = session.execute(stmt);
-        if (rs.isExhausted()) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(rs.one().getUUID("statusId"))
-                .map(id -> Optional.ofNullable(mapper.get(id)))
-                .get();
-    }
-
-
     @Override
     @Cacheable("status-cache")
     public AbstractStatus findStatusById(String statusId) {
