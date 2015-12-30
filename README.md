@@ -27,8 +27,10 @@ Installation for developers
 - Install [Maven 3](http://maven.apache.org/)
 - Install [npm](https://www.npmjs.com/)
 - Point your terminal to the directory you cloned Tatami to.
+    - `cd web`
     - Type `npm install`
     - You may need to give root user permissions: `sudo !!`
+    - `cd ..`
 - Run Cassandra with Maven : `mvn cassandra:run`
 - Run Jetty from tatami/web with Maven: `mvn jetty:run`
 - Connect to the application at http://127.0.0.1:8080
