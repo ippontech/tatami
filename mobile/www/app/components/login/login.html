@@ -1,0 +1,13 @@
+<ion-view name="login-view">
+    <ion-content class="padding">
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="E-mail" ng-model="data.email">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="data.password">
+            </label>
+        </div>
+        <button ng-disabled="!data.email && !data.password" class="button button-block button-calm" ng-click="login()">Login</button>
+    </ion-content>
+</ion-view>
