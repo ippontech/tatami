@@ -2,12 +2,18 @@
     <ion-content class="padding">
         <div class="list list-inset">
             <label class="item item-input">
-                <input type="text" placeholder="E-mail" ng-model="data.email">
+                <input type="text" placeholder="E-mail" ng-model="user.email">
             </label>
             <label class="item item-input">
-                <input type="password" placeholder="Password" ng-model="data.password">
+                <input type="password" placeholder="Password" ng-model="user.password">
             </label>
         </div>
-        <button ng-disabled="!data.email && !data.password" class="button button-block button-calm" ng-click="login()">Login</button>
+        <button ng-disabled="!user.email && !user.password" class="button button-block button-calm" ng-click="login()">Login</button>
+        <div ng-if="shown" class="bar bar-positive">
+            <h1 class="title">Logged In!</h1>
+        </div>
+        <div ng-if="failed" class="bar bar-assertive">
+            <h1 class="title">Failed to log in!</h1>
+        </div>
     </ion-content>
 </ion-view>

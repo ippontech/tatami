@@ -1,4 +1,10 @@
 {
-  "name": "mobile",
-  "app_id": ""
+    "name": "mobile",
+    "app_id": "",
+    "proxies": [
+        {
+            "path": "/tatami/rest/account/profile",
+            "proxyUrl": "http://localhost:8080/tatami/rest/account/profile"
+        }
+    ]
 }
