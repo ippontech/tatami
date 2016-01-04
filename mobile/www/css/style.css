@@ -1,1 +1,13 @@
 /* Empty. Add your own CSS if you like */
+.bar .bar-header .title {
+    left:0!important;
+    right:0!important;
+}
+.bar .bar-header .title img {
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+.platform-ios .tab-nav.tabs {
+    bottom:43px;
+}

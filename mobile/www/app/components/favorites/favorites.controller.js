@@ -1,5 +1,5 @@
 angular.module('tatami')
-    .controller('AccountCtrl', function ($scope) {
+    .controller('FavoritesCtrl', function ($scope) {
         $scope.settings = {
             enableFriends: true
         };

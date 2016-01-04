@@ -5,8 +5,8 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <title></title>
 
-        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+        <link href="css/style.min.css" rel="stylesheet">
 
         <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
         <link href="css/ionic.app.css" rel="stylesheet">
@@ -29,19 +29,26 @@
         <script src="app/components/chats/chats.service.js"></script>
         <script src="app/components/chats/chats.controller.js"></script>
         <script src="app/components/chats/chats.detail.controller.js"></script>
-        <script src="app/components/account/account.js"></script>
-        <script src="app/components/account/account.controller.js"></script>
-
         <script src="app/shared/services/ProfileService.js"></script>
+        <script src="app/components/favorites/favorites.js"></script>
+        <script src="app/components/favorites/favorites.controller.js"></script>
     </head>
     <body ng-app="tatami">
         <!--
           The nav bar that will be updated as we navigate between views.
         -->
-        <ion-nav-bar class="bar-stable">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
-        </ion-nav-bar>
+        <ion-header-bar>
+            <div class="bar bar-header bar-dark">
+                <button class="button button-clear ion-android-person-add"></button>
+                <div class="title">
+                    <img class="title-image" src="img/logo.png" />
+                    Tatami
+                </div>
+                <button class="button button-clear ion-android-create"></button>
+            </div>
+        </ion-header-bar>
+
+        <ion-nav-bar align-title="center" class="bar-subheader bar-stable"></ion-nav-bar>
         <!--
           The views will be rendered in the <ion-nav-view> directive below
           Templates are in the /templates folder (but you could also
