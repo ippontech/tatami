@@ -14,7 +14,8 @@ var TatamiApp = angular.module('TatamiApp', [
     'ui.bootstrap',
     'mentio',
     'LocalStorageModule',
-    'bm.bsTour'
+    'bm.bsTour',
+    'TatamiApp.services'
 ]);
 
 TatamiApp.run(['$rootScope', '$state', function($rootScope, $state) {
@@ -30,6 +31,7 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
+    console.log('here');
     // When the app is started, determine if the user is authenticated, if so, send them to home timeline
     UserSession.authenticate().then(function(result) {
         if(result !== null) {
