@@ -1,5 +1,6 @@
 LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http', 'AuthenticationService', 'UserSession', function($scope, $rootScope, $http, AuthenticationService, UserSession) {
     $scope.user = {};
+    $scope.loginFailed = false;
     $scope.login = function() {
         $http({
             method: 'POST',
@@ -35,8 +36,7 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
             }
         })
         .error(function(data) {
-            console.log('Error');
-            console.log(data);
+            $scope.loginFailed = true;
         });
     };
 }]);

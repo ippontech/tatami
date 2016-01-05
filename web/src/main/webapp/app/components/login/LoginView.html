@@ -4,7 +4,7 @@
         <h3 translate="tatami.login.subtitle"></h3>
         <a ui-sref="tatami.about.presentation"><h4 translate="tatami.login.moreInfo"></h4></a>
     </div>
-    <div ng-show="$stateParams.action === 'loginFailure'" class="alert alert-danger" translate="tatami.login.fail"></div>
+    <div ng-show="loginFailed" class="alert alert-danger" translate="tatami.login.fail"></div>
     <div ng-show="$stateParams.action === 'lostPassword'" class="alert alert-info" translate="tatami.login.passwordEmailSent"></div>
     <div ng-show="$stateParams.action === 'lostPasswordFailure'" class="alert alert-danger" translate="tatami.login.unregisteredEmail"></div>
     <div ng-show="$stateParams.action === 'register'" class="alert alert-info" translate="tatami.login.registrationEmail"></div>

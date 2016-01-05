@@ -42,15 +42,18 @@
         <access-denied-handler error-page="/tatami/login"/>
         <form-login
                 login-processing-url="/tatami/authentication"
-                login-page="/tatami/login"
                 authentication-failure-url="/tatami/login?action=loginFailure"
-                default-target-url="/tatami/"
-                authentication-success-handler-ref="tatamiAuthenticationSuccessHandler"/>
+                authentication-success-handler-ref="ajaxAuthenticationSuccessHandler"
+                authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"/>
 
         <logout logout-url="/tatami/logout"
-                logout-success-url="/tatami/login"/>
+                success-handler-ref="ajaxLogoutSuccessHandler"/>
         <session-management invalid-session-url="/tatami/login"/>
     </http>
+
+    <beans:bean id="ajaxAuthenticationSuccessHandler" class="fr.ippon.tatami.security.AjaxAuthenticationSuccessHandler"/>
+    <beans:bean id="ajaxAuthenticationFailureHandler" class="fr.ippon.tatami.security.AjaxAuthenticationFailureHandler"/>
+    <beans:bean id="ajaxLogoutSuccessHandler" class="fr.ippon.tatami.security.AjaxLogoutSuccessHandler"/>
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="ldapAuthenticationProvider"/>
