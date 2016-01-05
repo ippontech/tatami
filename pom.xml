@@ -110,6 +110,43 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven.jetty.version}</version>
+                        <configuration>
+                            <scanIntervalSeconds>${jetty.scanIntervalSeconds}</scanIntervalSeconds>
+                            <stopKey>stop-jetty</stopKey>
+                            <stopPort>9999</stopPort>
+                            <systemProperties>
+                                <systemProperty>
+                                    <name>jetty.port</name>
+                                    <value>${jetty.port}</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-jetty</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <!-- <goal>run-exploded</goal> -->
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                                    <daemon>true</daemon>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-jetty</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
@@ -160,7 +197,7 @@
                         <directory>src/integration/resources</directory>
                     </testResource>
                 </testResources>
-                <plugins>   
+                <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
@@ -337,7 +374,7 @@
         <tatami.google.clientId></tatami.google.clientId>
         <tatami.google.clientSecret></tatami.google.clientSecret>
 
-        <!--Test configurations: Sonar, unit test, code coverage --> 
+        <!--Test configurations: Sonar, unit test, code coverage -->
 
         <project.npm.bin>${project.basedir}/node_modules/.bin</project.npm.bin>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -924,7 +961,7 @@
                     <skipTests>${skip.unit.tests}</skipTests>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
-                    <!-- 
+                    <!--
                       <runOrder>reversealphabetical</runOrder>
                       -->
                 </configuration>
