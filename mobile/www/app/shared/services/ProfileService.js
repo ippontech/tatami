@@ -1,6 +1,6 @@
 angular.module('TatamiApp.services', [])
     .factory('ProfileService', ['$resource', function ($resource) {
-        return $resource('http://localhost:8080/tatami/rest/account/profile', null,
+        return $resource('/tatami/rest/account/profile', null,
             {
                 'get': {
                     method: 'GET',

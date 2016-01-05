@@ -3,8 +3,8 @@
     "app_id": "",
     "proxies": [
         {
-            "path": "/tatami/rest/account/profile",
-            "proxyUrl": "http://localhost:8080/tatami/rest/account/profile"
+            "path": "/tatami",
+            "proxyUrl": "http://localhost:8080/tatami"
         }
     ]
 }
