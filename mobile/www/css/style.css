@@ -11,6 +11,9 @@
 }
 
 /* More specific to sections of app */
+.profile-name .subheading, .profile-name .date {
+    vertical-align: top;
+}
 .bar .bar-header .title {
     left:0!important;
     right:0!important;

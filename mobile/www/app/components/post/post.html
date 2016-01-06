@@ -1,0 +1,20 @@
+<ion-view view-title="Post">
+    <ion-content>
+        <div class="padding">
+            <h4>Post here.</h4>
+            <hr/>
+
+            <form name="newPost" novalidate="" ng-submit="post(newPost)">
+                <div class="list">
+                    <label class="item item-input">
+                        <textarea type="text" name="msg" ng-model="user.msg" ng-minlength="5" rows="15" required></textarea>
+                    </label>
+                </div>
+
+                <button class="button button-full button-positive" type="submit">
+                    Post
+                </button>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>

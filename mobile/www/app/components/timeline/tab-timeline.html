@@ -3,10 +3,10 @@
         <ion-list>
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="lineItem in lineItems" type="item-text-wrap" href="#/tab/timeline/{{lineItem.timelineId}}">
                 <img src="../../../img/test-prof.png">
-                <div class="inline">
-                    <span class="pull-right date"> &#183; {{lineItem.prettyPrintStatusDate}}</span>
-                    <h2>{{lineItem.firstName}} {{lineItem.lastName}}</h2>
-                    <span class="subheading">{{lineItem.username}} @{{lineItem.username}}</span>
+                <div class="profile-name">
+                    <h2 class="inline">{{lineItem.firstName}} {{lineItem.lastName}}</h2>
+                    <span class="inline subheading">{{lineItem.username}}</span>
+                    <span class="inline date">&nbsp;&#183; {{lineItem.prettyPrintStatusDate}}</span>
                 </div>
                 <p>{{lineItem.content}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
