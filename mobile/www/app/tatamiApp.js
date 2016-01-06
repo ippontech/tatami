@@ -1,6 +1,6 @@
 angular.module('tatami', ['ionic', 'TatamiApp.services', 'ngResource'])
 
-    .run(function ($ionicPlatform) {
+    .run(['$ionicPlatform', '$state', 'ProfileService', function ($ionicPlatform, $state, ProfileService) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -14,7 +14,13 @@ angular.module('tatami', ['ionic', 'TatamiApp.services', 'ngResource'])
                 StatusBar.styleDefault();
             }
         });
-    })
+        ProfileService.get().$promise.then(function(loggedUser) {
+            if(loggedUser.username) {
+                $state.go('tab.timeline');
+            }
+        })
+
+    }])
 
     .config(function ($stateProvider, $urlRouterProvider) {
 

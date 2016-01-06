@@ -4,14 +4,10 @@ var clientId = "532238149370-40jujaon5evfgggvbeiocrcheaml6c4u.apps.googleusercon
 var clientSecret = "xFy65VlyGAcKz_QQoDVmoSDx";
 
 angular.module('tatami')
-    .controller('LoginController', ['$scope', '$state', 'user', '$http', function($scope, $state, user, $http) {
+    .controller('LoginController', ['$scope', '$state', '$http', function($scope, $state, $http) {
         $scope.user = {};
         $scope.shown = false;
         $scope.failed = false;
-
-        if(user.username) {
-            $state.go('tab.dash');
-        }
 
         $scope.login = function() {
             $http({
