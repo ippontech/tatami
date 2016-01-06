@@ -1,10 +1,14 @@
 <ion-view view-title="Timeline">
     <ion-content>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="lineItem in lineItems" type="item-text-wrap" href="#/tab/timeline/{{lineItem.id}}">
-                <img ng-src="{{lineItem.face}}">
-                <h2>{{lineItem.name}}</h2>
-                <p>{{lineItem.lastText}}</p>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="lineItem in lineItems" type="item-text-wrap" href="#/tab/timeline/{{lineItem.timelineId}}">
+                <img src="../../../img/test-prof.png">
+                <div class="inline">
+                    <span class="pull-right date"> &#183; {{lineItem.prettyPrintStatusDate}}</span>
+                    <h2>{{lineItem.firstName}} {{lineItem.lastName}}</h2>
+                    <span class="subheading">{{lineItem.username}} @{{lineItem.username}}</span>
+                </div>
+                <p>{{lineItem.content}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
 
                 <ion-option-button class="button-assertive" ng-click="remove(lineItem)">
