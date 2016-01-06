@@ -9,6 +9,11 @@ angular.module('tatami')
                         templateUrl: 'app/components/dash/tab-dash.html',
                         controller: 'DashCtrl'
                     }
+                },
+                resolve: {
+                    user: ['ProfileService', function(ProfileService) {
+                        return ProfileService.get().$promise;
+                    }]
                 }
             }
         );

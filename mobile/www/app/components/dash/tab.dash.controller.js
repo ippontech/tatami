@@ -1,4 +1,6 @@
 angular.module('tatami')
-    .controller('DashCtrl', function ($scope) {
-
-    });
+    .controller('DashCtrl', ['$scope', 'user', function ($scope, user) {
+        $scope.user = user;
+        console.log($scope.user);
+    }]
+);
