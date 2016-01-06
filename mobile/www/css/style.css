@@ -1,4 +1,16 @@
-/* Empty. Add your own CSS if you like */
+/* General classes */
+.pull-right {
+    float:right;
+}
+.clearfix {
+    clear:both;
+}
+.subheading, .date {
+    font-size:12px;
+    font-style:italic;
+}
+
+/* More specific to sections of app */
 .bar .bar-header .title {
     left:0!important;
     right:0!important;
@@ -8,6 +20,8 @@
     vertical-align: middle;
 }
 
+/* Platform specific styles */
 .platform-ios .tab-nav.tabs {
     bottom:43px;
 }
+

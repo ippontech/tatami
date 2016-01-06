@@ -1,0 +1,16 @@
+<ion-view view-title="Mentions">
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="mention in mentions" type="item-text-wrap" href="#/tab/mentions/{{mention.id}}">
+                <img ng-src="{{mention.face}}">
+                <h2>{{mention.name}}</h2>
+                <p>{{mention.lastText}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+                <ion-option-button class="button-assertive" ng-click="remove(mention)">
+                    Delete
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
