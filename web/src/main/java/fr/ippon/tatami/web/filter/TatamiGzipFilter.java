@@ -14,7 +14,7 @@ public class TatamiGzipFilter extends GzipFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws Exception {
 
-        if(request.getHeader("accept").equals("*/*")) {
+        if("*/*".equals(request.getHeader("accept"))) {
             IeRefreshWrapper requestIE = new IeRefreshWrapper(request);
             chain.doFilter(requestIE, response);
         } else {
