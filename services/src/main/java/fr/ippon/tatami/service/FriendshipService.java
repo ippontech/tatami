@@ -74,7 +74,7 @@ public class FriendshipService {
             counterRepository.incrementFollowersCounter(followedUser.getLogin());
             // mention the friend that the user has started following him
             MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getLogin(), currentUser.getLogin());
-            mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId());
+            mentionlineRepository.addStatusToMentionline(mentionFriend.getLogin(), mentionFriend.getStatusId().toString());
             log.debug("User {} now follows user {} ", currentUser.getLogin(), followedUser.getLogin());
             return true;
         } else {

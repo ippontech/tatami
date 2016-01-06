@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.UUID;
 
 /**
  * Service bean for managing groups.
@@ -30,9 +31,6 @@ public class GroupService {
 
     @Inject
     private GroupRepository groupRepository;
-
-    @Inject
-    private GroupDetailsRepository groupDetailsRepository;
 
     @Inject
     private GroupMembersRepository groupMembersRepository;
@@ -57,8 +55,7 @@ public class GroupService {
         log.debug("Creating group : {}", name);
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String groupId = groupRepository.createGroup(domain);
-        groupDetailsRepository.createGroupDetails(groupId, name, description, publicGroup);
+        UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, currentUser.getLogin());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
@@ -69,7 +66,7 @@ public class GroupService {
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void editGroup(Group group) {
         log.debug("Editing group : {}", group.getGroupId());
-        groupDetailsRepository.editGroupDetails(group.getGroupId(),
+        groupRepository.editGroupDetails(group.getGroupId(),
                 group.getName(),
                 group.getDescription(),
                 group.isArchivedGroup());
@@ -77,7 +74,7 @@ public class GroupService {
         searchService.addGroup(group);
     }
 
-    public Collection<UserGroupDTO> getMembersForGroup(String groupId, String login) {
+    public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String login) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
@@ -105,7 +102,7 @@ public class GroupService {
 
 
 
-    public UserGroupDTO getMembersForGroup(String groupId, User userWanted) {
+    public UserGroupDTO getMembersForGroup(UUID groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findUserByLogin(member.getKey());
@@ -126,31 +123,31 @@ public class GroupService {
 
     @Cacheable(value = "group-user-cache", key = "#user.login")
     public Collection<Group> getGroupsForUser(User user) {
-        Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
+        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getLogin());
         return buildGroupIdsList(groupIds);
     }
 
     @Cacheable(value = "group-user-cache", key = "#user.login")
     public Collection<Group> getGroupsOfUser(User user) {
-        Collection<String> groupIds = userGroupRepository.findGroups(user.getLogin());
+        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getLogin());
         return getGroupDetails(user, groupIds);
     }
 
 
     @Cacheable(value = "group-cache")
-    public Group getGroupById(String domain, String groupId) {
+    public Group getGroupById(String domain, UUID groupId) {
         return internalGetGroupById(domain, groupId);
     }
 
     public Collection<Group> getGroupsWhereUserIsAdmin(User user) {
-        Collection<String> groupIds = userGroupRepository.findGroupsAsAdmin(user.getLogin());
+        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getLogin());
         return getGroupDetails(user, groupIds);
     }
 
-    private Collection<Group> getGroupDetails(User currentUser, Collection<String> groupIds) {
+    private Collection<Group> getGroupDetails(User currentUser, Collection<UUID> groupIds) {
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
         Collection<Group> groups = new TreeSet<Group>();
-        for (String groupId : groupIds) {
+        for (UUID groupId : groupIds) {
             Group group = internalGetGroupById(domain, groupId);
             groups.add(group);
         }
@@ -162,13 +159,8 @@ public class GroupService {
         return getGroupsWhereUserIsAdmin(currentUser);
     }
 
-    private Group internalGetGroupById(String domain, String groupId) {
+    private Group internalGetGroupById(String domain, UUID groupId) {
         Group group = groupRepository.getGroupById(domain, groupId);
-        Group groupDetails = groupDetailsRepository.getGroupDetails(groupId);
-        group.setName(groupDetails.getName());
-        group.setPublicGroup(groupDetails.isPublicGroup());
-        group.setArchivedGroup(groupDetails.isArchivedGroup());
-        group.setDescription(groupDetails.getDescription());
         long counter = groupCounterRepository.getGroupCounter(domain, groupId);
         group.setCounter(counter);
         return group;
@@ -176,10 +168,10 @@ public class GroupService {
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void addMemberToGroup(User user, Group group) {
-        String groupId = group.getGroupId();
-        Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+        UUID groupId = group.getGroupId();
+        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
         boolean userIsAlreadyAMember = false;
-        for (String testGroupId : userCurrentGroupIds) {
+        for (UUID testGroupId : userCurrentGroupIds) {
             if (testGroupId.equals(groupId)) {
                 userIsAlreadyAMember = true;
             }
@@ -196,10 +188,10 @@ public class GroupService {
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void removeMemberFromGroup(User user, Group group) {
-        String groupId = group.getGroupId();
-        Collection<String> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
+        UUID groupId = group.getGroupId();
+        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getLogin());
         boolean userIsAlreadyAMember = false;
-        for (String testGroupId : userCurrentGroupIds) {
+        for (UUID testGroupId : userCurrentGroupIds) {
             if (testGroupId.equals(groupId)) {
                 userIsAlreadyAMember = true;
             }
@@ -233,7 +225,7 @@ public class GroupService {
         return buildGroup(currentUser, group);
     }
 
-    private Group getGroupFromUser(User currentUser, String groupId) {
+    private Group getGroupFromUser(User currentUser, UUID groupId) {
         Collection<Group> groups = getGroupsOfUser(currentUser);
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(groupId)) {
@@ -293,20 +285,20 @@ public class GroupService {
         return group;
     }
 
-    public Collection<Group> buildGroupIdsList(Collection<String> groupIds) {
+    public Collection<Group> buildGroupIdsList(Collection<UUID> groupIds) {
         Collection<Group> groups = new TreeSet<Group>();
-        for (String groupId : groupIds) {
+        for (UUID groupId : groupIds) {
             groups.add(buildGroupIds(groupId));
         }
         return groups;
     }
 
-    public Group buildGroupIds(String groupId) {
+    public Group buildGroupIds(UUID groupId) {
         User currentUser = authenticationService.getCurrentUser();
         return buildGroupIds(currentUser, groupId);
     }
 
-    public Group buildGroupIds(User user, String groupId) {
+    public Group buildGroupIds(User user, UUID groupId) {
         String domain = DomainUtil.getDomainFromLogin(user.getLogin());
         Group group = getGroupById(domain, groupId);
         return buildGroup(group);

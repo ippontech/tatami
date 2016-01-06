@@ -12,6 +12,7 @@ import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 
+import fr.ippon.tatami.web.rest.dto.AvatarMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -169,6 +170,7 @@ public class FileController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             // ETag support
+
             response.setHeader(HEADER_ETAG, avatarId); // The attachmentId is unique and should not be modified
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
             if (requestETag != null && requestETag.equals(avatarId)) {
@@ -224,8 +226,43 @@ public class FileController {
         return uploadedFiles;
 
     }
-	
-	    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
+
+    @RequestMapping(value = "/rest/urlupload/avatar",
+            method = RequestMethod.POST,
+            produces = "application/json")
+    @ResponseBody
+    @Timed
+    public List<UploadedFile> uploadUrlAvatar(@RequestBody AvatarMeta avatarMeta) throws IOException {
+        if (avatarMeta == null || avatarMeta.getFilename() == null) {
+
+            return null;
+        }
+        Avatar avatar = new Avatar();
+        if (avatarMeta != null) {
+            avatar.setFilename(avatarMeta.getFilename());
+            avatar.setSize(avatarMeta.getSize());
+
+            avatar = avatarService.createAvatarBasedOnAvatar(avatar);
+        }
+        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        UploadedFile uploadedFile = new UploadedFile(
+                avatar.getAvatarId(),
+                avatar.getFilename(),
+                Long.valueOf(avatar.getSize()).intValue(),
+                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/url");
+        log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
+        uploadedFiles.add(uploadedFile);
+        if (avatar.getAvatarId() != null) {
+            User user = authenticationService.getCurrentUser();
+            user.setAvatar(avatar.getAvatarId());
+            userRepository.updateUser(user);
+        }
+        return uploadedFiles;
+
+    }
+
+
+    @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
             method = RequestMethod.POST)
     @ResponseBody
     @Timed

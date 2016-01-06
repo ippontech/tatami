@@ -119,7 +119,7 @@
             </ul>
 
             <c:if test="${currentPage != null && currentPage == 'home'}">
-            <sec:authorize ifAnyGranted="ROLE_USER">
+            <sec:authorize access="hasRole('ROLE_USER')">
             <ul class="nav pull-right">
                 <li class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown">

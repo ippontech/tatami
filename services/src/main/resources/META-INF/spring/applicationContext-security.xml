@@ -5,11 +5,11 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:context="http://www.springframework.org/schema/context"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-				http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+				http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 				http://www.springframework.org/schema/security
-				http://www.springframework.org/schema/security/spring-security-3.1.xsd
+				http://www.springframework.org/schema/security/spring-security-4.0.xsd
 				http://www.springframework.org/schema/context
-				http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+				http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <context:property-placeholder location="classpath:/META-INF/tatami/tatami.properties"/>
 
@@ -21,6 +21,9 @@
     <http pattern="/tatami/syndic/**" security="none"/>
     <http pattern="/tatami/register/**" security="none"/>
     <http pattern="/tatami/lostpassword/**" security="none"/>
+    <http pattern="/tatami/rest/status/**" security="none"/>
+    <http pattern="/swagger-ui/**" security="none"/>
+    <http pattern="/tatami/swagger-ui/**" security="none"/>
 
     <http pattern="/tatami/j_spring_pac4j_security_check" use-expressions="true" entry-point-ref="googleEntryPoint">
         <intercept-url pattern="/tatami/j_spring_pac4j_security_check" access="isAuthenticated()"/>
@@ -28,6 +31,7 @@
 
 
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
+        <csrf disabled="true"/>
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="1209599"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>

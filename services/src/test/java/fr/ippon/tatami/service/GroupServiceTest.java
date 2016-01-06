@@ -10,6 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -34,7 +35,7 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
         Collection<Group> groups = groupService.getGroupsForUser(user);
         assertEquals(1, groups.size());
 
-        String groupId = groups.iterator().next().getGroupId();
+        UUID groupId = groups.iterator().next().getGroupId();
 
         Group group = groupService.getGroupById("ippon.fr", groupId);
         assertEquals(groupName, group.getName());
@@ -78,7 +79,7 @@ public class GroupServiceTest extends AbstractCassandraTatamiTest {
         Collection<Group> groups = groupService.getGroupsForUser(user);
         assertEquals(1, groups.size());
         Group group = groups.iterator().next();
-        String groupId = group.getGroupId();
+        UUID groupId = group.getGroupId();
 
         User member = userService.getUserByLogin("userWhoPostStatus@ippon.fr");
 

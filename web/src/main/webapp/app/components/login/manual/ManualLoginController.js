@@ -10,7 +10,7 @@ LoginModule.controller('ManualLoginController', ['$scope', '$rootScope', '$http'
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
-            data: { j_username: $scope.user.email, j_password: $scope.user.password, _spring_security_remember_me: $scope.user.remember },
+            data: { username: $scope.user.email, password: $scope.user.password, _spring_security_remember_me: $scope.user.remember },
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {

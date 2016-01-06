@@ -24,7 +24,7 @@ public class AtmosphereService {
      */
     public void notifyUser(String login, AbstractStatus abstractStatus) {
         log.debug("Notifying user: {}", login);
-        StatusDTO statusDTO = timelineService.getStatus(abstractStatus.getStatusId());
+        StatusDTO statusDTO = timelineService.getStatus(abstractStatus.getStatusId().toString());
         TatamiNotification notification = new TatamiNotification();
         notification.setLogin(login);
         notification.setStatusDTO(statusDTO);

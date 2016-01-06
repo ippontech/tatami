@@ -9,7 +9,9 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
@@ -26,6 +28,11 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Test
     public void shouldCreateAUser() {
+
+        assertThat(userRepository.findUserByLogin("nuuser@ippon.fr"), notNullValue());
+    }
+
+    private User createUser() {
         String login = "nuuser@ippon.fr";
         String firstName = "New";
         String lastName = "User";
@@ -42,8 +49,18 @@ public class UserRepositoryTest extends AbstractCassandraTatamiTest {
         counterRepository.createFriendsCounter(user.getLogin());
         counterRepository.createFollowersCounter(user.getLogin());
         userRepository.createUser(user);
+        return user;
+    }
 
+    @Test
+    public void shouldUpdateAUser() {
+        User user = createUser();
         assertThat(userRepository.findUserByLogin("nuuser@ippon.fr"), notNullValue());
+        user.setAvatar("extraAvatar");
+        userRepository.updateUser(user);
+        assertThat(userRepository.findUserByLogin("nuuser@ippon.fr").getAvatar(), is("extraAvatar"));
+
+
     }
 
     @Test(expected = ValidationException.class)

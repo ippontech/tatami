@@ -7,6 +7,7 @@ import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,14 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.Date;
 
 @Service
 public class AvatarService {
@@ -86,5 +92,41 @@ public class AvatarService {
         log.debug("New Byte size of Avatar : {} Kbits", byteArrayOutputStream.size() / 1024);
 
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
+        User currentUser = authenticationService.getCurrentUser();
+        Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
+        if (dbAvatar != null) {
+            return dbAvatar;
+        } else if (avatar.getFilename().startsWith("http")) {
+            byte[] bytes = null;
+            try {
+                bytes = fetchRemoteFile(avatar.getFilename());
+            } catch (Exception e) {
+                log.warn("Could not load bytes from: " + avatar.getFilename());
+            }
+            avatar.setSize(bytes.length);
+            avatar.setContent(bytes);
+            avatar.setCreationDate(new Date());
+            avatarRepository.createAvatar(avatar);
+        }
+        return avatar;
+    }
+
+    private byte[] fetchRemoteFile(String location) throws Exception {
+        URL url = new URL(location);
+        InputStream is = null;
+        byte[] bytes = null;
+        try {
+            is = url.openStream ();
+            bytes = IOUtils.toByteArray(is);
+        } catch (IOException e) {
+            //handle errors
+        }
+        finally {
+            if (is != null) is.close();
+        }
+        return bytes;
     }
 }

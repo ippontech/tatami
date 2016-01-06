@@ -19,6 +19,9 @@ public class Avatar implements Serializable {
 
     private long size;
 
+    public Avatar() {
+    }
+
     public String getAvatarId() {
         return avatarId;
     }

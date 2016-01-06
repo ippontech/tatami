@@ -24,6 +24,7 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ import java.util.List;
 @Configuration
 @ComponentScan("fr.ippon.tatami.web")
 @EnableWebMvc
+@EnableSwagger2
 @PropertySource({"classpath:/META-INF/tatami/tatami.properties",
         "classpath:/META-INF/tatami/customization.properties"})
 @ImportResource("classpath:META-INF/spring/applicationContext-metrics.xml")

@@ -10,4 +10,5 @@ public interface AvatarRepository {
 
     Avatar findAvatarById(String avatarId);
 
+    Avatar findAvatarByFilename(String filename);
 }

@@ -73,15 +73,15 @@ public class SuggestionService {
 
     @Cacheable("suggest-groups-cache")
     public Collection<Group> suggestGroups(String login) {
-        Map<String, Integer> groupCount = new HashMap<String, Integer>();
-        List<String> groupIds = userGroupRepository.findGroups(login);
+        Map<String, Integer> groupCount = new HashMap<>();
+        List<UUID> groupIds = userGroupRepository.findGroups(login);
         List<String> friendIds = friendshipService.getFriendIdsForUser(login);
         friendIds = reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : friendIds) {
-            List<String> groupsOfFriend = userGroupRepository.findGroups(friendId);
-            for (String groupOfFriend : groupsOfFriend) {
+            List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId);
+            for (UUID groupOfFriend : groupsOfFriend) {
                 if (!groupIds.contains(groupOfFriend)) {
-                    incrementKeyCounterInMap(groupCount, groupOfFriend);
+                    incrementKeyCounterInMap(groupCount, groupOfFriend.toString());
                 }
             }
         }
@@ -89,7 +89,7 @@ public class SuggestionService {
         List<Group> groupSuggestions = new ArrayList<Group>();
         String domain = DomainUtil.getDomainFromLogin(login);
         for (String mostFollowedGroup : mostFollowedGroups) {
-            Group suggestion = groupService.getGroupById(domain, mostFollowedGroup);
+            Group suggestion = groupService.getGroupById(domain, UUID.fromString(mostFollowedGroup));
             if (suggestion.isPublicGroup()) { // Only suggest public groups for the moment
                 groupSuggestions.add(suggestion);
             }

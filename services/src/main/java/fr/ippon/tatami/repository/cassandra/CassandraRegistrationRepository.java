@@ -1,24 +1,21 @@
 package fr.ippon.tatami.repository.cassandra;
 
-import com.google.common.collect.Maps;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.repository.RegistrationRepository;
 import fr.ippon.tatami.service.util.RandomUtil;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
-import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.ColumnQuery;
-import me.prettyprint.hector.api.query.SliceQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.REGISTRATION_CF;
 
 /**
@@ -41,34 +38,30 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
     private final static int COLUMN_TTL = 60 * 60 * 24 * 2; // The column is stored for 2 days.
 
     @Inject
-    private Keyspace keyspaceOperator;
+    private Session session;
 
     @Override
     public String generateRegistrationKey(String login) {
         String key = RandomUtil.generateRegistrationKey();
-        HColumn<String, String> column = HFactory.createColumn(key,
-                login, COLUMN_TTL, StringSerializer.get(), StringSerializer.get());
-
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(ROW_KEY, REGISTRATION_CF, column);
+        Statement statement = QueryBuilder.insertInto(REGISTRATION_CF)
+                .value(ROW_KEY, key)
+                .value("login",login)
+                .using(QueryBuilder.ttl(COLUMN_TTL));
+        session.execute(statement);
         return key;
     }
 
     @Override
     public String getLoginByRegistrationKey(String registrationKey) {
-        ColumnQuery<String, String, String> query = HFactory.createStringColumnQuery(keyspaceOperator);
-        HColumn<String, String> column =
-                query.setColumnFamily(REGISTRATION_CF)
-                        .setKey(ROW_KEY)
-                        .setName(registrationKey)
-                        .execute()
-                        .get();
-
-        if (column != null) {
-            return column.getValue();
-        } else {
-            return null;
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from(REGISTRATION_CF)
+                .where(eq(ROW_KEY, registrationKey));
+        ResultSet results = session.execute(statement);
+        if (!results.isExhausted()) {
+            return results.one().getString("login");
         }
+        return null;
     }
 
     /**
@@ -77,23 +70,14 @@ public class CassandraRegistrationRepository implements RegistrationRepository {
      * Other limitation : if a login is associated to multiple registrationKey
      */
     public Map<String, String> _getAllRegistrationKeyByLogin() {
-        log.warn("Calling _getAllRegistrationKeyByLogin() is only for testing purposes!");
-        Map<String, String> registrationKeyByLogin = Maps.newHashMap();
-        SliceQuery<String, String, String> sliceQuery = HFactory.createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), StringSerializer.get(), StringSerializer.get());
-
-        ColumnSlice<String, String> columnSlice =
-                sliceQuery.setColumnFamily(REGISTRATION_CF)
-                        .setKey(ROW_KEY)
-                        .setRange(null, null, false, 10000)
-                        .execute().get();
-
-        List<HColumn<String, String>> columns = columnSlice.getColumns();
-
-        for (HColumn<String, String> hColumn : columns) {
-            // WARN : here we don't handle multiple registrationKey for one login
-            registrationKeyByLogin.put(hColumn.getValue(), hColumn.getName());
-            log.debug("Key={}|Value={}", hColumn.getValue(), hColumn.getName());
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from(REGISTRATION_CF)
+                .limit(10000);
+        ResultSet results = session.execute(statement);
+        Map<String, String> registrationKeyByLogin = new HashMap<>();
+        for (Row row : results.all()) {
+            registrationKeyByLogin.put(row.getString("login"),row.getString(ROW_KEY));
         }
         return registrationKeyByLogin;
     }

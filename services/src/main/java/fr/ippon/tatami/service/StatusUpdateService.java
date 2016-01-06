@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,7 +142,7 @@ public class StatusUpdateService {
         Status status = (Status) abstractStatus;
         Group group = null;
         if (status.getGroupId() != null) {
-            group = groupService.getGroupById(status.getDomain(), status.getGroupId());
+            group = groupService.getGroupById(status.getDomain(), UUID.fromString(status.getGroupId()));
 
             if (group.isArchivedGroup()) {
                 throw new ArchivedGroupException();
@@ -162,12 +163,12 @@ public class StatusUpdateService {
                     content,
                     realOriginalStatus.getStatusPrivate(),
                     group,
-                    realOriginalStatus.getStatusId(),
-                    status.getStatusId(),
+                    realOriginalStatus.getStatusId().toString(),
+                    status.getStatusId().toString(),
                     status.getUsername(),
                     attachmentIds);
 
-            discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId(), replyStatus.getStatusId());
+            discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId().toString(), replyStatus.getStatusId().toString());
         } else {
             log.debug("Replying directly to the status at the origin of the disucssion");
             // The original status of the discussion is the one we reply to
@@ -175,12 +176,12 @@ public class StatusUpdateService {
                     createStatus(content,
                             status.getStatusPrivate(),
                             group,
-                            status.getStatusId(),
-                            status.getStatusId(),
+                            status.getStatusId().toString(),
+                            status.getStatusId().toString(),
                             status.getUsername(),
                             attachmentIds);
 
-            discussionRepository.addReplyToDiscussion(status.getStatusId(), replyStatus.getStatusId());
+            discussionRepository.addReplyToDiscussion(status.getStatusId().toString(), replyStatus.getStatusId().toString());
         }
     }
 
@@ -240,7 +241,7 @@ public class StatusUpdateService {
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
-                statusAttachmentRepository.addAttachmentId(status.getStatusId(),
+                statusAttachmentRepository.addAttachmentId(status.getStatusId().toString(),
                         attachmentId);
             }
         }
@@ -258,7 +259,7 @@ public class StatusUpdateService {
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId());
+            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId().toString());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -288,7 +289,7 @@ public class StatusUpdateService {
 
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
-            grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId());
+            grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId().toString());
             Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
             for (String groupMemberLogin : groupMemberLogins) {
@@ -311,7 +312,7 @@ public class StatusUpdateService {
 
     private void addToCompanyWall(Status status, Group group) {
         if (isPublicGroup(group)) {
-            domainlineRepository.addStatusToDomainline(status.getDomain(), status.getStatusId());
+            domainlineRepository.addStatusToDomainline(status.getDomain(), status.getStatusId().toString());
         }
     }
 
@@ -355,7 +356,7 @@ public class StatusUpdateService {
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
                 if (!isPublicGroup(group)) {
-                    Collection<String> groupIds = userGroupRepository.findGroups(mentionedLogin);
+                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedLogin);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                         mentionUser(mentionedLogin, status);
                     }
@@ -376,7 +377,7 @@ public class StatusUpdateService {
             }
         } else {  // This is a private status
             for (String followerLogin : followersForTag) {
-                Collection<String> groupIds = userGroupRepository.findGroups(followerLogin);
+                Collection<UUID> groupIds = userGroupRepository.findGroups(followerLogin);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
                     addStatusToTimelineAndNotify(followerLogin, status);
                 }
@@ -405,7 +406,7 @@ public class StatusUpdateService {
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
     private void addStatusToTimelineAndNotify(String login, Status status) {
-        timelineRepository.addStatusToTimeline(login, status.getStatusId());
+        timelineRepository.addStatusToTimeline(login, status.getStatusId().toString());
         atmosphereService.notifyUser(login, status);
     }
 }

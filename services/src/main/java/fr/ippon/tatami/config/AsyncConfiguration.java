@@ -4,6 +4,8 @@ import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.elasticsearch.ElasticsearchSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -36,5 +38,10 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setThreadNamePrefix("TatamiExecutor-");
         executor.initialize();
         return executor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new SimpleAsyncUncaughtExceptionHandler();
     }
 }

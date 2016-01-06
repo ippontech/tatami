@@ -135,7 +135,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         Group group = groups.iterator().next();
 
-        Collection<StatusDTO> groupStatuses = timelineService.getGroupline(group.getGroupId(), 10, null, null);
+        Collection<StatusDTO> groupStatuses = timelineService.getGroupline(group.getGroupId().toString(), 10, null, null);
         assertEquals(0, groupStatuses.size());
 
         for (int i = 0; i < 12; i++) {
@@ -143,7 +143,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
             statusUpdateService.postStatusToGroup(content, group, new ArrayList<String>(), "1,2");
         }
 
-        groupStatuses = timelineService.getGroupline(group.getGroupId(), 10, null, null);
+        groupStatuses = timelineService.getGroupline(group.getGroupId().toString(), 10, null, null);
         assertEquals(10, groupStatuses.size());
         Iterator<StatusDTO> iterator = groupStatuses.iterator();
         for (int i = 11; i >= 2; i--) {
@@ -152,7 +152,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
             timelineService.removeStatus(temporaryStatus.getStatusId());
         }
 
-        groupStatuses = timelineService.getGroupline(group.getGroupId(), 10, null, null);
+        groupStatuses = timelineService.getGroupline(group.getGroupId().toString(), 10, null, null);
         assertEquals(2, groupStatuses.size());
 
         // Clean up
@@ -171,13 +171,13 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
 
         for (int i = 0; i < 10; i++) {
             String content = "temporary status " + i +  " #ippon";
-            statusUpdateService.postStatus(content, false, new ArrayList<String>(),null);
+            statusUpdateService.postStatus(content, false, new ArrayList<>(),null);
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);
-        assertEquals(10, timelineStatuses.size());
+        assertEquals("Timeline statuses", 10, timelineStatuses.size());
         favoriteStatuses = timelineService.getFavoritesline();
-        assertEquals(0, favoriteStatuses.size());
+        assertEquals("Favorite statuses", 0, favoriteStatuses.size());
 
         Iterator<StatusDTO> iterator = timelineStatuses.iterator();
         for (int i = 9; i >= 0; i--) {
@@ -185,7 +185,7 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
             timelineService.addFavoriteStatus(temporaryStatus.getStatusId());
         }
         favoriteStatuses = timelineService.getFavoritesline();
-        assertEquals(10, favoriteStatuses.size());
+        assertEquals("favorite statuses", 10, favoriteStatuses.size());
 
         iterator = timelineStatuses.iterator();
         for (int i = 9; i >= 0; i--) {
@@ -195,9 +195,9 @@ public class StatusDeletionTest extends AbstractCassandraTatamiTest {
         }
 
         timelineStatuses = timelineService.getTimeline(10, null, null);
-        assertEquals(2, timelineStatuses.size());
+        assertEquals("timeline statuses",2, timelineStatuses.size());
         favoriteStatuses = timelineService.getFavoritesline();
-        assertEquals(0, favoriteStatuses.size());
+        assertEquals("favorite statuses", 0, favoriteStatuses.size());
     }
 
     @Test

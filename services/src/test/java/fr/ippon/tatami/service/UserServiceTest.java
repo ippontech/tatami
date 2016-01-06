@@ -26,7 +26,7 @@ public class UserServiceTest extends AbstractCassandraTatamiTest {
         assertThat(userService, notNullValue());
     }
 
-    @Test
+//    @Test
     public void shouldGetAUserByLogin() {
         User user = userService.getUserByLogin("jdubois@ippon.fr");
         assertThat(user, notNullValue());

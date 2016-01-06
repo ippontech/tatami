@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.Status;
-import fr.ippon.tatami.repository.GroupDetailsRepository;
+import fr.ippon.tatami.repository.GroupRepository;
 import fr.ippon.tatami.service.SearchService;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.ElasticSearchException;
@@ -58,7 +58,7 @@ public class ElasticsearchSearchService implements SearchService {
     private String indexNamePrefix;
 
     @Inject
-    private GroupDetailsRepository groupDetailsRepository;
+    private GroupRepository groupRepository;
 
     private Client client() {
         return engine.client();
@@ -164,7 +164,7 @@ public class ElasticsearchSearchService implements SearchService {
     private final ElasticsearchMapper<Status> statusMapper = new ElasticsearchMapper<Status>() {
         @Override
         public String id(Status status) {
-            return status.getStatusId();
+            return status.getStatusId().toString();
         }
 
         @Override
@@ -188,7 +188,7 @@ public class ElasticsearchSearchService implements SearchService {
                     .field("content", status.getContent());
 
             if (status.getGroupId() != null) {
-                Group group = groupDetailsRepository.getGroupDetails(status.getGroupId());
+                Group group = groupRepository.getGroupByGroupId(UUID.fromString(status.getGroupId()));
                 source.field("groupId", status.getGroupId());
                 source.field("publicGroup", group.isPublicGroup());
             }
@@ -326,7 +326,7 @@ public class ElasticsearchSearchService implements SearchService {
     private final ElasticsearchMapper<Group> groupMapper = new ElasticsearchMapper<Group>() {
         @Override
         public String id(Group group) {
-            return group.getGroupId();
+            return group.getGroupId().toString();
         }
 
         @Override
@@ -368,7 +368,7 @@ public class ElasticsearchSearchService implements SearchService {
         Collection<String> ids = searchByPrefix(domain, prefix, size, groupMapper);
         List<Group> groups = new ArrayList<Group>(ids.size());
         for (String id : ids) {
-            groups.add(groupDetailsRepository.getGroupDetails(id));
+            groups.add(groupRepository.getGroupByGroupId(UUID.fromString(id)));
         }
         return groups;
     }

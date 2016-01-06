@@ -55,6 +55,10 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(groupController).build();
     }
 
+//    @Test
+    public void testNOOP() {
+        assertTrue(true);
+    }
     @Test
     public void testCreateAndArchiveGroup() throws Exception {
 
@@ -80,7 +84,7 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
 
         assertEquals(1, groups.size());
 
-        String groupId = groups.iterator().next().getGroupId();
+        String groupId = groups.iterator().next().getGroupId().toString();
 
         mockMvc.perform(get("/rest/groups/" + groupId)
                 .accept(MediaType.APPLICATION_JSON))
@@ -147,7 +151,6 @@ public class GroupControllerTest extends AbstractCassandraTatamiTest {
         String usersAsJson = mockMvc.perform(get("/rest/groups/" + groupId + "/members/")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.[0].lastName").value("WhoHasGroup"))
                 .andExpect(jsonPath("$.[0].isMember").value(true))
                 .andReturn().getResponse().getContentAsString();

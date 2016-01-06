@@ -1,126 +1,37 @@
 package fr.ippon.tatami.domain.status;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Parent class for all statuses.
  */
-public abstract class AbstractStatus implements Serializable {
+public interface AbstractStatus extends Serializable {
 
-    private String statusId;
+    UUID getStatusId();
 
-    @NotNull
-    private StatusType type;
+    StatusType getType();
 
-    @NotNull
-    private String login;
+    String getLogin();
 
-    @NotNull
-    private String username;
+    Date getStatusDate();
 
-    @NotNull
-    private String domain;
+    String getGeoLocalization();
 
-    private Date statusDate;
+    void setStatusId(UUID uuid);
 
-    public String getGeoLocalization() {
-        return geoLocalization;
-    }
+    void setStatusDate(Date date);
 
-    public void setGeoLocalization(String geoLocalization) {
-        this.geoLocalization = geoLocalization;
-    }
+    String getUsername();
 
-    private String geoLocalization;
+    String getDomain();
 
-    private boolean removed;
+    void setLogin(String string);
 
-    public String getStatusId() {
-        return statusId;
-    }
+    void setUsername(String string);
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId;
-    }
+    void setDomain(String domain);
 
-    public StatusType getType() {
-        return type;
-    }
-
-    public void setType(StatusType type) {
-        this.type = type;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public Date getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
-
-    public boolean isRemoved() {
-        return removed;
-    }
-
-    public void setRemoved(boolean removed) {
-        this.removed = removed;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AbstractStatus that = (AbstractStatus) o;
-
-        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return statusId != null ? statusId.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractStatus{" +
-                "statusId='" + statusId + '\'' +
-                ", type=" + type +
-                ", login='" + login + '\'' +
-                ", username='" + username + '\'' +
-                ", domain='" + domain + '\'' +
-                ", statusDate=" + statusDate +
-                ", geoLocalization='" + geoLocalization + '\'' +
-                ", removed=" + removed +
-                '}';
-    }
+    void setRemoved(boolean removed);
 }

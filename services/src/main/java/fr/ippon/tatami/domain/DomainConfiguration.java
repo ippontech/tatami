@@ -5,10 +5,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.datastax.driver.mapping.annotations.*;
 
 import org.apache.commons.io.IOUtils;
 
@@ -17,7 +14,6 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Julien Dubois
  */
-@Entity
 @Table(name = "DomainConfiguration")
 public class DomainConfiguration implements Serializable {
 
@@ -74,7 +70,7 @@ public class DomainConfiguration implements Serializable {
 
     }
 
-    @Id
+    @PartitionKey
     private String domain;
 
     @Column(name = "subscriptionLevel")

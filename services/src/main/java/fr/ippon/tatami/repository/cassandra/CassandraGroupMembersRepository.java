@@ -1,21 +1,19 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.config.GroupRoles;
 import fr.ippon.tatami.repository.GroupMembersRepository;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.ColumnSlice;
-import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.Mutator;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_MEMBERS_CF;
-import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 /**
  * Cassandra implementation of the Group members repository.
@@ -30,43 +28,52 @@ import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 @Repository
 public class CassandraGroupMembersRepository implements GroupMembersRepository {
 
+    public static final String GROUP_MEMBER = "groupMember";
+    public static final String LOGIN = "login";
+    public static final String ROLE = "role";
+    public static final String GROUP_ID = "groupId";
     @Inject
-    private Keyspace keyspaceOperator;
+    Session session;
 
     @Override
-    public void addMember(String groupId, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(groupId, GROUP_MEMBERS_CF, HFactory.createColumn(login,
-                GroupRoles.MEMBER, StringSerializer.get(), StringSerializer.get()));
+    public void addMember(UUID groupId, String login) {
+        Statement statement = QueryBuilder.insertInto(GROUP_MEMBER)
+                .value(GROUP_ID, groupId)
+                .value(LOGIN, login)
+                .value(ROLE, GroupRoles.MEMBER);
+        session.execute(statement);
     }
 
     @Override
-    public void addAdmin(String groupId, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(groupId, GROUP_MEMBERS_CF, HFactory.createColumn(login,
-                GroupRoles.ADMIN, StringSerializer.get(), StringSerializer.get()));
+    public void addAdmin(UUID groupId, String login) {
+        Statement statement = QueryBuilder.insertInto(GROUP_MEMBER)
+                .value(GROUP_ID, groupId)
+                .value(LOGIN, login)
+                .value(ROLE, GroupRoles.MEMBER);
+        session.execute(statement);
     }
 
     @Override
-    public void removeMember(String groupId, String login) {
-        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(groupId, GROUP_MEMBERS_CF, login, StringSerializer.get());
+    public void removeMember(UUID groupId, String login) {
+        Statement statement = QueryBuilder.delete().from(GROUP_MEMBER)
+                .where(eq(GROUP_ID, groupId))
+                .and(eq(LOGIN, login));
+        session.execute(statement);
+
     }
 
     @Override
-    public Map<String, String> findMembers(String groupId) {
-        Map<String, String> members = new HashMap<String, String>();
-        ColumnSlice<String, String> result = createSliceQuery(keyspaceOperator,
-                StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-                .setColumnFamily(GROUP_MEMBERS_CF)
-                .setKey(groupId)
-                .setRange(null, null, false, Integer.MAX_VALUE)
-                .execute()
-                .get();
-
-        for (HColumn<String, String> column : result.getColumns()) {
-            members.put(column.getName(), column.getValue());
-        }
-        return members;
+    public Map<String, String> findMembers(UUID groupId) {
+        Statement statement = QueryBuilder.select()
+                .all()
+                .from(GROUP_MEMBER)
+                .where(eq(GROUP_ID, groupId));
+        ResultSet results = session.execute(statement);
+        return results
+                .all()
+                .stream()
+                .collect(Collectors.toMap(
+                        e -> e.getString(LOGIN),
+                        e -> e.getString(ROLE)));
     }
 }

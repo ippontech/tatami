@@ -1,14 +1,26 @@
 package fr.ippon.tatami.config;
 
-import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
+
+import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @PropertySource({"classpath:/META-INF/tatami/tatami.properties",
@@ -32,6 +44,40 @@ public class ApplicationConfiguration {
     @Inject
     private Environment env;
 
+    public static final String DEFAULT_INCLUDE_PATTERN = "/tatami/.*";
+
+    @Bean
+    public Docket swaggerSpringfoxDocket() {
+        log.debug("Starting Swagger");
+        StopWatch watch = new StopWatch();
+        watch.start();
+        ApiInfo apiInfo = new ApiInfo(
+                env.getProperty("swagger.title"),
+                env.getProperty("swagger.description"),
+                env.getProperty("swagger.version"),
+                env.getProperty("swagger.termsOfServiceUrl"),
+                env.getProperty("swagger.contact"),
+                env.getProperty("swagger.license"),
+                env.getProperty("swagger.licenseUrl"));
+
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+                .directModelSubstitute(LocalDate.class,
+                        String.class)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .useDefaultResponseMessages(false)
+                .enableUrlTemplating(true)
+                .pathMapping("/tatami");
+        watch.stop();
+        log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
+        return docket;
+    }
+
+
     /**
      * Initializes Tatami.
      * <p/>
@@ -43,7 +89,7 @@ public class ApplicationConfiguration {
      * - "tatamibot" : for enabling the Tatami bot
      */
     @PostConstruct
-    public void initTatami() throws IOException, TTransportException {
+    public void initTatami() throws IOException {
         log.debug("Looking for Spring profiles... Available profiles are \"metrics\", \"tatamibot\" and \"apple-push\"");
         if (env.getActiveProfiles().length == 0) {
             log.debug("No Spring profile configured, running with default configuration");
