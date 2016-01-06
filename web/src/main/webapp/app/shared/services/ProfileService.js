@@ -5,7 +5,6 @@ angular.module('TatamiApp.services', [])
                 'get': {
                     method: 'GET',
                     transformResponse: function (profile) {
-                        console.log(profile);
                         var parsedProfile = {};
                         try {
                             parsedProfile = angular.fromJson(profile);
@@ -13,7 +12,6 @@ angular.module('TatamiApp.services', [])
                             parsedProfile = {};
                         }
                         parsedProfile['avatarURL'] = parsedProfile.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
-                        console.log(parsedProfile);
                         return parsedProfile;
                     }
                 },

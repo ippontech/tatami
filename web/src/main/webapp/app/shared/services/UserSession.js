@@ -35,15 +35,12 @@ TatamiApp.factory('UserSession', ['$q', '$window', 'ProfileService', 'localStora
                 return deferred.promise;
             }
 
-            console.log('getting user profile');
             ProfileService.get(function(data) {
-                console.log('success');
                 // Success
                 user = data;
                 authenticated = true;
                 deferred.resolve(user);
             }, function() {
-                console.log('failed');
                 // Error
                 user = null;
                 authenticated = false;

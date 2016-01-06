@@ -27,7 +27,7 @@
     </http>
 
 
-    <http auto-config="true" use-expressions="true" create-session="ifRequired" entry-point-ref="">
+    <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="1209599"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
@@ -39,7 +39,9 @@
 
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <access-denied-handler error-page="/tatami/login"/>
         <form-login
+                login-page="/tatami/login"
                 login-processing-url="/tatami/authentication"
                 authentication-success-handler-ref="ajaxAuthenticationSuccessHandler"
                 authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"/>
@@ -47,6 +49,13 @@
         <logout logout-url="/tatami/logout"
                 success-handler-ref="ajaxLogoutSuccessHandler"/>
         <session-management invalid-session-url="/tatami/login"/>
+
+        <!--<form-login-->
+                <!--login-processing-url="/tatami/authentication"-->
+                <!--login-page="/tatami/login"-->
+                <!--authentication-failure-url="/tatami/login?action=loginFailure"-->
+                <!--default-target-url="/tatami/"-->
+                <!--authentication-success-handler-ref="tatamiAuthenticationSuccessHandler"/>-->
     </http>
 
     <beans:bean id="ajaxAuthenticationSuccessHandler" class="fr.ippon.tatami.security.AjaxAuthenticationSuccessHandler"/>
