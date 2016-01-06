@@ -1,5 +1,5 @@
 angular.module('tatami')
-    .controller('ChatsCtrl', function ($scope, Chats) {
+    .controller('MentionsCtrl', function ($scope, Mentions) {
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
@@ -8,9 +8,9 @@ angular.module('tatami')
         //$scope.$on('$ionicView.enter', function(e) {
         //});
 
-        $scope.chats = Chats.all();
-        $scope.remove = function (chat) {
-            Chats.remove(chat);
+        $scope.mentions = Mentions.all();
+        $scope.remove = function (mention) {
+            Mentions.remove(mention);
         };
     }
 );

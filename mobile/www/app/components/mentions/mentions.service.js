@@ -1,10 +1,10 @@
 angular.module('tatami')
 
-    .factory('Chats', function() {
+    .factory('Mentions', function() {
         // Might use a resource here that returns a JSON array
 
         // Some fake testing data
-        var chats = [{
+        var mentions = [{
             id: 0,
             name: 'Ben Sparrow',
             lastText: 'You on your way?',
@@ -33,15 +33,15 @@ angular.module('tatami')
 
         return {
             all: function() {
-                return chats;
+                return mentions;
             },
-            remove: function(chat) {
-                chats.splice(chats.indexOf(chat), 1);
+            remove: function(mention) {
+                mentions.splice(mentions.indexOf(mention), 1);
             },
-            get: function(chatId) {
-                for (var i = 0; i < chats.length; i++) {
-                    if (chats[i].id === parseInt(chatId)) {
-                        return chats[i];
+            get: function(mentionId) {
+                for (var i = 0; i < mentions.length; i++) {
+                    if (mentions[i].id === parseInt(mentionId)) {
+                        return mentions[i];
                     }
                 }
                 return null;
