@@ -24,11 +24,11 @@ angular.module('tatami')
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
         $scope.googleLogin = function() {
-            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/plus.login&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
+            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientId + '&redirect_uri=http://localhost:8080/tatami/callback?client_name=Google2Client&scope=https://www.googleapis.com/auth/plus.login&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
             ref.addEventListener('loadstart', function(event) {
                 if((event.url).startsWith("http://localhost/callback")) {
                     requestToken = (event.url).split("code=")[1];
-                    $http({method: "post", url: "https://accounts.google.com/o/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=http://localhost/callback" + "&grant_type=authorization_code" + "&code=" + requestToken })
+                    $http({method: "post", url: "https://accounts.google.com/o/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=http://localhost:8080/tatami/callback?client_name=Google2Client" + "&grant_type=authorization_code" + "&code=" + requestToken })
                         .success(function(data) {
                             accessToken = data.access_token;
                             $state.go('tab.dash');
