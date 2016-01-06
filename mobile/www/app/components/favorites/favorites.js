@@ -10,5 +10,15 @@ angular.module('tatami')
                         controller: 'FavoritesCtrl'
                     }
                 }
+            })
+            .state('tab.favorites-detail', {
+                url: '/favorites/:favoriteId',
+                views: {
+                    'tab-favorites': {
+                        templateUrl: 'app/components/favorites/favorites-detail.html',
+                        controller: 'FavoritesDetailCtrl'
+                    }
+                }
             });
-    });
+    }
+);

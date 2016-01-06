@@ -1,10 +1,10 @@
 angular.module('tatami')
 
-    .factory('LineItems', function() {
+    .factory('Favorites', function() {
         // Might use a resource here that returns a JSON array
 
         // Some fake testing data
-        var lineItems = [{
+        var favorites = [{
             id: 0,
             name: 'Ben Sparrow',
             lastText: 'You on your way?',
@@ -33,15 +33,15 @@ angular.module('tatami')
 
         return {
             all: function() {
-                return lineItems;
+                return favorites;
             },
-            remove: function(lineItem) {
-                lineItems.splice(lineItems.indexOf(lineItem), 1);
+            remove: function(favorite) {
+                favorites.splice(favorites.indexOf(favorite), 1);
             },
-            get: function(lineItemId) {
-                for (var i = 0; i < lineItems.length; i++) {
-                    if (lineItems[i].id === parseInt(lineItemId)) {
-                        return mentions[i];
+            get: function(favoriteId) {
+                for (var i = 0; i < favorites.length; i++) {
+                    if (favorites[i].id === parseInt(favoriteId)) {
+                        return favorites[i];
                     }
                 }
                 return null;
