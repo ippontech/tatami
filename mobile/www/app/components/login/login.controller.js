@@ -13,7 +13,7 @@ angular.module('tatami')
             ProfileService.get(function(success) {
                 $scope.shown = true;
                 console.log(success);
-                $state.go('tab.dash');
+                $state.go('tab.timeline');
             }, function(error) {
                 $scope.failed = true;
                 console.log(error);
@@ -31,7 +31,7 @@ angular.module('tatami')
                     $http({method: "post", url: "https://accounts.google.com/o/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=http://localhost:8080/tatami/callback?client_name=Google2Client" + "&grant_type=authorization_code" + "&code=" + requestToken })
                         .success(function(data) {
                             accessToken = data.access_token;
-                            $state.go('tab.dash');
+                            $state.go('tab.timeline');
                         })
                         .error(function(data, status) {
                             alert("ERROR: " + data);
