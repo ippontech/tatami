@@ -27,7 +27,7 @@
     </http>
 
 
-    <http auto-config="true" use-expressions="true" create-session="ifRequired">
+    <http auto-config="true" use-expressions="true" create-session="ifRequired" entry-point-ref="">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="1209599"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
@@ -39,10 +39,8 @@
 
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
-        <access-denied-handler error-page="/tatami/login"/>
         <form-login
                 login-processing-url="/tatami/authentication"
-                authentication-failure-url="/tatami/login?action=loginFailure"
                 authentication-success-handler-ref="ajaxAuthenticationSuccessHandler"
                 authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"/>
 
@@ -54,6 +52,7 @@
     <beans:bean id="ajaxAuthenticationSuccessHandler" class="fr.ippon.tatami.security.AjaxAuthenticationSuccessHandler"/>
     <beans:bean id="ajaxAuthenticationFailureHandler" class="fr.ippon.tatami.security.AjaxAuthenticationFailureHandler"/>
     <beans:bean id="ajaxLogoutSuccessHandler" class="fr.ippon.tatami.security.AjaxLogoutSuccessHandler"/>
+    <beans:bean id="authenticationEntryPoint" class="fr.ippon.tatami.security.Http401UnauthorizedEntryPoint"/>
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="ldapAuthenticationProvider"/>
