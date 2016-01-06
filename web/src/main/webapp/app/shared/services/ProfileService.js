@@ -5,9 +5,16 @@ angular.module('TatamiApp.services', [])
                 'get': {
                     method: 'GET',
                     transformResponse: function (profile) {
-                        profile = angular.fromJson(profile);
-                        profile['avatarURL'] = profile.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + profile.avatar + '/photo.jpg';
-                        return profile;
+                        console.log(profile);
+                        var parsedProfile = {};
+                        try {
+                            parsedProfile = angular.fromJson(profile);
+                        } catch(e) {
+                            parsedProfile = {};
+                        }
+                        parsedProfile['avatarURL'] = parsedProfile.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
+                        console.log(parsedProfile);
+                        return parsedProfile;
                     }
                 },
                 'update': {

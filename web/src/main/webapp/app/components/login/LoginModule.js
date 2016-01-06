@@ -5,7 +5,7 @@ LoginModule.config(['$stateProvider', function($stateProvider) {
         .state('tatami.login', {
             url: '',
             abstract: true,
-            templateUrl: 'app/components/login/LoginView.min.html'
+            templateUrl: 'app/components/login/LoginView.min.html',
         })
         .state('tatami.login.main', {
             url: '/login?action',

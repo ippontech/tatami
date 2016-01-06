@@ -31,8 +31,10 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
+    console.log('here');
     // When the app is started, determine if the user is authenticated, if so, send them to home timeline
     UserSession.authenticate().then(function(result) {
+        console.log(result);
         if(result !== null) {
             // We aren't logged in, clear the old session, and send the user to the login page
             if(result.action === null) {
@@ -63,6 +65,7 @@ TatamiApp.run(['$rootScope', '$state', '$stateParams', 'AuthenticationService', 
             }
         }
         else {
+            console.log('going to login');
             $state.go('tatami.login.main');
         }
     });
