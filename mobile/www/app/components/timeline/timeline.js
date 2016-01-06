@@ -10,7 +10,15 @@ angular.module('tatami')
                         controller: 'TimelineCtrl'
                     }
                 }
-            }
-        );
+            })
+            .state('tab.timeline-detail', {
+                url: '/timeline/:lineItemId',
+                views: {
+                    'tab-timeline': {
+                        templateUrl: 'app/components/timeline/timeline-detail.html',
+                        controller: 'LineItemDetailCtrl'
+                    }
+                }
+            });
     }
 );
