@@ -1,4 +1,4 @@
-angular.module('TatamiApp.services', [])
+angular.module('tatami.services', [])
     .factory('ProfileService', ['$resource', function ($resource) {
         return $resource('/tatami/rest/account/profile', null,
             {

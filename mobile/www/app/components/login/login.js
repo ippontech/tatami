@@ -5,6 +5,6 @@ angular.module('tatami')
             .state('login', {
                 url: '/login',
                 templateUrl: 'app/components/login/login.html',
-                controller: 'LoginController'
+                controller: 'LoginCtrl'
             });
     });

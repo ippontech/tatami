@@ -8,7 +8,7 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
             if(statuses[i].geoLocalization) {
                 var latitude = statuses[i].geoLocalization.split(',')[0].trim();
                 var longitude = statuses[i].geoLocalization.split(',')[1].trim();
-                statuses[i]['locationURL'] = 
+                statuses[i]['locationURL'] =
                     'https://www.openstreetmap.org/?mlon='
                     + longitude + '&mlat=' + latitude;
             }
@@ -18,18 +18,18 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
     };
 
     return $resource('/tatami/rest/statuses/:statusId', null,
-    {   
-        'get': { 
+    {
+        'get': {
             method: 'GET',
             transformResponse: function(status) {
                 status = angular.fromJson(status);
 
                 status.avatarURL = status.avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
-                
+
                 if(status.geoLocalization) {
                     var latitude = status.geoLocalization.split(',')[0].trim();
                     var longitude = status.geoLocalization.split(',')[1].trim();
-                    status['locationURL'] = 
+                    status['locationURL'] =
                         'https://www.openstreetmap.org/?mlon='
                         + longitude + '&mlat=' + latitude;
                 }
@@ -37,11 +37,11 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
                 return status;
              }
         },
-        'getHomeTimeline': { 
+        'getHomeTimeline': {
             method: 'GET', isArray: true, url: '/tatami/rest/statuses/home_timeline',
             transformResponse: responseTransform
         },
-        'getUserTimeline': { 
+        'getUserTimeline': {
             method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
             transformResponse: responseTransform
         },
@@ -56,7 +56,7 @@ TatamiApp.factory('StatusService', ['$resource', function($resource) {
                     if(details.discussionStatuses[i].geoLocalization) {
                         var latitude = details.discussionStatuses[i].geoLocalization.split(',')[0].trim();
                         var longitude = details.discussionStatuses[i].geoLocalization.split(',')[1].trim();
-                        details.discussionStatuses[i]['locationURL'] = 
+                        details.discussionStatuses[i]['locationURL'] =
                             'https://www.openstreetmap.org/?mlon='
                             + longitude + '&mlat=' + latitude;
                     }
