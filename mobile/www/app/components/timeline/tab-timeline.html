@@ -2,7 +2,8 @@
     <ion-content>
         <ion-list>
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="lineItem in lineItems" type="item-text-wrap" href="#/tab/timeline/{{lineItem.timelineId}}">
-                <img src="../../../img/test-prof.png">
+                <img ng-src="{{ getAvatarURL(lineItem.avatar) }}" />
+
                 <div class="profile-name">
                     <h2 class="inline">{{lineItem.firstName}} {{lineItem.lastName}}</h2>
                     <span class="inline subheading">{{lineItem.username}}</span>
