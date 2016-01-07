@@ -1,4 +1,4 @@
-angular.module('tatami', ['ionic', 'TatamiApp.services', 'ngResource'])
+angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
 
     .run(['$ionicPlatform', '$state', 'ProfileService', function ($ionicPlatform, $state, ProfileService) {
         $ionicPlatform.ready(function () {
@@ -22,7 +22,9 @@ angular.module('tatami', ['ionic', 'TatamiApp.services', 'ngResource'])
 
     }])
 
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider) {
+
+        $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
             // setup an abstract state for the tabs directive
