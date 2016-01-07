@@ -1,19 +1,24 @@
 angular.module('tatami')
-    .controller('PostCtrl', ['$scope', 'StatusService', function($scope, StatusService) {
+    .controller('PostCtrl', ['$scope', '$state', 'StatusService', function($scope, $state, StatusService) {
         $scope.charCount = 750;
         $scope.status = {
-            content: ''
+            content: '',
+            statusPrivate: false
         };
 
         $scope.post = function() {
-            console.log($scope.status);
             StatusService.save($scope.status, function() {
-                $scope.go('tab.timeline');
+                $scope.reset();
+                $state.go('tab.timeline');
             })
         };
 
-        //$scope.post = function(newPost) {
-        //    console.log(newPost);
-        //}
+        $scope.reset = function() {
+            $scope.status = {
+                content: '',
+                statusPrivate: false
+            }
+        }
+
     }]
 );
