@@ -7,14 +7,16 @@
             <form name="newPost" novalidate="" ng-submit="post(newPost)">
                 <div class="list">
                     <label class="item item-input">
-                        <textarea type="text" name="msg" ng-model="user.msg" ng-minlength="5" rows="15" required></textarea>
+                        <textarea type="text" name="msg" ng-model="status.content" rows="15" ng-required="true"></textarea>
                     </label>
                 </div>
-
-                <button class="button button-full button-positive" type="submit">
-                    Post
-                </button>
             </form>
         </div>
     </ion-content>
+    <ion-footer-bar align-title="right" keyboard-attach class="bar-stable apply-footer" style="margin-bottom: 44px;">
+        <h1 class="title" style="opacity: 0.5;">{{ charCount - status.content.length }}</h1>
+        <button class="button button-positive" ng-disabled="status.content.length === 0 || !status.content" ng-click="post()">
+            Post
+        </button>
+    </ion-footer-bar>
 </ion-view>
