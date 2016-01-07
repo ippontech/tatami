@@ -3,8 +3,8 @@ angular.module('tatami')
 
         $stateProvider
             .state('follow', {
-                url: '/follow',
-                templateUrl: 'app/components/follow/follow.html'
+                url: '',
+                templateUrl: 'app/components/follow/follow-tabs.html'
             });
     }
 );

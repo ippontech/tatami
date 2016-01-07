@@ -1,38 +1,38 @@
 var PostModule = angular.module('PostModule', ['angularFileUpload', 'ui.router']);
 
-PostModule.config(['$stateProvider', function($stateProvider) {
-    var onEnterArray = ['$stateParams', '$modal', function($stateParams, $modal) {
+PostModule.config(['$stateProvider', function ($stateProvider) {
+    var onEnterArray = ['$stateParams', '$modal', function ($stateParams, $modal) {
         $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.min.html',
             controller: 'PostController',
             backdrop: 'static',
             keyboard: true,
             resolve: {
-                curStatus: ['StatusService', function(StatusService) {
-                    if($stateParams.statusId !== null) {
-                        return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                curStatus: ['StatusService', function (StatusService) {
+                    if ($stateParams.statusId !== null) {
+                        return StatusService.get({statusId: $stateParams.statusId}).$promise;
                     }
                 }],
-                groups: ['GroupService', function(GroupService) {
+                groups: ['GroupService', function (GroupService) {
                     return GroupService.query().$promise;
                 }]
             }
         });
     }];
 
-    var onEnterArrayStatusView = ['$stateParams', '$modal', function($stateParams, $modal) {
-       $modal.open({
+    var onEnterArrayStatusView = ['$stateParams', '$modal', function ($stateParams, $modal) {
+        $modal.open({
             templateUrl: '/app/shared/topMenu/post/PostView.min.html',
             controller: 'PostController',
-           backdrop: 'static',
+            backdrop: 'static',
             keyboard: true,
             resolve: {
-                curStatus: ['StatusService', function(StatusService) {
-                    if($stateParams.statusIdReply !== null) {
-                        return StatusService.get({ statusId: $stateParams.statusIdReply }).$promise;
+                curStatus: ['StatusService', function (StatusService) {
+                    if ($stateParams.statusIdReply !== null) {
+                        return StatusService.get({statusId: $stateParams.statusIdReply}).$promise;
                     }
                 }],
-                groups: ['GroupService', function(GroupService) {
+                groups: ['GroupService', function (GroupService) {
                     return GroupService.query().$promise;
                 }]
             }
@@ -124,5 +124,5 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             },
             onEnter: onEnterArray
         });
-    }
+}
 ]);
