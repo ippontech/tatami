@@ -4,7 +4,7 @@ var clientId = "532238149370-40jujaon5evfgggvbeiocrcheaml6c4u.apps.googleusercon
 var clientSecret = "xFy65VlyGAcKz_QQoDVmoSDx";
 
 angular.module('tatami')
-    .controller('LoginController', ['$scope', '$state', '$http', function($scope, $state, $http) {
+    .controller('LoginCtrl', ['$scope', '$state', '$http', function($scope, $state, $http) {
         $scope.user = {};
         $scope.shown = false;
         $scope.failed = false;
