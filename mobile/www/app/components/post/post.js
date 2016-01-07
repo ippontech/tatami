@@ -4,7 +4,8 @@ angular.module('tatami')
         $stateProvider
             .state('post', {
                 url: '/post',
-                templateUrl: 'app/components/post/post.html'
+                templateUrl: 'app/components/post/post.html',
+                controller: 'PostCtrl'
             });
     }
 );
