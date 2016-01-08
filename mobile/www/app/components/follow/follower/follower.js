@@ -12,7 +12,6 @@ angular.module('tatami')
                 },
                 resolve: {
                     currentUser: ['ProfileService', function(ProfileService) {
-                        console.log('getting current user');
                         return ProfileService.get().$promise;
                     }],
 

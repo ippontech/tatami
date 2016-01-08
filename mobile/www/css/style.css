@@ -18,6 +18,9 @@
     left:0!important;
     right:0!important;
 }
+.bar .bar-header .title a {
+    text-decoration: none;
+}
 .bar .bar-header .title img {
     margin: 0 auto;
     vertical-align: middle;
