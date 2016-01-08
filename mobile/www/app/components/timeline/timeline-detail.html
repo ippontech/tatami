@@ -1,7 +1,7 @@
 <ion-view view-title="{{lineItem.username}}">
     <ion-content class="padding">
         <h2>{{lineItem.firstName}} {{lineItem.lastName}}</h2>
-        <img ng-src="{{ getAvatarURL(lineItem.avatar) }}" />
+        <img ng-src="{{ lineItem.avatarURL }}" />
         <p>
             {{lineItem.content}}
         </p>

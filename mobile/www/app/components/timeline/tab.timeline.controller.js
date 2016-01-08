@@ -1,19 +1,9 @@
 angular.module('tatami')
-    .controller('TimelineCtrl', function ($scope, LineItems, $http) {
+    .controller('TimelineCtrl', function ($scope, lineItems) {
 
-        $scope.lineItems = LineItems.all();
-        $scope.lineItems.success(function(data) {
-            $scope.lineItems = data;
-        });
-        $scope.remove = function (lineItem) {
-            LineItems.remove(lineItem);
-        };
+        $scope.lineItems = lineItems;
+        $scope.remove = function(lineItem) {
 
-        $scope.getAvatarURL = function(avatar) {
-            var src = '../../../img/test-prof.png';
-            if( avatar != '' &&  avatar != undefined) {
-                src = '/tatami/avatar/' + avatar + '/photo.jpg';
-            }
-            return src;
+            $scope.lineItems.splice(lineItems.indexOf(lineItem), 1);
         };
     });

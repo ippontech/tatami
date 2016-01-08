@@ -1,5 +1,5 @@
 angular.module('tatami')
-    .controller('PostCtrl', ['$scope', '$state', 'StatusService', function($scope, $state, StatusService) {
+    .controller('PostCtrl', ['$scope', '$state', '$ionicHistory', 'StatusService', function($scope, $state, $ionicHistory, StatusService) {
         $scope.charCount = 750;
         $scope.status = {
             content: '',
@@ -9,7 +9,8 @@ angular.module('tatami')
         $scope.post = function() {
             StatusService.save($scope.status, function() {
                 $scope.reset();
-                $state.go('tab.timeline');
+                $ionicHistory.clearCache();
+                $state.go('tab.timeline', {}, { reload: true });
             })
         };
 

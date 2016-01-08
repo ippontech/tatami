@@ -16,7 +16,6 @@ angular.module('tatami')
                 }
             }],
             link: function(scope, el, attrs) {
-                console.log(scope.user);
             }
         }
     }]
