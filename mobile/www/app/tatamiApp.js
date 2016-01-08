@@ -15,9 +15,12 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
             }
         });
         ProfileService.get().$promise.then(function(loggedUser) {
+            console.log('going to timeline');
             if(loggedUser.username) {
                 $state.go('tab.timeline');
             }
+        }, function(error) {
+            $state.go('login');
         })
 
     }])
