@@ -1,25 +1,9 @@
 <ion-view view-title="Followers">
     <ion-content>
-        <div class="padding">
-            Follower
-            <!--Follow him..-->
-            <!--<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="lineItem in lineItems"-->
-            <!--type="item-text-wrap" href="#/tab/timeline/{{lineItem.timelineId}}">-->
-            <!--<img src="../../../img/test-prof.png">-->
-
-            <!--<div class="inline">-->
-            <!--<span class="pull-right date"> &#183; {{lineItem.prettyPrintStatusDate}}</span>-->
-
-            <!--<h2>{{lineItem.firstName}} {{lineItem.lastName}}</h2>-->
-            <!--<span class="subheading">{{lineItem.username}} @{{lineItem.username}}</span>-->
-            <!--</div>-->
-            <!--<p>{{lineItem.content}}</p>-->
-            <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
-
-            <!--<ion-option-button class="button-assertive" ng-click="remove(lineItem)">-->
-            <!--Delete-->
-            <!--</ion-option-button>-->
-            <!--</ion-item>-->
-        </div>
+        <ion-list>
+            <ion-item ng-repeat="user in followers">
+                <user user="user"></user>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

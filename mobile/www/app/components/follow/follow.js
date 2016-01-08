@@ -4,7 +4,12 @@ angular.module('tatami')
         $stateProvider
             .state('follow', {
                 url: '',
-                templateUrl: 'app/components/follow/follow-tabs.html'
+                templateUrl: 'app/components/follow/follow-tabs.html',
+                resolve: {
+                    currentUser: ['ProfileService', function(ProfileService) {
+                        return ProfileService.get().$promise;
+                    }]
+                }
             });
     }
 );

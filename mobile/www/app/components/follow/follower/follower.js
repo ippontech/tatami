@@ -11,12 +11,7 @@ angular.module('tatami')
                     }
                 },
                 resolve: {
-                    currentUser: ['ProfileService', function(ProfileService) {
-                        return ProfileService.get().$promise;
-                    }],
-
                     followers: ['UserService', 'currentUser', function(UserService, currentUser) {
-                        console.log(currentUser);
                         return UserService.getFollowers({ username: currentUser.username }).$promise;
                     }]
                 }

@@ -1,0 +1,11 @@
+<div class="item-remove-animate item-avatar item-icon-right">
+    <img ng-src="{{ user.avatarURL }}" />
+
+    <div class="profile-name">
+        <h2 class="inline">{{ user.firstName }} {{ user.lastName }}</h2>
+        <span class="inline subheading">@{{ user.username }}</span>
+        <button class="button button-small button-outline button-positive pull-right" ng-if="!user.you" ng-click="followUser(user)">
+            <span ng-class="user.friend ? 'ion-minus' : 'ion-plus'"></span>
+        </button>
+    </div>
+</div>

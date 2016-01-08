@@ -6,8 +6,14 @@ angular.module('tatami')
                 url: '/following',
                 views: {
                     'follow-following': {
-                        templateUrl: 'app/components/follow/following/following.html'
+                        templateUrl: 'app/components/follow/following/following.html',
+                        controller: 'FollowingCtrl'
                     }
+                },
+                resolve: {
+                    following: ['UserService', 'currentUser', function(UserService, currentUser) {
+                        return UserService.getFollowing({ username: currentUser.username }).$promise;
+                    }]
                 }
             });
     }
