@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>tatami</artifactId>
+        <groupId>fr.ippon.tatami</groupId>
+        <version>4.0.4</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mobile</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.ippon.tatami</groupId>
+            <artifactId>services</artifactId>
+            <version>4.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.ippon.tatami</groupId>
+            <artifactId>services</artifactId>
+            <version>4.0.4</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>tatami-mobile-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.kelveden</groupId>
+                <artifactId>maven-karma-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <karmaExecutable>${project.basedir}/node_modules/.bin/karma</karmaExecutable>
+                    <configFile>${project.basedir}/karma.ci.conf.js</configFile>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
