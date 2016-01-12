@@ -9,6 +9,7 @@
         <module>web</module>
         <module>services</module>
         <module>tatamibot</module>
+        <module>mobile</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -25,7 +25,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    
     <build>
         <finalName>tatami-mobile-${project.version}</finalName>
         <plugins>
