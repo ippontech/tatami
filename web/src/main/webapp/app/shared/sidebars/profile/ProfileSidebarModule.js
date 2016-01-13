@@ -1,1 +1,0 @@
-var ProfileSidebarModule = angular.module('ProfileSidebarModule', []);

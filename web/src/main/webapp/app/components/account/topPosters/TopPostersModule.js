@@ -1,1 +1,0 @@
-var TopPostersModule = angular.module('TopPostersModule', []);
