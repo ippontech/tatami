@@ -1,186 +1,75 @@
-Tatami
-================
+# TatamiJHipster
 
-Presentation
-------------------
+This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
-Tatami is an Open Source enterprise social network.
+Before you can build this project, you must install and configure the following dependencies on your machine:
 
-A public installation of Tatami is provided by [Ippon Technologies](http://www.ippon.fr) at : [https://tatami.ippon.fr](https://tatami.ippon.fr)
+1. [Node.js][]: We use Node to run a development web server and build the project.
+   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
 
-Tatami is made with the following technologies :
+After installing Node, you should be able to run the following command to install development tools (like
+[Bower][] and [BrowserSync][]). You will only need to run this command when dependencies change in package.json.
 
-- HTML5, [AngularJS](https://angularjs.org/) and [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
-- [The Spring Framework](http://www.springsource.org/)
-- [Apache Cassandra](http://cassandra.apache.org/)
-- [Elastic Search](http://www.elasticsearch.org/)
+    npm install
 
-Tatami is developed by [Ippon Technologies](http://www.ippon.fr)
+We use [Grunt][] as our build system. Install the grunt command-line tool globally with:
 
+    npm install -g grunt-cli
 
-Installation for developers
----------------------------------------
+Run the following commands in two separate terminals to create a blissful development experience where your browser
+auto-refreshes when files change on your hard drive.
 
-### 5 minute installation
+    mvn
+    grunt
 
-- Clone, fork or download the source code from this Github page
-- Install [Maven 3](http://maven.apache.org/)
-- Install [npm](https://www.npmjs.com/)
-- Point your terminal to the directory you cloned Tatami to.
-    - `cd web`
-    - Type `npm install`
-    - You may need to give root user permissions: `sudo !!`
-    - `cd ..`
-- Run Cassandra with Maven : `mvn cassandra:run`
-- Run Jetty from tatami/web with Maven: `mvn jetty:run`
-- Connect to the application at http://127.0.0.1:8080
+Bower is used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
+specifying a newer version in `bower.json`. You can also run `bower update` and `bower install` to manage dependencies.
+Add the `-h` flag on any command to see how you can use it. For example, `bower update -h`.
 
+# Building for production
 
-To create users, use the registration form. As we have not configured a SMTP server (you can configure it in src/main/resources/META-INF/tatami/tatami.properties - see below "installation for production use" for more options), the validation URL as well as the password will not be e-mailed to you, but you can see them in the log (look at the Jetty console output).
+To optimize the TatamiJHipster client for production, run:
 
-### Using Tomcat instead of Jetty
+    mvn -Pprod clean package
 
-If you want to use Tomcat instead of Jetty (which works better in development mode on Windows), just use :
+This will concatenate and minify CSS and JavaScript files. It will also modify `index.html` so it references
+these new files.
 
-- Run Tomcat from Maven : `mvn tomcat7:run`
+To ensure everything worked, run:
 
-### Maven tuning and troubleshooting
+    java -jar target/*.war --spring.profiles.active=prod
 
-If you run into some Permgen or OutOfMemory errors, you can configure your Maven settings accordingly :
-```
-export MAVEN_OPTS="-XX:PermSize=64m -XX:MaxPermSize=128m -Xms256m -Xmx1024m"
-```
+Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-If you want to debug remotely the application with your IDE, set up your MAVEN_OPTS :
-```
-export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
-```
+# Testing
 
-### Cassandra troubleshooting
+Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in `src/test/javascript` and can be run with:
 
-On Mac OS X, you should use JDK 6 and not JDK 7, see [issue #281](https://github.com/ippontech/tatami/issues/281#issuecomment-12430701).
+    grunt test
 
 
-How to Contribute
----------------------------------------
-In order to assure code quality, Ippon manages the pull requests for the project, and upholds certain rules regarding how individuals may contribute. 
-You may find these rules in your Tatami installation in the file `CONTRIBUTING.md`.
 
+# Continuous Integration
 
-Installation for production use
----------------------------------------
+To setup this project in Jenkins, use the following configuration:
 
-### Cassandra installation
+* Project name: `TatamiJHipster`
+* Source Code Management
+    * Git Repository: `git@github.com:xxxx/TatamiJHipster.git`
+    * Branches to build: `*/master`
+    * Additional Behaviours: `Wipe out repository & force clone`
+* Build Triggers
+    * Poll SCM / Schedule: `H/5 * * * *`
+* Build
+    * Invoke Maven / Tasks: `-Pprod clean package`
+* Post-build Actions
+    * Publish JUnit test result report / Test Report XMLs: `build/test-results/*.xml`
 
-- Download [Apache Cassandra](http://cassandra.apache.org/)
-- Install Cassandra : the application will work fine with just one node, but ideally you should have a cluster with at least 3 or 5 nodes
-- Cassandra is configured with its cassandra.yaml file : don't forget to backup your "data" and "commitlog" directories
-
-### Tatami installation
-
-In order to use a stable version, use one of the [available tags](https://github.com/ippontech/tatami/tags).
-
-Tatami can be configured with the src/main/resources/META-INF/tatami/tatami.properties file. You can configure this file in 2 ways :
-
-- Edit the file in your own Tatami fork
-- Properties in this file are replaced at build time by Maven : you can set up your own Maven profile with your specific properties
-
-Once Tatami is started, you will be able to check your properties at runtime in the Administration page.
-
-To deploy Tatami :
-
-- Create the Tatami WAR file : `mvn package`
-- The WAR file will be called "root.war", as Tatami should be run as the root application (on the "/" Web context)
-- Deploy the WAR file on your favorite Java EE server
-- The WAR has been tested on Jetty 8 and Tomcat 7, and should work fine on all Java EE servers
-
-Upgrading from a previous version
----------------------------------------
-
-Upgrading is normally just a matter of using a newer version of the application.
-
-Sometimes, you will need to update the Cassandra keyspace: upgrade scripts are available in the src/main/cql/upgrade directory.
-
-Launching stress tests
----------------------------------------
-
-Stress tests are done with [Apache JMeter](http://jmeter.apache.org/).
-
-- Launch Cassandra
-- Run Tatami from Maven with the `stress-tests` profile : `mvn jetty:run -Pstress-tests`
-- Launch JMeter
-- Run the `src/test/jmeter/tatami-create-users.jmx` script : it will create 200 normal users, which each has 200 follower users
-- Run the stress test : `src/test/jmeter/tatami-stress-test.jmx`
-
-Launching functional tests
----------------------------------------
-
-Functional tests are a work in progress, you do not have to run them in order to use the application.
-
-Requirement : all components must run on localhost :
-
-- for LDAP authentication, the tests starts the LDAP server that the Tatami server will use
-- for fixture setup and assertions, the test connects directly to the local cassandra
-
-Launching UI Tests from maven :
-
-- add this profile on your settings.xml :
-```xml
-<profile>
-  <id>tatami</id>
-  <activation>
-    <activeByDefault>true</activeByDefault>
-  </activation>
-  <properties>
-    <webdriver.chrome.driver>C:\path\to\chromedriver.exe</webdriver.chrome.driver><!--optional-->
-    <google.password>xxxx</google.password>
-    <google.email>xxx@xxx.fr</google.email>
-  </properties>
-</profile>
-```
-
-- Run Maven with this command : `mvn clean verify -Puitest`
-
-Launching UI Tests from maven with Chrome :
-
-- install ChromeDriver in your system
-- configure the property "webdriver.chrome.driver" in your settings pointing to your chrome driver install directory
-- add `-Dgeb.env=chrome` to the maven command above
-
-Launching UI Tests from your IDE :
-
-- Enable a groovy plugin on your IDE
-- Activate maven profile "uitest" or add src/integration/* in your classpath
-- Run Tatami with Maven : `mvn cassandra:delete cassandra:start jetty:run -Djetty.scanIntervalSeconds=0 -Puitest`
-- Run Specs (in src\integration\java\fr\ippon\tatami\uitest) as Junit Tests from your IDE
-  => you have to set adequate system properties to your running configurations (the same as those that are necessary in setting.xml for maven : see above)
-
-
-Thanks
-------
-
-Jetbrains is providing us free [Intellij IDEA](http://www.jetbrains.com/idea/) licenses, 
-which definitely allows us to be more productive and have more fun on the project!
-
-YourKit is kindly supporting open source projects with its full-featured Java Profiler.
-YourKit, LLC is the creator of innovative and intelligent tools for profiling
-Java and .NET applications. Take a look at YourKit's leading software products:
-[YourKit Java Profiler](http://www.yourkit.com/java/profiler/index.jsp) and
-[YourKit .NET Profiler](http://www.yourkit.com/.net/profiler/index.jsp).
-
-License
--------
-
-Copyright © 2012-2015 [Ippon Technologies](http://www.ippon.fr)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this application except in compliance with the License.
-You may obtain a copy of the License at
-
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+[JHipster]: https://jhipster.github.io/
+[Node.js]: https://nodejs.org/
+[Bower]: http://bower.io/
+[Grunt]: http://gruntjs.com/
+[BrowserSync]: http://www.browsersync.io/
+[Karma]: http://karma-runner.github.io/
+[Jasmine]: http://jasmine.github.io/2.0/introduction.html
+[Protractor]: https://angular.github.io/protractor/

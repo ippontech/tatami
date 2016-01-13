@@ -1,0 +1,24 @@
+{
+  "generator-jhipster": {
+    "baseName": "TatamiJHipster",
+    "packageName": "fr.ippon.tatami",
+    "packageFolder": "fr/ippon/tatami",
+    "authenticationType": "xauth",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "cassandra",
+    "devDatabaseType": "cassandra",
+    "prodDatabaseType": "cassandra",
+    "searchEngine": "no",
+    "useSass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "enableTranslation": true,
+    "enableSocialSignIn": false,
+    "rememberMeKey": "07fc2bef86532de57a70326b2a0cd2943a52b3f6",
+    "testFrameworks": [
+      "gatling"
+    ]
+  }
+}

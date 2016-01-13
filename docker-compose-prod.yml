@@ -1,0 +1,27 @@
+jhipster-opscenter:
+  container_name: jhipster-opscenter
+  build: ./docker/opscenter
+  ports:
+    - "8888:8888"
+tatamijhipster-cassandra:
+  container_name: tatamijhipster-cassandra
+  build: .
+  dockerfile: Cassandra-Prod.Dockerfile
+  # volumes:
+  #   - ~/volumes/jhipster/TatamiJHipster/cassandra/:/var/lib/cassandra/data
+  links:
+    - jhipster-opscenter:opscenter
+  ports:
+    - "7000:7000"
+    - "7001:7001"
+    - "7199:7199"
+    - "9042:9042"
+    - "9160:9160"
+tatamijhipster-cassandra-node:
+  build: .
+  dockerfile: Cassandra-Prod.Dockerfile
+  links:
+    - tatamijhipster-cassandra:seed
+    - jhipster-opscenter:opscenter
+  environment:
+    - CASSANDRA_SEEDS=seed
