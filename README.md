@@ -1,5 +1,7 @@
 # TatamiJHipster
 
+Create a new cluster: ccm create 'nodeName' -v 2.1.6 -n 'nodeCount'
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
