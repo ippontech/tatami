@@ -8,7 +8,7 @@
 
             $stateProvider
                 .state('profile', {
-                    url: '/profile/:userId',
+                    url: '/profile/:username',
                     templateUrl: 'app/components/profile/profile.html',
                     controller: 'ProfileCtrl',
                     controllerAs: 'vm',
@@ -23,7 +23,7 @@
 
     getUser.$inject = ['UserService', '$stateParams'];
     function getUser(UserService, $stateParams) {
-        return UserService.get({ username : $stateParams.userId }).$promise;
+        return UserService.get({ username : $stateParams.username }).$promise;
     }
 
 })();

@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('tatami')
-        .controller('ProfileCtrl', ProfileController);
+        .controller('ProfileCtrl', profileCtrl);
 
-    ProfileController.$inject = ['user'];
-    function ProfileController(user) {
-        vm = this;
+    profileCtrl.$inject = ['user'];
+    function profileCtrl(user) {
+        var vm = this;
         vm.user = user;
+        console.log(vm);
     }
 })();
