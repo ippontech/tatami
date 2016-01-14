@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -7,9 +7,94 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/"><span translate="global.title">jhipster</span> <span class="navbar-version">v{{VERSION}}</span></a>
+            <a class="navbar-brand" href="#/"><img src="assets/images/company-logo.png"><span translate="global.title">jhipster</span><span class="navbar-version">v{{VERSION}}</span></a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a ui-sref="tatami.home.home.timeline">
+                    <span>
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        <span translate="global.menu.timeline" class="hidden-tablet"></span>
+                    </span>
+                    </a>
+                </li>
+                <li class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span translate="global.menu.about" class="hidden-tablet"></span>
+                        <b class="caret"></b>
+                    </span>
+                    </a>
+                    <ul class="dropdown-menu closed">
+                        <li>
+                            <a ui-sref="tatami.about.presentation">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span translate="global.about.presentation"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="tatami.about.tos">
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                                <span translate="global.about.tos"></span>
+                            </a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a>
+                                <span class="glyphicon glyphicon-flag"></span>
+                                <span translate="global.menu.language"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a ng-click="changeLanguage('en')" translate="global.menu.language.en"></a>
+                                </li>
+                                <li>
+                                    <a ng-click="changeLanguage('fr')" translate="global.menu.language.fr"></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a ui-sref="tatami.about.license">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <span translate="global.about.license"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami/issues" target="_blank">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                                <span translate="global.about.submitBug"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ippontech/tatami" target="_blank">
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <span translate="global.about.fork"></span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="http://www.ippon.fr" target="_blank">
+                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                <span translate="global.about.website"></span>
+                            </a>
+                        </li>
+                        <li><a ng-click='goToBlog()'>
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span translate="global.about.blog"></span>
+                        </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/ippontech" target="_blank">
+                                <span class="glyphicon glyphicon-bullhorn"></span>
+                                <span translate="global.about.twitter"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ui-sref-active="active">
                     <a ui-sref="home" data-toggle="collapse" data-target=".navbar-collapse.in">

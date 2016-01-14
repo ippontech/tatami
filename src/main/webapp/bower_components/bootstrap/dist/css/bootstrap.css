@@ -62,6 +62,7 @@ dfn {
 h1 {
   margin: .67em 0;
   font-size: 2em;
+    font-weight: bolder;
 }
 mark {
   color: #000;
@@ -3125,6 +3126,7 @@ fieldset[disabled] .btn-default.active {
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
+    margin-bottom: 10px;
 }
 .btn-primary:focus,
 .btn-primary.focus {
@@ -3510,7 +3512,8 @@ fieldset[disabled] .btn-link:focus {
   width: 100%;
 }
 .btn-block + .btn-block {
-  margin-top: 5px;
+  margin-top: 10px;
+    margin-bottom: 5px;
 }
 input[type="submit"].btn-block,
 input[type="reset"].btn-block,
@@ -4325,14 +4328,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 15px 15px;
   font-size: 18px;
   line-height: 20px;
+    margin-left: auto;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
   text-decoration: none;
 }
-.navbar-brand > img {
+/*.navbar-brand > img {
   display: block;
-}
+}*/
 @media (min-width: 768px) {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
@@ -4637,7 +4641,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #222;
+  background-color: #000;
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
