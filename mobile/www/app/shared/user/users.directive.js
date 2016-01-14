@@ -19,8 +19,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', 'UserService'];
-    function controller($scope, $state, UserService) {
+    controller.$inject = ['$scope', '$state', '$ionicHistory', 'UserService'];
+    function controller($scope, $state, $ionicHistory, UserService) {
         var vm = this;
 
         vm.user = $scope.user;
@@ -28,6 +28,7 @@
         function followUser() {
             UserService.follow({ username : vm.user.username }, { friend: !vm.user.friend, friendShip: true },
                 function() {
+                    $ionicHistory.clearCache();
                     $state.reload();
                 });
         }

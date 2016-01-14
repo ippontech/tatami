@@ -1,15 +1,15 @@
-<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" ui-sref="tab.timeline-detail({ timelineId : status.timelineId })">
-    <img ng-src="{{ status.avatarURL }}" />
+    <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" ui-sref="tab.timeline-detail({ lineItemId : vm.status.timelineId })">
+    <img ng-src="{{ vm.status.avatarURL }}" />
 
     <div class="profile-name">
-        <h2 class="inline">{{status.firstName}} {{status.lastName}}</h2>
-        <span class="inline subheading">{{status.username}}</span>
-        <span class="inline date">&nbsp;&#183; {{status.prettyPrintStatusDate}}</span>
+        <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
+        <span class="inline subheading">{{vm.status.username}}</span>
+        <span class="inline date">&nbsp;&#183; {{vm.status.prettyPrintStatusDate}}</span>
     </div>
-    <p>{{status.content}}</p>
+    <p>{{vm.status.content}}</p>
     <i class="icon ion-chevron-right icon-accessory"></i>
 
-    <ion-option-button class="button-assertive" ng-click="vm.remove(status)">
+    <ion-option-button class="button-assertive" ng-click="vm.remove()">
         Delete
     </ion-option-button>
 </ion-item>

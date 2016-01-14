@@ -14,14 +14,21 @@
             controllerAs: 'vm',
             templateUrl: 'app/shared/status/status.html'
         };
-        console.log(directive);
 
         return directive;
     }
 
-    controller.$inject = ['$scope', 'StatusService'];
-    function controller($scope, StatusService) {
-        console.log('here');
+    controller.$inject = ['$scope', '$state', 'StatusService'];
+    function controller($scope, $state, StatusService) {
         var vm = this;
+
+        vm.status = $scope.status;
+        vm.remove = remove;
+
+        function remove() {
+            StatusService.delete({ statusId : vm.status.statusId }, function() {
+                $state.reload();
+            })
+        }
     }
 })();
