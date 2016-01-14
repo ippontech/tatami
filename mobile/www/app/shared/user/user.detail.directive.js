@@ -17,5 +17,5 @@
     };
 
     controller.$inject = ['$scope'];
-    function con
-})
+    function controller($scope) {}
+})();
