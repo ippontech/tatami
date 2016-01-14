@@ -17,6 +17,39 @@
                         <span class="hidden-sm" translate="global.menu.home">Home</span>
                     </a>
                 </li>
+                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                        <span>
+                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="hidden-sm">
+                                About
+                            </span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active"><a ui-sref="presentation" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-eye-open"></span>
+                            &#xA0;<span>Presentation</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="tos" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-briefcase"></span>
+                            &#xA0;<span>Terms of Service</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="license" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-info-sign"></span>
+                            &#xA0;<span>Source Code License</span></a></li>
+
+                        <li ui-sref-active="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://github.com/ippontech/tatami/issues"><span class="glyphicon glyphicon-inbox"></span>
+                            &#xA0;<span>Submit A Bug Report</span></a></li>
+                        <li ui-sref-active="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://github.com/ippontech/tatami"><span class="glyphicon glyphicon-wrench"></span>
+                            &#xA0;<span>Fork Tatami on Github</span></a></li>
+                        <li ui-sref-active="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="http://www.ippon.fr/"><span class="glyphicon glyphicon-exclamation-sign"></span>
+                            &#xA0;<span>Ippon Technologies Website</span></a></li>
+                        <li ui-sref-active="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="http://www.ipponusa.com/blog/"><span class="glyphicon glyphicon-pencil"></span>
+                            &#xA0;<span>Ippon Technologies Blog</span></a></li>
+                        <li ui-sref-active="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://twitter.com/ippontech"><span class="glyphicon glyphicon-bullhorn"></span>
+                            &#xA0;<span>Follow @ippontech on Twitter</span></a></li>
+
+
+                    </ul>
+                </li>
+
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
                 <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">

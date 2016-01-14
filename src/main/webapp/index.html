@@ -25,7 +25,7 @@
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
         <div ui-view="navbar" ng-cloak=""></div>
         <div class="container">
-            <div class="well" ui-view="content"></div>
+            <div ui-view="content"></div>
 
             <div class="footer">
                 <p translate="footer">This is your footer</p>
@@ -148,5 +148,7 @@
     <script src="scripts/components/language/language.controller.js"></script>
     <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
     <!-- endbuild -->
+
+    <script src="scripts/app/about/about.js"></script>
 </body>
 </html>
