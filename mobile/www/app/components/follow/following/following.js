@@ -7,7 +7,8 @@ angular.module('tatami')
                 views: {
                     'follow-following': {
                         templateUrl: 'app/components/follow/following/following.html',
-                        controller: 'FollowingCtrl'
+                        controller: 'FollowingCtrl',
+                        controllerAs: 'vm'
                     }
                 },
                 resolve: {

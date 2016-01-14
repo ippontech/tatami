@@ -1,9 +1,9 @@
-<ion-view view-title="Who to Follow">
+<ion-view view-title="Who to Follow" cache-view="false">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="user in suggested">
-                <user user="user"></user>
-            </ion-item>
+            <div ng-repeat="user in suggested">
+                <tatami-user user="user"></tatami-user>
+            </div>
         </ion-list>
     </ion-content>
 </ion-view>

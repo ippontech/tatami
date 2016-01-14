@@ -1,9 +1,9 @@
-<ion-view view-title="Followers">
+<ion-view view-title="Followers" cache-view="false">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="user in followers">
-                <user user="user"></user>
-            </ion-item>
+            <div ng-repeat="user in followers">
+                <tatami-user user="user"></tatami-user>
+            </div>
         </ion-list>
     </ion-content>
 </ion-view>

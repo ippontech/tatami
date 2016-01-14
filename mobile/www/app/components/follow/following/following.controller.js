@@ -1,5 +1,15 @@
-angular.module('tatami')
-    .controller('FollowingCtrl', ['$scope', 'following', function($scope, following) {
-        $scope.following = following;
-    }]
-);
+(function() {
+    'use strict';
+
+    angular.module('tatami')
+        .controller('FollowingCtrl', FollowingCtrl);
+
+    FollowingCtrl.$inject = ['following'];
+
+    function FollowingCtrl(following) {
+        var vm = this;
+        vm.following = following;
+    }
+
+})();
+
