@@ -25,11 +25,11 @@
 
         vm.user = $scope.user;
         vm.followUser = followUser;
+        console.log(vm.user.friend);
         function followUser() {
             UserService.follow({ username : vm.user.username }, { friend: !vm.user.friend, friendShip: true },
                 function() {
-                    $ionicHistory.clearCache();
-                    $state.reload();
+                    vm.user.friend = !vm.user.friend;
                 });
         }
 
