@@ -186,6 +186,8 @@
 
         "menu": {
             "home": "Home",
+            "timeline": "Timeline",
+            "about": "About",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
@@ -213,6 +215,16 @@
                 "database": "Database"
             },
             "language": "Language"
+        },
+        "about": {
+            "presentation": "Presentation",
+            "tos": "Terms of Service",
+            "license": "Souce Code License",
+            "submitBug": "Submit a Bug Report",
+            "fork": "Fork Tatami on Github",
+            "website": "Ippon Technologies Website",
+            "blog": "Ippon Technologies Blog",
+            "twitter": "Follow @ippoontech on Twitter"
         },
         "form": {
             "username": "Username",

@@ -51,10 +51,25 @@
 .noBorder {
     border-top: 0;
 }
+.noRadius
+{
+    border-radius: 0;
+}
+
+.noCollapse
+{
+    border-collapse: separate;
+}
+
+.noBorder{
+    border-top : 0;
+
+}
 
 .noRadius {
     border-radius: 0;
 }
+
 
 #basicMap {
     width: 100%;
@@ -68,7 +83,8 @@
     margin: 0;
 }
 
-.alertColor {
+.alertColor{
+
     padding: 8px 15px 8px 14px;
     margin-bottom: 20px;
     color: #c09853;
@@ -84,7 +100,11 @@
 }
 
 body {
+
     background-image: url(/assets/images/wallpaper.jpg);
+
+    background-image: url(img/wallpaper.jpg);
+
 }
 
 h4 {
@@ -104,7 +124,11 @@ h4 {
     font-size: 100%;
 }
 
-.tabMenu {
+.labelSizeNormal{
+    font-size: 100%;
+}
+
+.tabMenu{
     margin-bottom: 15px;
     margin-top: 10px;
 }
@@ -117,10 +141,17 @@ h4 {
     padding-bottom: 10px;
 }
 
+
+.controle-group
+{
+  padding: 0 0 5px;
+    padding-top: 10px;
+    }
 .quota {
     color: #333333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
+
 }
 
 .nomargin {
@@ -136,13 +167,32 @@ h4 {
 }
 
 .fileItem {
+;
+}
+
+.nomargin {
+      margin: 0;
+}
+
+.file-table
+{
+display: block;
+}
+
+.displayBlock
+{
+    display: block;
+}
+
+.fileItem
+{
     width: 100%;
     display: inline-table;
     border-top: 1px solid #dddddd;
     padding: 8px;
 }
 
-div.jGrowl-notification {
+div.jGrowl-notification{
     background-color : transparent;
     opacity : 1;
 }
@@ -151,7 +201,12 @@ div.jGrowl-notification {
     margin-right: 20px
 }
 
-.mediumHeight {
+
+.little-marge-right{
+    margin-right: 20px
+}
+
+.mediumHeight{
     height: 13px;
 }
 
@@ -180,7 +235,26 @@ div.jGrowl-notification {
     padding: 0.10em 0.6em;
 }
 
-#updateAvatar {
+.little-height{
+    height: 10px;
+}
+
+.littleMargeBot{
+    margin-bottom: 10px;
+}
+
+.little-padding-top{
+    padding-top: 3px;
+}
+.little-marge-top{
+    margin-top: 5px;
+}
+
+.little-padding
+{
+    padding: 0.10em 0.6em;
+}
+#updateAvatar{
     position: relative;
     cursor: hand;
     cursor: pointer;
@@ -196,7 +270,9 @@ div.jGrowl-notification {
 
 }
 
-.avatar-float-left-container {
+
+
+.avatar-float-left-container  {
     margin-left: 15px;
     margin-top: 15px;
     margin-bottom: 0;
@@ -275,6 +351,7 @@ div.jGrowl-notification {
     background-position: center center;
     background-size: cover;
     -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .navbar-edit {
@@ -327,6 +404,7 @@ div.jGrowl-notification {
 
 .profile-card > .img {
     margin-right: 5px;
+    background-size: contain;
 }
 
 /*.tatam, .useritem {*/
@@ -374,37 +452,39 @@ div.jGrowl-notification {
 }
 
 .tatam.favorite {
-    background-image: url(/assets/css/img/favorite.png);
+    background-image: url(img/favorite.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
 
 .favorite {
-    background-image: url(/assets/css/img/favorite.png);
+    background-image: url(img/favorite.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
 
 .tatam.share {
-    background-image: url(/assets/css/img/shared.png);
+
+    background-image: url(img/shared.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
 
 .share {
-    background-image: url(/assets/css/img/shared.png);
+    background-image: url(img/shared.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
 
 .tatam.both {
-    background-image: url(/assets/css/img/both.png);
+    background-image: url(img/both.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
 
 .both {
-    background-image: url(/assets/css/img/both.png);
+
+    background-image: url(img/both.png);
     background-repeat: no-repeat;
     background-position: right top;
 }
@@ -430,6 +510,7 @@ div.jGrowl-notification {
 
 .tatams {
     /*margin-bottom: 5px;*/
+    /*margin-bottom: 15px;*/
 }
 
 .tatam > div:first-child, .useritem > div:first-child {
@@ -466,12 +547,19 @@ div.jGrowl-notification {
     margin-top: 5px;
 }
 
+
 /*
 .tatams-discussion {
     margin-top: 0;
     margin-left: -60px;
 }
 */
+
+/*.tatams-discussion {
+    margin-top: 0;
+    margin-left: -60px;
+}*/
+
 
 .tatams-discussion > .tatam > header {
     margin-top: 0;
@@ -599,7 +687,7 @@ div.jGrowl-notification {
     padding: 0;
     margin: 0;
     border-top: 1px solid #CCCCCC;
-    margin-bottom: -2px;
+    margin-bottom: -2px
     margin-top: 0;
 }
 
@@ -868,7 +956,10 @@ div.jGrowl-notification {
 }
 
 @media screen and (max-width: 767px) {
-    .buttons {
+    .buttons }
+@media screen and (max-width: 767px) {
+    #buttons {
+
         clear: both;
     }
 
