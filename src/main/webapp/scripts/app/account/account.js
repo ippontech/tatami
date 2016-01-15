@@ -10,6 +10,17 @@ angular.module('tatamiJHipsterApp')
                     authorities: [],
                     pageTitle: 'login.title'
                 },
+                url: '/account',
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/account/account.html',
+
+                    }
+                },
+
+
+
+
 
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -22,11 +33,9 @@ angular.module('tatamiJHipsterApp')
             .state('profile', {
                 parent: 'account' ,
                 url: '/profile',
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/account/profile/profile.html',
 
-                    }
-                }
+                templateUrl: 'scripts/app/account/profile/profile.html'
+
+
             })
     });

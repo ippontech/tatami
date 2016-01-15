@@ -1,0 +1,83 @@
+<div>
+    <div id="mainPanel" class="container">
+        <br>
+        <div class="row">
+            <!-- The nagivation sidebar -->
+            <div id="navigation">
+                <div>
+                    <div class="col-span-4 alert">
+                        <div id="avatar">
+                            <div class="row text-center nomargin avatar-float-center-container">
+                                <div>
+                                    <img class="nomargin avatar img-rounded" ng-src="{{ profile.avatarURL }}">
+                                </div>
+                                <br>
+                                <div>
+                                    <a ui-sref="tatami.home.profile.statuses({ username: profile.username })">
+                                        <h3 class="user-profile">{{ profile.firstName + ' ' + profile.lastName }}</h3>
+                                    </a>
+                                    <a ui-sref="tatami.home.profile.statuses({ username: profile.username })">
+                                        <p>@{{ profile.username }}</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabbable alert alert-status">
+                            <ul class="adminMenu nav nav-pills nav-stacked nomargin">
+                                <li ui-sref-active="active">
+                                    <a ui-sref="tatami.account.profile">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        <span translate="tatami.account.profile.title"></span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="tatami.account.preferences">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                        <span translate="tatami.account.preferences.title"></span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="tatami.account.password">
+                                        <span class="glyphicon glyphicon-lock"></span>
+                                        <span translate="tatami.account.password.title"></span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="tatami.account.files">
+                                        <span class="glyphicon glyphicon-file"></span>
+                                        <span translate="tatami.account.files.title"></span>
+                                    </a>
+                                </li>
+                                <li ng-class="{ 'active': $state.current.name.indexOf('tatami.account.users') != -1 }">
+                                    <a ui-sref="tatami.account.users">
+                                        <span class="glyphicon glyphicon-globe"></span>
+                                        <span translate="tatami.account.users.title"></span>
+                                    </a>
+                                </li>
+                                <li ng-class="{ 'active': $state.current.name.indexOf('tatami.account.groups') != -1 }">
+                                    <a ui-sref="tatami.account.groups">
+                                        <span class="glyphicon glyphicon-th-large"></span>
+                                        <span translate="tatami.account.groups.title"></span>
+                                    </a>
+                                </li>
+                                <li ng-class="{ 'active': $state.current.name.indexOf('tatami.account.tags') != -1 }">
+                                    <a ui-sref="tatami.account.tags">
+                                        <span class="glyphicon glyphicon-tags"></span>
+                                        <span translate="tatami.account.tags.title"></span>
+                                    </a>
+                                </li>
+                                <li ui-sref-active="active">
+                                    <a ui-sref="tatami.account.topPosters">
+                                        <span class="glyphicon glyphicon-signal"></span>
+                                        <span translate="tatami.account.topPosters.title"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
