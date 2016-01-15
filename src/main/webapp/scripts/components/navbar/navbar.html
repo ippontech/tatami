@@ -1,4 +1,5 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav id="navbar" class="navbar navbar-default">
+
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -14,18 +15,8 @@
                 <span translate="global.topMenu.title"></span>
             </a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
+        <div class="collapse navbar-collapse" id="navbar-collapse"> <!--ng-switch="isAuthenticated()"-->
             <ul class="nav navbar-nav navbar-left">
-
-
-                <!--<li ui-sref-active="active">-->
-                    <!--<a ui-sref="home" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                        <!--<span class="glyphicon glyphicon-home"></span>-->
-                        <!--<span class="hidden-sm" translate="global.menu.home">Home</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-                <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-
                 <li>
                     <a ui-sref="global.timeline">
                         <span>
@@ -34,7 +25,6 @@
                         </span>
                     </a>
                 </li>
-
 
                 <li class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown">
@@ -111,88 +101,28 @@
                         </li>
                     </ul>
                 </li>
-
-
-
-                <!--<li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">-->
-                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="">-->
-                        <!--<span>-->
-                            <!--<span class="glyphicon glyphicon-th-list"></span>-->
-                            <!--<span class="hidden-sm" translate="global.menu.entities.main">-->
-                                <!--Entities-->
-                            <!--</span>-->
-                            <!--<b class="caret"></b>-->
-                        <!--</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--&lt;!&ndash; jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here &ndash;&gt;-->
-                    <!--</ul>-->
-                <!--</li>-->
-                <!-- -->
-                <!--<li ng-class="{active: $state.includes('account')}" class="dropdown pointer">-->
-                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">-->
-                        <!--<span>-->
-                            <!--<span class="glyphicon glyphicon-user"></span>-->
-                            <!--<span class="hidden-sm" translate="global.menu.account.main">-->
-                                <!--Account-->
-                            <!--</span>-->
-                            <!--<b class="caret"></b>-->
-                        <!--</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li ui-sref-active="active" ng-switch-when="true"><a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>-->
-                        <!--<li ui-sref-active="active" ng-switch-when="true"><a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.password">Password</span></a></li>-->
-                        <!--<li ui-sref-active="active" ng-switch-when="true"><a href="" ng-click="logout()" id="logout" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-out"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.logout">Sign out</span></a></li>-->
-                        <!--<li ui-sref-active="active" ng-switch-when="false"><a ui-sref="login" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-in"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.login">Sign in</span></a></li>-->
-                        <!--<li ui-sref-active="active" ng-switch-when="false"><a ui-sref="register" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus-sign"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.register">Register</span></a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-                <!--<li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" class="dropdown pointer">-->
-                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="" id="admin-menu">-->
-                        <!--<span>-->
-                            <!--<span class="glyphicon glyphicon-tower"></span>-->
-                            <!--<span class="hidden-sm" translate="global.menu.admin.main">Administration</span>-->
-                            <!--<b class="caret"></b>-->
-                        <!--</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.user-management">User management</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.health">Health</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.configuration">Configuration</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>-->
-                        <!--<li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>-->
-                            <!--&#xA0;<span translate="global.menu.admin.apidocs">API</span></a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-                <!--<li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">-->
-                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="">-->
-                        <!--<span>-->
-                            <!--<span class="glyphicon glyphicon-flag"></span>-->
-                            <!--<span class="hidden-sm" translate="global.menu.language">Language</span>-->
-                            <!--<b class="caret"></b>-->
-                        <!--</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li active-menu="{{language}}" ng-repeat="language in languages">-->
-                            <!--<a href="" ng-click="changeLanguage(language)" data-toggle="collapse" data-target=".navbar-collapse.in">{{language | findLanguageFromKey}}</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+
+                <li tour-step
+                    order="0"
+                    title="{{ 'global.welcome.help.title' | translate }}"
+                    content="{{ 'global.welcome.help.line1' | translate }}
+                    <br>
+                    <p>{{ 'global.welcome.help.line2' | translate }}</p>
+                    <br>"
+                    navigation=""
+                    placement="bottom"
+                    ng-click="tour.restart(true)"
+                    skip="false"
+                    on-end="onTourEnd(tour)">
+                    <a id="help-tour">
+                        <span>
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <span translate="global.topMenu.help" class="hidden-tablet"></span>
+                        </span>
+                    </a>
+                </li>
                 <li class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                     <span>
@@ -259,8 +189,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="hidden-phone">
-                    <button tour-step
+                <li>
+                    <button
+                            tour-step
                             order="2"
                             title="{{ 'global.welcome.post.title' | translate }}"
                             content="
@@ -274,41 +205,28 @@
                             placement="left"
                             skip="false"
                             on-end="onTourEnd(tour)"
-                            class="btn btn-primary navbar-form"
+                            class="btn btn-primary navbar-btn"
                             ng-click="openPostModal()">
                         <i class="glyphicon glyphicon-pencil"></i>
-                        <span translate="global.post.button" class="visible-desktop"></span>
+                        <span translate="global.post.button"></span>
                     </button>
-                </li>
+                </li> <!-- Post Button -->
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li tour-step
-                    order="0"
-                    title="{{ 'global.welcome.help.title' | translate }}"
-                    content="{{ 'global.welcome.help.line1' | translate }}
-                    <br>
-                    <p>{{ 'global.welcome.help.line2' | translate }}</p>
-                    <br>"
-                    navigation=""
-                    placement="bottom"
-                    ng-click="tour.restart(true)"
-                    skip="false"
-                    on-end="onTourEnd(tour)">
-                    <a id="help-tour">
-                        <span>
-                            <span class="glyphicon glyphicon-question-sign"></span>
-                            <span translate="global.topMenu.help" class="hidden-tablet"></span>
-                        </span>
-                    </a>
-                </li>
-            </ul>
-            <div name="search" class="navbar-form pull-right col-span-4">
-                <!--
-                <input name="search" ng-model="searchBar" mentio mentio-items="results" mentio-search="getResults(term)" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">
-                -->
-
-                <input name="searchBar" ng-keypress="searchStatuses($event)" ng-model="searchString" ng-change="changeInput(searchString)" typeahead-focus-first="false" typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/scripts/components/navbar/SearchView.html" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'global.topMenu.search' | translate }}">
-            </div>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="col-lg-6">
+                    <input name="searchBar"
+                           ng-keypress="searchStatuses($event)"
+                           ng-model="searchString"
+                           ng-change="changeInput(searchString)"
+                           typeahead-focus-first="false"
+                           typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)"
+                           typeahead-on-select="goToPage($item, $model, $label)"
+                           typeahead-template-url="/scripts/components/navbar/SearchView.html"
+                           class="form-control"
+                           autocomplete="off"
+                           placeholder="{{ 'global.topMenu.search' | translate }}">
+                </div>
+            </form>
         </div>
     </div>
 </nav>
@@ -316,485 +234,3 @@
 
 
 
-<!--&lt;!&ndash;<div id="navbar" class="navbar noRadius">&ndash;&gt;-->
-    <!--&lt;!&ndash;<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-responsive-collapse">&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="icon-bar"></span>&ndash;&gt;-->
-    <!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-    <!--&lt;!&ndash;&lt;!&ndash; Change ui-sref that goes to root state &ndash;&gt;&ndash;&gt;-->
-    <!--<a class="navbar-brand"> &lt;!&ndash;ui-sref="tatami.home.home.timeline"&ndash;&gt;-->
-        <!--<img title="{{ 'global.topMenu.logo' | translate }}" src="/assets/images/company-logo.png">-->
-        <!--<span translate="global.topMenu.logo"></span>-->
-    <!--</a>-->
-
-    <!--&lt;!&ndash;<button ng-if="$state.includes('global')" ng-click="openPostModal()" type="button" class="btn btn-primary navbar-toggle navbar-edit">&ndash;&gt;-->
-        <!--&lt;!&ndash;<i class="close glyphicon glyphicon-pencil"></i>&ndash;&gt;-->
-    <!--&lt;!&ndash;</button>&ndash;&gt;-->
-<!--&lt;!&ndash;ui-sref="tatami.home.home.timeline"&ndash;&gt;-->
-    <!--&lt;!&ndash;<div class="nav-collapse navbar-responsive-collapse collapse">&ndash;&gt;-->
-        <!--&lt;!&ndash;<ul class="nav">&ndash;&gt;-->
-            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.home.home.timeline"&ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="glyphicon glyphicon-th-list"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span translate="global.timeline" class="hidden-tablet"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</a>&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li class="dropdown pointer">&ndash;&gt;-->
-                <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown">&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-info-sign"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span translate="global.topMenu.about.title" class="hidden-tablet"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                <!--&lt;!&ndash;<ul class="dropdown-menu closed">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a>  &lt;!&ndash;ui-sref="tatami.about.presentation"&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-eye-open"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.presentation"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.about.tos"&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-briefcase"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.tos"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li class="dropdown-submenu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-flag"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.language"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<a ng-click="changeLanguage('en')" translate="global.topMenu.about.language.en"></a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<a ng-click="changeLanguage('fr')" translate="global.topMenu.about.language.fr"></a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li class="divider"></li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a> &lt;!&ndash; ui-sref="tatami.about.license"&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-info-sign"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.license"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="https://github.com/ippontech/tatami/issues" target="_blank">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-inbox"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.github.issues"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="https://github.com/ippontech/tatami" target="_blank">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-wrench"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.github.fork"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li class="divider"></li>&ndash;&gt;-->
-
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="http://www.ippon.fr" target="_blank">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-exclamation-sign"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.ippon.website"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li><a ng-click='goToBlog()'>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="glyphicon glyphicon-pencil"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span translate="global.topMenu.about.ippon.blog"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="https://twitter.com/ippontech" target="_blank">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-bullhorn"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.about.ippon.twitter"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<ul ng-if="$state.includes('global.account')" class="nav pull-right">&ndash;&gt;-->
-            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a id="logout" ng-click="logout()">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-off"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span translate="global.topMenu.account.logout"></span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</a>&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<div ng-if="$state.includes('global')">&ndash;&gt;-->
-            <!--&lt;!&ndash;<ul class="nav pull-right">&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="dropdown pointer">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="glyphicon glyphicon-user"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span translate="global.topMenu.account.title" class="hidden-tablet"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.profile"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-user"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.profile.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.preferences"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-cog"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.preferences.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.password"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-lock"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.password.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li class="divider"></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.files"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-file"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.files.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.users"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-globe"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.users.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;ui-sref="tatami.account.groups"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-th-large"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.groups.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash; ui-sref="tatami.account.tags"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-tags"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.tags.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li class="divider"></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash; ui-sref="tatami.account.topPosters"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-signal"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.account.topPosters.title"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a> &lt;!&ndash;  ui-sref="tatami.home.home.company"&ndash;&gt;&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-briefcase"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.topMenu.account.companyTimeline"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li class="divider"></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a ng-click="logout()">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-off"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span translate="global.topMenu.account.logout"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li class="hidden-phone">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button tour-step&ndash;&gt;-->
-                            <!--&lt;!&ndash;order="2"&ndash;&gt;-->
-                            <!--&lt;!&ndash;title="{{ 'global.welcome.post.title' | translate }}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;content="&ndash;&gt;-->
-                            <!--&lt;!&ndash;{{ 'global.welcome.post.line1' | translate }}&ndash;&gt;-->
-                            <!--&lt;!&ndash;<ul>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<li>{{ 'global.welcome.post.bulletPoint1' | translate }}</li>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<li>{{ 'global.welcome.post.bulletPoint2' | translate }}</li>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<li>{{ 'global.welcome.post.bulletPoint3' | translate }}</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<br>"&ndash;&gt;-->
-                            <!--&lt;!&ndash;placement="left"&ndash;&gt;-->
-                            <!--&lt;!&ndash;skip="false"&ndash;&gt;-->
-                            <!--&lt;!&ndash;on-end="onTourEnd(tour)"&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="btn btn-primary navbar-form"&ndash;&gt;-->
-                            <!--&lt;!&ndash;ng-click="openPostModal()">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<i class="glyphicon glyphicon-pencil"></i>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span translate="global.post.button" class="visible-desktop"></span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</button>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-            <!--&lt;!&ndash;<ul class="nav pull-right">&ndash;&gt;-->
-                <!--&lt;!&ndash;<li tour-step&ndash;&gt;-->
-                    <!--&lt;!&ndash;order="0"&ndash;&gt;-->
-                    <!--&lt;!&ndash;title="{{ 'global.welcome.help.title' | translate }}"&ndash;&gt;-->
-                    <!--&lt;!&ndash;content="{{ 'global.welcome.help.line1' | translate }}&ndash;&gt;-->
-                    <!--&lt;!&ndash;<br>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<p>{{ 'global.welcome.help.line2' | translate }}</p>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<br>"&ndash;&gt;-->
-                    <!--&lt;!&ndash;navigation=""&ndash;&gt;-->
-                    <!--&lt;!&ndash;placement="bottom"&ndash;&gt;-->
-                    <!--&lt;!&ndash;ng-click="tour.restart(true)"&ndash;&gt;-->
-                    <!--&lt;!&ndash;skip="false"&ndash;&gt;-->
-                    <!--&lt;!&ndash;on-end="onTourEnd(tour)">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a id="help-tour">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-question-sign"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span translate="global.topMenu.help" class="hidden-tablet"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div name="search" class="navbar-form pull-right col-span-4">&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash;&ndash;&gt;-->
-                <!--&lt;!&ndash;<input name="search" ng-model="searchBar" mentio mentio-items="results" mentio-search="getResults(term)" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'tatami.home.menu.search' | translate }}">&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;&ndash;&gt;-->
-
-                <!--&lt;!&ndash;<input name="searchBar" ng-keypress="searchStatuses($event)" ng-model="searchString" ng-change="changeInput(searchString)" typeahead-focus-first="false" typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)" typeahead-on-select="goToPage($item, $model, $label)" typeahead-template-url="/app/shared/topMenu/SearchView.html" type="text" class="col-span-12" autocomplete="off" placeholder="{{ 'global.topMenu.search' | translate }}">&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-
-
-
-
-<!--<nav class="navbar navbar-default" role="navigation">-->
-    <!--<div class="container">-->
-        <!--<div class="navbar-header">-->
-            <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">-->
-                <!--<span class="sr-only">Toggle navigation</span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-            <!--</button>-->
-            <!--<a class="navbar-brand" href="#/"> &lt;!&ndash;ui-sref="tatami.home.home.timeline"&ndash;&gt;-->
-                <!--<span>-->
-                    <!--<img src="/assets/images/company-logo.png">-->
-                <!--</span>-->
-                <!--<span translate="global.topMenu.title"></span>-->
-            <!--</a>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">-->
-            <!--<ul class="nav navbar-nav navbar-left">-->
-                <!--<li>-->
-                    <!--<a ui-sref="global.timeline">-->
-                    <!--<span>-->
-                        <!--<span class="glyphicon glyphicon-th-list"></span>-->
-                        <!--<span translate="global.timeline" class="hidden-tablet"></span>-->
-                    <!--</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="navbar">-->
-            <!--<li ng-class="{active: $state.includes('account')}" class="dropdown pointer">-->
-                <!--<a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">-->
-                    <!--<span>-->
-                        <!--<span class="glyphicon glyphicon-user"></span>-->
-                        <!--<span class="hidden-sm" translate="global.menu.account.main">-->
-                             <!--Account-->
-                        <!--</span>-->
-                        <!--<b class="caret"></b>-->
-                    <!--</span>-->
-                <!--</a>-->
-                <!--<ul class="dropdown-menu">-->
-                    <!--<li ui-sref-active="active" ng-switch-when="true">-->
-                        <!--<a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                            <!--<span class="glyphicon glyphicon-wrench"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.settings">Settings</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li ui-sref-active="active" ng-switch-when="true">-->
-                        <!--<a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                            <!--<span class="glyphicon glyphicon-lock"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.password">Password</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li ui-sref-active="active" ng-switch-when="true">-->
-                        <!--<a href="" ng-click="logout()" id="logout" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                            <!--<span class="glyphicon glyphicon-log-out"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.logout">Sign out</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li ui-sref-active="active" ng-switch-when="false">-->
-                        <!--<a ui-sref="login" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                            <!--<span class="glyphicon glyphicon-log-in"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.login">Sign in</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li ui-sref-active="active" ng-switch-when="false">-->
-                        <!--<a ui-sref="register" data-toggle="collapse" data-target=".navbar-collapse.in">-->
-                            <!--<span class="glyphicon glyphicon-plus-sign"></span>-->
-                            <!--&#xA0;<span translate="global.menu.account.register">Register</span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</li>-->
-        <!--</div>-->
-
-
-
-            <!--<li class="dropdown pointer">-->
-                <!--<a class="dropdown-toggle" data-toggle="dropdown">-->
-                <!--<span>-->
-                    <!--<span class="glyphicon glyphicon-info-sign"></span>-->
-                    <!--<span translate="global.topMenu.about.title" class="hidden-tablet"></span>-->
-                    <!--<b class="caret"></b>-->
-                <!--</span>-->
-                <!--</a>-->
-                <!--<ul class="dropdown-menu closed">-->
-                    <!--<li>-->
-                        <!--<a ui-sref="global.about.presentation">-->
-                            <!--<span class="glyphicon glyphicon-eye-open"></span>-->
-                            <!--<span translate="global.topMenu.about.presentation"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a ui-sref="tatami.about.tos">-->
-                            <!--<span class="glyphicon glyphicon-briefcase"></span>-->
-                            <!--<span translate="global.topMenu.about.tos"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li class="dropdown-submenu">-->
-                        <!--<a>-->
-                            <!--<span class="glyphicon glyphicon-flag"></span>-->
-                            <!--<span translate="global.topMenu.about.language"></span>-->
-                        <!--</a>-->
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li>-->
-                                <!--<a ng-click="changeLanguage('en')" translate="global.topMenu.about.language.en"></a>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<a ng-click="changeLanguage('fr')" translate="global.topMenu.about.language.fr"></a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                    <!--<li class="divider"></li>-->
-                    <!--<li>-->
-                        <!--<a ui-sref="tatami.about.license">-->
-                            <!--<span class="glyphicon glyphicon-info-sign"></span>-->
-                            <!--<span translate="global.topMenu.about.license"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="https://github.com/ippontech/tatami/issues" target="_blank">-->
-                            <!--<span class="glyphicon glyphicon-inbox"></span>-->
-                            <!--<span translate="global.topMenu.about.github.issues"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="https://github.com/ippontech/tatami" target="_blank">-->
-                            <!--<span class="glyphicon glyphicon-wrench"></span>-->
-                            <!--<span translate="global.topMenu.about.github.fork"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li class="divider"></li>-->
-
-                    <!--<li>-->
-                        <!--<a href="http://www.ippon.fr" target="_blank">-->
-                            <!--<span class="glyphicon glyphicon-exclamation-sign"></span>-->
-                            <!--<span translate="global.topMenu.about.ippon.website"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li><a ng-click='goToBlog()'>-->
-                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                        <!--<span translate="global.topMenu.about.ippon.blog"></span>-->
-                    <!--</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="https://twitter.com/ippontech" target="_blank">-->
-                            <!--<span class="glyphicon glyphicon-bullhorn"></span>-->
-                            <!--<span translate="global.topMenu.about.ippon.twitter"></span>-->
-                        <!--</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</li>-->
-
-
-
-
-            <!--&lt;!&ndash;<ul class="nav navbar-nav navbar-right">&ndash;&gt;-->
-                <!--&lt;!&ndash;<li ui-sref-active="active">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a ui-sref="home" data-toggle="collapse" data-target=".navbar-collapse.in">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="glyphicon glyphicon-home"></span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="hidden-sm" translate="global.menu.home">Home</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash; jhipster-needle-add-element-to-menu - JHipster will add new menu items here &ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown" href="">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-th-list"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="hidden-sm" translate="global.menu.entities.main">&ndash;&gt;-->
-                                <!--&lt;!&ndash;Entities&ndash;&gt;-->
-                            <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;&lt;!&ndash; jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here &ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li ng-class="{active: $state.includes('account')}" class="dropdown pointer">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-user"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="hidden-sm" translate="global.menu.account.main">&ndash;&gt;-->
-                                <!--&lt;!&ndash;Account&ndash;&gt;-->
-                            <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="true"><a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="true"><a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.account.password">Password</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="true"><a href="" ng-click="logout()" id="logout" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-out"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.account.logout">Sign out</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="false"><a ui-sref="login" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-in"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.account.login">Sign in</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active" ng-switch-when="false"><a ui-sref="register" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-plus-sign"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.account.register">Register</span></a></li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" class="dropdown pointer">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown" href="" id="admin-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-tower"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="hidden-sm" translate="global.menu.admin.main">Administration</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.user-management">User management</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.health">Health</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.configuration">Configuration</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;&#xA0;<span translate="global.menu.admin.apidocs">API</span></a></li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--&lt;!&ndash;<li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a class="dropdown-toggle" data-toggle="dropdown" href="">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-flag"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="hidden-sm" translate="global.menu.language">Language</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<b class="caret"></b>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<li active-menu="{{language}}" ng-repeat="language in languages">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a href="" ng-click="changeLanguage(language)" data-toggle="collapse" data-target=".navbar-collapse.in">{{language | findLanguageFromKey}}</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                <!--&lt;!&ndash;</li>&ndash;&gt;-->
-            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-    <!--</div>-->
-<!--</nav>-->
