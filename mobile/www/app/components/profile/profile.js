@@ -12,9 +12,6 @@
                     templateUrl: 'app/components/profile/profile.html',
                     controller: 'ProfileCtrl',
                     controllerAs: 'vm',
-                    views: {
-
-                    },
                     resolve: {
                         user: getUser
                     }

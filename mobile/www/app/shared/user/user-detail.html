@@ -1,0 +1,12 @@
+<ion-item>
+    <div class="row">
+        <div class="col-offset-33 col-33 col-center">
+            <img ng-src="{{ vm.user.avatarURL }}" class="img-rounded" >
+        </div>
+    </div>
+
+    <div class="profile-name text-center">
+        <h2>{{ vm.user.firstName + ' ' + vm.user.lastName }}</h2>
+        <h3>@{{ vm.user.username }}</h3>
+    </div>
+</ion-item>

@@ -13,9 +13,14 @@
             controller: controller,
             controllerAs: 'vm',
             templateUrl: 'app/shared/user/user-detail.html'
-        }
-    };
+        };
+
+        return directive;
+    }
 
     controller.$inject = ['$scope'];
-    function controller($scope) {}
+    function controller($scope) {
+        var vm = this;
+        vm.user = $scope.user;
+    }
 })();

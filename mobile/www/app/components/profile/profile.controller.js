@@ -8,6 +8,5 @@
     function profileCtrl(user) {
         var vm = this;
         vm.user = user;
-        console.log(vm);
     }
 })();
