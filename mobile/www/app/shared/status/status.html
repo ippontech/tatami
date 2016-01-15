@@ -10,7 +10,9 @@
     <p>{{vm.status.content}}</p>
     <i class="icon ion-chevron-right icon-accessory"></i>
 
-    <ion-option-button class="button-assertive" ng-click="vm.remove()">
+    <ion-option-button ng-if="!vm.currentUser || vm.currentUser.username === vm.status.username"
+                       class="button-assertive"
+                       ng-click="vm.remove()">
         Delete
     </ion-option-button>
 </ion-item>

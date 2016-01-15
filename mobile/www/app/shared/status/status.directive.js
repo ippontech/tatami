@@ -8,7 +8,8 @@
         var directive = {
             restrict: 'E',
             scope: {
-                status: '='
+                status: '=',
+                currentUser: '='
             },
             controller: controller,
             controllerAs: 'vm',
@@ -23,7 +24,9 @@
         var vm = this;
 
         vm.status = $scope.status;
+        vm.currentUser = $scope.currentUser;
         vm.remove = remove;
+        console.log(vm);
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
