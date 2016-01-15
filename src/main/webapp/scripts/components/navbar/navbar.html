@@ -51,7 +51,7 @@
                 </li>
 
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                <!-- <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">
                         <span>
                             <span class="glyphicon glyphicon-th-list"></span>
@@ -62,9 +62,9 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+
                     </ul>
-                </li>
+                </li> -->
                 <li ng-class="{active: $state.includes('account')}" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">
                         <span>
@@ -76,6 +76,8 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu">
+                        <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="profile" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>
+                            &#xA0;<span translate="global.menu.account.profile">Profile</span></a></li>
                         <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>
                             &#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>
                         <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>
