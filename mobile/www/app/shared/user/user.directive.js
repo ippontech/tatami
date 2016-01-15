@@ -13,14 +13,14 @@
             },
             controller: controller,
             controllerAs: 'vm',
-            templateUrl: 'app/shared/user/users.html'
+            templateUrl: 'app/shared/user/user.html'
         };
 
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicHistory', 'UserService'];
-    function controller($scope, $state, $ionicHistory, UserService) {
+    controller.$inject = ['$scope', 'UserService'];
+    function controller($scope, UserService) {
         var vm = this;
 
         vm.user = $scope.user;

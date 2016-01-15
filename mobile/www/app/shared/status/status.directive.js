@@ -26,7 +26,6 @@
         vm.status = $scope.status;
         vm.currentUser = $scope.currentUser;
         vm.remove = remove;
-        console.log(vm);
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
