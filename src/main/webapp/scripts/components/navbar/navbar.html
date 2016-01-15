@@ -35,19 +35,21 @@
                 </span>
                     </a>
                     <ul class="dropdown-menu closed">
-                        <li>
-                            <a ui-sref="global.about.presentation">
+                        <li ui-sref-active="active">
+                            <a ui-sref="presentation" data-toggle="collapse" data-target=".navbar-collapse.in">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span translate="global.topMenu.about.presentation"></span>
+                                &#xA0;
                             </a>
                         </li>
-                        <li>
-                            <a ui-sref="global.topMenu.about.tos">
+                        <li ui-sref-active="active">
+                            <a ui-sref="tos" data-toggle="collapse" data-target=".navbar-collapse.in">
                                 <span class="glyphicon glyphicon-briefcase"></span>
                                 <span translate="global.topMenu.about.tos"></span>
+                                 &#xA0;
                             </a>
                         </li>
-                        <li class="dropdown-submenu">
+                        <li class="dropdown-submenu" ui-sref-active="active">
                             <a>
                                 <span class="glyphicon glyphicon-flag"></span>
                                 <span translate="global.topMenu.about.language"></span>
@@ -61,42 +63,52 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a ui-sref="global.about.license">
-                                <span class="glyphicon glyphicon-info-sign"></span>
-                                <span translate="global.topMenu.about.license"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/ippontech/tatami/issues" target="_blank">
-                                <span class="glyphicon glyphicon-inbox"></span>
-                                <span translate="global.topMenu.about.github.issues"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/ippontech/tatami" target="_blank">
-                                <span class="glyphicon glyphicon-wrench"></span>
-                                <span translate="global.topMenu.about.github.fork"></span>
-                            </a>
-                        </li>
+
                         <li class="divider"></li>
 
-                        <li>
-                            <a href="http://www.ippon.fr" target="_blank">
-                                <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                <span translate="global.topMenu.about.ippon.website"></span>
+                        <li ui-sref-active="active">
+                            <a ui-sref="license" data-toggle="collapse" data-target=".navbar-collapse.in">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <span translate="global.topMenu.about.license"></span>
+                                &#xA0;
                             </a>
                         </li>
-                        <li><a ng-click='goToBlog()'>
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <span translate="global.topMenu.about.ippon.blog"></span>
-                        </a>
+                        <li ui-sref-active="active">
+                            <a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://github.com/ippontech/tatami/issues">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                                <span translate="global.topMenu.about.github.issues"></span>
+                                &#xA0;
+                            </a>
                         </li>
-                        <li>
-                            <a href="https://twitter.com/ippontech" target="_blank">
+                        <li ui-sref-active="active">
+                            <a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://github.com/ippontech/tatami">
+                                <span class="glyphicon glyphicon-wrench"></span>
+                                <span translate="global.topMenu.about.github.fork"></span>
+                                &#xA0;
+                            </a>
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li ui-sref-active="active">
+                            <a data-toggle="collapse" data-target=".navbar-collapse.in" href="http://www.ippon.fr/">
+                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                <span translate="global.topMenu.about.ippon.website"></span>
+                                &#xA0;
+                            </a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a data-toggle="collapse" data-target=".navbar-collapse.in" href="http://www.ipponusa.com/blog/">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span translate="global.topMenu.about.ippon.blog"></span>
+                                &#xA0;
+                            </a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a data-toggle="collapse" data-target=".navbar-collapse.in" href="https://twitter.com/ippontech">
                                 <span class="glyphicon glyphicon-bullhorn"></span>
                                 <span translate="global.topMenu.about.ippon.twitter"></span>
+                                &#xA0;
                             </a>
                         </li>
                     </ul>

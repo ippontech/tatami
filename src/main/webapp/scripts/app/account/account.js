@@ -5,6 +5,28 @@ angular.module('tatamiJHipsterApp')
         $stateProvider
             .state('account', {
                 abstract: true,
-                parent: 'site'
-            });
+                parent: 'site',
+                data: {
+                    authorities: [],
+                    pageTitle: 'login.title'
+                },
+
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('account');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+
+            .state('profile', {
+                parent: 'account' ,
+                url: '/profile',
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/account/profile/profile.html',
+
+                    }
+                }
+            })
     });

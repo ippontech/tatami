@@ -1,0 +1,117 @@
+{
+    "about": {
+
+        "presentation": {
+            "title": "Quest-ce que Tatami ?",
+            "devices": "Appareils",
+            "openSource": "Open Source",
+            "row1": {
+                "title": "Un réseau social dentreprise privée",
+                "line1": "Mettre à jour votre statut afin dinformer vos collègues",
+                "line2": "S'abonner aux timelines des autres employés,",
+                "line3": "Partager des informations importantes au personnes qui vous suivent",
+                "line4": "Discuter et répondre à vos collègues",
+                "line5": "Ajouter des informations importantes dans vos favoris",
+                "line6": "Chercher des informations utiles avec notre moteur de recherche intégré",
+                "line7": "Utiliser les #hashtags lors de votre recherche",
+                "line8": "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
+                "line9": "Tatami est disponible en français et en anglais. Il est facile dajouter dautres langues"
+            },
+            "row2": {
+                "title": "Fonctionne partout !",
+                "line1": "Application web dynamique (HTML5): rien à installer, un navigateur moderne suffit !",
+                "line2": "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
+                "line3": "Restez connecté avec votre entreprise où que vous soyez"
+            },
+            "row3": {
+                "title": "Installation et intégration facile avec l'infrastructure informatique de votre entreprise",
+                "line1": "Application standard Java",
+                "line2": "Vos données vous appartiennent et ne sont pas à votre fournisseur SaaS !",
+                "line3": "Intégration avec votre dossier LDAP",
+                "line4": "Intégration avec Google Apps",
+                "line5": "Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises",
+                "line6": "Facile à étendre ou modifier selon vos besoins",
+                "line7": "Haute performance (basé sur Cassandra dApache), même sur les petites configurations",
+                "line8": "Rejoignez le projet et proposer des patches sur notre page Github:"
+            },
+            "row4": {
+                "title": "Egalement disponible en mode SaaS, entièrement géré par Ippon Technologies",
+                "line1": "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l'utiliser directement",
+                "line2": "Mode multi-entreprise sécurisé : chaque entreprise dispose de son propre espace privé",
+                "line3": "Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé"
+            },
+            "row5": {
+                "title": "Besoin de plus dinformations sur notre produit ?",
+                "line1": "Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 1 46 12 48 48 ou par email à"
+            }
+        },
+
+
+        "tos": {
+            "title": "Terms of Service",
+            "row1": {
+                "title": "1 -General",
+                "line1": "By using any of the Ippon Technologies products, software, or services available at *.ippon.fr (collectively referred to as Services) provided by Ippon Techonologies (Ippon), you agree to be bound by the following terms and conditions (Terms of Service)",
+                "line2": "Ippon reserves the right to update and change the Terms of Service at any time without notice. You can review the most current version of the Terms of Service at: https://tatami.ippon.fr/tatami/tos",
+                "line3": "The failure of Ippon to exercise or enforce any right or provision of the Terms of Service shall not constitute a waiver of such right or provision.",
+                "line4": "You agree that Ippon owns all legal rights in the Service. You must not remove, modify or obscure any legal notices. You are not entitled to use Ippon's trademarks (especially Ippon Technologies), trade names, brands, domain names, or other distinctive brand features",
+                "line5": "Violation of any of the terms below can result in the termination of your account or access to the Services. Violation of any of the terms will also terminate your usage rights of the Services.",
+                "line6": "If a provision of this agreement is or becomes illegal, invalid or unenforceable in any jurisdiction, that shall not affect: (i) the validity or enforceability in that jurisdiction of any other provision of this agreement; or (ii) the validity or enforceability in other jurisdictions of that or any other provision of this agreement.",
+                "line7": "These Terms of Service constitute the entire agreement between you and Ippon und replace all previous agreements under this title. There are no verbal subsidiary agreements.",
+                "line8": "These Terms of Service, and your relationship with Ippon under these Terms of Service, shall be governed by the laws of France. You and Ippon agree to submit to the exclusive jurisdiction of the courts located in France to resolve any legal matter arising from the Terms of Service."
+            },
+            "row2": {
+                "title": "2- Provision of the Services by Ippon Technologies",
+                "line1": "Your use of the Services is at your sole risk. The Services are provided on an 'as is' and 'as available' basis",
+                "line2": "Ippon does not warrant that (i) the Services will meet your requirements or expectations, (ii) the Services will be delivered uninterrupted, timely, secure, or error-free, (iii) the results that may be obtained from the use of the Services will be accurate or reliable, (iv) any errors in the Services will be corrected.",
+                "line3": "You understand and agree that Ippon shall not be liable for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to any loss of profit, loss of goodwill, loss of business reputation, loss of data, cost of procurement of substitute goods or Services, or other intangible loss, resulting from: (i) the use or the inability to use the Services; (ii) any changes which Ippon may make to the Services, or any permanent or temporary cessation in the provision of the Services; (iii) unauthorized access to or alteration of your transmissions or data; (iv) the deletion of, corruption of, or failure to store, any content and other communications data maintained or transmitted by or through the use of the Services; (v) or any other matter relating to the Services.",
+                "line4": "Technical support is provided on a best-effort basis and only by e-mail.",
+                "line5": "You understand that Ippon can use third parties (e.g., hosting partners) to provide the necessary resources (e.g., hardware, software, networking, storage, etc.) to run the Services.",
+                "line6": "Ippon may stop, remove, modify, or add (permanently or temporarily) Services (or features within Services) at Ippon's sole discretion. Any new, changed, or removed features are subject to the Terms of Service. Continued use of the Services after any such changes constitute your consent to the changes."
+            },
+
+            "row3": {
+                "title": "3 - Use of the Services by You",
+                "line1": "You agree to use the Services only for purposes that are permitted by (i) the Terms of Service and (ii) any applicable law, regulation or generally accepted practices or guidelines in the relevant jurisdictions.",
+                "line2": "For certain services, Ippon may offer or require you to register for an account. You ensure that all registration information you provide will always be valid, correct, and up to date. You are responsible for maintaining the security of your account and password. Accounts registered by bots or other automated methods are not permitted.",
+                "line3": "For certain services, Ippon may offer to upload your personal profile photo. You are responsible to not upload an abusive photo, to not infringe on any copyrights or trademarks, and to not use a design which other Ippon users may deem offensive.",
+                "line4": "For certain services, Ippon may offer to define a personal URL (web address). You understand that Ippon can rename or reject your personal URL, e.g., if you intentionally or unintentionally interfere with a trademark owner or because your personal URL is deemed offensive.",
+                "line5": "ou agree that you will not impersonate another person.",
+                "line6": "You agree that you will not engage in any activity that interferes with or disrupts the Services (or the servers and networks which are connected to the Services).",
+                "line7": "You agree that you will not reproduce, duplicate, copy, sell, trade or resell the Services for any purpose without the express written permission by Ippon.",
+                "line8": "You agree that you are solely responsible for (and that Ippon has no responsibility to you or to any third party for) any breach of your obligations under the Terms of Service and for the consequences (including any loss or damage which Ippon may suffer) of any such breach.",
+                "line9": "Ippon reserves the right (but has no obligation) to pre-screen, review, flag, filter, modify, refuse or remove any or all content or account from any of the Services at Ippon's sole discretion. You understand that by using the Services you may be exposed to content that you may find offensive, indecent or objectionable and that, in this respect, you use the Services at your own risk."
+            },
+
+            "row4": {
+                "title" :"4 - Advertisements",
+                "line1": "Some of the Services are supported by advertising revenue and may display advertisements and promotions. These advertisements may be targeted to the content of information stored on or made available to the Services.",
+                "line2": "The manner, mode and extent of advertising on the Services are subject to change without specific notice to you.",
+                "line3": "You agree that Ippon may place such advertising on the Services.",
+                "line4": "You must not block such advertising."
+            },
+
+            "row5": {
+                "title": "5- API Terms",
+                "line1": "Any use of the application programming interface (API) is bound by the terms of this agreement plus the following specific terms:",
+                "line2": "Abuse or excessively frequent requests via the API may result in the temporary or permanent suspension of access to the API. Ippon determines abuse or excessive usage of the API at its sole discretion.",
+                "line3": "Ippon reserves the right at any time to modify or discontinue, temporarily or permanently, your access to the API (or any part thereof) with or without notice. Ippon especially reserves the right to limit the number of requests via the API to a certain upper limit per time interval.",
+                "line4": "Your use of the API is free of charge up to a certain extent. Larger amounts of API transactions will be charged.",
+                "line5": "Ippon reserves the right to change the API's pricing model at any time. In such a case, you will of course be free to discontinue using the API.",
+                "line6": "As a user of the API, you may, within your product, indicate that your product utilizes the Ippon API. At other places or in other contexts, however, you may not use either the Ippon Technologies brand name or the Ippon Technologies logo. In particular, you may not use either the Ippon Technologies brand or the Ippon Technologies logo in the name of your product."
+            },
+
+            "row6": {
+                "title": "Effective: August 7th, 2012"
+            }
+
+
+        },
+
+
+        "license": {
+            "title": "Licence du code source",
+            "copyright": "Droits dauteur"
+        }
+    }
+}
