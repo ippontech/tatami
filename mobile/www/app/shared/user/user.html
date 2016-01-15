@@ -1,13 +1,15 @@
-<ion-item class="item-remove-animate item-avatar item-icon-right" ui-sref="profile({ username: vm.user.username })">
-    <!--<tatami-user user="user"></tatami-user>-->
+<ion-item class="item-remove-animate item-avatar item-icon-right">
     <img ng-src="{{ vm.user.avatarURL }}" />
 
     <div class="profile-name">
         <h2 class="inline">{{ vm.user.firstName }} {{ vm.user.lastName }}</h2>
         <span class="inline subheading">@{{ vm.user.username }}</span>
-        <button class="button button-small button-outline button-positive pull-right" ng-if="!vm.user.you" ng-click="vm.followUser(user)">
-            <span ng-class="vm.user.friend ? 'ion-minus' : 'ion-plus'"></span>
-        </button>
         <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button ng-if="!vm.currentUser || vm.currentUser.username === vm.status.username"
+                           class="button-positive"
+                           ng-click="vm.followUser(user)">
+            {{ vm.user.friend ? 'Unfollow' : 'Follow' }}
+        </ion-option-button>
     </div>
 </ion-item>
