@@ -84,3 +84,13 @@ gulp.task('device-dev', function() {
         silent: false
     });
 });
+
+gulp.task('prod', function() {
+    return replace({
+        regex: 'http://localhost:8100|http://localhost:8080',
+        replacement: 'http://www.app.tatamisoft.com',
+        paths: replaceFiles,
+        recursive: false,
+        silent: false
+    });
+});
