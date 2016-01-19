@@ -6,6 +6,7 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var replace = require('replace');
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -60,4 +61,26 @@ gulp.task('git-check', function(done) {
     process.exit(1);
   }
   done();
+});
+
+var replaceFiles = ['./www/app/tatamiApp.constants.js'];
+
+gulp.task('dev', function() {
+    return replace({
+        regex: 'http://localhost:8080',
+        replacement: 'http://localhost:8100',
+        paths: replaceFiles,
+        recursive: false,
+        silent: false
+    });
+});
+
+gulp.task('device-dev', function() {
+    return replace({
+        regex: 'http://localhost:8100',
+        replacement: 'http://localhost:8080',
+        paths: replaceFiles,
+        recursive: false,
+        silent: false
+    });
 });
