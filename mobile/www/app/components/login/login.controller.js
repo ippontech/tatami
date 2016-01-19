@@ -26,6 +26,7 @@ angular.module('tatami')
                 },
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function(success) {
+                $scope.user = {};
                 $state.go('tab.timeline');
             }).error(function(err) {
                 $scope.failed = true;
