@@ -1,5 +1,11 @@
-angular.module('tatami.services')
-    .factory('StatusService', ['$resource', function ($resource) {
+(function() {
+    'use strict';
+
+    angular.module('tatami.services')
+        .factory('StatusService', statusService);
+
+    statusService.$inject = ['$resource', 'TatamiEndpoint'];
+    function statusService($resource, TatamiEndpoint) {
         var responseTransform = function (statuses) {
             statuses = angular.fromJson(statuses);
 
@@ -17,8 +23,7 @@ angular.module('tatami.services')
 
             return statuses;
         };
-
-        return $resource('/tatami/rest/statuses/:statusId', null,
+        return $resource(TatamiEndpoint.url + '/tatami/rest/statuses/:statusId', null,
             {
                 'get': {
                     method: 'GET',
@@ -76,4 +81,6 @@ angular.module('tatami.services')
                 'update': {method: 'PATCH', params: {statusId: '@statusId'}},
                 'announce': {method: 'PATCH', params: {params: '@statusId'}}
             });
-    }]);
+
+    }
+})();

@@ -1,5 +1,11 @@
-angular.module('tatami.services')
-    .factory('UserService', ['$resource', function ($resource) {
+(function() {
+    'use strict';
+
+    angular.module('tatami.services')
+        .factory('UserService', userService);
+
+    userService.$inject = ['$resource', 'TatamiEndpoint'];
+    function userService($resource, TatamiEndpoint) {
         var responseTransform = function (users) {
             users = angular.fromJson(users);
 
@@ -9,8 +15,7 @@ angular.module('tatami.services')
 
             return users;
         };
-
-        return $resource('/tatami/rest/users/:username', null,
+        return $resource(TatamiEndpoint.url + '/tatami/rest/users/:username', null,
             {
                 'get': {
                     method: 'GET', params: {username: '@username'},
@@ -21,25 +26,25 @@ angular.module('tatami.services')
                     }
                 },
                 'query': {
-                    method: 'GET', isArray: true, url: '/tatami/rest/users',
+                    method: 'GET', isArray: true, url: TatamiEndpoint.url + '/tatami/rest/users',
                     transformResponse: responseTransform
                 },
                 'getFollowing': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: '/tatami/rest/users/:username/friends',
+                    url: TatamiEndpoint.url + '/tatami/rest/users/:username/friends',
                     transformResponse: responseTransform
                 },
                 'getFollowers': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: '/tatami/rest/users/:username/followers',
+                    url: TatamiEndpoint.url + '/tatami/rest/users/:username/followers',
                     transformResponse: responseTransform
                 },
                 'getSuggestions': {
-                    method: 'GET', isArray: true, url: '/tatami/rest/users/suggestions',
+                    method: 'GET', isArray: true, url: TatamiEndpoint.url + '/tatami/rest/users/suggestions',
                     transformResponse: function (suggestions) {
                         suggestions = angular.fromJson(suggestions);
 
@@ -55,9 +60,11 @@ angular.module('tatami.services')
                 'searchUsers': {
                     method: 'GET',
                     isArray: true,
-                    url: '/tatami/rest/users/:term',
+                    url: TatamiEndpoint.url + '/tatami/rest/users/:term',
                     transformResponse: responseTransform
                 },
                 'deactivate': {method: 'PATCH', params: {username: '@username'}}
             });
-    }]);
+
+    }
+})();

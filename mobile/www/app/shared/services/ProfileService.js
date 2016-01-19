@@ -1,6 +1,13 @@
-angular.module('tatami.services', [])
-    .factory('ProfileService', ['$resource', function ($resource) {
-        return $resource('/tatami/rest/account/profile', null,
+(function() {
+    'use strict';
+
+    angular.module('tatami.services', [])
+        .factory('ProfileService', profileService);
+
+    profileService.$inject = ['$resource', 'TatamiEndpoint'];
+
+    function profileService($resource, TatamiEndpoint) {
+        return $resource(TatamiEndpoint.url  + '/tatami/rest/account/profile', null,
             {
                 'get': {
                     method: 'GET',
@@ -18,4 +25,5 @@ angular.module('tatami.services', [])
                     }
                 }
             });
-    }]);
+    }
+})();
