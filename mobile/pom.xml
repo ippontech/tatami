@@ -37,6 +37,7 @@
                         <version>1.2.1</version>
                         <executions>
                             <execution>
+                                <id>gulp</id>
                                 <phase>install</phase>
                                 <goals>
                                     <goal>exec</goal>
@@ -45,6 +46,20 @@
                                     <executable>${project.npm.bin}/gulp</executable>
                                     <arguments>
                                         <argument>dev</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>ionic</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>ionic</executable>
+                                    <arguments>
+                                        <argument>serve</argument>
+                                        <argument>-l</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -78,6 +93,50 @@
                         </executions>
                     </plugin>
                 </plugins>
+            </build>
+
+        </profile>
+
+        <profile>
+            <id>mobile-prod</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>gulp</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${project.npm.bin}/gulp</executable>
+                                    <arguments>
+                                        <argument>prod</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>ionic</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>ionic</executable>
+                                    <arguments>
+                                        <argument>build</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+
             </build>
 
         </profile>
