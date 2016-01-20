@@ -10,7 +10,9 @@
             users = angular.fromJson(users);
 
             for (var i = 0; i < users.length; i++) {
-                users[i]['avatarURL'] = users[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+                var imageUrl = TatamiEndpoint.url + (users[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg');
+                console.log(imageUrl);
+                users[i]['avatarURL'] = imageUrl;
             }
 
             return users;

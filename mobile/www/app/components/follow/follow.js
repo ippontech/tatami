@@ -3,7 +3,8 @@ angular.module('tatami')
 
         $stateProvider
             .state('follow', {
-                url: '',
+                url: '/follow',
+                abstract: true,
                 templateUrl: 'app/components/follow/follow-tabs.html',
                 resolve: {
                     currentUser: ['ProfileService', function(ProfileService) {

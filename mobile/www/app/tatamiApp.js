@@ -1,6 +1,6 @@
 angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
 
-    .run(['$ionicPlatform', '$state', 'ProfileService', function ($ionicPlatform, $state, ProfileService) {
+    .run(['$ionicPlatform', '$state', 'ProfileService', '$rootScope', function ($ionicPlatform, $state, ProfileService, $rootScope) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -17,15 +17,17 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
         ProfileService.get().$promise.then(function(loggedUser) {
             if(loggedUser.username) {
                 $state.go('tab.timeline');
+            } else {
+                $state.go('login');
             }
         }, function(error) {
             $state.go('login');
-        })
-
+        });
     }])
 
     .config(function ($resourceProvider, $stateProvider, $urlRouterProvider) {
 
+        console.log('in config function');
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
@@ -38,5 +40,4 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');
-
     });
