@@ -1,20 +1,19 @@
 {
-  "name": "mobile",
-  "app_id": "",
-  "proxies": [
-    {
-      "path": "/tatami",
-      "proxyUrl": "http://localhost:8080/tatami"
-    },
-    {
-      "path": "/assets",
-      "proxyUrl": "http://localhost:8080/assets"
-    }
+    "name": "mobile",
+    "app_id": "",
+    "proxies": [
+        {
+            "path": "/tatami",
+            "proxyUrl": "http://localhost:8080/tatami"
+        },
+        {
+            "path": "/assets",
+            "proxyUrl": "http://localhost:8080/assets"
+        }
   ],
   "gulpStartupTasks": [
     "sass",
-    "watch",
-    "dev"
+    "watch"
   ],
   "watchPatterns": [
     "www/**/*",

@@ -44,18 +44,18 @@
                     }
                 },
                 'getHomeTimeline': {
-                    method: 'GET', isArray: true, url: '/tatami/rest/statuses/home_timeline',
+                    method: 'GET', isArray: true, url: TatamiEndpoint.url  + '/tatami/rest/statuses/home_timeline',
                     transformResponse: responseTransform
                 },
                 'getUserTimeline': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: '/tatami/rest/statuses/:username/timeline',
+                    url: TatamiEndpoint.url  + '/tatami/rest/statuses/:username/timeline',
                     transformResponse: responseTransform
                 },
                 'getDetails': {
-                    method: 'GET', params: {statusId: '@statusId'}, url: '/tatami/rest/statuses/details/:statusId',
+                    method: 'GET', params: {statusId: '@statusId'}, url: TatamiEndpoint.url + '/tatami/rest/statuses/details/:statusId',
                     transformResponse: function (details) {
                         details = angular.fromJson(details);
 
