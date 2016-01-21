@@ -21,7 +21,7 @@
                     method: 'GET', params: {username: '@username'},
                     transformResponse: function (user) {
                         user = angular.fromJson(user);
-                        user['avatarURL'] = generateAvatar(user);
+                        user['avatarURL'] = PathService.getAvatar(user);
                         return user;
                     }
                 },
