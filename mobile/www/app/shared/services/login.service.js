@@ -4,8 +4,8 @@
     angular.module('tatami')
         .factory('LoginService', loginService);
 
-    loginService.$inject = ['$resource', 'TatamiEndpoint'];
-    function loginService($resource, TatamiEndpoint) {
+    loginService.$inject = ['$resource', 'PathService'];
+    function loginService($resource, PathService) {
         var loginRequestTransform = loginRequestTransform;
 
         loginRequestTransform.$inject = ['obj'];
@@ -16,7 +16,7 @@
             return str.join("&");
         }
 
-        return $resource(TatamiEndpoint.url  + '/tatami/authentication', null,
+        return $resource(PathService.buildPath('/tatami/authentication'), null,
             {
                 'login': {
                     method: 'POST',

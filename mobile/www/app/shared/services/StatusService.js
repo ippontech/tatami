@@ -4,13 +4,13 @@
     angular.module('tatami.services')
         .factory('StatusService', statusService);
 
-    statusService.$inject = ['$resource', 'TatamiEndpoint'];
-    function statusService($resource, TatamiEndpoint) {
+    statusService.$inject = ['$resource', 'PathService'];
+    function statusService($resource, PathService) {
         var responseTransform = function (statuses) {
             statuses = angular.fromJson(statuses);
 
             for (var i = 0; i < statuses.length; i++) {
-                statuses[i]['avatarURL'] = statuses[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+                statuses[i]['avatarURL'] = PathService.getAvatar(statuses[i]);
 
                 if (statuses[i].geoLocalization) {
                     var latitude = statuses[i].geoLocalization.split(',')[0].trim();
@@ -23,14 +23,14 @@
 
             return statuses;
         };
-        return $resource(TatamiEndpoint.url + '/tatami/rest/statuses/:statusId', null,
+        return $resource(PathService.buildPath('/tatami/rest/statuses/:statusId'), null,
             {
                 'get': {
                     method: 'GET',
                     transformResponse: function (status) {
                         status = angular.fromJson(status);
 
-                        status.avatarURL = status.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
+                        status.avatarURL = PathService.getAvatar(status);
 
                         if (status.geoLocalization) {
                             var latitude = status.geoLocalization.split(',')[0].trim();
@@ -44,23 +44,27 @@
                     }
                 },
                 'getHomeTimeline': {
-                    method: 'GET', isArray: true, url: TatamiEndpoint.url  + '/tatami/rest/statuses/home_timeline',
+                    method: 'GET',
+                    isArray: true,
+                    url: PathService.buildPath('/tatami/rest/statuses/home_timeline'),
                     transformResponse: responseTransform
                 },
                 'getUserTimeline': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: TatamiEndpoint.url  + '/tatami/rest/statuses/:username/timeline',
+                    url: PathService.buildPath('/tatami/rest/statuses/:username/timeline'),
                     transformResponse: responseTransform
                 },
                 'getDetails': {
-                    method: 'GET', params: {statusId: '@statusId'}, url: TatamiEndpoint.url + '/tatami/rest/statuses/details/:statusId',
+                    method: 'GET',
+                    params: {statusId: '@statusId'},
+                    url: PathService.buildPath('/tatami/rest/statuses/details/:statusId'),
                     transformResponse: function (details) {
                         details = angular.fromJson(details);
 
                         for (var i = 0; i < details.discussionStatuses.length; i++) {
-                            details.discussionStatuses[i]['avatarURL'] = details.discussionStatuses[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
+                            details.discussionStatuses[i]['avatarURL'] = PathService.getAvatar(details.discussionStatuses[i]);
 
                             if (details.discussionStatuses[i].geoLocalization) {
                                 var latitude = details.discussionStatuses[i].geoLocalization.split(',')[0].trim();
@@ -72,7 +76,7 @@
                         }
 
                         for (var i = 0; i < details.sharedByLogins.length; i++) {
-                            details.sharedByLogins[i]['avatarURL'] = details.sharedByLogins[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.sharedByLogins[i].avatar + '/photo.jpg';
+                            details.sharedByLogins[i]['avatarURL'] = PathService.getAvatar(details.sharedByLogins[i]);
                         }
 
                         return details;

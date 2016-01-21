@@ -4,54 +4,56 @@
     angular.module('tatami.services')
         .factory('UserService', userService);
 
-    userService.$inject = ['$resource', 'TatamiEndpoint'];
-    function userService($resource, TatamiEndpoint) {
+    userService.$inject = ['$resource', 'PathService'];
+    function userService($resource, PathService) {
         var responseTransform = function (users) {
             users = angular.fromJson(users);
 
             for (var i = 0; i < users.length; i++) {
-                var imageUrl = TatamiEndpoint.url + (users[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg');
-                console.log(imageUrl);
-                users[i]['avatarURL'] = imageUrl;
+                users[i]['avatarURL'] = PathService.getAvatar(users[i]);
             }
 
             return users;
         };
-        return $resource(TatamiEndpoint.url + '/tatami/rest/users/:username', null,
+        return $resource(PathService.buildPath('/tatami/rest/users/:username'), null,
             {
                 'get': {
                     method: 'GET', params: {username: '@username'},
                     transformResponse: function (user) {
                         user = angular.fromJson(user);
-                        user['avatarURL'] = user.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+                        user['avatarURL'] = generateAvatar(user);
                         return user;
                     }
                 },
                 'query': {
-                    method: 'GET', isArray: true, url: TatamiEndpoint.url + '/tatami/rest/users',
+                    method: 'GET',
+                    isArray: true,
+                    url: PathService.buildPath('/tatami/rest/users'),
                     transformResponse: responseTransform
                 },
                 'getFollowing': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: TatamiEndpoint.url + '/tatami/rest/users/:username/friends',
+                    url: PathService.buildPath('/tatami/rest/users/:username/friends'),
                     transformResponse: responseTransform
                 },
                 'getFollowers': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: TatamiEndpoint.url + '/tatami/rest/users/:username/followers',
+                    url: PathService.buildPath('/tatami/rest/users/:username/followers'),
                     transformResponse: responseTransform
                 },
                 'getSuggestions': {
-                    method: 'GET', isArray: true, url: TatamiEndpoint.url + '/tatami/rest/users/suggestions',
+                    method: 'GET',
+                    isArray: true,
+                    url: PathService.buildPath('/tatami/rest/users/suggestions'),
                     transformResponse: function (suggestions) {
                         suggestions = angular.fromJson(suggestions);
 
                         for (var i = 0; i < suggestions.length; i++) {
-                            suggestions[i]['avatarURL'] = suggestions[i].avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + suggestions[i].avatar + '/photo.jpg';
+                            suggestions[i]['avatarURL'] = PathService.getAvatar(suggestions[i]);
                             suggestions[i]['followingUser'] = false;
                         }
 
@@ -62,11 +64,10 @@
                 'searchUsers': {
                     method: 'GET',
                     isArray: true,
-                    url: TatamiEndpoint.url + '/tatami/rest/users/:term',
+                    url: PathService.buildPath('/tatami/rest/users/:term'),
                     transformResponse: responseTransform
                 },
                 'deactivate': {method: 'PATCH', params: {username: '@username'}}
             });
-
     }
 })();

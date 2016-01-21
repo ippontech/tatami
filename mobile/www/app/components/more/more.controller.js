@@ -4,14 +4,14 @@
     angular.module('tatami')
         .controller('MoreController', moreController);
 
-    moreController.$inject = ['$http', '$state'];
-    function moreController($http, $state) {
+    moreController.$inject = ['$http', '$state', 'PathService'];
+    function moreController($http, $state, PathService) {
         var vm = this;
 
         vm.logout = logout;
 
         function logout() {
-            $http.get('/tatami/logout').then(goToLogin)
+            $http.get(PathService.buildPath('/tatami/logout')).then(goToLogin)
         }
 
         function goToLogin() {

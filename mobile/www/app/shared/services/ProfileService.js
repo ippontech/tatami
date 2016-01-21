@@ -4,16 +4,16 @@
     angular.module('tatami.services', [])
         .factory('ProfileService', profileService);
 
-    profileService.$inject = ['$resource', 'TatamiEndpoint'];
+    profileService.$inject = ['$resource', 'PathService'];
 
-    function profileService($resource, TatamiEndpoint) {
-        return $resource(TatamiEndpoint.url  + '/tatami/rest/account/profile', null,
+    function profileService($resource, PathService) {
+        return $resource(PathService.buildPath('/tatami/rest/account/profile'), null,
             {
                 'get': {
                     method: 'GET',
                     transformResponse: function (profile) {
                         profile = angular.fromJson(profile);
-                        profile['avatarURL'] = profile.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + profile.avatar + '/photo.jpg';
+                        profile['avatarURL'] = PathService.getAvatar(profile);
                         return profile;
                     }
                 },
