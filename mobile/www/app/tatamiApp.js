@@ -11,7 +11,7 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
             }
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
-                StatusBar.styleDefault();
+                StatusBar.style(1); // use a white status bar
             }
         });
         ProfileService.get().$promise.then(function(loggedUser) {
