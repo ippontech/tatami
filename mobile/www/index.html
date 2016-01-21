@@ -61,7 +61,8 @@
         <!--
           The nav bar that will be updated as we navigate between views.
         -->
-        <ion-header-bar align-title="center">
+        <ion-nav-bar align-title="center" class="bar-subheader bar-stable">
+            <ion-nav-back-button></ion-nav-back-button>
             <div class="bar bar-header bar-dark">
                 <div class="buttons">
                     <a ui-sref="follow.suggested">
@@ -69,7 +70,7 @@
                     </a>
                 </div>
                 <div class="title">
-                    <a ui-sref="tab.timeline">
+                    <a ui-sref="tab.timeline" style="text-decoration: none">
                         <img class="title-image" src="img/logo.png" />
                         Tatami
                     </a>
@@ -80,10 +81,6 @@
                     </a>
                 </div>
             </div>
-        </ion-header-bar>
-
-        <ion-nav-bar align-title="center" class="bar-subheader bar-stable">
-            <ion-nav-back-button></ion-nav-back-button>
         </ion-nav-bar>
 
         <ion-nav-view></ion-nav-view>
