@@ -1,14 +1,23 @@
-angular.module('tatami')
-    .config(function ($stateProvider, $urlRouterProvider) {
+(function() {
+    'use strict';
 
+    angular.module('tatami')
+        .config(config);
+
+    config.$inject = ['$stateProvider'];
+    function config($stateProvider) {
         $stateProvider
             .state('tab.mentions', {
                 url: '/mentions',
                 views: {
                     'tab-mentions': {
                         templateUrl: 'app/components/mentions/tab-mentions.html',
-                        controller: 'MentionsCtrl'
+                        controller: 'MentionsCtrl',
+                        controllerAs: 'vm'
                     }
+                },
+                resolve: {
+                    mentioned: mentioned
                 }
             })
             .state('tab.mention-detail', {
@@ -21,4 +30,10 @@ angular.module('tatami')
                 }
             });
     }
-);
+
+    mentioned.$inject = ['HomeService'];
+    function mentioned(HomeService) {
+        return HomeService.getMentions().$promise;
+    }
+})();
+

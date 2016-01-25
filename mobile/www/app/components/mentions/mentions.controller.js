@@ -1,16 +1,19 @@
-angular.module('tatami')
-    .controller('MentionsCtrl', function ($scope, Mentions) {
-        // With the new view caching in Ionic, Controllers are only called
-        // when they are recreated or on app start, instead of every page change.
-        // To listen for when this page is active (for example, to refresh data),
-        // listen for the $ionicView.enter event:
-        //
-        //$scope.$on('$ionicView.enter', function(e) {
-        //});
+(function() {
+    'use strict';
 
-        $scope.mentions = Mentions.all();
-        $scope.remove = function (mention) {
-            Mentions.remove(mention);
-        };
+    angular.module('tatami')
+        .controller('MentionsCtrl', mentionsCtrl);
+
+    mentionsCtrl.$inject = ['mentioned'];
+    function mentionsCtrl(mentioned) {
+        var vm = this;
+        vm.mentioned = mentioned;
+
+        vm.remove = remove;
+
+        remove.$inject = ['mention'];
+        function remove(mention) {
+            vm.mentioned.splice(mentioned.indexOf(mention), 1);
+        }
     }
-);
+})();
