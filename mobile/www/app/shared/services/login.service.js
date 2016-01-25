@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('tatami')
+    angular.module('tatami.services')
         .factory('LoginService', loginService);
 
     loginService.$inject = ['$resource', 'PathService'];
