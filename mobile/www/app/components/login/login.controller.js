@@ -1,6 +1,5 @@
 (function() {
     'use strict';
-    console.log('login controller created');
     var requestToken = "";
     var accessToken = "";
     var clientId = "532238149370-40jujaon5evfgggvbeiocrcheaml6c4u.apps.googleusercontent.com";

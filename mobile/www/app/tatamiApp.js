@@ -27,7 +27,6 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
 
     .config(function ($resourceProvider, $stateProvider, $urlRouterProvider) {
 
-        console.log('in config function');
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
