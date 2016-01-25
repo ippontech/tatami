@@ -13,7 +13,7 @@
 
         remove.$inject = ['mention'];
         function remove(mention) {
-            vm.mentioned.splice(mentioned.indexOf(mention), 1);
+            vm.mentioned.splice(vm.mentioned.indexOf(mention), 1);
         }
     }
 })();

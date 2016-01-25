@@ -1,16 +1,9 @@
-<ion-view view-title="Favorites">
+<ion-view view-title="Favorites" cache-view="false">
     <ion-content>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="favorite in favorites" type="item-text-wrap" href="#/tab/favorites/{{favorite.id}}">
-                <img ng-src="{{favorite.face}}">
-                <h2>{{favorite.name}}</h2>
-                <p>{{favorite.lastText}}</p>
-                <i class="icon ion-chevron-right icon-accessory"></i>
-
-                <ion-option-button class="button-assertive" ng-click="remove(favorite)">
-                    Delete
-                </ion-option-button>
-            </ion-item>
+            <div ng-repeat="favorite in vm.favorites">
+                <tatami-status status="favorite"></tatami-status>
+            </div>
         </ion-list>
     </ion-content>
 </ion-view>
