@@ -7,11 +7,12 @@
     config.$inject = ['$stateProvider'];
     function config($stateProvider) {
         $stateProvider
-            .state('tab.mentions', {
+            .state('mentions', {
                 url: '/mentions',
+                parent: 'home',
                 views: {
-                    'tab-mentions': {
-                        templateUrl: 'app/components/mentions/tab-mentions.html',
+                    'mentions': {
+                        templateUrl: 'app/components/home/mentions/tab-mentions.html',
                         controller: 'MentionsCtrl',
                         controllerAs: 'vm'
                     }
@@ -20,11 +21,12 @@
                     mentioned: mentioned
                 }
             })
-            .state('tab.mention-detail', {
+            .state('mention-detail', {
                 url: '/mentions/:mentionId',
+                parent: 'home',
                 views: {
-                    'tab-mentions': {
-                        templateUrl: 'app/components/mentions/mentions-detail.html',
+                    'mentions': {
+                        templateUrl: 'app/components/home/mentions/mentions-detail.html',
                         controller: 'MentionDetailCtrl'
                     }
                 }
