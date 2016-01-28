@@ -16,7 +16,7 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
         });
         ProfileService.get().$promise.then(function(loggedUser) {
             if(loggedUser.username) {
-                $state.go('tab.timeline');
+                $state.go('timeline');
             } else {
                 $state.go('login');
             }
@@ -31,11 +31,6 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
 
         $stateProvider
             // setup an abstract state for the tabs directive
-            .state('tab', {
-                url: '/tab',
-                abstract: true,
-                templateUrl: 'app/tabs.html'
-            })
             .state('tatami', {
                 url: '',
                 abstract: true,
