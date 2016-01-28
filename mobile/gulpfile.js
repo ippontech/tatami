@@ -67,7 +67,7 @@ var replaceFiles = ['./www/app/tatamiApp.constants.js'];
 
 gulp.task('dev', function() {
     return replace({
-        regex: 'http://10.1.10.201:8080|http://10.1.10.201:8100',
+        regex: 'http://app.tatamisoft.com|http://10.1.10.201:8100',
         replacement: 'http://localhost:8100',
         paths: replaceFiles,
         recursive: false,
@@ -77,7 +77,7 @@ gulp.task('dev', function() {
 
 gulp.task('device-dev', function() {
     return replace({
-        regex: 'http://localhost:8100|http://10.1.10.201:8080',
+        regex: 'http://localhost:8100|http://app.tatamisoft.com',
         replacement: 'http://10.1.10.201:8100',
         paths: replaceFiles,
         recursive: false,
@@ -88,7 +88,7 @@ gulp.task('device-dev', function() {
 gulp.task('prod', function() {
     return replace({
         regex: 'http://localhost:8100|http://10.1.10.201:8100',
-        replacement: 'http://10.1.10.201:8080',
+        replacement: 'http://app.tatamisoft.com',
         paths: replaceFiles,
         recursive: false,
         silent: false
