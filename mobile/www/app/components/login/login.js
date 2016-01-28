@@ -4,6 +4,7 @@ angular.module('tatami')
         $stateProvider
             .state('login', {
                 url: '/login',
+                parent: 'tatami',
                 templateUrl: 'app/components/login/login.html',
                 controller: 'LoginCtrl',
                 controllerAs: 'vm'
