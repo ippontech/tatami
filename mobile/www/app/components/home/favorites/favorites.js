@@ -7,11 +7,12 @@
     config.$inject = ['$stateProvider'];
     function config($stateProvider) {
         $stateProvider
-            .state('tab.favorites', {
+            .state('favorites', {
                 url: '/favorites',
+                parent: 'home',
                 views: {
-                    'tab-favorites': {
-                        templateUrl: 'app/components/favorites/tab-favorites.html',
+                    'favorites': {
+                        templateUrl: 'app/components/home/favorites/tab-favorites.html',
                         controller: 'FavoritesCtrl',
                         controllerAs: 'vm'
                     }
@@ -20,11 +21,12 @@
                     favorites: favorites
                 }
             })
-            .state('tab.favorites-detail', {
+            .state('favorites-detail', {
                 url: '/favorites/:favoriteId',
+                parent: 'home',
                 views: {
-                    'tab-favorites': {
-                        templateUrl: 'app/components/favorites/favorites-detail.html',
+                    'favorites': {
+                        templateUrl: 'app/components/home/favorites/favorites-detail.html',
                         controller: 'FavoritesDetailCtrl'
                     }
                 }
