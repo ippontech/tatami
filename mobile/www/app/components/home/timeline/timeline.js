@@ -1,12 +1,13 @@
 angular.module('tatami')
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider) {
 
         $stateProvider
-            .state('tab.timeline', {
+            .state('timeline', {
                 url: '/timeline',
+                parent: 'home',
                 views: {
-                    'tab-timeline': {
-                        templateUrl: 'app/components/timeline/tab-timeline.html',
+                    'timeline': {
+                        templateUrl: 'app/components/home/timeline/timeline.html',
                         controller: 'TimelineCtrl'
                     }
                 },
@@ -16,11 +17,12 @@ angular.module('tatami')
                     }]
                 }
             })
-            .state('tab.timeline-detail', {
+            .state('timeline-detail', {
                 url: '/timeline/:lineItemId',
+                parent: 'home',
                 views: {
-                    'tab-timeline': {
-                        templateUrl: 'app/components/timeline/timeline-detail.html',
+                    'timeline': {
+                        templateUrl: 'app/components/home/timeline/timeline-detail.html',
                         controller: 'LineItemDetailCtrl'
                     }
                 },
