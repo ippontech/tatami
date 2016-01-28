@@ -7,11 +7,12 @@
     moreConfig.$inject = ['$stateProvider'];
     function moreConfig($stateProvider) {
         $stateProvider
-            .state('tab.more', {
+            .state('more', {
                 url: '/more',
+                parent: 'home',
                 views: {
-                    'tab-more': {
-                        templateUrl: 'app/components/more/more.html',
+                    'more': {
+                        templateUrl: 'app/components/home/more/more.html',
                         controller: 'MoreController',
                         controllerAs: 'vm'
                     }
