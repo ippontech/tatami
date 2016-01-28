@@ -35,6 +35,10 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
                 url: '/tab',
                 abstract: true,
                 templateUrl: 'app/tabs.html'
+            })
+            .state('tatami', {
+                url: '',
+                abstract: true
             });
 
         // if none of the above states are matched, use this as the fallback
