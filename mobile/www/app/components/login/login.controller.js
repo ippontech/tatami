@@ -26,7 +26,7 @@
                 _spring_security_remember_me: vm.user.remember
             }, function(success) {
                 vm.user = { remember: false };
-                $state.go('tab.timeline');
+                $state.go('timeline');
             }, function(failed) {
                 vm.failed = true;
             })
