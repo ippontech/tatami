@@ -15,6 +15,9 @@
       "save": "Your profile has been saved"
     },
 
+    "form": {
+        "save": "Save"
+    },
 
     "preferences": {
       "title": "Preferences",
