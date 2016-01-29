@@ -112,6 +112,7 @@ h4 {
 }
 
 .well {
+    background-color: #FFFFFF;
     box-shadow: none;
     border-radius: 5px;
 }
