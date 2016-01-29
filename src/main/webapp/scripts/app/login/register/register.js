@@ -3,21 +3,22 @@
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('finishReset', {
-                parent: 'account',
-                url: '/reset/finish?key',
+            .state('register', {
+                parent: 'login',
+                url: '/register',
                 data: {
-                    authorities: []
+                    authorities: [],
+                    pageTitle: 'register.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/reset/finish/reset.finish.html',
-                        controller: 'ResetFinishController'
+                        templateUrl: 'scripts/app/login/register/register.html',
+                        controller: 'RegisterController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('reset');
+                        $translatePartialLoader.addPart('register');
                         return $translate.refresh();
                     }]
                 }
