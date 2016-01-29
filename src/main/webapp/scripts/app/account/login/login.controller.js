@@ -24,4 +24,8 @@ angular.module('tatamiJHipsterApp')
                 $scope.authenticationError = true;
             });
         };
+        $scope.registerUser = function(){
+          var data = 'email' + $scope.user.email;
+            $state.go('register');
+        };
     });
