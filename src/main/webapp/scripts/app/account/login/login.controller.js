@@ -28,4 +28,7 @@ angular.module('tatamiJHipsterApp')
           var data = 'email' + $scope.user.email;
             $state.go('register');
         };
+        $scope.resetPassword = function() {
+            Auth.resetPasswordInit($scope.user.email)
+        };
     });
