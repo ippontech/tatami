@@ -2,10 +2,11 @@ angular.module('tatami')
     .config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-            .state('follow.suggested', {
+            .state('suggested', {
                 url: '/suggested',
+                parent: 'follow',
                 views: {
-                    'follow-suggested': {
+                    'suggested': {
                         templateUrl: 'app/components/follow/suggested/suggested.html',
                         controller: 'SuggestedCtrl'
                     }

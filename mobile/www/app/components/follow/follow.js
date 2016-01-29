@@ -4,8 +4,9 @@ angular.module('tatami')
         $stateProvider
             .state('follow', {
                 url: '/follow',
+                parent: 'tatami',
                 abstract: true,
-                templateUrl: 'app/components/follow/follow-tabs.html',
+                templateUrl: 'app/components/follow/follow.html',
                 resolve: {
                     currentUser: ['ProfileService', function(ProfileService) {
                         return ProfileService.get().$promise;

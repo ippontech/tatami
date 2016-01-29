@@ -2,10 +2,11 @@ angular.module('tatami')
     .config(function ($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-            .state('follow.following', {
+            .state('following', {
                 url: '/following',
+                parent: 'follow',
                 views: {
-                    'follow-following': {
+                    'following': {
                         templateUrl: 'app/components/follow/following/following.html',
                         controller: 'FollowingCtrl',
                         controllerAs: 'vm'
