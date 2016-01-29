@@ -9,6 +9,7 @@
             $stateProvider
                 .state('profile', {
                     url: '/profile/:username',
+                    parent: 'tatami',
                     templateUrl: 'app/components/profile/profile.html',
                     controller: 'ProfileCtrl',
                     controllerAs: 'vm',
