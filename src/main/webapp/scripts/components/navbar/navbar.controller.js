@@ -10,4 +10,17 @@ angular.module('tatamiJHipsterApp')
             Auth.logout();
             $state.go('home');
         };
+
+        $scope.openPostModal = function () {
+        }
+
+        $scope.changeLanguage = function () {
+        }
+
+        $scope.goToBlog = function () {
+        }
+
+        $scope.restart = function () {
+        }
     });
+

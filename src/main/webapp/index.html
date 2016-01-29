@@ -17,6 +17,9 @@
         <!-- build:css assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
         <!-- endbuild -->
+
+        <link rel="stylesheet" href="assets/styles/tatami.css">
+
         <style>
             body{
                 background-image: url(assets/styles/img/wallpaper.jpg);
@@ -29,10 +32,10 @@
         <!--[if lt IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-       <!-- <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div> -->
+
         <div ui-view="navbar" ng-cloak=""></div>
         <div class="container">
-            <div class="well" ui-view="content"></div>
+            <div ui-view="content"></div>
 
             <div ng-if="!$state.includes('tatami.home')" style="opacity: 0.5; text-align:center;">
                 Version: <pom>version</pom>, Build: <pom>build</pom>
@@ -155,5 +158,8 @@
     <script src="scripts/components/language/language.controller.js"></script>
     <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
     <!-- endbuild -->
+
+        <script src="scripts/app/about/about.js"></script>
+        <script src="scripts/app/account/profile/profile.js"></script>
 </body>
 </html>

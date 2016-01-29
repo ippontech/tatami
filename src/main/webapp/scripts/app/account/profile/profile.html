@@ -1,0 +1,76 @@
+<div class="col-lg-8">
+    <div class="alert alert-status">
+        <div class = well>
+            <form>
+                <h2 translate="account.profile.title"></h2>
+                <fieldset class="form-horizontal row-fluid">
+                    <div class="control-group dashed">
+                        <label class="control-label"></label>
+                        <div class="controls">
+                            <div class="dropzone well" ng-file-select ng-file-drop ng-model="current.avatar">
+                                <p class="little-padding-top" translate="account.profile.dropPhoto"></p>
+                                <!--
+                                <input id="avatarFile" type="file" name="uploadFile" data-url="/tatami/rest/fileupload/avatar">
+                                -->
+                            </div>
+                            <div ng-style="{ visibility: uploadStatus.isUploading ? 'visible': 'hidden' }" class="attachmentBar progress progress-striped active">
+                                <div class="bar progress-bar progress-bar-info" style="width: {{ uploadStatus.progress }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-horizontal row-fluid">
+                    <legend translate="account.profile.update"></legend>
+                    <div class="control-group">
+                        <label class="control-label" for="login" translate="account.profile.email"></label>
+                        <div class="controls">
+                            <input name="login" type="text" disabled="true" class="col-lg-12" ng-model="userLogin">
+                        </div>
+                    </div>
+                    <div class="control-group">
+
+                        <div class="controls">
+                            <label class="control-label" for="firstName" translate="account.profile.firstName">
+                            </label>
+                            <input name="firstName" type="text" size="15" maxlength="40" class="input-xlarge col-lg-12" ng-model="userProfile.firstName">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="lastName" translate="account.profile.lastName"></label>
+                        <div class="controls">
+                            <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="input-xlarge col-lg-12" ng-model="userProfile.lastName">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="jobTitle" translate="account.profile.jobTitle"></label>
+                        <div class="controls">
+                            <input name="jobTitle" type="text" size="15" maxlength="100" class="input-xlarge col-lg-12" ng-model="userProfile.jobTitle">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="phoneNumber" translate="account.profile.phoneNumber"></label>
+                        <div class="controls">
+                            <input name="phoneNumber" type="text" size="10" maxlength="20" class="input-xlarge col-lg-12" ng-model="userProfile.phoneNumber">
+                        </div>
+                    </div>
+                    <div class="return"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-primary btn-block" translate="form.save" ng-click="updateUser()"></button>
+                    </div>
+                </fieldset>
+            </form>
+            <!-- Disabled for now until backend handles deleting accounts properly
+            <form>
+                <fieldset class="form-horizontal row-fluid">
+                    <legend translate="account.profile.delete"></legend>
+                    <div class="return"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="input-xlarge btn btn-danger btn-block" ng-click="deleteUser(('account.profile.confirmDelete' | translate))" translate="account.profile.delete">
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+            -->
+        </div>
+    </div>
+</div>

@@ -1,3 +1,22 @@
+.indent {
+    padding-left: 50px;
+}
+
+#logout, #help-tour {
+    cursor: pointer;
+}
+
+.status-top-rounded {
+    border-radius: 5px 5px 0 0;
+}
+
+.status-bottom-rounded {
+    border-radius: 0 0 5px 5px;
+}
+
+.status-both-rounded {
+    border-radius: 5px 5px 5px 5px;
+}
 @media screen and (max-width: 767px) {
     .navbar .nav, .navbar .navbar-form {
         float: none;
@@ -6,7 +25,6 @@
     .nav > li > .dropdown-menu {
         position: static;
         float: none;
-
     }
 
     .nav li.dropdown-submenu > ul.dropdown-menu {
@@ -14,7 +32,6 @@
         z-index: 0;
         float: none;
         margin: 0;
-
     }
 
     #tatamiBody {
@@ -75,6 +92,7 @@ h4 {
 }
 
 .well {
+    background-color: #FFFFFF;
     box-shadow: none;
     border-radius: 5px;
 }
@@ -95,6 +113,10 @@ h4 {
 .navbar {
     background-color: black;
 }
+.control-group {
+    padding-bottom: 10px;
+}
+
 .controle-group
 {
   padding: 0 0 5px;
@@ -194,6 +216,10 @@ div.jGrowl-notification{
     color: #CCCCCC;
 }
 
+.navbar .nav > li > a:focus {
+    color: #CCCCCC;
+}
+
 .navbar .nav > li > a:hover {
     color: white;
 }
@@ -233,7 +259,7 @@ div.jGrowl-notification{
     margin-left: 10px;
     background-position: center center;
     background-size: cover;
-    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
+    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
 }
 
 .img-medium {
@@ -244,9 +270,17 @@ div.jGrowl-notification{
     -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
+.img-medium-big {
+    width: 150px;
+    height: 150px;
+    background-position: center center;
+    background-size: cover;
+    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
+}
+
 .img-big {
-    width: 70px;
-    height: 70px;
+    width: 200px;
+    height: 200px;
     background-position: center center;
     background-size: cover;
     -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
@@ -501,7 +535,6 @@ margin-bottom: 20px;
 .controlsIE span.glyphicon, span.upload-ko, span.upload-ok {
     padding-left: 15px;
     margin-top: 10px;
-
 }
 
 .controlsIE span.upload-ko, .controlsIE span.upload-ok, span.hidden-label {
@@ -574,11 +607,12 @@ margin-bottom: 20px;
     margin: 0;
     border-top: 1px solid #CCCCCC;
     margin-bottom: -2px;
+    margin-top: 0;
 }
 
 .tatams-container {
     min-height: 75px;
-    background-image: url(/img/wallpaper.jpg);
+    background-image: url(/assets/images/wallpaper.jpg);
 }
 
 .tatam-expand-container {
@@ -624,14 +658,14 @@ margin-bottom: 20px;
 * Search Engine
 **/
 
-.typeahead.dropdown-menu.hasCategory{
+.typeahead.dropdown-menu.hasCategory {
     /*width: 280px;*/
     background: #EDEDED;
     padding: 0;
 }
 
 @media screen and (max-width: 767px) {
-    .typeahead.dropdown-menu.hasCategory{
+    .typeahead.dropdown-menu.hasCategory {
         position: static;
         width: 100%;
     }
@@ -653,7 +687,7 @@ margin-bottom: 20px;
     background: #FFFFFF;
     cursor: pointer;
 }
-.hasCategory .category{
+.hasCategory .category {
     cursor: default;
     height: auto;
     background: #EDEDED;
@@ -821,11 +855,14 @@ margin-bottom: 20px;
 }
 
 @media screen and (min-width: 767px) {
-    #buttons {
+    .buttons {
         clear: both;
         margin-left: 60px;
     }
 }
+
+@media screen and (max-width: 767px) {
+    .buttons }
 @media screen and (max-width: 767px) {
     #buttons {
         clear: both;
@@ -909,8 +946,8 @@ margin-bottom: 20px;
 
 }
 
-@media screen and (max-width: 767px) {
 
+@media screen and (max-width: 767px) {
     .slider-container {
         display: table;
         margin: 0 auto;
@@ -949,7 +986,6 @@ margin-bottom: 20px;
 .slider-container .slider-container-left {
 
 }
-
 
 .slider-container .slider-container-right {
 
