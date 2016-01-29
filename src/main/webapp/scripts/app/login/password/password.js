@@ -4,7 +4,7 @@ angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('password', {
-                parent: 'account',
+                parent: 'login',
                 url: '/password',
                 data: {
                     authorities: ['ROLE_USER'],
@@ -12,7 +12,7 @@ angular.module('tatamiJHipsterApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/password/password.html',
+                        templateUrl: 'scripts/app/login/password/password.html',
                         controller: 'PasswordController'
                     }
                 },
