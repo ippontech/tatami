@@ -4,6 +4,7 @@ angular.module('tatami')
         $stateProvider
             .state('post', {
                 url: '/post',
+                parent: 'tatami',
                 templateUrl: 'app/components/post/post.html',
                 controller: 'PostCtrl'
             });

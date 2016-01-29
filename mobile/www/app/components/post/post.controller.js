@@ -10,7 +10,7 @@ angular.module('tatami')
             StatusService.save($scope.status, function() {
                 $scope.reset();
                 $ionicHistory.clearCache();
-                $state.go('tab.timeline', {}, { reload: true });
+                $state.go('timeline');
             })
         };
 
