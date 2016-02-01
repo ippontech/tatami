@@ -28,6 +28,7 @@
         vm.remove = remove;
         vm.favorite = favorite;
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
+        vm.postReply = postReply;
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
@@ -39,6 +40,10 @@
             StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function() {
                 $state.reload();
             })
+        }
+
+        function postReply() {
+            $state.go('post', { statusId : vm.status.statusId });
         }
     }
 })();
