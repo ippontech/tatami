@@ -26,9 +26,18 @@
         vm.status = $scope.status;
         vm.currentUser = $scope.currentUser;
         vm.remove = remove;
+        vm.favorite = favorite;
+        vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
+        console.log(vm.status.favorite);
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
+                $state.reload();
+            })
+        }
+
+        function favorite() {
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function() {
                 $state.reload();
             })
         }

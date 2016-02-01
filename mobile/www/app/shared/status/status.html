@@ -1,18 +1,26 @@
-<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap"
-          ui-sref="conversation({ statusId : vm.status.timelineId })">
-    <img ng-src="{{ vm.status.avatarURL }}"/>
+<ion-item>
+    <div class="list list-inset item-remove-animate item-icon-right"
+         type="item-text-wrap"
+         ui-sref="conversation({ statusId : vm.status.timelineId })">
+        <div class="item-avatar">
+            <img ng-src="{{ vm.status.avatarURL }}"/>
 
-    <div class="profile-name">
-        <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
-        <span class="inline subheading">{{vm.status.username}}</span>
-        <span class="inline date">&nbsp;&#183; {{vm.status.prettyPrintStatusDate}}</span>
+            <div class="profile-name">
+                <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
+                <span class="inline subheading">{{vm.status.username}}</span>
+                <span class="inline date">&nbsp;&#183; {{vm.status.prettyPrintStatusDate}}</span>
+            </div>
+            <p>{{vm.status.content}}</p>
+        </div>
+
+        <i class="icon ion-chevron-right icon-accessory"></i>
+        <p class="row">
+            <div class="col-25 button button-clear ion-chatbox"></div>
+            <div class="col-25 button button-clear ion-star" ng-click="vm.favorite()" ng-class="{ 'button-energized': vm.status.favorite }"></div>
+            <div class="col-25 button button-clear ion-trash-a" ng-if="vm.isCurrentUser" ng-click="vm.remove()"></div>
+            <div class="col-25 button button-clear ion-share" ng-if="!vm.isCurrentUser"></div>
+        </p>
     </div>
-    <p>{{vm.status.content}}</p>
-    <i class="icon ion-chevron-right icon-accessory"></i>
 
-    <ion-option-button ng-if="!vm.currentUser || vm.currentUser.username === vm.status.username"
-                       class="button-assertive"
-                       ng-click="vm.remove()">
-        Delete
-    </ion-option-button>
+
 </ion-item>
