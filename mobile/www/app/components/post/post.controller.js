@@ -10,14 +10,15 @@
         vm.charCount = 750;
         vm.status = {
             content: repliedToStatus ? '@' + repliedToStatus.username : '',
-            statusPrivate: repliedToStatus ? repliedToStatus.private : false
+            statusPrivate: repliedToStatus ? repliedToStatus.private : false,
+            replyTo: repliedToStatus ? repliedToStatus.statusId : '',
+            replyToUsername: repliedToStatus ? repliedToStatus.username : ''
         };
 
         vm.post = post;
         vm.reset = reset;
 
         function post() {
-            console.log(StatusService);
             StatusService.save(vm.status, function() {
                 reset();
                 $ionicHistory.clearCache();

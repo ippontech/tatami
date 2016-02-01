@@ -21,7 +21,6 @@
 
     getStatus.$inject = ['StatusService', '$stateParams'];
     function getStatus(StatusService, $stateParams) {
-        console.log('getting status');
         return StatusService.get({ statusId : $stateParams.statusId }).$promise;
     }
 })();
