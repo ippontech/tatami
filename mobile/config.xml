@@ -4,7 +4,7 @@
   <description>
         Tatami mobile app build using Ionic
     </description>
-  <author email="khegeland@ipponusa.com" href="http://example.com.com/">
+  <author email="khegeland@ipponusa.com">
       Kenny Hegeland
     </author>
   <content src="index.html"/>
