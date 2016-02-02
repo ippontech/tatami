@@ -1,7 +1,7 @@
 <ion-item>
     <div class="list list-inset item-remove-animate item-icon-right"
          type="item-text-wrap"
-         ui-sref="conversation({ statusId : vm.status.timelineId })">
+         ng-click="vm.goToConversation(vm.status.statusId)">
         <div class="item-avatar">
             <img ng-src="{{ vm.status.avatarURL }}"/>
 
@@ -15,7 +15,7 @@
             <p ng-if="vm.status.replyToUsername">
                 <span class="ios-android-share"></span>
                 <span>In reply to </span>
-                <a ui-sref="conversation({ statusId: vm.status.replyTo })">@{{ vm.status.replyToUsername }}</a>
+                <a ng-click="vm.goToConversation(vm.status.replyTo)">@{{ vm.status.replyToUsername }}</a>
             </p>
 
         </div>

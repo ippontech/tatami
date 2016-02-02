@@ -29,6 +29,7 @@
         vm.favorite = favorite;
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
         vm.postReply = postReply;
+        vm.goToConversation = goToConversation;
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
@@ -44,6 +45,11 @@
 
         function postReply() {
             $state.go('post', { statusId : vm.status.statusId });
+        }
+
+        function goToConversation(statusId) {
+            console.log($state);
+            console.log(statusId);
         }
     }
 })();
