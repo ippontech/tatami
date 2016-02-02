@@ -15,7 +15,7 @@
             <p ng-if="vm.status.replyToUsername">
                 <span class="ios-android-share"></span>
                 <span>In reply to </span>
-                <a>@{{ vm.status.replyToUsername }}</a>
+                <a ui-sref="conversation({ statusId: vm.status.replyTo })">@{{ vm.status.replyToUsername }}</a>
             </p>
 
         </div>

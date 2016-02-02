@@ -4,11 +4,9 @@
     angular.module('tatami')
         .controller('ConversationCtrl', conversationCtrl);
 
-    conversationCtrl.$inject = ['status', '$ionicHistory'];
-    function conversationCtrl(status, $ionicHistory) {
+    conversationCtrl.$inject = ['status'];
+    function conversationCtrl(status) {
         var vm = this;
         vm.status = status;
-        //$ionicHistory.goBack();
-        console.log(vm.status);
     }
 })();
