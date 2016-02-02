@@ -12,7 +12,7 @@
                 parent: 'home',
                 views: {
                     'mentions': {
-                        templateUrl: 'app/components/home/mentions/tab-mentions.html',
+                        templateUrl: 'app/components/home/mentions/mentions.html',
                         controller: 'MentionsCtrl',
                         controllerAs: 'vm'
                     }
@@ -21,14 +21,17 @@
                     mentioned: mentioned
                 }
             })
-            .state('mention-detail', {
-                url: '/mentions/:mentionId',
-                parent: 'home',
+            .state('mentions.detail', {
+                url: '/detail/:statusId',
                 views: {
-                    'mentions': {
-                        templateUrl: 'app/components/home/mentions/mentions-detail.html',
-                        controller: 'MentionDetailCtrl'
+                    'mentions@home': {
+                        templateUrl: 'app/components/home/detail/detail.html',
+                        controller: 'DetailCtrl',
+                        controllerAs: 'vm'
                     }
+                },
+                resolve: {
+                    status: getStatus
                 }
             });
     }
@@ -36,6 +39,11 @@
     mentioned.$inject = ['HomeService'];
     function mentioned(HomeService) {
         return HomeService.getMentions().$promise;
+    }
+
+    getStatus.$inject = ['StatusService', '$stateParams'];
+    function getStatus(StatusService, $stateParams) {
+        return StatusService.get({ statusId : $stateParams.statusId }).$promise;
     }
 })();
 
