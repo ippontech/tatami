@@ -17,18 +17,18 @@ angular.module('tatami')
                     }]
                 }
             })
-            .state('timeline-detail', {
-                url: '/timeline/:lineItemId',
-                parent: 'home',
+            .state('timeline.detail', {
+                url: '/detail/:statusId',
                 views: {
-                    'timeline': {
-                        templateUrl: 'app/components/home/timeline/timeline-detail.html',
-                        controller: 'LineItemDetailCtrl'
+                    'timeline@home': {
+                        templateUrl: 'app/components/home/timeline/detail.html',
+                        controller: 'TimelineDetailCtrl',
+                        controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    lineItem: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
-                        return StatusService.get({ statusId : $stateParams.lineItemId }).$promise;
+                    status: ['StatusService', '$stateParams', function(StatusService, $stateParams) {
+                        return StatusService.get({ statusId : $stateParams.statusId }).$promise;
                     }]
                 }
             });
