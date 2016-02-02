@@ -1,7 +1,13 @@
-angular.module('tatami')
-    .controller('TimelineCtrl', function ($scope, lineItems) {
-        $scope.lineItems = lineItems;
-        $scope.remove = function(lineItem) {
-            $scope.lineItems.splice(lineItems.indexOf(lineItem), 1);
-        };
-    });
+(function() {
+    'use strict';
+
+    angular.module('tatami')
+        .controller('TimelineCtrl', timelineCtrl);
+
+    timelineCtrl.$inject = ['statuses'];
+    function timelineCtrl(statuses) {
+        var vm = this;
+
+        vm.statuses = statuses;
+    }
+})();

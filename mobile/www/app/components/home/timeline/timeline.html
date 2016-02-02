@@ -1,8 +1,8 @@
-<ion-view view-title="Timeline" cache-view="false">
+<ion-view view-title="Timeline">
     <ion-content>
         <ion-list>
-            <div ng-repeat="lineItem in lineItems">
-                <tatami-status status="lineItem"></tatami-status>
+            <div ng-repeat="status in vm.statuses">
+                <tatami-status status="status"></tatami-status>
             </div>
         </ion-list>
     </ion-content>
