@@ -1,9 +1,9 @@
 <ion-view view-title="Timeline">
     <ion-content>
         <ion-list>
-            <div ng-repeat="status in vm.statuses">
+            <ion-item ng-repeat="status in vm.statuses">
                 <tatami-status status="status"></tatami-status>
-            </div>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
