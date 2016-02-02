@@ -9,6 +9,5 @@
         var vm = this;
 
         vm.status = status;
-        console.log(vm.status);
     }
 })();
