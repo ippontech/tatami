@@ -108,7 +108,7 @@ $dark:                            #444 !default;
 .ion-android-image:before,
 .ion-android-laptop:before,
 .ion-android-list:before,
-.ion-android-locate:before,
+.ion-android-locate:before, .platform-android .tatami-location:before,
 .ion-android-lock:before,
 .ion-android-mail:before,
 .ion-android-map:before,
@@ -431,7 +431,7 @@ $dark:                            #444 !default;
 .ion-ios-lightbulb-outline:before,
 .ion-ios-list:before,
 .ion-ios-list-outline:before,
-.ion-ios-location:before,
+.ion-ios-location:before, .platform-ios .tatami-location:before,
 .ion-ios-location-outline:before,
 .ion-ios-locked:before,
 .ion-ios-locked-outline:before,
@@ -1001,7 +1001,7 @@ $dark:                            #444 !default;
 .ion-android-list:before {
   content: ""; }
 
-.ion-android-locate:before {
+.ion-android-locate:before, .platform-android .tatami-location:before {
   content: ""; }
 
 .ion-android-lock:before {
@@ -1970,7 +1970,7 @@ $dark:                            #444 !default;
 .ion-ios-list-outline:before {
   content: ""; }
 
-.ion-ios-location:before {
+.ion-ios-location:before, .platform-ios .tatami-location:before {
   content: ""; }
 
 .ion-ios-location-outline:before {
@@ -9730,3 +9730,8 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  display: block; }

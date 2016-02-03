@@ -21,3 +21,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.platform-ios {
+    .tatami-location {
+        @extend .ion-ios-location
+    }
+}
+
+.platform-android {
+    .tatami-location {
+        @extend .ion-android-locate
+    }
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
