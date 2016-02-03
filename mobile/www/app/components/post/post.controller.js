@@ -17,6 +17,7 @@
 
         vm.post = post;
         vm.reset = reset;
+        vm.close = close;
 
         function post() {
             StatusService.save(vm.status, function() {
@@ -31,6 +32,11 @@
                 content: '',
                 statusPrivate: false
             }
+        }
+
+        function close() {
+            $ionicHistory.goBack();
+            reset();
         }
     }
 })();
