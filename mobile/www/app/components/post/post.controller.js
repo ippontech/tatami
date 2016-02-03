@@ -4,9 +4,10 @@
     angular.module('tatami')
         .controller('PostCtrl', postCtrl);
 
-    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', '$cordovaCamera', 'repliedToStatus'];
-    function postCtrl(StatusService, $ionicHistory, $state, $cordovaCamera, repliedToStatus) {
+    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', '$cordovaCamera', '$window', 'repliedToStatus'];
+    function postCtrl(StatusService, $ionicHistory, $state, $cordovaCamera, $window, repliedToStatus) {
         var vm = this;
+        vm.window = $window;
         vm.charCount = 750;
         vm.status = {
             content: repliedToStatus ? '@' + repliedToStatus.username : '',
@@ -14,12 +15,13 @@
             replyTo: repliedToStatus ? repliedToStatus.statusId : '',
             replyToUsername: repliedToStatus ? repliedToStatus.username : ''
         };
-        vm.imageUrl = undefined;
+        vm.images = [];
 
         vm.post = post;
         vm.reset = reset;
         vm.close = close;
         vm.getPicture = getPicture;
+        vm.getPictureFromLibrary = getPictureFromLibrary;
 
         function post() {
             StatusService.save(vm.status, function() {
@@ -42,11 +44,27 @@
         }
 
         function getPicture() {
-            navigator.camera.getPicture().then(store);
+            var options = {
+                targetHeight: 450
+            };
+
+            $cordovaCamera.getPicture(options).then(store);
+        }
+
+        function getPictureFromLibrary() {
+            console.log($window.innerWidth);
+            console.log('here');
+            var options = {
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                targetWidth: $window.innerWidth,
+                targetHeight: 450
+            };
+
+            $cordovaCamera.getPicture(options).then(store);
         }
 
         function store(fileUri) {
-            vm.imageUrl = 'data:image/jpeg;base64,' +  fileUri;
+            vm.images.push(fileUri);
         }
     }
 })();
