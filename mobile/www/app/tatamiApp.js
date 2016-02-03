@@ -25,8 +25,9 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource', 'ngCordova']
         });
     }])
 
-    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider) {
+    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
 
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
