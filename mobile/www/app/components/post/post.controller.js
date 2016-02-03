@@ -4,10 +4,9 @@
     angular.module('tatami')
         .controller('PostCtrl', postCtrl);
 
-    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', '$cordovaCamera', '$window', 'repliedToStatus'];
-    function postCtrl(StatusService, $ionicHistory, $state, $cordovaCamera, $window, repliedToStatus) {
+    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', '$cordovaCamera', 'repliedToStatus'];
+    function postCtrl(StatusService, $ionicHistory, $state, $cordovaCamera, repliedToStatus) {
         var vm = this;
-        vm.window = $window;
         vm.charCount = 750;
         vm.status = {
             content: repliedToStatus ? '@' + repliedToStatus.username : '',
@@ -44,20 +43,12 @@
         }
 
         function getPicture() {
-            var options = {
-                targetHeight: 450
-            };
-
-            $cordovaCamera.getPicture(options).then(store);
+            $cordovaCamera.getPicture().then(store);
         }
 
         function getPictureFromLibrary() {
-            console.log($window.innerWidth);
-            console.log('here');
             var options = {
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                targetWidth: $window.innerWidth,
-                targetHeight: 450
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
             };
 
             $cordovaCamera.getPicture(options).then(store);
