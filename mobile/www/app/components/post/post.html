@@ -8,13 +8,23 @@
             <form name="newPost" novalidate="">
                 <div class="list">
                     <label class="item item-input">
-                        <textarea type="text" name="msg" ng-model="vm.status.content" rows="15" ng-required="true"></textarea>
+                        <textarea type="text"
+                                  name="msg"
+                                  ng-model="vm.status.content"
+                                  rows="15"
+                                  placeholder="Post Here..."
+                                  ng-required="true"></textarea>
                     </label>
                 </div>
             </form>
         </div>
+        <div ng-if="vm.imageUrl">
+            {{ vm.imageUrl }}
+            <img ng-show="vm.imageUrl !== undefined" ng-src="{{vm.imgUrl}}">
+        </div>
     </ion-content>
     <ion-footer-bar align-title="right" keyboard-attach class="bar-stable apply-footer" style="margin-bottom: 44px;">
+        <button style="opacity: 0.5" class="button button-clear icon ion-camera" ng-click="vm.getPicture()"></button>
         <h1 class="title" style="opacity: 0.5;">{{ vm.charCount - vm.status.content.length }}</h1>
         <button class="button button-positive" ng-disabled="vm.status.content.length === 0 || !vm.status.content" ng-click="vm.post()">
             Post

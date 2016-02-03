@@ -1,4 +1,4 @@
-angular.module('tatami', ['ionic', 'tatami.services', 'ngResource'])
+angular.module('tatami', ['ionic', 'tatami.services', 'ngResource', 'ngCordova'])
 
     .run(['$ionicPlatform', '$state', 'ProfileService', '$rootScope', function ($ionicPlatform, $state, ProfileService, $rootScope) {
         $ionicPlatform.ready(function () {

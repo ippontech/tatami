@@ -4,8 +4,8 @@
     angular.module('tatami')
         .controller('PostCtrl', postCtrl);
 
-    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', 'repliedToStatus'];
-    function postCtrl(StatusService, $ionicHistory, $state, repliedToStatus) {
+    postCtrl.$inject = ['StatusService', '$ionicHistory', '$state', '$cordovaCamera', 'repliedToStatus'];
+    function postCtrl(StatusService, $ionicHistory, $state, $cordovaCamera, repliedToStatus) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -14,10 +14,12 @@
             replyTo: repliedToStatus ? repliedToStatus.statusId : '',
             replyToUsername: repliedToStatus ? repliedToStatus.username : ''
         };
+        vm.imageUrl = undefined;
 
         vm.post = post;
         vm.reset = reset;
         vm.close = close;
+        vm.getPicture = getPicture;
 
         function post() {
             StatusService.save(vm.status, function() {
@@ -37,6 +39,14 @@
         function close() {
             $ionicHistory.goBack();
             reset();
+        }
+
+        function getPicture() {
+            navigator.camera.getPicture().then(store);
+        }
+
+        function store(fileUri) {
+            vm.imageUrl = 'data:image/jpeg;base64,' +  fileUri;
         }
     }
 })();
