@@ -8,7 +8,7 @@ angular.module('tatamiJHipsterApp')
                 parent: 'site',
                 data: {
                     authorities: [],
-                    pageTitle: 'login.title'
+                    pageTitle: 'account.title'
                 },
                 url: '/account',
                 views: {
@@ -33,7 +33,7 @@ angular.module('tatamiJHipsterApp')
 
     });
 
-var AccountModule = angular.module('AccountModule', [
+/*var AccountModule = angular.module('AccountModule', [
     'ProfileModule',
     'PreferencesModule',
     'PasswordModule',
@@ -295,4 +295,4 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             },
             controller: 'TopPostersController'
         });
-}]);
+}]);*/

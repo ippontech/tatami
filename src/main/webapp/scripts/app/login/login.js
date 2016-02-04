@@ -3,22 +3,23 @@
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('register', {
-                parent: 'account',
-                url: '/register',
+            .state('login', {
+             //   abstract: true,
+                parent: 'site',
+                url: '/login',
                 data: {
                     authorities: [],
-                    pageTitle: 'register.title'
+                    pageTitle: 'login.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/register/register.html',
-                        controller: 'RegisterController'
+                        templateUrl: 'scripts/app/login/login.html',
+                        controller: 'LoginController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('register');
+                        $translatePartialLoader.addPart('login');
                         return $translate.refresh();
                     }]
                 }

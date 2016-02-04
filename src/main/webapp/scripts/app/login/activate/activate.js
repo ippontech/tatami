@@ -4,7 +4,7 @@ angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('activate', {
-                parent: 'account',
+                parent: 'login',
                 url: '/activate?key',
                 data: {
                     authorities: [],
@@ -12,7 +12,7 @@ angular.module('tatamiJHipsterApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/activate/activate.html',
+                        templateUrl: 'scripts/app/login/activate/activate.html',
                         controller: 'ActivationController'
                     }
                 },

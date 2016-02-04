@@ -4,14 +4,14 @@ angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('requestReset', {
-                parent: 'account',
+                parent: 'login',
                 url: '/reset/request',
                 data: {
                     authorities: []
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/reset/request/reset.request.html',
+                        templateUrl: 'scripts/app/login/reset/request/reset.request.html',
                         controller: 'RequestResetController'
                     }
                 },

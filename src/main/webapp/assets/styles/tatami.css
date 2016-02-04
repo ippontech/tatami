@@ -17,7 +17,6 @@
 .status-both-rounded {
     border-radius: 5px 5px 5px 5px;
 }
-
 @media screen and (max-width: 767px) {
     .navbar .nav, .navbar .navbar-form {
         float: none;
@@ -40,17 +39,6 @@
     }
 }
 
-.noRadius {
-    border-radius: 0;
-}
-
-.noCollapse {
-    border-collapse: separate;
-}
-
-.noBorder {
-    border-top: 0;
-}
 .noRadius
 {
     border-radius: 0;
@@ -63,13 +51,7 @@
 
 .noBorder{
     border-top : 0;
-
 }
-
-.noRadius {
-    border-radius: 0;
-}
-
 
 #basicMap {
     width: 100%;
@@ -84,7 +66,6 @@
 }
 
 .alertColor{
-
     padding: 8px 15px 8px 14px;
     margin-bottom: 20px;
     color: #c09853;
@@ -92,7 +73,6 @@
     border: 1px solid #fbeed5;
     border-radius: 4px;
 }
-
 @media screen and (min-width: 767px) {
     #tatamiBody {
         padding: 10px 15px 10px 0;
@@ -100,11 +80,7 @@
 }
 
 body {
-
-    background-image: url(/assets/images/wallpaper.jpg);
-
     background-image: url(img/wallpaper.jpg);
-
 }
 
 h4 {
@@ -125,10 +101,6 @@ h4 {
     font-size: 100%;
 }
 
-.labelSizeNormal{
-    font-size: 100%;
-}
-
 .tabMenu{
     margin-bottom: 15px;
     margin-top: 10px;
@@ -137,11 +109,9 @@ h4 {
 .navbar {
     background-color: black;
 }
-
 .control-group {
     padding-bottom: 10px;
 }
-
 
 .controle-group
 {
@@ -153,22 +123,6 @@ h4 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 
-}
-
-.nomargin {
-    margin: 0;
-}
-
-.file-table {
-    display: block;
-}
-
-.displayBlock {
-    display: block;
-}
-
-.fileItem {
-;
 }
 
 .nomargin {
@@ -193,13 +147,10 @@ display: block;
     padding: 8px;
 }
 
+
 div.jGrowl-notification{
     background-color : transparent;
     opacity : 1;
-}
-
-.little-marge-right {
-    margin-right: 20px
 }
 
 
@@ -215,26 +166,6 @@ div.jGrowl-notification{
     padding-left: 10px;
 }
 
-.little-height {
-    height: 10px;
-}
-
-.littleMargeBot {
-    margin-bottom: 10px;
-}
-
-.little-padding-top,
-.little-padding-bottom {
-    padding-top: 3px;
-}
-
-.little-marge-top {
-    margin-top: 5px;
-}
-
-.little-padding {
-    padding: 0.10em 0.6em;
-}
 
 .little-height{
     height: 10px;
@@ -270,7 +201,6 @@ div.jGrowl-notification{
     width: 550px;
 
 }
-
 
 
 .avatar-float-left-container  {
@@ -314,11 +244,11 @@ div.jGrowl-notification{
 }
 
 .img-small {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-position: center center;
     background-size: cover;
-    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .img-reply {
@@ -335,7 +265,7 @@ div.jGrowl-notification{
     height: 50px;
     background-position: center center;
     background-size: cover;
-    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
+    -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
 .img-medium-big {
@@ -351,7 +281,6 @@ div.jGrowl-notification{
     height: 200px;
     background-position: center center;
     background-size: cover;
-    -ms-behavior: url(/assets/vendor/backgroundsize.min.htc);
     -ms-behavior: url(/css/vendor/backgroundsize.min.htc);
 }
 
@@ -390,6 +319,7 @@ div.jGrowl-notification{
     word-wrap: break-word;
 }
 
+
 .status-actions {
     margin-left: -60px;
 }
@@ -417,14 +347,12 @@ div.jGrowl-notification{
     background-color: white;
     margin-bottom: -1px;
 }
-
 .desactivated {
     /* Fallback for web browsers that don't support RGBa */
     background-color: rgb(255,64,64);
     /* RGBa with 0.6 opacity */
     background-color: rgba(241, 241, 241, 0.65) !important;
 }
-
 .useritemmini {
     padding: 0 5px 1px 35px;
     overflow: hidden;
@@ -465,7 +393,6 @@ div.jGrowl-notification{
 }
 
 .tatam.share {
-
     background-image: url(img/shared.png);
     background-repeat: no-repeat;
     background-position: right top;
@@ -484,7 +411,6 @@ div.jGrowl-notification{
 }
 
 .both {
-
     background-image: url(img/both.png);
     background-repeat: no-repeat;
     background-position: right top;
@@ -510,7 +436,6 @@ div.jGrowl-notification{
 }
 
 .tatams {
-    /*margin-bottom: 5px;*/
     /*margin-bottom: 15px;*/
 }
 
@@ -549,18 +474,10 @@ div.jGrowl-notification{
 }
 
 
-/*
-.tatams-discussion {
-    margin-top: 0;
-    margin-left: -60px;
-}
-*/
-
 /*.tatams-discussion {
     margin-top: 0;
     margin-left: -60px;
 }*/
-
 
 .tatams-discussion > .tatam > header {
     margin-top: 0;
@@ -605,9 +522,9 @@ div.jGrowl-notification{
 
 /* Style for degradated fileUpload on IE8 */
 .controlsIE {
-    text-align: left;
-    vertical-align: middle;
-    margin-bottom: 20px;
+text-align: left;
+vertical-align: middle;
+margin-bottom: 20px;
 }
 
 .controlsIE p {
@@ -688,7 +605,7 @@ div.jGrowl-notification{
     padding: 0;
     margin: 0;
     border-top: 1px solid #CCCCCC;
-    margin-bottom: -2px
+    margin-bottom: -2px;
     margin-top: 0;
 }
 
@@ -754,22 +671,21 @@ div.jGrowl-notification{
 }
 
 @media (min-width: 979px) {
-    .typeahead.dropdown-menu.hasCategory {
-        margin-left: -53px;
-    }
+  .typeahead.dropdown-menu.hasCategory{
+    margin-left: -53px;
+  }
 
-    #searchHeader {
-        width: 320px;
-    }
+  #searchHeader{
+    width: 320px;
+  }
 }
 
-.hasCategory .item {
+.hasCategory .item{
     height: 100%;
     margin-left: 40px;
     background: #FFFFFF;
     cursor: pointer;
 }
-
 .hasCategory .category {
     cursor: default;
     height: auto;
@@ -777,25 +693,20 @@ div.jGrowl-notification{
     padding: 6px 5px 5px 13px;
     width:30px;
 }
-
-.hasCategory li.first {
+.hasCategory li.first{
     margin-top:-31px;
 }
-
-.hasCategory li.first, .hasCategory .category {
+.hasCategory li.first, .hasCategory .category{
     /*border-top: 1px solid #CCCCCC;*/
 }
-
-.hasCategory li.item.active a {
+.hasCategory li.item.active a{
     height: 24px;
     padding:0;
 }
-
-.hasCategory li:first-child {
+.hasCategory li:first-child{
     border-top: none;
 }
-
-.hasCategory li.item img {
+.hasCategory li.item img{
     display: block;
     float: left;
     margin: 2px 8px 0 3px;
@@ -803,29 +714,24 @@ div.jGrowl-notification{
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
-.hasCategory li.item h4 {
+.hasCategory li.item h4{
     font-size: 12px;
     margin: 0 1px 0 0;
 }
-
-.hasCategory li.item h4 a {
+.hasCategory li.item h4 a{
     color:#000;
     padding:0;
 }
-
-.hasCategory li.item p {
+.hasCategory li.item p{
     font-size: 11px;
     margin: 0;
     overflow: hidden;
     height: auto;
     line-height: 11px;
 }
-
-.hasCategory li.item.users, .hasCategory li.item.groups {
+.hasCategory li.item.users, .hasCategory li.item.groups{
     padding: 3px 0 4px 5px;
 }
-
 .hasCategory li.item.active,
 .hasCategory li.item:hover {
     color: #ffffff;
@@ -840,33 +746,29 @@ div.jGrowl-notification{
     outline: 0;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
 }
-
-.hasCategory li.item a:hover {
+.hasCategory li.item a:hover{
     text-decoration: none;
 }
-
-.hasCategory li.tags a {
+.hasCategory li.tags a{
     padding: 3px 10px;
 }
-
-.hasCategory li.groups p {
+.hasCategory li.groups p{
     margin-left: 10px;
     margin-top: -2px;
 }
-
-.box-info {
+.box-info{
     background: none;
     border: none;
     box-shadow: none;
 }
 
 .nav-collapse .dropdown-menu .divider {
-    display: block;
-    height: 0;
-    border-bottom: 1px solid #CCCCCC;
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: block;
+  height: 0;
+  border-bottom: 1px solid #CCCCCC;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .background-image-fffix {
@@ -906,12 +808,13 @@ div.jGrowl-notification{
 .statusitem-name {
     padding: 0;
     margin: 0;
-    /*margin-top: -4px;*/
-    /*margin-bottom: 7px;*/
+    margin-top: -4px;
+    margin-bottom: 7px;
 }
 
 .statusitem-content {
     margin-bottom: 5px;
+
 }
 
 .statusitem-footer {
@@ -927,7 +830,7 @@ div.jGrowl-notification{
     padding-top : 7px;
 }
 
-#before {
+#before{
     padding: 0;
     margin: 0;
 }
@@ -936,13 +839,14 @@ div.jGrowl-notification{
 
 }
 
-.status-content-container {
+#status-content-container {
     margin-left: 65px;
     margin-right: 30px;
 }
 
 .statusitem-img {
     margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 .attachments {
@@ -960,7 +864,6 @@ div.jGrowl-notification{
     .buttons }
 @media screen and (max-width: 767px) {
     #buttons {
-
         clear: both;
     }
 
@@ -1015,6 +918,7 @@ div.jGrowl-notification{
 }
 
 @media screen and (min-width: 767px) {
+
     .slider-container {
         display: table;
         margin: 0 auto;
@@ -1038,7 +942,9 @@ div.jGrowl-notification{
         max-width: 900px;
         max-height: 550px;
     }
+
 }
+
 
 @media screen and (max-width: 767px) {
     .slider-container {
@@ -1064,7 +970,11 @@ div.jGrowl-notification{
         max-width: 500px;
         max-height: 550px;
     }
+
 }
+
+
+
 
 .slider-container .slider-container-header {
     height: 0;
@@ -1107,3 +1017,4 @@ div.jGrowl-notification{
     right: 10px;
     bottom: 50%;
 }
+
