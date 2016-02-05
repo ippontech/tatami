@@ -52,7 +52,7 @@
                         </fieldset>
                     </form>
                     <div class="form-group">
-                        <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tatami.about.tos" translate="login.google.tos"></button>
+                        <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.google.tos"></button>
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item">
@@ -80,7 +80,7 @@
             <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
                 <fieldset>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.email' | translate }}" autofocus>
+                        <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.username' | translate }}" autofocus>
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.form.password' | translate }}">
@@ -120,7 +120,7 @@
             <form ng-submit="resetPassword()" accept-charset="utf-8">
                 <fieldset>
                     <div class="form-group">
-                        <input ng-model="user.email" name="email" type="email" required="required" placeholder="{{ 'login.form.email' | translate }}">
+                        <input class="form-control" ng-model="user.email" name="email" type="email" required="required" placeholder="{{ 'login.form.email' | translate }}">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block text-center" translate="login.password.reset"></button>
                 </fieldset>
@@ -152,7 +152,7 @@
                     </div>
                 </fieldset>
             </form>
-            <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tatami.about.tos" translate="login.google.tos"></button>
+            <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.google.tos"></button>
         </div>
             </div>
         </div>
