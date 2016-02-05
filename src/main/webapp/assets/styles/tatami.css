@@ -38,6 +38,7 @@
         padding: 0;
     }
 }
+
 .noRadius
 {
     border-radius: 0;
@@ -51,11 +52,6 @@
 .noBorder{
     border-top : 0;
 }
-
-.noRadius {
-    border-radius: 0;
-}
-
 
 #basicMap {
     width: 100%;
@@ -101,7 +97,7 @@ h4 {
     margin: 0;
 }
 
-.labelSizeNormal{
+.labelSizeNormal {
     font-size: 100%;
 }
 
@@ -126,7 +122,7 @@ h4 {
     color: #333333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-;
+
 }
 
 .nomargin {
@@ -157,6 +153,7 @@ div.jGrowl-notification{
     opacity : 1;
 }
 
+
 .little-marge-right{
     margin-right: 20px
 }
@@ -168,6 +165,7 @@ div.jGrowl-notification{
 .smallPaddingLeft {
     padding-left: 10px;
 }
+
 
 .little-height{
     height: 10px;
@@ -474,6 +472,7 @@ div.jGrowl-notification{
 .tatams-share-img {
     margin-top: 5px;
 }
+
 
 /*.tatams-discussion {
     margin-top: 0;
