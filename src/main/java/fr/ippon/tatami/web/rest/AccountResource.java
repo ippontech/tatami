@@ -29,7 +29,7 @@ import java.util.*;
  * REST controller for managing the current user's account.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/tatami")
 public class AccountResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
@@ -100,7 +100,7 @@ public class AccountResource {
     /**
      * GET  /account -> get the current user.
      */
-    @RequestMapping(value = "/account",
+    @RequestMapping(value = "/rest/account/profile",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

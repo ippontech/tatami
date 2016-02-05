@@ -16,6 +16,7 @@ angular.module('tatamiJHipsterApp')
                         templateUrl: 'scripts/app/account/account.html',
 
                     }
+
                 },
 
 
@@ -25,10 +26,18 @@ angular.module('tatamiJHipsterApp')
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('account');
+                        console.log("1st Test");
                         return $translate.refresh();
-                    }]
+                    }],
+                    profileInfo: ['Account', function(Account) {
+                        console.log("Test");
+                        return Account.get().$promise;
+                    }],
+
                 }
+               
             })
+
 
 
     });
@@ -52,8 +61,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             abstract: true,
             templateUrl: 'app/components/account/AccountView.min.html',
             resolve: {
-                profileInfo: ['ProfileService', function(ProfileService) {
-                    return ProfileService.get().$promise;
+                profileInfo: ['Account', function(Account) {
+                    return Account.get().$promise;
                 }],
                 userRoles: ['$http', function($http) {
                     return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {

@@ -2,7 +2,7 @@
 
 angular.module('tatamiJHipsterApp')
     .factory('Account', function Account($resource) {
-        return $resource('api/account', {}, {
+        return $resource('/tatami/rest/account/profile', {}, {
             'get': { method: 'GET', params: {}, isArray: false,
                 interceptor: {
                     response: function(response) {

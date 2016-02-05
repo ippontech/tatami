@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * <p>Another option would be to have a specific JPA entity graph to handle this case.</p>
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/tatami")
 public class UserResource {
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
