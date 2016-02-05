@@ -31,3 +31,13 @@
     bottom:43px;
 }
 
+.platform-ios .bar.bar-footer {
+    bottom: 43px; !important;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
