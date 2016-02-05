@@ -3,7 +3,7 @@
         <button class="button button-clear button-small icon ion-close-round" style="opacity:0.4;" ng-click="vm.close()">
         </button>
     </ion-nav-buttons>
-    <ion-content padding="true">
+    <ion-content padding="true" class="has-subheader has-footer">
         <div>
             <form name="newPost" novalidate="">
                 <div class="list">
@@ -26,11 +26,11 @@
             </div>
         </span>
     </ion-content>
-    <ion-footer-bar align-title="right" keyboard-attach class="bar-stable apply-footer" style="bottom: 44px;">
-        <div class="row">
-            <button style="opacity: 0.5;" class="col-20 button button-clear icon ion-camera" ng-click="vm.getPicture()"></button>
-            <button style="opacity: 0.5;" class="col-20 button button-clear icon ion-images" ng-click="vm.getPictureFromLibrary()"></button>
-            <button style="opacity: 0.5;" class="col-20 button button-clear icon tatami-location" ng-click="vm.getLocation()"></button>
+    <ion-footer-bar align-title="right" tatami-post-bar-attach="true" class="bar-stable apply-footer">
+        <div class="row" style="width:50%;">
+            <button style="opacity: 0.5;" class="col-33 button button-clear icon ion-camera" ng-click="vm.getPicture()"></button>
+            <button style="opacity: 0.5;" class="col-33 button button-clear icon ion-images" ng-click="vm.getPictureFromLibrary()"></button>
+            <button style="opacity: 0.5;" class="col-33 button button-clear icon tatami-location" ng-click="vm.getLocation()"></button>
         </div>
 
         <h1 class="title" style="opacity: 0.5;">{{ vm.charCount - vm.status.content.length }}</h1>

@@ -13,6 +13,7 @@
                 templateUrl: 'app/components/post/post.html',
                 controller: 'PostCtrl',
                 controllerAs: 'vm',
+
                 resolve: {
                     repliedToStatus: getRepliedToStatus
                 }
