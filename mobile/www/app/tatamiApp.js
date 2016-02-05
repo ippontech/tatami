@@ -35,7 +35,7 @@ angular.module('tatami', ['ionic', 'tatami.services', 'ngResource', 'ngCordova']
             .state('tatami', {
                 url: '',
                 abstract: true,
-                template: '<ion-nav-view></ion-nav-view>'
+                templateUrl: 'app/tatami.html'
             });
 
         // if none of the above states are matched, use this as the fallback
