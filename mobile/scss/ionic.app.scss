@@ -32,3 +32,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         @extend .ion-android-locate;
     }
 }
+
+.item-image i:last-child {
+    position: absolute;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    top: 15px;
+    right: 15px;
+}
