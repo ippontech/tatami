@@ -18,10 +18,11 @@
                 </div>
             </form>
         </div>
-        <span ng-repeat="image in vm.images">
+        <span ng-repeat="image in vm.images track by $index">
             <div class="list card">
                 <div class="item item-image">
                     <img class="center" ng-show="vm.images.length > 0" ng-src="{{ image }}">
+                    <i class="icon ion-close-round light" ng-click="vm.remove($index)"></i>
                 </div>
             </div>
         </span>

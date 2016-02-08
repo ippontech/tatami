@@ -22,6 +22,7 @@
         vm.close = close;
         vm.getPicture = getPicture;
         vm.getPictureFromLibrary = getPictureFromLibrary;
+        vm.remove = remove;
 
         function post() {
             upload().then(createPost);
@@ -106,6 +107,10 @@
 
         function onFail(failure) {
             console.log(failure);
+        }
+
+        function remove(index) {
+            vm.images.splice(index, 1);
         }
     }
 })();
