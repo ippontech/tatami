@@ -4,8 +4,8 @@
     angular.module('tatami')
         .controller('PostCtrl', postCtrl);
 
-    postCtrl.$inject = ['StatusService', 'PathService', '$ionicHistory', '$state', '$cordovaCamera', 'repliedToStatus'];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, repliedToStatus) {
+    postCtrl.$inject = ['StatusService', 'PathService', '$ionicHistory', '$state', '$cordovaCamera', '$q', 'repliedToStatus'];
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, repliedToStatus) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -24,21 +24,25 @@
         vm.getPictureFromLibrary = getPictureFromLibrary;
 
         function post() {
-            upload();
+            upload().then(createPost);
+        }
+
+        function createPost(attachmentIds) {
+            vm.status.attachmentIds = attachmentIds;
             StatusService.save(vm.status, function() {
                 reset();
                 $ionicHistory.clearCache();
                 $state.go('timeline');
-            })
+            });
         }
 
         function reset() {
             vm.status = {
                 content: '',
-                statusPrivate: false
+                statusPrivate: false,
+                attachmentIds: []
             };
             vm.images = [];
-            vm.attachmentIds = [];
         }
 
         function close() {
@@ -47,12 +51,17 @@
         }
 
         function getPicture() {
-            $cordovaCamera.getPicture().then(store);
+            var options = {
+                correctOrientation : true
+            };
+
+            $cordovaCamera.getPicture(options).then(store);
         }
 
         function getPictureFromLibrary() {
             var options = {
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                correctOrientation: true
             };
 
             $cordovaCamera.getPicture(options).then(store);
@@ -63,32 +72,36 @@
         }
 
         function upload() {
+            var promises = [];
+            var deferred = $q.defer();
+
             var options = new FileUploadOptions();
             var fileTransfer = new FileTransfer();
             angular.forEach(vm.images, function(image) {
+                options.fileKey = 'uploadFile';
                 options.fileName = image.substr(image.lastIndexOf('/') + 1);
-                var imageData = readFileAsBinaryString(image);
-                options.params = { 'uploadFile': imageData };
 
                 fileTransfer.upload(image, PathService.buildPath('/tatami/rest/fileupload'), onSuccess, onFail, options);
-            })
+                promises.push(deferred.promise);
+            });
 
+            function onSuccess(result) {
+                var jsonResult = JSON.parse(result.response)[0];
+                deferred.resolve(jsonResult.attachmentId);
+            }
+
+            function onFail(failure) {
+                console.log(failure);
+                deferred.resolve(failure);
+            }
+
+            return $q.all(promises);
         }
 
-        function readFileAsBinaryString(file) {
-            var reader = new FileReader();
-            reader.onloadend = function(e) {
-                var imgData = e.target.result;
-                return imgData;
-            };
-            reader.onerror = function(e) {
-                console.log("Error while reading file as binary string: "+e.target.error.code);
-            };
-            reader.readAsBinaryString(file);
-        }
-
-        function onSuccess(response) {
-            console.log(response);
+        function onSuccess(result) {
+            var jsonResult = JSON.parse(result.response)[0];
+            deferred.resolve(jsonResult.attachmentId);
+            vm.status.attachmentIds.push(jsonResult.attachmentId);
         }
 
         function onFail(failure) {
