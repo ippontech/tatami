@@ -16,6 +16,7 @@
             attachmentIds: []
         };
         vm.images = [];
+        vm.isPosting = false;
 
         vm.post = post;
         vm.reset = reset;
@@ -44,6 +45,7 @@
                 attachmentIds: []
             };
             vm.images = [];
+            vm.isPosting = false;
         }
 
         function close() {
@@ -75,6 +77,7 @@
         function upload() {
             var promises = [];
             var deferred = $q.defer();
+            vm.isPosting = true;
 
             var options = new FileUploadOptions();
             var fileTransfer = new FileTransfer();
