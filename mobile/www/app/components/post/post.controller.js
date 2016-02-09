@@ -101,17 +101,7 @@
 
             return $q.all(promises);
         }
-
-        function onSuccess(result) {
-            var jsonResult = JSON.parse(result.response)[0];
-            deferred.resolve(jsonResult.attachmentId);
-            vm.status.attachmentIds.push(jsonResult.attachmentId);
-        }
-
-        function onFail(failure) {
-            console.log(failure);
-        }
-
+        
         function remove(index) {
             vm.images.splice(index, 1);
         }
