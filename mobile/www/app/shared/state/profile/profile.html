@@ -2,9 +2,9 @@
     <ion-content>
         <tatami-user-detail user="vm.user"></tatami-user-detail>
         <ion-list>
-            <div ng-repeat="status in vm.statuses">
+            <ion-item ng-repeat="status in vm.statuses">
                 <tatami-status status="status" current-user="vm.currentUser"></tatami-status>
-            </div>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
