@@ -15,6 +15,7 @@
         },
         "form": {
             "email": "Email",
+            "username": "Username",
             "password": "Password",
             "password.placeholder": "Your password",
             "rememberme": "Remember me",
