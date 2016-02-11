@@ -4,8 +4,8 @@
     angular.module('tatami')
         .config(config);
 
-    config.$inject = ['$stateProvider', 'StatusStateProvider'];
-    function config($stateProvider, StatusStateProvider) {
+    config.$inject = ['$stateProvider'];
+    function config($stateProvider) {
 
         $stateProvider
             .state('timeline', {
@@ -23,7 +23,6 @@
                     statuses: getStatuses
                 }
             });
-            //.state('timeline.detail', StatusState.getProfileState('timeline', 'home'));
 
         getStatuses.$inject = ['StatusService'];
         function getStatuses(StatusService) {
@@ -34,11 +33,9 @@
     angular.module('tatami')
         .run(run);
 
-    run.$inject = ['StatusState'];
-    function run(StatusState) {
-        StatusState.addStatusState('timeline', 'home');
-        StatusState.addStatusState('mentions', 'home');
-        StatusState.addStatusState('favorites', 'home');
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addStatusState('timeline', 'home');
     }
 
 })();

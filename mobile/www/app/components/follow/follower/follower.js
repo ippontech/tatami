@@ -36,6 +36,19 @@
                     currentUser: getCurrentUser
                 }
             })
+            .state('follower.detail', {
+                url: '/status/:statusId',
+                views: {
+                    'follower@follow': {
+                        templateUrl: 'app/components/home/detail/detail.html',
+                        controller: 'DetailCtrl',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    status: getStatus
+                }
+            })
     }
 
     followers.$inject = ['UserService', 'currentUser'];
@@ -56,5 +69,10 @@
     getCurrentUser.$inject = ['currentUser'];
     function getCurrentUser(currentUser) {
         return currentUser;
+    }
+
+    getStatus.$inject = ['StatusService', '$stateParams'];
+    function getStatus(StatusService, $stateParams) {
+        return StatusService.get({ statusId : $stateParams.statusId }).$promise;
     }
 })();
