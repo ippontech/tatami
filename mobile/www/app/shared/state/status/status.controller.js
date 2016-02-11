@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('tatami')
-        .controller('DetailCtrl', detailCtrl);
+        .controller('StatusCtrl', statusCtrl);
 
-    detailCtrl.$inject = ['status'];
-    function detailCtrl(status) {
+    statusCtrl.$inject = ['status'];
+    function statusCtrl(status) {
         var vm = this;
 
         vm.status = status;
