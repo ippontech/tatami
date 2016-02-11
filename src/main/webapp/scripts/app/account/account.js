@@ -19,10 +19,6 @@ angular.module('tatamiJHipsterApp')
 
                 },
 
-
-
-
-
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('account');
@@ -35,7 +31,7 @@ angular.module('tatamiJHipsterApp')
                     }],
 
                 }
-               
+
             })
 
 

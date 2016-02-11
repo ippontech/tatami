@@ -2,7 +2,7 @@
 
 angular.module('tatamiJHipsterApp')
     .factory('User', function ($resource) {
-        return $resource('api/users/:login', {}, {
+        return $resource('tatami/rest/users/:username', {}, {
                 'query': {method: 'GET', isArray: true},
                 'get': {
                     method: 'GET',
