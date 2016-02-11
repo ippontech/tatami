@@ -18,10 +18,19 @@
                 controllerAs: 'vm'
             };
 
-            var views = [];
-            views['timeline@home'] = { 'timeline@home': statusViewConfig };
-            views['mentions@home'] = { 'mentions@home': statusViewConfig };
-            views['favorites@home'] = { 'favorites@home': statusViewConfig };
+            var statusViews = [];
+            statusViews['timeline@home'] = { 'timeline@home': statusViewConfig };
+            statusViews['mentions@home'] = { 'mentions@home': statusViewConfig };
+            statusViews['favorites@home'] = { 'favorites@home': statusViewConfig };
+
+            var profileViewConfig = {
+                templateUrl: 'app/shared/state/profile/profile.html',
+                controller: 'ProfileCtrl',
+                controllerAs: 'vm'
+            };
+
+            var profileViews = [];
+            profileViews['suggested@follow'] = { 'suggested@follow': profileViewConfig };
 
             var service = {
                 addStatusState: addStatusState,
@@ -31,10 +40,9 @@
             return service;
 
             function addStatusState(prefixName, parentName) {
-                var viewName = prefixName + '@' + parentName;
                 $stateProvider.state(prefixName + '.status', {
                     url: '/status/:statusId',
-                    views: views[prefixName + '@' + parentName],
+                    views: statusViews[prefixName + '@' + parentName],
                     resolve: {
                         status: getStatus
                     }
@@ -47,7 +55,30 @@
             }
 
             function addProfileState(prefixName, parentName) {
+                $stateProvider.state(prefixName + '.profile', {
+                    url: '/profile/:username',
+                    views: profileViews[prefixName + '@' + parentName],
+                    resolve: {
+                        user: getUser,
+                        statuses: getStatuses,
+                        currentUser: getCurrentUser
+                    }
+                });
 
+                getUser.$inject = ['UserService', '$stateParams'];
+                function getUser(UserService, $stateParams) {
+                    return UserService.get({ username : $stateParams.username }).$promise;
+                }
+
+                getStatuses.$inject = ['user', 'StatusService'];
+                function getStatuses(user, StatusService) {
+                    return StatusService.getUserTimeline({ username: user.username }).$promise;
+                }
+
+                getCurrentUser.$inject = ['currentUser'];
+                function getCurrentUser(currentUser) {
+                    return currentUser;
+                }
             }
 
 
