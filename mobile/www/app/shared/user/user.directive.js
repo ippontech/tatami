@@ -4,8 +4,8 @@
     angular.module('tatami')
         .directive('tatamiUser', tatamiUser);
 
-    tatamiUser.$inject = ['$state'];
-    function tatamiUser($state) {
+    tatamiUser.$inject = [];
+    function tatamiUser() {
         var directive = {
             restrict: 'E',
             scope: {
@@ -19,17 +19,24 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', 'UserService'];
-    function controller($scope, UserService) {
+    controller.$inject = ['$scope', '$state', 'UserService'];
+    function controller($scope, $state, UserService) {
         var vm = this;
 
         vm.user = $scope.user;
         vm.followUser = followUser;
+        vm.goToProfile = goToProfile;
+
         function followUser() {
             UserService.follow({ username : vm.user.username }, { friend: !vm.user.friend, friendShip: true },
                 function() {
                     vm.user.friend = !vm.user.friend;
                 });
+        }
+
+        function goToProfile(username) {
+            var destinationState = $state.current.name.split('.')[0] + '.profile';
+            $state.go(destinationState, { username : username });
         }
 
     }
