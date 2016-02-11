@@ -11,7 +11,6 @@
             .state('timeline', {
                 url: '/timeline',
                 parent: 'home',
-                cache: false,
                 views: {
                     'timeline': {
                         templateUrl: 'app/components/home/timeline/timeline.html',
