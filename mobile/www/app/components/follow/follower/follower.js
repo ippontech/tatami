@@ -20,37 +20,20 @@
                 resolve: {
                     followers: followers
                 }
-            })
-            .state('follower.detail', {
-                url: '/status/:statusId',
-                views: {
-                    'follower@follow': {
-                        templateUrl: 'app/components/home/detail/detail.html',
-                        controller: 'DetailCtrl',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    status: getStatus
-                }
-            })
+            });
     }
 
     followers.$inject = ['UserService', 'currentUser'];
     function followers(UserService, currentUser) {
         return UserService.getFollowers({ username: currentUser.username }).$promise;
     }
-
-    getStatus.$inject = ['StatusService', '$stateParams'];
-    function getStatus(StatusService, $stateParams) {
-        return StatusService.get({ statusId : $stateParams.statusId }).$promise;
-    }
-
+    
     angular.module('tatami')
         .run(run);
 
     run.$inject = ['TatamiState'];
     function run(TatamiState) {
         TatamiState.addProfileState('follower', 'follow');
+        TatamiState.addStatusState('follower', 'follow');
     }
 })();

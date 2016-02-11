@@ -22,6 +22,9 @@
             statusViews['timeline@home'] = { 'timeline@home': statusViewConfig };
             statusViews['mentions@home'] = { 'mentions@home': statusViewConfig };
             statusViews['favorites@home'] = { 'favorites@home': statusViewConfig };
+            statusViews['suggested@follow'] = { 'suggested@follow': statusViewConfig };
+            statusViews['following@follow'] = { 'following@follow': statusViewConfig };
+            statusViews['follower@follow'] = { 'follower@follow': statusViewConfig };
 
             var profileViewConfig = {
                 templateUrl: 'app/shared/state/profile/profile.html',
