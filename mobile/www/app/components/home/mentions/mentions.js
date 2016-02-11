@@ -20,20 +20,15 @@
                 resolve: {
                     mentioned: mentioned
                 }
-            })
-            .state('mentions.detail', {
-                url: '/detail/:statusId',
-                views: {
-                    'mentions@home': {
-                        templateUrl: 'app/components/home/detail/detail.html',
-                        controller: 'DetailCtrl',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    status: getStatus
-                }
             });
+    }
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addStatusState('mentions', 'home');
     }
 
     mentioned.$inject = ['HomeService'];
@@ -41,9 +36,5 @@
         return HomeService.getMentions().$promise;
     }
 
-    getStatus.$inject = ['StatusService', '$stateParams'];
-    function getStatus(StatusService, $stateParams) {
-        return StatusService.get({ statusId : $stateParams.statusId }).$promise;
-    }
 })();
 
