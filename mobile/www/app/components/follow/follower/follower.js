@@ -21,21 +21,6 @@
                     followers: followers
                 }
             })
-            .state('follower.profile', {
-                url: '/profile/:username',
-                views: {
-                    'follower@follow': {
-                        templateUrl: 'app/components/profile/profile.html',
-                        controller: 'ProfileCtrl',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    user: getUser,
-                    statuses: getStatuses,
-                    currentUser: getCurrentUser
-                }
-            })
             .state('follower.detail', {
                 url: '/status/:statusId',
                 views: {
@@ -56,23 +41,16 @@
         return UserService.getFollowers({ username: currentUser.username }).$promise;
     }
 
-    getUser.$inject = ['UserService', '$stateParams'];
-    function getUser(UserService, $stateParams) {
-        return UserService.get({ username : $stateParams.username }).$promise;
-    }
-
-    getStatuses.$inject = ['user', 'StatusService'];
-    function getStatuses(user, StatusService) {
-        return StatusService.getUserTimeline({ username: user.username }).$promise;
-    }
-
-    getCurrentUser.$inject = ['currentUser'];
-    function getCurrentUser(currentUser) {
-        return currentUser;
-    }
-
     getStatus.$inject = ['StatusService', '$stateParams'];
     function getStatus(StatusService, $stateParams) {
         return StatusService.get({ statusId : $stateParams.statusId }).$promise;
+    }
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addProfileState('follower', 'follow');
     }
 })();

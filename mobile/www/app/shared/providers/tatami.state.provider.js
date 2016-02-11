@@ -31,6 +31,8 @@
 
             var profileViews = [];
             profileViews['suggested@follow'] = { 'suggested@follow': profileViewConfig };
+            profileViews['following@follow'] = { 'following@follow': profileViewConfig };
+            profileViews['follower@follow'] = { 'follower@follow': profileViewConfig };
 
             var service = {
                 addStatusState: addStatusState,
