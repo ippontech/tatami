@@ -4,8 +4,9 @@
     angular.module('tatami')
         .config(config);
 
-    config.$inject = ['$stateProvider'];
-    function config($stateProvider) {
+    config.$inject = ['$stateProvider', 'StatusStateProvider'];
+    function config($stateProvider, StatusStateProvider) {
+
         $stateProvider
             .state('timeline', {
                 url: '/timeline',
@@ -21,29 +22,23 @@
                 resolve: {
                     statuses: getStatuses
                 }
-            })
-            .state('timeline.detail', {
-                url: '/detail/:statusId',
-                views: {
-                    'timeline@home': {
-                        templateUrl: 'app/components/home/detail/detail.html',
-                        controller: 'DetailCtrl',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    status: getStatus
-                }
             });
+            //.state('timeline.detail', StatusState.getProfileState('timeline', 'home'));
 
         getStatuses.$inject = ['StatusService'];
         function getStatuses(StatusService) {
             return StatusService.getHomeTimeline().$promise;
         }
-
-        getStatus.$inject = ['StatusService', '$stateParams'];
-        function getStatus(StatusService, $stateParams) {
-            return StatusService.get({ statusId : $stateParams.statusId }).$promise;
-        }
     }
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['StatusState'];
+    function run(StatusState) {
+        StatusState.addStatusState('timeline', 'home');
+        StatusState.addStatusState('mentions', 'home');
+        StatusState.addStatusState('favorites', 'home');
+    }
+
 })();
