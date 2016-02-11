@@ -83,7 +83,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testNonAuthenticatedUser() throws Exception {
-        restUserMockMvc.perform(get("/api/authenticate")
+        restUserMockMvc.perform(get("/tatami/authenticate")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
@@ -91,7 +91,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testAuthenticatedUser() throws Exception {
-        restUserMockMvc.perform(get("/api/authenticate")
+        restUserMockMvc.perform(get("/tatami/authenticate")
                 .with(request -> {
                     request.setRemoteUser("test");
                     return request;
@@ -114,9 +114,9 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         user.setAuthorities(authorities);
         when(mockUserService.getUserWithAuthorities()).thenReturn(user);
 
-        restUserMockMvc.perform(get("/api/account")
+        restUserMockMvc.perform(get("/tatami/rest/account/profile")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isOk())//----------------------
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.login").value("test"))
                 .andExpect(jsonPath("$.firstName").value("john"))
@@ -129,9 +129,9 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     public void testGetUnknownAccount() throws Exception {
         when(mockUserService.getUserWithAuthorities()).thenReturn(null);
 
-        restUserMockMvc.perform(get("/api/account")
+        restUserMockMvc.perform(get("/tatami/rest/account/profile")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());//----------------------
     }
 
     @Test
@@ -149,7 +149,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
@@ -173,7 +173,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         restUserMockMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isBadRequest());
@@ -197,7 +197,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         restUserMockMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isBadRequest());
@@ -227,14 +227,14 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
         // Good user
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
         // Duplicate login
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
@@ -264,14 +264,14 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
         // Good user
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
         // Duplicate e-mail
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
@@ -295,7 +295,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         restMvc.perform(
-            post("/api/register")
+            post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());

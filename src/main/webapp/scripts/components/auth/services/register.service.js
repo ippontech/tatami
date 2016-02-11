@@ -2,7 +2,7 @@
 
 angular.module('tatamiJHipsterApp')
     .factory('Register', function ($resource) {
-        return $resource('api/register', {}, {
+        return $resource('tatami/register', {}, {
         });
     });
 
