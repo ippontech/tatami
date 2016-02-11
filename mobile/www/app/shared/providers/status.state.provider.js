@@ -10,8 +10,7 @@
     function statusState($stateProvider) {
         this.$get = StatusStateHelper;
 
-        StatusStateHelper.$inject = ['ViewService'];
-        function StatusStateHelper(ViewService) {
+        function StatusStateHelper() {
 
             var viewConfig = {
                 templateUrl: 'app/shared/state/status/status.html',
@@ -25,12 +24,12 @@
             views['favorites@home'] = { 'favorites@home': viewConfig };
 
             var service = {
-                addProfileState: addProfileState
+                addStatusState: addStatusState
             };
 
             return service;
 
-            function addProfileState(prefixName, parentName) {
+            function addStatusState(prefixName, parentName) {
                 console.log(views['timeline@home']);
                 var viewName = prefixName + '@' + parentName;
                 $stateProvider.state(prefixName + '.status', {
@@ -43,7 +42,6 @@
 
                 getStatus.$inject = ['$stateParams', 'StatusService'];
                 function getStatus($stateParams, StatusService) {
-                    console.log(ViewService);
                     return StatusService.get({ statusId : $stateParams.statusId }).$promise;
                 }
             }
