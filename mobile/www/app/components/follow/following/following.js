@@ -1,6 +1,11 @@
-angular.module('tatami')
-    .config(function ($stateProvider, $urlRouterProvider) {
+(function() {
+    'use strict';
 
+    angular.module('tatami')
+        .config(config);
+
+    config.$inject = ['$stateProvider'];
+    function config($stateProvider) {
         $stateProvider
             .state('following', {
                 url: '/following',
@@ -13,10 +18,21 @@ angular.module('tatami')
                     }
                 },
                 resolve: {
-                    following: ['UserService', 'currentUser', function(UserService, currentUser) {
-                        return UserService.getFollowing({ username: currentUser.username }).$promise;
-                    }]
+                    following: getFollowing
                 }
             });
     }
-);
+
+    getFollowing.$inject = ['UserService', 'currentUser'];
+    function getFollowing(UserService, currentUser) {
+        return UserService.getFollowing({ username: currentUser.username }).$promise;
+    }
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addProfileState('following', 'follow');
+    }
+})();
