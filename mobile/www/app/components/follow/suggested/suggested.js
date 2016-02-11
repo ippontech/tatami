@@ -1,6 +1,11 @@
-angular.module('tatami')
-    .config(function ($stateProvider, $urlRouterProvider) {
+(function() {
+    'use strict';
 
+    angular.module('tatami')
+        .config(config);
+
+    config.$inject = ['$stateProvider'];
+    function config($stateProvider) {
         $stateProvider
             .state('suggested', {
                 url: '/suggested',
@@ -18,4 +23,12 @@ angular.module('tatami')
                 }
             });
     }
-);
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addProfileState('suggested', 'follow');
+    }
+})();
