@@ -48,7 +48,7 @@
         }
 
         function goToConversation(statusId) {
-            var destinationState = $state.current.name + '.detail';
+            var destinationState = $state.current.name.split('.')[0] + '.status';
             $state.go(destinationState, { statusId : statusId });
         }
     }
