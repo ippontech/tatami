@@ -27,7 +27,7 @@
     function followers(UserService, currentUser) {
         return UserService.getFollowers({ username: currentUser.username }).$promise;
     }
-    
+
     angular.module('tatami')
         .run(run);
 
