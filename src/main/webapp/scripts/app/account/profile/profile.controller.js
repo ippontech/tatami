@@ -1,6 +1,6 @@
 angular.module('tatamiJHipsterApp')
-    .controller('ProfileController', ['$scope', '$translate', 'Account', 'profileInfo', 'userLogin',
-    function($scope, $translate, Account, profileInfo, userLogin) {
+    .controller('ProfileController', ['$scope', '$translate', 'Account', 'userLogin', 'ProfileService',
+    function($scope, $translate, Account, userLogin, ProfileService) {
 
 //        // Current state of the view
 //        $scope.current = {
@@ -16,20 +16,24 @@ angular.module('tatamiJHipsterApp')
 //        // Resolve the user data, profileInfo is inherited from account state
 //        // Since profileInfo is a resolve from the parent state, updating the model will cause
 //        // the first and last name in the side bar and text area to sync. Is this undesired?
-        $scope.userProfile = profileInfo;
-        $scope.userLogin = userLogin.login;
+
+
+        $scope.userProfile = userLogin;
+
+
+
 //
         // Update the user information
         $scope.updateUser = function() {
             ProfileService.update($scope.userProfile, function() {
-                ngToast.create({
-                    content: $translate.instant('account.profile.save')
-                });
-            }, function() {
-                ngToast.create({
-                    content: $translate.instant('form.fail'),
-                    class: 'danger'
-                });
+//                ngToast.create({
+//                    content: $translate.instant('account.profile.save')
+//                });
+//            }, function() {
+//                ngToast.create({
+//                    content: $translate.instant('form.fail'),
+//                    class: 'danger'
+//                });
             });
         };
 //

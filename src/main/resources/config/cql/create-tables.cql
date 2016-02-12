@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS user (
     firstname text,
     lastname text,
     email text,
+    phonenumber text,
+    jobtitle text,
     activated boolean,
     lang_key text,
     activation_key text,

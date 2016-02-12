@@ -18,7 +18,7 @@ angular.module('tatamiJHipsterApp')
                     }
                 },
                 'update': {
-                    method: 'PUT',
+                    method: 'POST',
                     transformRequest: function (profile) {
                         delete profile['avatarURL'];
                         return angular.toJson(profile);

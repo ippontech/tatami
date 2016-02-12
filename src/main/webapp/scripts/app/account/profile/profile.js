@@ -9,10 +9,7 @@ angular.module('tatamiJHipsterApp')
 
                 templateUrl: 'scripts/app/account/profile/profile.html',
                 resolve: {
-                    userLogin: ['User', 'profileInfo', function(User, profileInfo) {
-//                        console.log(profileInfo);
-//                        console.log(profileInfo.data.login);
-//                        return User.get({ username: profileInfo.data.login }).$promise;
+                    userLogin: ['profileInfo', function(profileInfo) {
                             return profileInfo.data;
                     }]
                 },

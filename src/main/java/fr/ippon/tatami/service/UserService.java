@@ -6,6 +6,8 @@ import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
+
+import java.lang.String;
 import java.time.ZonedDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +77,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-        String langKey) {
+        String langKey, String jobTitle, String phoneNumber) {
 
         User newUser = new User();
         newUser.setId(UUID.randomUUID().toString());
@@ -88,6 +90,8 @@ public class UserService {
         newUser.setLastName(lastName);
         newUser.setEmail(email);
         newUser.setLangKey(langKey);
+        newUser.setJobTitle(jobTitle);
+        newUser.setPhoneNumber(phoneNumber);
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -106,6 +110,8 @@ public class UserService {
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail());
+        user.setPhoneNumber(managedUserDTO.getPhoneNumber());
+        user.setJobTitle(managedUserDTO.getJobTitle());
         if (managedUserDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language is English
         } else {
@@ -122,12 +128,14 @@ public class UserService {
         return user;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
+    public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle, String phoneNumber) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
             u.setLangKey(langKey);
+            u.setJobTitle(jobTitle);
+            u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
             log.debug("Changed Information for User: {}", u);
         });

@@ -22,11 +22,9 @@ angular.module('tatamiJHipsterApp')
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('account');
-                        console.log("1st Test");
                         return $translate.refresh();
                     }],
                     profileInfo: ['Account', function(Account) {
-                        console.log("Test");
                         return Account.get().$promise;
                     }],
 

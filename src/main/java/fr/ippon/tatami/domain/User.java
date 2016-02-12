@@ -28,7 +28,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60) 
+    @Size(min = 60, max = 60)
     private String password;
 
     @Size(max = 50)
@@ -36,6 +36,12 @@ public class User implements Serializable {
 
     @Size(max = 50)
     private String lastName;
+
+    @Size(min = 0, max = 100)
+    private String jobTitle;
+
+    @Size(min = 0, max = 20)
+    private String phoneNumber;
 
     @Email
     @Size(max = 100)
@@ -61,6 +67,14 @@ public class User implements Serializable {
 
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
+
+    public String getJobTitle() { return jobTitle; }
+
+    public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }
+
+    public String getPhoneNumber() { return phoneNumber; }
+
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public String getId() {
         return id;
@@ -191,6 +205,8 @@ public class User implements Serializable {
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", jobTitle='" + jobTitle + '\'' +
             "}";
     }
 }
