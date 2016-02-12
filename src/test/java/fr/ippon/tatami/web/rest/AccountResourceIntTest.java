@@ -124,9 +124,9 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .andExpect(jsonPath("$.firstName").value("john"))
                 .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
-                .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
-//                .andExpect(jsonPath("$.jobtitle").value("developer"))
-//                .andExpect(jsonPath("$.phonenumber").value("123-456-7890"));
+                .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN))
+                .andExpect(jsonPath("$.jobTitle").value("developer"))
+                .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"));
     }
 
     @Test
