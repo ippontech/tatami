@@ -135,7 +135,7 @@ public class AccountResource {
     /**
      * POST  /change_password -> changes the current user's password
      */
-    @RequestMapping(value = "/account/change_password",
+    @RequestMapping(value = "/rest/account/change_password",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -147,7 +147,7 @@ public class AccountResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/account/reset_password/init",
+    @RequestMapping(value = "/rest/account/reset_password/init",
         method = RequestMethod.POST,
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
@@ -165,7 +165,7 @@ public class AccountResource {
             }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
     }
 
-    @RequestMapping(value = "/account/reset_password/finish",
+    @RequestMapping(value = "/rest/account/reset_password/finish",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

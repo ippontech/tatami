@@ -31,6 +31,11 @@ angular.module('tatamiJHipsterApp')
                 }
 
             })
+            .state('account.password', {
+                        url: '/password',
+                        templateUrl: 'scripts/app/login/password/password.html',
+                        controller: 'PasswordController'
+            })
 
 
 
