@@ -1,6 +1,6 @@
 angular.module('tatamiJHipsterApp')
-    .controller('ProfileController', ['$scope', '$translate', 'Account', 'userLogin', 'ProfileService',
-    function($scope, $translate, Account, userLogin, ProfileService) {
+    .controller('ProfileController', ['$scope', '$translate', 'Account', 'userLogin', 'ProfileService', 'ngToast',
+    function($scope, $translate, Account, userLogin, ProfileService, ngToast) {
 
 //        // Current state of the view
 //        $scope.current = {
@@ -26,14 +26,14 @@ angular.module('tatamiJHipsterApp')
         // Update the user information
         $scope.updateUser = function() {
             ProfileService.update($scope.userProfile, function() {
-//                ngToast.create({
-//                    content: $translate.instant('account.profile.save')
-//                });
-//            }, function() {
-//                ngToast.create({
-//                    content: $translate.instant('form.fail'),
-//                    class: 'danger'
-//                });
+                ngToast.create({
+                    content: $translate.instant('account.profile.save')
+                });
+            }, function() {
+                ngToast.create({
+                    content: $translate.instant('form.fail'),
+                    class: 'danger'
+                });
             });
         };
 //
