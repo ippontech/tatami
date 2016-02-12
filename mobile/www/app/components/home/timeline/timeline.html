@@ -1,5 +1,6 @@
 <ion-view view-title="Timeline">
     <ion-content>
+        <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <ion-list>
             <ion-item ng-repeat="status in vm.statuses">
                 <tatami-status status="status"></tatami-status>

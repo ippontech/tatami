@@ -9,5 +9,10 @@
         var vm = this;
 
         vm.statuses = statuses;
+        vm.getNewStatuses = getNewStatuses;
+
+        function getNewStatuses() {
+            
+        }
     }
 })();
