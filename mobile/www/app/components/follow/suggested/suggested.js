@@ -13,15 +13,19 @@
                 views: {
                     'suggested': {
                         templateUrl: 'app/components/follow/suggested/suggested.html',
-                        controller: 'SuggestedCtrl'
+                        controller: 'SuggestedCtrl',
+                        controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    suggested: ['UserService', function(UserService) {
-                        return UserService.getSuggestions().$promise;
-                    }]
+                    suggested: getSuggested
                 }
             });
+    }
+
+    getSuggested.$inject = ['UserService'];
+    function getSuggested(UserService) {
+        return UserService.getSuggestions().$promise;
     }
 
     angular.module('tatami')
