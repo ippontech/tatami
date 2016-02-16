@@ -2,9 +2,9 @@
     <ion-content>
         <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <ion-list>
-            <div ng-repeat="mention in vm.mentioned">
+            <ion-item ng-repeat="mention in vm.mentioned">
                 <tatami-status status="mention"></tatami-status>
-            </div>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
