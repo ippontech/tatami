@@ -1,5 +1,6 @@
 <ion-view view-title="Mentions">
     <ion-content>
+        <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <ion-list>
             <div ng-repeat="mention in vm.mentioned">
                 <tatami-status status="mention"></tatami-status>
