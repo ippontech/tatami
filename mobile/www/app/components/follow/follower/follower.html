@@ -1,5 +1,6 @@
 <ion-view view-title="Followers">
     <ion-content>
+        <ion-refresher on-refresh="vm.getNewFollowers()"></ion-refresher>
         <ion-list>
             <div ng-repeat="user in vm.followers">
                 <tatami-user user="user"></tatami-user>
