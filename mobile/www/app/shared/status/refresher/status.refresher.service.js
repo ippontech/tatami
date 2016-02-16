@@ -29,7 +29,7 @@
         updateStatuses.$inject = ['statuses'];
         function updateStatuses(statuses) {
             $rootScope.$broadcast('scroll.refreshComplete');
-
+            console.log(statuses);
             return statuses;
         }
     }
