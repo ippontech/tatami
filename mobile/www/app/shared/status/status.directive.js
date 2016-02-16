@@ -38,8 +38,8 @@
         }
 
         function favorite() {
-            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function() {
-                $state.reload();
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function(result) {
+                vm.status = result
             })
         }
 
