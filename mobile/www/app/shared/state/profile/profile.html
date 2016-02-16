@@ -1,5 +1,6 @@
 <ion-view view-title="Profile">
     <ion-content>
+        <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <tatami-user-detail user="vm.user"></tatami-user-detail>
         <ion-list>
             <ion-item ng-repeat="status in vm.statuses">

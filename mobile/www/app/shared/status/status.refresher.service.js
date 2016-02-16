@@ -9,13 +9,19 @@
         var service = {
             refreshHomeTimeline: refreshHomeTimeline,
             refreshMentions: refreshMentions,
-            refreshFavorites: refreshFavorites
+            refreshFavorites: refreshFavorites,
+            refreshUserTimeline: refreshUserTimeline
         };
 
         return service;
 
         function refreshHomeTimeline() {
             return StatusService.getHomeTimeline().$promise.then(updateStatuses);
+        }
+
+        refreshUserTimeline.$inject = ['user'];
+        function refreshUserTimeline(user) {
+            return StatusService.getUserTimeline({ username : user.username }).$promise.then(updateStatuses);
         }
 
         function refreshMentions() {
