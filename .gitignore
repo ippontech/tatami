@@ -8,6 +8,7 @@ tatami.iws
 .project
 .settings
 target
+node_modules/
 web/node_modules/
 src/main/webapp/WEB-INF/generated-wro4j
 .merge_file*
