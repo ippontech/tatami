@@ -17,7 +17,7 @@
         }
 
         function getNewStatuses() {
-            TatamiStatusRefresherService.refreshFavorites().then(setStatuses);
+            return TatamiStatusRefresherService.refreshFavorites();
         }
 
         setStatuses.$inject = ['favorites'];

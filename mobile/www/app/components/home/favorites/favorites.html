@@ -1,10 +1,3 @@
 <ion-view view-title="Favorites">
-    <ion-content>
-        <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
-        <ion-list>
-            <ion-item ng-repeat="favorite in vm.favorites">
-                <tatami-status status="favorite"></tatami-status>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+    <tatami-status-list statuses="vm.favorites" tatami-refresher="vm.getNewStatuses()"></tatami-status-list>
 </ion-view>
