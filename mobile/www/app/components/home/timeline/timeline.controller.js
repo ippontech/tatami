@@ -12,12 +12,7 @@
         vm.getNewStatuses = getNewStatuses;
 
         function getNewStatuses() {
-            TatamiStatusRefresherService.refreshHomeTimeline().then(setStatuses);
-        }
-
-        setStatuses.$inject = ['statuses'];
-        function setStatuses(statuses) {
-            vm.statuses = statuses;
+            return TatamiStatusRefresherService.refreshHomeTimeline();
         }
     }
 })();
