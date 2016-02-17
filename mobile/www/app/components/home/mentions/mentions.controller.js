@@ -18,12 +18,7 @@
         }
 
         function getNewStatuses() {
-            TatamiStatusRefresherService.refreshMentions().then(setStatuses);
-        }
-
-        setStatuses.$inject = ['mentioned'];
-        function setStatuses(mentioned) {
-            vm.mentioned = mentioned;
+            return TatamiStatusRefresherService.refreshMentions();
         }
     }
 })();
