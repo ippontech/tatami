@@ -114,6 +114,11 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         user.setAuthorities(authorities);
         user.setJobTitle("developer");
         user.setPhoneNumber("123-456-7890");
+        user.setMentionEmail(false);
+        user.setRssUid("testrssuid");
+        user.setWeeklyDigest(false);
+        user.setDailyDigest(false);
+        user.setDomain("ippon.fr");
         when(mockUserService.getUserWithAuthorities()).thenReturn(user);
 
         restUserMockMvc.perform(get("/tatami/rest/account/profile")
@@ -126,7 +131,12 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
                 .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN))
                 .andExpect(jsonPath("$.jobTitle").value("developer"))
-                .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"));
+                .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"))
+                .andExpect(jsonPath("$.mentionEmail").value(false))
+                .andExpect(jsonPath("$.rssUid").value("testrssuid"))
+                .andExpect(jsonPath("$.weeklyDigest").value(false))
+                .andExpect(jsonPath("$.dailyDigest").value(false))
+                .andExpect(jsonPath("$.domain").value("ippon.fr"));
     }
 
     @Test
