@@ -10,6 +10,12 @@
     font-style:italic;
 }
 
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
 /* More specific to sections of app */
 .profile-name .subheading, .profile-name .date {
     vertical-align: top;
@@ -35,9 +41,20 @@
     bottom: 43px; !important;
 }
 
-.center {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+.platform-ios .tatami-header {
+    top: 44px;
 }
+
+.platform-ios .tatami-footer {
+    bottom: 88px;
+}
+
+.platform-android .tatami-header {
+    top: 88px;
+}
+
+.platform-android .tatami-footer {
+    bottom: 44px;
+}
+
 
