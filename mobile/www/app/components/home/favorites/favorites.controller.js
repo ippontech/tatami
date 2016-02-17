@@ -8,21 +8,10 @@
     function favoritesCtrl(favorites, TatamiStatusRefresherService) {
         var vm = this;
         vm.favorites = favorites;
-        vm.remove = remove;
         vm.getNewStatuses = getNewStatuses;
-
-        remove.$inject = ['favorite'];
-        function remove(favorite) {
-            vm.favorites.splice(vm.favorites.indexOf(favorite), 1);
-        }
 
         function getNewStatuses() {
             return TatamiStatusRefresherService.refreshFavorites();
-        }
-
-        setStatuses.$inject = ['favorites'];
-        function setStatuses(favorites) {
-            vm.favorites = favorites;
         }
     }
 })();

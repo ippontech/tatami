@@ -2,7 +2,7 @@
     <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
     <ion-list>
         <ion-item ng-repeat="status in vm.statuses">
-            <tatami-status status="status"></tatami-status>
+            <tatami-status status="status" on-delete="vm.remove(status)"></tatami-status>
         </ion-item>
     </ion-list>
 </ion-content>

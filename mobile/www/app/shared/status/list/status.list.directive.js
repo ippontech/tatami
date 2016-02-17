@@ -24,9 +24,15 @@
         var vm = this;
         vm.statuses = $scope.statuses;
         vm.getNewStatuses = getNewStatuses;
+        vm.remove = remove;
 
         function getNewStatuses() {
             $scope.tatamiRefresher().then(setStatuses);
+        }
+
+        remove.$inject = ['status'];
+        function remove(status) {
+            vm.statuses.splice(vm.statuses.indexOf(status), 1);
         }
 
         setStatuses.$inject = ['statuses'];

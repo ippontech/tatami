@@ -9,7 +9,8 @@
             restrict: 'E',
             scope: {
                 status: '=',
-                currentUser: '='
+                currentUser: '=',
+                onDelete: '&'
             },
             controller: controller,
             controllerAs: 'vm',
@@ -33,7 +34,7 @@
 
         function remove() {
             StatusService.delete({ statusId : vm.status.statusId }, function() {
-                $state.reload();
+                $scope.onDelete(vm.status);
             })
         }
 
