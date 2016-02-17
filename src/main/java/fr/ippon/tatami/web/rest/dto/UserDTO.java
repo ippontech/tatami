@@ -30,15 +30,15 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
-    @Size(min = 0, max = 100)
-    private String jobTitle;
-
-    @Size(min = 0, max = 20)
-    private String phoneNumber;
-
     @Email
     @Size(min = 5, max = 100)
     private String email;
+
+    @Size(max = 50)
+    private String jobTitle;
+
+    @Size(max = 50)
+    private String phoneNumber;
 
     private boolean activated = false;
 
@@ -47,17 +47,32 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private boolean mentionEmail;
+
+    private String rssUid;
+
+    private boolean weeklyDigest;
+
+    private boolean dailyDigest;
+
+    private String domain;
+
     public UserDTO() {
     }
 
     public UserDTO(User user) {
         this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities(), user.getJobTitle(), user.getPhoneNumber());
+            user.getAuthorities(), user.getJobTitle(), user.getPhoneNumber(), user.getMentionEmail(),
+            user.getRssUid(), user.getWeeklyDigest(),
+            user.getDailyDigest(), user.getDomain());
     }
 
     public UserDTO(String login, String password, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, String jobTitle, String phoneNumber) {
+        String email, boolean activated, String langKey, Set<String> authorities,
+                   String jobTitle, String phoneNumber,
+                   boolean mentionEmail, String rssUid, boolean weeklyDigest,
+        boolean dailyDigest, String domain) {
 
         this.login = login;
         this.password = password;
@@ -69,6 +84,11 @@ public class UserDTO {
         this.authorities = authorities;
         this.jobTitle = jobTitle;
         this.phoneNumber = phoneNumber;
+        this.mentionEmail = mentionEmail;
+        this.rssUid = rssUid;
+        this.weeklyDigest = weeklyDigest;
+        this.dailyDigest = dailyDigest;
+        this.domain = domain;
     }
 
     public String getPassword() {
@@ -91,9 +111,13 @@ public class UserDTO {
         return email;
     }
 
-    public String getJobTitle() { return jobTitle; }
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public boolean isActivated() {
         return activated;
@@ -107,6 +131,16 @@ public class UserDTO {
         return authorities;
     }
 
+    public boolean isMentionEmail() { return mentionEmail; }
+
+    public String getRssUid() { return rssUid; }
+
+    public boolean isWeeklyDigest() { return weeklyDigest; }
+
+    public boolean isDailyDigest() { return dailyDigest; }
+
+    public String getDomain() { return domain; }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -117,9 +151,14 @@ public class UserDTO {
             ", email='" + email + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
-            ", authorities='" + authorities + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
+            ", authorities=" + authorities + '\'' +
             ", jobTitle='" + jobTitle + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", mentionEmail=" + mentionEmail + '\'' +
+            ", rssUid=" + rssUid + '\'' +
+            ", weeklyDigest=" + weeklyDigest + '\'' +
+            ", dailyDigest=" + dailyDigest + '\'' +
+            ", domain=" + domain +
             "}";
     }
 }

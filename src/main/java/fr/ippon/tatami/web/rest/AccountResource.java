@@ -7,6 +7,7 @@ import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.KeyAndPasswordDTO;
+import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
 
@@ -16,10 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -182,4 +187,67 @@ public class AccountResource {
             password.length() >= UserDTO.PASSWORD_MIN_LENGTH &&
             password.length() <= UserDTO.PASSWORD_MAX_LENGTH);
     }
+
+    /**
+     * GET  /account/preferences -> get account's preferences
+     */
+    @RequestMapping(value = "/rest/account/preferences",
+        method = RequestMethod.GET,
+        produces = "application/json")
+    @ResponseBody
+    @Timed
+    public Preferences getPreferences() {
+        log.debug("REST request to get account's preferences");
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+
+        return new Preferences(currentUser);
+    }
+
+    /**
+     * POST  /account/preferences -> update account's preferences
+     */
+    @RequestMapping(value = "/rest/account/preferences",
+        method = RequestMethod.POST,
+        produces = "application/json")
+    @ResponseBody
+    @Timed
+    public Preferences updatePreferences(@RequestBody Preferences newPreferences, HttpServletResponse response) {
+        log.debug("REST request to set account's preferences");
+        Preferences preferences = null;
+        try {
+            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            currentUser.setMentionEmail(newPreferences.getMentionEmail());
+            currentUser.setDailyDigest(newPreferences.getDailyDigest());
+            currentUser.setWeeklyDigest(newPreferences.getWeeklyDigest());
+            String rssUid = userService.updateRssTimelinePreferences(newPreferences.getRssUidActive());
+            currentUser.setRssUid(rssUid);
+
+            preferences = new Preferences(currentUser);
+
+            userService.updateUserPreferences(preferences.getMentionEmail(), rssUid,
+                preferences.getWeeklyDigest(), preferences.getDailyDigest());
+            userService.updateDailyDigestRegistration(preferences.getDailyDigest());
+            userService.updateWeeklyDigestRegistration(preferences.getWeeklyDigest());
+
+            org.springframework.security.core.userdetails.User securityUser =
+                (org.springframework.security.core.userdetails.User)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            log.debug("User roles : {}", securityUser);
+
+            Authentication authentication =
+                new UsernamePasswordAuthenticationToken(securityUser,
+                    securityUser.getPassword(),
+                    securityUser.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            log.debug("User updated : {}", currentUser);
+        } catch (Exception e) {
+            log.debug("Error during setting preferences", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        return preferences;
+
+    }
+
 }

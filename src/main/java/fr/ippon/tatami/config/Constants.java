@@ -16,6 +16,8 @@ public final class Constants {
 
     public static final String SYSTEM_ACCOUNT = "system";
 
+    public static final int PAGINATION_SIZE = 50;
+
     private Constants() {
     }
 }

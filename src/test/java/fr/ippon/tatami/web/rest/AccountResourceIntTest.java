@@ -151,7 +151,12 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),   //Authorities
             "Developer",            // Job Title
-            "123-456-7890"          // Phone Number
+            "123-456-7890",          // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                   // dailyDigest
+            "ippon.fr"              // domain
         );
 
         restMvc.perform(
@@ -177,7 +182,12 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
-            "123-456-7890"         // Phone Number
+            "123-456-7890",         // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                   // dailyDigest
+            "ippon.fr"              // domain
         );
 
         restUserMockMvc.perform(
@@ -203,8 +213,12 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
-            "123-456-7890"        // Phone Number
-
+            "123-456-7890",        // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                   // dailyDigest
+            "ippon.fr"              // domain
         );
 
         restUserMockMvc.perform(
@@ -231,12 +245,19 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
-            "123-456-7890"         // Phone Number
+            "123-456-7890",         // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                   // dailyDigest
+            "ippon.fr"              // domain
         );
 
         // Duplicate login, different e-mail
         UserDTO dup = new UserDTO(u.getLogin(), u.getPassword(), u.getLogin(), u.getLastName(),
-            "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber());
+            "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
+            u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
+            u.isDailyDigest(), u.getDomain());
 
         // Good user
         restMvc.perform(
@@ -270,12 +291,19 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
-            "123-456-7890"         // Phone Number
+            "123-456-7890",         // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                   // dailyDigest
+            "ippon.fr"              // domain
         );
 
         // Duplicate e-mail, different login
         UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getLogin(), u.getLastName(),
-            u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber());
+            u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
+            u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
+            u.isDailyDigest(), u.getDomain());
 
         // Good user
         restMvc.perform(
@@ -308,7 +336,12 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)), // <-- only admin should be able to do that
             "Developer",            // Job Title
-            "123-456-7890"         // Phone Number
+            "123-456-7890",         // Phone Number
+            false,                  // mentionEmail
+            "testrssuid",            // rssUid
+            false,                  // weeklyDigest
+            false,                  // dailyDigest
+            "ippon.fr"              // domain
         );
 
         restMvc.perform(

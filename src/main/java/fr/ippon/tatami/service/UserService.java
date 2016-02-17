@@ -1,6 +1,9 @@
 package fr.ippon.tatami.service;
 
+import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.MailDigestRepository;
+import fr.ippon.tatami.repository.RssUidRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 
 /**
@@ -33,6 +37,11 @@ public class UserService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private RssUidRepository rssUidRepository;
+
+    @Inject
+    private MailDigestRepository mailDigestRepository;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -128,7 +137,8 @@ public class UserService {
         return user;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle, String phoneNumber) {
+    public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle,
+                                      String phoneNumber) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
@@ -138,6 +148,18 @@ public class UserService {
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
             log.debug("Changed Information for User: {}", u);
+        });
+    }
+
+    public void updateUserPreferences(boolean mentionEmail, String rssUid,
+                                      boolean weeklyDigest, boolean dailyDigest) {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+            u.setMentionEmail(mentionEmail);
+            u.setRssUid(rssUid);
+            u.setWeeklyDigest(weeklyDigest);
+            u.setDailyDigest(dailyDigest);
+            userRepository.save(u);
+            log.debug("Change Preferences for User: {}", u);
         });
     }
 
@@ -169,5 +191,105 @@ public class UserService {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
+    }
+
+    /**
+     * Activate of de-activate rss publication for the timeline.
+     *
+     * @return the rssUid used for rss publication, empty if no publication
+     */
+    public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
+
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        String rssUid = currentUser.getRssUid();
+        if (booleanPreferencesRssTimeline) {
+            // if we already have an rssUid it means it's already activated :
+            // nothing to do, we do not want to change it
+
+            if ((rssUid == null) || rssUid.equals("")) {
+                // Activate rss feed publication.
+                rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
+                currentUser.setRssUid(rssUid);
+                log.debug("Updating rss timeline preferences : rssUid={}", rssUid);
+
+                try {
+                    userRepository.save(currentUser);
+                } catch (ConstraintViolationException cve) {
+                    log.info("Constraint violated while updating preferences : " + cve);
+                    throw cve;
+                }
+            }
+
+        } else {
+
+            // Remove current rssUid from both CF!
+            if ((rssUid != null) && (!rssUid.isEmpty())) {
+                // this used to delete from a rss table. now we don't have one.
+                rssUidRepository.removeRssUid(rssUid);
+                rssUid = "";
+                currentUser.setRssUid(rssUid);
+                log.debug("Updating rss timeline preferences : rssUid={}", rssUid);
+
+                try {
+                    userRepository.save(currentUser);
+                } catch (ConstraintViolationException cve) {
+                    log.info("Constraint violated while updating preferences : " + cve);
+                    throw cve;
+                }
+            }
+        }
+        return rssUid;
+    }
+
+    /**
+     * update registration to weekly digest email.
+     */
+    public void updateWeeklyDigestRegistration(boolean registration) {
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        currentUser.setWeeklyDigest(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+        if (registration) {
+            mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+                currentUser.getDomain(), day);
+        } else {
+            mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+                currentUser.getDomain(), day);
+        }
+
+        log.debug("Updating weekly digest preferences : " +
+            "weeklyDigest={} for user {}", registration, currentUser.getLogin());
+        try {
+            userRepository.save(currentUser);
+//            userRepository.updateUser(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating preferences : " + cve);
+            throw cve;
+        }
+    }
+
+    /**
+     * Update registration to daily digest email.
+     */
+    public void updateDailyDigestRegistration(boolean registration) {
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        currentUser.setDailyDigest(registration);
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+        if (registration) {
+            mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+                currentUser.getDomain(), day);
+        } else {
+            mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+                currentUser.getDomain(), day);
+        }
+
+        log.debug("Updating daily digest preferences : dailyDigest={} for user {}", registration, currentUser.getLogin());
+        try {
+            userRepository.save(currentUser);
+        } catch (ConstraintViolationException cve) {
+            log.info("Constraint violated while updating preferences : " + cve);
+            throw cve;
+        }
     }
 }

@@ -37,15 +37,15 @@ public class User implements Serializable {
     @Size(max = 50)
     private String lastName;
 
-    @Size(min = 0, max = 100)
-    private String jobTitle;
-
-    @Size(min = 0, max = 20)
-    private String phoneNumber;
-
     @Email
     @Size(max = 100)
     private String email;
+
+    @Size(max = 50)
+    private String jobTitle;
+
+    @Size (max = 50)
+    private String phoneNumber;
 
     private boolean activated = false;
 
@@ -65,16 +65,28 @@ public class User implements Serializable {
     @Column(name = "reset_date")
     private Date resetDate;
 
+    @Column(name = "preferences_mention_email")
+    @JsonIgnore
+    private Boolean mentionEmail;
+
+    @Column(name = "rss_uid")
+    @JsonIgnore
+    private String rssUid;
+
+    @Column(name = "weekly_digest_subscription")
+    @JsonIgnore
+    private Boolean weeklyDigest;
+
+    @Column(name = "daily_digest_subscription")
+    @JsonIgnore
+    private Boolean dailyDigest;
+
+    @Column(name = "domain")
+    @JsonIgnore
+    private String domain;
+
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
-
-    public String getJobTitle() { return jobTitle; }
-
-    public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }
-
-    public String getPhoneNumber() { return phoneNumber; }
-
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public String getId() {
         return id;
@@ -122,6 +134,22 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean getActivated() {
@@ -172,6 +200,47 @@ public class User implements Serializable {
         this.authorities = authorities;
     }
 
+    public Boolean getMentionEmail() {
+        return mentionEmail;
+    }
+
+    public void setMentionEmail(Boolean mentionEmail) {
+        this.mentionEmail = mentionEmail;
+    }
+
+    public Boolean getDailyDigest() {
+        return dailyDigest;
+    }
+
+    public void setDailyDigest(Boolean dailyDigest) {
+        this.dailyDigest = dailyDigest;
+    }
+
+    public Boolean getWeeklyDigest() {
+        return weeklyDigest;
+    }
+
+    public void setWeeklyDigest(Boolean weeklyDigest) {
+        this.weeklyDigest = weeklyDigest;
+    }
+
+    public String getRssUid() {
+        return rssUid;
+    }
+
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -202,11 +271,16 @@ public class User implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
+            ", jobTitle='" + jobTitle + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", jobTitle='" + jobTitle + '\'' +
+            ", mentionEmail='" + mentionEmail + '\'' +
+            ", rssUid='" + rssUid + '\'' +
+            ", weeklyDigest='" + weeklyDigest + '\'' +
+            ", dailyDigest='" + dailyDigest + '\'' +
+            ", domain='" + domain +
             "}";
     }
 }
