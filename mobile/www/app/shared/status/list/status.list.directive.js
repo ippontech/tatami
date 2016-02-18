@@ -9,6 +9,7 @@
             restrict: 'E',
             scope: {
                 statuses: '=',
+                currentUser: '=',
                 tatamiRefresher: '&'
             },
             controller: controller,
@@ -23,6 +24,7 @@
     function controller($scope) {
         var vm = this;
         vm.statuses = $scope.statuses;
+        vm.currentUser = $scope.currentUser;
         vm.getNewStatuses = getNewStatuses;
         vm.remove = remove;
 
