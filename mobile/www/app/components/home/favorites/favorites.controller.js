@@ -4,10 +4,11 @@
     angular.module('tatami')
         .controller('FavoritesCtrl', favoritesCtrl);
 
-    favoritesCtrl.$inject = ['favorites', 'TatamiStatusRefresherService'];
-    function favoritesCtrl(favorites, TatamiStatusRefresherService) {
+    favoritesCtrl.$inject = ['favorites', 'currentUser', 'TatamiStatusRefresherService'];
+    function favoritesCtrl(favorites, currentUser, TatamiStatusRefresherService) {
         var vm = this;
         vm.favorites = favorites;
+        vm.currentUser = currentUser;
         vm.getNewStatuses = getNewStatuses;
 
         function getNewStatuses() {
