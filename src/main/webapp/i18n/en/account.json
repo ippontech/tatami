@@ -16,7 +16,8 @@
     },
 
     "form": {
-        "save": "Save"
+        "save": "Save",
+        "fail": "Fail"
     },
 
     "preferences": {

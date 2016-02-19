@@ -36,11 +36,11 @@ angular.module('tatamiJHipsterApp')
                     // Clear the fields after we have changed the password
                     $scope.reset();
                     // Alert user that the password has been changed
-                    ngToast.create($translate.instant('tatami.account.password.save'));
+                    ngToast.create($translate.instant('account.password.save'));
 
                 }, function() {
                     ngToast.create({
-                        content: $translate.instant('tatami.form.fail'),
+                        content: $translate.instant('account.form.fail'),
                         class: 'danger'
                     });
                 });
