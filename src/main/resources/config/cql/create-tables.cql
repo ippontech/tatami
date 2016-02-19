@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS user (
     firstname text,
     lastname text,
     email text,
+    phonenumber text,
     jobtitle text,
     phonenumber text,
     activated boolean,
@@ -82,6 +83,26 @@ CREATE TABLE IF NOT EXISTS mail_digest (
     PRIMARY KEY(digest_id,login)
 );
 
+CREATE TABLE IF NOT EXISTS group (
+    id uuid,
+    domain varchar,
+    name varchar,
+    description varchar,
+    public_group boolean,
+    archived_group boolean,
+    counter bigint,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS group_member (
+    group_id uuid,
+    login varchar,
+    role varchar,
+    PRIMARY KEY(group_id, login)
+);
+
+CREATE INDEX member_login_index ON group_member (login);
+
 INSERT INTO user (id, login, password , firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('1','system','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG','','System','system@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {'ROLE_USER', 'ROLE_ADMIN'});
 
@@ -105,3 +126,6 @@ VALUES('4','user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K'
 
 INSERT INTO user_by_login (login, id)
 VALUES('user','4');
+
+INSERT INTO group (id,domain,name,description,public_group,archived_group,counter)
+VALUES(uuid(),'ipponusa.com','IpponUSA 2','',true,false,0);

@@ -31,10 +31,58 @@ angular.module('tatamiJHipsterApp')
                 }
 
             })
-
-
-
-
+            .state('account.password', {
+                        url: '/password',
+                        templateUrl: 'scripts/app/login/password/password.html',
+                        controller: 'PasswordController'
+            })
+            .state('account.groups', {
+                url: '/groups',
+                templateUrl: 'scripts/app/account/form.html',
+                controller: 'FormController'
+            })
+            .state('account.groups.main', {
+                url: '',
+                templateUrl: 'scripts/app/account/groups/groups.html',
+                controller: 'GroupController'
+            })
+            .state('account.groups.main.top', {
+                url: '',
+                views: {
+                    'create@account.groups.main': {
+                        templateUrl: 'scripts/app/account/groups/creation/groups.create.html',
+                        controller: 'GroupsCreateController'
+                    }
+                }
+            })
+            .state('account.groups.main.top.list', {
+                url: '',
+                views: {
+                    'list@account.groups.main': {
+                        templateUrl: 'scripts/app/account/groups/list/groups.list.html',
+                        resolve: {
+                            userGroups: ['GroupService', function(GroupService) {
+                                return GroupService.query().$promise;
+                            }]
+                        },
+                        controller: 'GroupsController'
+                    }
+                }
+            })
+            .state('account.groups.main.top.search', {
+                url: '/search/:q',
+                views: {
+                    'list@account.groups.main': {
+                        templateUrl: 'scripts/app/account/groups/list/groups.list.html',
+                        resolve: {
+                            userGroups: ['SearchService', '$stateParams', function(SearchService, $stateParams) {
+                                return SearchService.query({ term: 'groups', q: $stateParams.q }).$promise;
+                            }]
+                        },
+                        controller: 'GroupsController'
+                    }
+                }
+            })
     });
 
 /*var AccountModule = angular.module('AccountModule', [
