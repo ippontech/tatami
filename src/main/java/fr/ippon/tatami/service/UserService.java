@@ -86,7 +86,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-        String langKey, String jobTitle, String phoneNumber) {
+        String langKey, String jobTitle, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
 
         User newUser = new User();
         newUser.setId(UUID.randomUUID().toString());
@@ -101,6 +101,11 @@ public class UserService {
         newUser.setLangKey(langKey);
         newUser.setJobTitle(jobTitle);
         newUser.setPhoneNumber(phoneNumber);
+        newUser.setMentionEmail(mentionEmail);
+        newUser.setRssUid(rssUid);
+        newUser.setWeeklyDigest(weeklyDigest);
+        newUser.setDailyDigest(dailyDigest);
+        newUser.setDomain(domain);
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key

@@ -17,3 +17,10 @@ angular.module('tatamiJHipsterApp')
         return $resource('tatami/rest/account/reset_password/finish', {}, {
         })
     });
+
+angular.module('tatamiJHipsterApp')
+    .factory('PasswordService', function ($resource) {
+        return $resource('tatami/rest/account/password', {}, {
+        })
+    });
+

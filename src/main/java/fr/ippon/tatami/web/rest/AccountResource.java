@@ -9,6 +9,7 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.KeyAndPasswordDTO;
 import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
+import fr.ippon.tatami.web.rest.dto.UserPassword;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * REST controller for managing the current user's account.
@@ -48,6 +51,11 @@ public class AccountResource {
     @Inject
     private MailService mailService;
 
+    @Inject
+    private PasswordEncoder passwordEncoder;
+
+
+
     /**
      * POST  /register -> register the user.
      */
@@ -63,7 +71,8 @@ public class AccountResource {
                 .orElseGet(() -> {
                     User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber());
+                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
+                    userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getDomain());
                     String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
                     request.getServerName() +              // "myhost"
@@ -248,6 +257,62 @@ public class AccountResource {
         }
         return preferences;
 
+    }
+
+    /**
+     * GET  /account/password -> throws an error if the password is managed by LDAP
+     */
+//    @RequestMapping(value = "/rest/account/password",
+//        method = RequestMethod.GET,
+//        produces = "application/json")
+//    @ResponseBody
+//    @Timed
+//    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
+//        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+//        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+//        if (userService.isDomainHandledByLDAP(domain)) {
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//            return null;
+//        } else {
+//            return new UserPassword();
+//        }
+//    }
+
+    /**
+     * POST  /account/password -> change password
+     */
+    @RequestMapping(value = "/rest/account/password",
+        method = RequestMethod.POST,
+        produces = "application/json")
+    @ResponseBody
+    @Timed
+    public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
+        log.debug("REST request to set account's password");
+        try {
+            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+
+            if (!passwordEncoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
+                log.debug("The old password is incorrect : {}", userPassword.getOldPassword());
+                throw new Exception("oldPassword");
+            }
+
+            if (!userPassword.getNewPassword().equals(userPassword.getNewPasswordConfirmation())) {
+                log.debug("The passwords dont match : {}", userPassword.getOldPassword());
+                throw new Exception("newPasswordConfirmation");
+            }
+
+            currentUser.setPassword(userPassword.getNewPassword());
+
+            userService.changePassword(userPassword.getNewPassword());
+
+            log.debug("User password updated : {}", currentUser);
+            return new UserPassword();
+        } catch (Exception e) {
+            log.error(e.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return null;
+        }
     }
 
 }
