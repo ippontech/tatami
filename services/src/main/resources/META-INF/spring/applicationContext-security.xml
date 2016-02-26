@@ -50,7 +50,7 @@
 
         <logout logout-url="/tatami/logout"
                 success-handler-ref="ajaxLogoutSuccessHandler"/>
-        <!--<session-management invalid-session-url="/tatami/login"/>-->
+        <session-management invalid-session-url="/tatami/login"/>
 
         <!--<form-login-->
                 <!--login-processing-url="/tatami/authentication"-->
@@ -66,8 +66,9 @@
     <beans:bean id="authenticationEntryPoint" class="fr.ippon.tatami.security.Http401UnauthorizedEntryPoint"/>
 
     <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="ldapAuthenticationProvider"/>
+        <authentication-provider ref="googleApiAuthProvider" />
         <authentication-provider ref="daoAuthenticationProvider"/>
+        <authentication-provider ref="ldapAuthenticationProvider"/>
         <authentication-provider ref="googleAuthProvider"/>
     </authentication-manager>
 
@@ -80,6 +81,9 @@
         <beans:constructor-arg name="secretKey" value="${tatami.google.clientSecret}"></beans:constructor-arg>
         <beans:constructor-arg name="tokenValidity" value="${tatami.token.validityInSeconds}"></beans:constructor-arg>
     </beans:bean>
+
+    <beans:bean id="googleApiAuthProvider" class="fr.ippon.tatami.security.GoogleApiAuthenticationProvider"></beans:bean>
+
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">

@@ -15,6 +15,10 @@ public class GoogleAuthenticationToken extends AbstractAuthenticationToken {
     private final Object principal;
     private Object credentials;
 
+    public GoogleAuthenticationToken(Object principal) {
+        this(principal, null);
+    }
+
     public GoogleAuthenticationToken(Object principal, Object credentials) {
         super((Collection)null);
         this.principal = principal;
