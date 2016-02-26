@@ -103,6 +103,7 @@ Desktop.ini
 /bin/**
 /spring_loaded/**
 /deploy/**
+/bower_components/**
 
 ######################
 # Logs
