@@ -29,6 +29,7 @@
 
     <http auto-config="true" use-expressions="true" create-session="ifRequired">
         <custom-filter after="BASIC_AUTH_FILTER" ref="clientFilter" />
+        <custom-filter before="BASIC_AUTH_FILTER" ref="xAuthTokenFilter" />
         <remember-me key="tatamiRememberKey" token-validity-seconds="1209599"/>
         <intercept-url pattern="/tatami/presentation" access="permitAll()"/>
         <intercept-url pattern="/tatami/tos" access="permitAll()"/>
@@ -36,6 +37,7 @@
         <intercept-url pattern="/tatami/404-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/500-error" access="permitAll()"/>
         <intercept-url pattern="/tatami/rest/users" method="POST" access="permitAll()"/>
+        <intercept-url pattern="/tatami/rest/oauth/token" method="POST" access="permitAll()"/>
 
         <intercept-url pattern="/metrics/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
@@ -48,7 +50,7 @@
 
         <logout logout-url="/tatami/logout"
                 success-handler-ref="ajaxLogoutSuccessHandler"/>
-        <session-management invalid-session-url="/tatami/login"/>
+        <!--<session-management invalid-session-url="/tatami/login"/>-->
 
         <!--<form-login-->
                 <!--login-processing-url="/tatami/authentication"-->
@@ -68,6 +70,16 @@
         <authentication-provider ref="daoAuthenticationProvider"/>
         <authentication-provider ref="googleAuthProvider"/>
     </authentication-manager>
+
+    <beans:bean id="xAuthTokenFilter" class="fr.ippon.tatami.security.xauth.XAuthTokenFilter">
+        <beans:constructor-arg ref="userDetailsService"></beans:constructor-arg>
+        <beans:constructor-arg ref="tokenProvider"></beans:constructor-arg>
+    </beans:bean>
+
+    <beans:bean id="tokenProvider" class="fr.ippon.tatami.security.xauth.TokenProvider">
+        <beans:constructor-arg name="secretKey" value="${tatami.google.clientSecret}"></beans:constructor-arg>
+        <beans:constructor-arg name="tokenValidity" value="${tatami.token.validityInSeconds}"></beans:constructor-arg>
+    </beans:bean>
 
     <!-- Defining our client -->
     <beans:bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
