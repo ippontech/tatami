@@ -1,6 +1,6 @@
 angular.module('tatamiJHipsterApp')
-.controller('StatusListController', ['$scope', '$state', '$timeout', '$window', 'statuses', 'profileInfo', 'showModal',
-    function($scope, $state, $timeout, $window, statuses, profileInfo, showModal) {
+.controller('StatusListController', ['$scope', '$state', '$timeout', '$window', 'StatusService', 'statuses', 'profileInfo', 'showModal',
+    function($scope, $state, $timeout, $window, StatusService, statuses, profileInfo, showModal) {
 
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');
