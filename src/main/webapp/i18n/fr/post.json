@@ -1,0 +1,25 @@
+{
+    "post": {
+        "mandatory": "Commentaire obligatoire",
+        "content": {
+            "mandatory": "Veuillez remplir ce champ.."
+        },
+        "update": "Mettre à jour votre statut",
+        "replyTo": "Répondre",
+        "preview": "Prévisualisation",
+        "edit": "Éditer",
+        "characters": {
+            "left": "Caractères restants :"
+        },
+        "options": "Options",
+        "shareLocation": "Partager votre localisation",
+        "group": "Groupe",
+        "reply": "Répondre à ce statut",
+        "files": "Fichiers",
+        "drop": {
+            "file": "Déposez vos fichiers ici"
+        },
+        "markdown": "Markdown Supported",
+        "button": "Post"
+    }
+}
