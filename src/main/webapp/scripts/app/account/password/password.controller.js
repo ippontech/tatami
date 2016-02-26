@@ -1,5 +1,5 @@
 angular.module('tatamiJHipsterApp')
-    .controller('ChangePasswordController', ['$scope', '$translate', 'PasswordService', 'ngToast', function($scope, $translate, PasswordService, ngToast) {
+    .controller('ChangePasswordController', ['$scope', '$translate', 'PasswordService', 'ngToast', 'Auth', '$state', function($scope, $translate, PasswordService, ngToast, Auth, $state) {
         $scope.password = {
             oldPassword: '',
             newPassword: '',
@@ -37,7 +37,7 @@ angular.module('tatamiJHipsterApp')
                     $scope.reset();
                     // Alert user that the password has been changed
                     ngToast.create($translate.instant('account.password.save'));
-
+                    $scope.logout();
                 }, function() {
                     ngToast.create({
                         content: $translate.instant('account.form.fail'),
@@ -52,5 +52,10 @@ angular.module('tatamiJHipsterApp')
             $scope.status.oldEmpty = false;
             $scope.status.newEmpty = false;
             $scope.status.confirmWrong = false;
+        };
+
+        $scope.logout = function() {
+            Auth.logout();
+            $state.go('home');
         };
 }]);
