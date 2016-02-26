@@ -193,6 +193,8 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
+        log.error("user: " + SecurityUtils.getCurrentUserLogin());
+        log.error("SecurityUtils.getCurrentUser().getUsername(): " + SecurityUtils.getCurrentUser().getUsername());
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
@@ -296,5 +298,23 @@ public class UserService {
             log.info("Constraint violated while updating preferences : " + cve);
             throw cve;
         }
+    }
+
+    /**
+     * Return a collection of Users based on their username (ie : uid)
+     *
+     * @param logins the collection : must not be null
+     * @return a Collection of User
+     */
+    public Collection<User> getUsersByLogin(Collection<String> logins) {
+        final Collection<User> users = new ArrayList<User>();
+        User user;
+        for (String login : logins) {
+            user = userRepository.findOneByLogin(login).get();
+            if (user != null) {
+                users.add(user);
+            }
+        }
+        return users;
     }
 }

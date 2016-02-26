@@ -1,0 +1,25 @@
+{
+    "home": {
+        "title": "Title",
+        "timeline": "Timeline",
+        "mentions": "Mentions",
+        "favorites": "Favorites",
+            "form": {
+                "cancel": "Cancel",
+                "presentation": "Launch Presentation"
+            },
+            "welcome": {
+                "title": "Welcome!",
+                "message": "This is our welcome message.",
+                "timeline": {
+                    "title": "Timeline",
+                    "line1": "Test line1"
+                }
+            },
+            "sidebar": {
+                "myGroups": "My Groups",
+                "trends": "Trends",
+                "whoToFollow": "Who to Follow"
+            }
+    }
+}
