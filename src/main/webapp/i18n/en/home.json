@@ -6,11 +6,11 @@
         "favorites": "Favorites",
             "form": {
                 "cancel": "Cancel",
-                "presentation": "Launch Presentation"
+                "presentation": "Launch presentation"
             },
             "welcome": {
-                "title": "Welcome!",
-                "message": "This is our welcome message.",
+                "title": "Welcome to Tatami",
+                "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.",
                 "timeline": {
                     "title": "Timeline",
                     "line1": "Test line1"
