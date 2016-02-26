@@ -5,16 +5,34 @@ import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.BasicAuthentication;
 import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
 import com.yammer.metrics.annotation.Timed;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.DomainRepository;
+import fr.ippon.tatami.security.GoogleAuthenticationToken;
+import fr.ippon.tatami.security.xauth.Token;
+import fr.ippon.tatami.security.xauth.TokenProvider;
 import fr.ippon.tatami.security.xauth.XAuthTokenFilter;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +52,18 @@ public class UserXAuthController {
     private UserService userService;
 
     @Inject
+    private TokenProvider tokenProvider;
+
+    @Inject
+    private UserDetailsService userDetailsService;
+
+    @Inject
+    private DomainRepository domainRepository;
+
+    @Inject
+    private AuthenticationManager authenticationManager;
+
+    @Inject
     Environment env;
 
     /**
@@ -42,28 +72,88 @@ public class UserXAuthController {
     @RequestMapping(value = "/rest/oauth/token",
             method = RequestMethod.POST)
     @Timed
-    public void getGoogleUser(ServletRequest servletRequest) {
+    public Token getGoogleUser(ServletRequest servletRequest) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String authorizationCode = httpServletRequest.getHeader(XAuthTokenFilter.XAUTH_TOKEN_HEADER_NAME);
 
+        Token authToken = null;
+        if(StringUtils.hasText(authorizationCode)){
+            try {
+                Person user = getGoogleUserInfo(authorizationCode);
+                UserDetails userDetails = getUserDetails(user);
+                GoogleAuthenticationToken token = new GoogleAuthenticationToken(userDetails);
+                Authentication authentication = authenticationManager.authenticate(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                authToken = tokenProvider.createToken(userDetails);
+            } catch (IOException ioe) {
+                log.error("{}", ioe);
+            }
+        }
+        return authToken;
+    }
+
+    private Person getGoogleUserInfo(String authorizationCode) throws IOException {
         String clientId = env.getProperty("tatami.google.clientId");
         String clientSecret = env.getProperty("tatami.google.clientSecret");
 
-        if(StringUtils.hasText(authorizationCode)){
-            log.debug("Google authorization code: {}", authorizationCode);
+        HttpTransport transport = new NetHttpTransport();
+        JacksonFactory jacksonFactory = new JacksonFactory();
 
-            try {
-                String accessCode = new GoogleAuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(),
-                        env.getProperty("tatami.google.clientId"),
-                        env.getProperty("tatami.google.clientSecret"), authorizationCode, "http://localhost/callback")
-                        .execute()
-                        .getAccessToken();
 
-                log.debug("Got an access code from google: {}", accessCode);
+        TokenResponse accessCode = new GoogleAuthorizationCodeTokenRequest(transport, jacksonFactory,
+                clientId, clientSecret, authorizationCode, "http://localhost/callback")
+                .execute();
 
-            } catch (IOException ioe) {
-                return;
-            }
+        GoogleCredential googleCredential = new GoogleCredential.Builder()
+                .setJsonFactory(new JacksonFactory())
+                .setTransport(transport)
+                .setClientSecrets(clientId, clientSecret)
+                .build()
+                .setFromTokenResponse(accessCode);
+
+        Plus plus = new Plus.Builder(transport, jacksonFactory, googleCredential)
+                .setApplicationName("Tatami")
+                .build();
+        return plus.people().get("me").execute();
+    }
+
+    private UserDetails getUserDetails(Person user)  throws UsernameNotFoundException {
+        String login = user.getEmails().get(0).getValue();
+
+        if(login == null) {
+            String msg = "OAuth response did not contain the user email";
+            log.error(msg);
+            throw new UsernameNotFoundException(msg);
         }
+
+        if(!login.contains("@")) {
+            log.debug("User login {} from OAuth response is incorrect.", login);
+            throw new UsernameNotFoundException("OAuth response did not contains a valid user email");
+        }
+
+        UserDetails userDetails;
+        try {
+            userDetails = userDetailsService.loadUserByUsername(login);
+            domainRepository.updateUserInDomain(DomainUtil.getDomainFromLogin(login), login);
+        } catch (UsernameNotFoundException e) {
+            log.info("User with login : \"{}\" doesn't exist yet in Tatami database - creating it...", login);
+            userDetails = getNewlyCreatedUserDetails(user);
+        }
+        return userDetails;
+    }
+
+    private UserDetails getNewlyCreatedUserDetails(Person user) {
+        String login = user.getEmails().get(0).getValue();
+        String firstName = user.getName().getGivenName();
+        String lastName = user.getName().getFamilyName();
+
+        User createdUser = new User();
+
+        createdUser.setLogin(login);
+        createdUser.setFirstName(firstName);
+        createdUser.setLastName(lastName);
+
+        userService.createUser(createdUser);
+        return userDetailsService.loadUserByUsername(createdUser.getLogin());
     }
 }
