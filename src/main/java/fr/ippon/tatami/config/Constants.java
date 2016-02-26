@@ -18,10 +18,6 @@ public final class Constants {
 
     public static final int PAGINATION_SIZE = 50;
 
-    public static final int CASSANDRA_MAX_ROWS = 10000;
-
-    public static final String TATAMIBOT_NAME = "tatamibot";
-
     private Constants() {
     }
 }

@@ -4,9 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
-import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.MailService;
-import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
@@ -62,8 +60,7 @@ public class UserResource {
     @Inject
     private MailService mailService;
 
-    @Inject
-    private SuggestionService suggestionService;
+
 
     @Inject
     private UserService userService;
@@ -163,7 +160,7 @@ public class UserResource {
     /**
      * GET  /users/:login -> get the "login" user.
      */
-    @RequestMapping(value = "/rest/users/{login:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/users/{login:[_'.@a-z0-9-]+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -186,36 +183,5 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
-    }
-
-    /**
-     * GET  /rest/users/:username -> get the "jdubois" user
-     */
-//    @RequestMapping(value = "/rest/users/{username}",
-//        method = RequestMethod.GET,
-//        produces = "application/json")
-//    @ResponseBody
-//    @Timed
-//    public UserDTO getUser(@PathVariable("username") String username) {
-//        this.log.debug("REST request to get Profile : {}", username);
-////        User user = userService.getUserByUsername(username);
-//        User user = userRepository.findOneByLogin(username).get();
-//
-//        return new UserDTO(user);
-//
-////        return userService.buildUserDTO(user);
-//    }
-
-    /**
-     * GET  /users/suggestions -> suggest users to follow
-     */
-    @RequestMapping(value = "/rest/users/suggestions",
-        method = RequestMethod.GET,
-        produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<User> suggestions() {
-        String login = SecurityUtils.getCurrentUserLogin();
-        return suggestionService.suggestUsers(login);
     }
 }
