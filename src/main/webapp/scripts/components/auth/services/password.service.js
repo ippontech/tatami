@@ -1,24 +1,24 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('Password', function ($resource) {
         return $resource('tatami/rest/account/change_password', {}, {
         });
     });
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('PasswordResetInit', function ($resource) {
         return $resource('tatami/rest/account/reset_password/init', {}, {
         })
     });
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('PasswordResetFinish', function ($resource) {
         return $resource('tatami/rest/account/reset_password/finish', {}, {
         })
     });
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('PasswordService', function ($resource) {
         return $resource('tatami/rest/account/password', {}, {
         })

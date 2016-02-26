@@ -1,6 +1,6 @@
 
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('ProfileService', ['$resource', function ($resource) {
         return $resource('/tatami/rest/account/profile', null,
             {

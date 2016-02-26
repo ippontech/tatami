@@ -1,4 +1,4 @@
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('ProfileController', ['$scope', '$translate', 'Account', 'userLogin', 'ProfileService', 'ngToast',
     function($scope, $translate, Account, userLogin, ProfileService, ngToast) {
 

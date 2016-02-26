@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .directive('hasAnyAuthority', ['Principal', function (Principal) {
         return {
             restrict: 'A',

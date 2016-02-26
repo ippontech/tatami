@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
             .state('profile', {

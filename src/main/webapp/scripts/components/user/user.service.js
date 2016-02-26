@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('User', function ($resource) {
         return $resource('tatami/rest/users/:username', {}, {
                 'query': {method: 'GET', isArray: true},

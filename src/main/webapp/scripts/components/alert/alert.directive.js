@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .directive('jhAlert', function(AlertService) {
         return {
             restrict: 'E',

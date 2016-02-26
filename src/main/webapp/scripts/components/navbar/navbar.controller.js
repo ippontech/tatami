@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('NavbarController', function ($scope, $location, $state, Auth, Principal, ENV) {
         $scope.isAuthenticated = Principal.isAuthenticated;
         $scope.$state = $state;
@@ -12,6 +12,7 @@ angular.module('tatamiJHipsterApp')
         };
 
         $scope.openPostModal = function () {
+            $scope.$state.go($scope.$state.current.name + '.post');
         }
 
         $scope.changeLanguage = function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .filter('capitalize', function () {
         return function (input, scope) {
             if (input != null)

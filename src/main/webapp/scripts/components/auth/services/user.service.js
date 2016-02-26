@@ -1,4 +1,4 @@
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('UserService', ['$resource', function($resource) {
     var responseTransform = function(users) {
         users = angular.fromJson(users);

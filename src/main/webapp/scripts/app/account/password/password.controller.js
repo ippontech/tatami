@@ -1,4 +1,4 @@
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('ChangePasswordController', ['$scope', '$translate', 'PasswordService', 'ngToast', function($scope, $translate, PasswordService, ngToast) {
         $scope.password = {
             oldPassword: '',
