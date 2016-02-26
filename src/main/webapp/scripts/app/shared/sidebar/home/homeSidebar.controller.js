@@ -1,16 +1,10 @@
 angular.module('tatamiJHipsterApp')
     .controller('HomeSidebarController', ['$scope', 'UserService', 'TagService', 'profile', 'groups', 'suggestions', 'tags',
     function($scope, UserService, TagService, profile, groups, suggestions, tags) {
-        console.log("in HomeSidebarController");
         $scope.profile = profile;
         $scope.groups = groups;
         $scope.suggestions = suggestions;
         $scope.tags = tags;
-
-        console.log(profile);
-        console.log(groups);
-        console.log(suggestions);
-        console.log(tags);
 
         $scope.followUser = function(suggestion, index) {
             UserService.follow({ username: suggestion.username }, { friend: !suggestion.followingUser, friendShip: true },
@@ -26,7 +20,5 @@ angular.module('tatamiJHipsterApp')
                     $scope.$state.reload();
             });
         };
-
-        console.log("end homeSidebar.controller.js");
     }
 ]);

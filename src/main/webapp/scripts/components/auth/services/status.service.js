@@ -1,6 +1,5 @@
 angular.module('tatamiJHipsterApp')
 .factory('StatusService', ['$resource', function($resource) {
-    console.log("in StatusService");
     var responseTransform = function(statuses) {
         statuses = angular.fromJson(statuses);
 

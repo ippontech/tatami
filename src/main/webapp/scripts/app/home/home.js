@@ -2,7 +2,6 @@
 
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
-    console.log("in home.js");
         $stateProvider
             .state('timelineHome', {
                 abstract: false,

@@ -2,7 +2,6 @@
 
 angular.module('tatamiJHipsterApp')
     .factory('ProfileService', ['$resource', function ($resource) {
-        console.log("in ProfileService");
         return $resource('/tatami/rest/account/profile', null,
             {
                 'get': {

@@ -1,25 +1,10 @@
 angular.module('tatamiJHipsterApp')
-.controller('StatusListController', [
-    '$scope',
-    '$state',
-    '$timeout',
-    '$window',
-    '$translate',
-    'StatusService',
-    'HomeService',
-    'TagService',
-    'GroupService',
-    'profileInfo',
-    'statuses',
-    'showModal',
-    function($scope, $state, $timeout, $window, $translate, StatusService, HomeService, TagService, GroupService, profileInfo, statuses, showModal) {
-        console.log("in StatusListController");
-        console.log($state.name);
+.controller('StatusListController', ['$scope', '$state', '$timeout', '$window', 'statuses', 'profileInfo', 'showModal',
+    function($scope, $state, $timeout, $window, statuses, profileInfo, showModal) {
+
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');
         }
-
-//        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         $scope.profile = profileInfo;
         $scope.statuses = statuses;
@@ -31,6 +16,7 @@ angular.module('tatamiJHipsterApp')
             $scope.end = false;
             $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
         }
+
 
         /* Begin Polling Related Code */
 
@@ -45,15 +31,15 @@ angular.module('tatamiJHipsterApp')
                 var args = null;
 
                 if($scope.statuses.length > 0) {
-                    if($scope.$state.is('timelineHome.sidebarHome.tag')) {
+                    if($state.$current.name == 'tag') {
                         args = { tag: $scope.$stateParams.tag, start: statuses[0].timelineId };
                     }
 
-                    else if($scope.$state.is('timelineHome.sidebarHome.group.statuses')) {
+                    else if($state.$current.name == 'timelineHome.sidebarHome.group.statuses') {
                         args = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
                     }
 
-                    else if($scope.$state.is('tatami.home.profile.statuses')) {
+                    else if($state.$current.name == 'tatami.home.profile.statuses') {
                         args = { username: $scope.$stateParams.username, start: statuses[0].timelineId };
                     }
 
@@ -62,15 +48,15 @@ angular.module('tatamiJHipsterApp')
                     }
                 }
                 else {
-                    if($scope.$state.is('timelineHome.sidebarHome.tag')) {
+                    if($state.$current.name == 'tag') {
                         args = { tag: $scope.$stateParams.tag };
                     }
 
-                    else if($scope.$state.is('timelineHome.sidebarHome.group.statuses')) {
+                    else if($state.$current.name == 'timelineHome.sidebarHome.group.statuses') {
                         args = { groupId: $scope.$stateParams.groupId };
                     }
 
-                    else if($scope.$state.is('tatami.home.profile.statuses')) {
+                    else if($state.$current.name == 'tatami.home.profile.statuses') {
                         args = { username: $scope.$stateParams.username };
                     }
 
@@ -91,28 +77,27 @@ angular.module('tatamiJHipsterApp')
                     requestNewStatuses();
                 };
 
-                if($scope.$state.is('timelineHome.sidebarHome.timeline')) {
-                    console.log("scope state is timelineHome.sidebarHome.timeline");
+                if($state.$current.name == 'timeline') {
                     StatusService.getHomeTimeline(args, success, error);
                 }
 
-                else if($scope.$state.is('timelineHome.sidebarHome.mentions')) {
+                else if($state.$current.name == 'mentions') {
                     HomeService.getMentions(args, success, error);
                 }
 
-                else if($scope.$state.is('timelineHome.sidebarHome.company')) {
+                else if($state.$current.name == 'company') {
                     HomeService.getCompanyTimeline(args, success, error);
                 }
 
-                else if($scope.$state.is('timelineHome.sidebarHome.tag')) {
+                else if($state.$current.name == 'tag') {
                     TagService.getTagTimeline(args, success, error);
                 }
 
-                else if($scope.$state.is('timelineHome.sidebarHome.group.statuses')) {
+                else if($state.$current.name == 'timelineHome.sidebarHome.group.statuses') {
                     GroupService.getStatuses(args, success, error);
                 }
 
-                else if($scope.$state.is('tatami.home.profile.statuses')) {
+                else if($state.$current.name == 'tatami.home.profile.statuses') {
                     StatusService.getUserTimeline(args, success, error);
                 }
             }, pollingDelay);
@@ -138,22 +123,25 @@ angular.module('tatamiJHipsterApp')
         /* Begin Infinite Scrolling Related Code */
 
         $scope.requestOldStatuses = function() {
-            console.log("in requestOldStatuses");
             if($scope.busy || $scope.end) {
                 return;
             }
 
             $scope.busy = true;
 
-            if($scope.$state.is('tatamiHome.sidebarHome.timeline')) {
+            if($state.$current.name == 'timelinePresentation') {
                 StatusService.getHomeTimeline({ finish: $scope.finish }, loadOldStatuses);
             }
 
-            else if($scope.$state.is('timelineHome.sidebarHome.company')) {
+            if($state.$current.name == 'timeline') {
+                StatusService.getHomeTimeline({ finish: $scope.finish }, loadOldStatuses);
+            }
+
+            else if($state.$current.name == 'company') {
                 HomeService.getCompanyTimeline({ finish: $scope.finish }, loadOldStatuses);
             }
 
-            else if($scope.$state.is('timelineHome.sidebarHome.mentions')) {
+            else if($state.$current.name == 'mentions') {
                 HomeService.getMentions({ finish: $scope.finish }, loadOldStatuses);
             }
 
@@ -167,15 +155,15 @@ angular.module('tatamiJHipsterApp')
                 REST url.
             */
 
-            else if($scope.$state.is('timelineHome.sidebarHome.tag')) {
+            else if($state.$current.name == 'tag') {
                 TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadOldStatuses);
             }
 
-            else if($scope.$state.is('timelineHome.sidebarHome.group.statuses')) {
+            else if($state.$current.name == 'statuses') {
                 GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, finish: $scope.finish }, loadOldStatuses);
             }
 
-            else if($scope.$state.is('tatami.home.profile.statuses')) {
+            else if($state.$current.name == 'statuses') {
                 StatusService.getUserTimeline({ username: $scope.$stateParams.username, finish: $scope.finish }, loadOldStatuses);
             }
         };

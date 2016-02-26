@@ -2,7 +2,6 @@
 
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
-    console.log("in homeSidebar.js");
         $stateProvider
             .state('timeline', {
                 parent: 'sidebarHome',
@@ -18,16 +17,14 @@ angular.module('tatamiJHipsterApp')
                     },
                     'homeBodyContent@timelineHome': {
                         templateUrl: 'scripts/app/home/timeline/statusList.html',
-                        controller: 'StatusListControllerTwo'
+                        controller: 'StatusListController'
                     }
                 },
                 resolve: {
                     statuses: ['StatusService', function (StatusService) {
-                        console.log("in resolve: statuses:");
                         return StatusService.getHomeTimeline().$promise;
                     }],
                     showModal: ['statuses', function (statuses) {
-                        console.log("in showModal");
                         return statuses.length === 0;
                     }]
                 }

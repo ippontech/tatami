@@ -1,6 +1,5 @@
 angular.module('tatamiJHipsterApp')
 .factory('TagService', ['$resource', function($resource) {
-    console.log("in TagService");
     return $resource('/tatami/rest/tags', null,
     {
         'get': { method:'GET', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },

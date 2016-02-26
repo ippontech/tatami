@@ -1,6 +1,5 @@
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
-    console.log("in presentation.js");
         $stateProvider
             .state('timelinePresentation', {
                 parent: 'timeline',

@@ -1,6 +1,5 @@
 angular.module('tatamiJHipsterApp')
 .factory('GroupService', ['$resource', function($resource) {
-    console.log("in GroupService");
     return $resource('/tatami/rest/groups/:groupId', null,
     {
         'getStatuses': {
