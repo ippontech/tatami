@@ -7,8 +7,8 @@
     angular.module('tatami')
         .controller('LoginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$scope', '$state', '$http', 'LoginService'];
-    function loginCtrl($scope, $state, $http, LoginService) {
+    loginCtrl.$inject = ['$scope', '$state', '$http', 'LoginService', '$localStorage'];
+    function loginCtrl($scope, $state, $http, LoginService, $localStorage) {
         var vm = this;
         vm.user = {
             remember: false
@@ -35,11 +35,12 @@
             var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
 
             ref.addEventListener('loadstart', onStart);
+            ref.addEventListener('exit', onExit);
+
             onStart.$inject = ['event'];
             function onStart(event) {
                 if((event.url).startsWith("http://localhost/callback")) {
                     var requestToken = (event.url).split("code=")[1];
-                    console.log(requestToken);
 
                     $http({
                         url: '/tatami/rest/oauth/token',
@@ -47,8 +48,24 @@
                         headers: {
                             'x-auth-token': requestToken
                         }
-                    });
+                    }).then(onSuccess, onFail);
                 }
+            }
+
+            onExit.$inject = ['event'];
+            function onExit(event) {
+                $state.go('timeline');
+            }
+
+            onSuccess.$inject = ['result'];
+            function onSuccess(result) {
+                $localStorage.set('token', result.data);
+                ref.close();
+            }
+
+            onFail.$inject = ['failure'];
+            function onFail(failure) {
+                console.log(failure);
             }
         }
 

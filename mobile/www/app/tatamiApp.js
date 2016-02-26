@@ -26,7 +26,7 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
         });
     }])
 
-    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider, $httpProvider) {
 
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
         $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -38,6 +38,8 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
                 abstract: true,
                 templateUrl: 'app/tatami.html'
             });
+
+        $httpProvider.interceptors.push('authInterceptor');
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');
