@@ -44,7 +44,9 @@
       "old": "Old Password",
       "new": "New Password",
       "confirm": "Confirm New Password",
-      "save": "Your password has been changed"
+      "save": "Your password has been changed",
+      "warning": "After saving your password you will be logged out and required to log back in."
+
     },
 
 
