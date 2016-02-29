@@ -94,8 +94,14 @@
                 "deactivated": "This user is deactivated"
             },
 
-
+            "trends": {
+                "title": "Trends",
+                "line1": "This list represents the #hashtags that are currently the most often used on Tatami. Use this to discover what's going on and what are the hottest topics on Tatami!"
+            },
             "groups": {
+                "line1": "This is the list of groups you are a member of.",
+                "line2": "You can find and subscribe to public groups in the Account/Groups page (top-right menu).",
+                "line3": "There are also private groups. You cannot subscribe to these. The owner of the group must add you as a member.",
                 "title": "Groups",
                 "createNewGroup": "Create a new group",
                 "name": "Name",

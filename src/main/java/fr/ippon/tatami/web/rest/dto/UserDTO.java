@@ -141,7 +141,6 @@ public class UserDTO {
 
     public String getDomain() { return domain; }
 
-    @Override
     public String toString() {
         return "UserDTO{" +
             "login='" + login + '\'' +
