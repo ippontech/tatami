@@ -37,11 +37,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Controller
 public class UserXAuthController {
@@ -65,6 +68,21 @@ public class UserXAuthController {
 
     @Inject
     Environment env;
+
+    /**
+     * GET /rest/client/id -> Gets the client id
+     */
+    @RequestMapping(value = "/rest/client/id",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @Timed
+    public Collection<String> getClientId() {
+
+        String clientId = env.getProperty("tatami.google.clientId");
+        Collection<String> clientList = new ArrayList<String>();
+        clientList.add(clientId);
+        return clientList;
+    }
 
     /**
      * POST /rest/oauth/token -> Gets a token based on the users google information
