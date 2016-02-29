@@ -1,15 +1,13 @@
 (function() {
     'use strict';
-    var requestToken = "";
-    var accessToken = "";
-    var clientId = "260089373157-5a6n36mg1vgarq66ph3t58ipt70a5d3l.apps.googleusercontent.com";
 
     angular.module('tatami')
         .controller('LoginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'LoginService', 'PathService'];
-    function loginCtrl($scope, $state, $http, $localStorage, LoginService, PathService) {
+    loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'clientId', 'LoginService', 'PathService'];
+    function loginCtrl($scope, $state, $http, $localStorage, clientId, LoginService, PathService) {
         var vm = this;
+        vm.clientId = clientId.data.stringList[0];
         vm.user = {
             remember: false
         };
@@ -32,7 +30,7 @@
         }
 
         function googleLogin() {
-            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
+            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + vm.clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
 
             ref.addEventListener('loadstart', onStart);
 
