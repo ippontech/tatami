@@ -297,4 +297,22 @@ public class UserService {
             throw cve;
         }
     }
+
+    /**
+     * Return a collection of Users based on their username (ie : uid)
+     *
+     * @param logins the collection : must not be null
+     * @return a Collection of User
+     */
+    public Collection<User> getUsersByLogin(Collection<String> logins) {
+        final Collection<User> users = new ArrayList<User>();
+        User user;
+        for (String login : logins) {
+            user = userRepository.findOneByLogin(login).get();
+            if (user != null) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
 }

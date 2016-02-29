@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse"> <!--ng-switch="isAuthenticated()"-->
             <ul class="nav navbar-nav navbar-left">
                 <li>
-                    <a ui-sref="global.timeline">
+                    <a ui-sref="timeline">
                         <span>
                             <span class="glyphicon glyphicon-th-list"></span>
                             <span translate="global.timeline" class="hidden-tablet"></span>
@@ -51,15 +51,12 @@
                                  &#xA0;
                             </a>
                         </li>
-                        <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
+                        <li ui-sref-active="active" class="dropdown-submenu pointer" ng-controller="LanguageController">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                        <span>
-                            <span class="glyphicon glyphicon-flag"></span>
-                            <span class="hidden-sm" translate="global.menu.language">Language</span>
-                            <b class="caret"></b>
-                        </span>
+                                <span class="glyphicon glyphicon-flag"></span>
+                                <span class="hidden-sm" translate="global.menu.language">Language</span>
                             </a>
-                            <ul class="dropdown">
+                            <ul class="dropdown-menu">
                                 <li active-menu="{{language}}" ng-repeat="language in languages">
                                     <a href="" ng-click="changeLanguage(language)" data-toggle="collapse" data-target=".navbar-collapse.in">{{language | findLanguageFromKey}}</a>
                                 </li>

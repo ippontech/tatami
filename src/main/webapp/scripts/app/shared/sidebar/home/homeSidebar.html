@@ -1,0 +1,116 @@
+<div>
+    <section class="hidden-phone card-profile">
+        <div class="page-header">
+            <h4 class="profile-card background-image-fffix">
+                <div class="img img-rounded pull-left" ng-init="click = false" ng-click="click = !click" ng-class="click ? 'img-big' : 'img-medium-big'" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }"></div>
+            </h4>
+        </div>
+        <div class="well well-sm little-padding">
+            <div>
+                <a class="h3" ui-sref="tatami.home.profile.statuses({ username: profile.username })">
+                    <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
+                </a>
+            </div>
+            <div>
+                <a class="h5 text-muted" ui-sref="tatami.home.profile.statuses({ username: profile.username })">
+                    @{{ profile.login }}
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="hidden-phone groups">
+        <div class="panel panel-default">
+            <div tour-step
+                 order="3"
+                 title="<b>{{ 'global.account.groups.title' | translate }}</b>"
+                 content="{{ 'global.account.groups.line1' | translate }}
+                         <p>{{ 'tatami.welcome.groups.line2' | translate }}</p>
+                         <p>{{ 'tatami.welcome.groups.line3' | translate }}</p>
+                         <br>"
+                 placement="right"
+                 skip="false"
+                 on-end="onTourEnd(tour)"
+                 class="panel-heading">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <span translate="home.sidebar.myGroups"></span>
+            </div>
+            <table class="table table-condensed nomargin">
+                <tr ng-repeat="group in groups">
+                    <td>
+                        <a ui-sref="tatami.home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                    </td>
+                    <td class="text-right" nowrap>
+                        <span ng-if="group.publicGroup" class="label label-warning" title="{{ 'tatami.home.sidebar.publicToolTip' | translate }}"><small translate="tatami.home.sidebar.public"></small></span>
+                        <span ng-if="!group.publicGroup" class="label label-info" title="{{ 'tatami.home.sidebar.privateToolTip' | translate }}"><small translate="tatami.home.sidebar.private"></small></span>
+                        <span ng-if="group.archivedGroup" class="label label-default" title="{{ 'tatami.home.sidebar.archivedToolTip' | translate }}"><small translate="tatami.home.sidebar.archived"></small></span>
+                        <span ng-if="group.administrator" class="label label-danger" title="{{ 'tatami.home.sidebar.administratorToolTip' | translate }}"><small translate="tatami.home.sidebar.administrator"></small></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section class="hidden-phone tag-trends">
+        <div class="panel panel-default">
+            <div tour-step
+                 order="4"
+                 title="<b>{{ 'global.account.trends.title' | translate }}</b>"
+                 content="{{ 'global.account.trends.line1' | translate }}"
+                 placement="right"
+                 skip="false"
+                 on-end="onTourEnd(tour)"
+                 class="panel-heading">
+                <span class="glyphicon glyphicon-fire"></span>
+                <span translate="home.sidebar.trends"></span>
+            </div>
+            <div class="panel-body items">
+                <div ng-repeat="tag in tags">
+                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                        <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
+                    <a ui-sref="tatami.home.home.tag({ tag: tag.name })">#{{ tag.name }}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="hidden-phone who-to-follow">
+        <div class="panel panel-default">
+            <div tour-step
+                 order="5"
+                 title="<b>{{ 'tatami.welcome.whoToFollow.title' | translate }}</b>"
+                 content="{{ 'tatami.welcome.whoToFollow.line1' | translate }}
+                         <p>{{ 'tatami.welcome.whoToFollow.line2' | translate }}</p>
+                         <p>{{ 'tatami.welcome.whoToFollow.line3' | translate }}</p>
+                         <br>"
+                 placement="right"
+                 skip="false"
+                 on-end="onTourEnd(tour)"
+                 class="panel-heading">
+                <span class="glyphicon glyphicon-user"></span>
+                <span translate="home.sidebar.whoToFollow"></span>
+            </div>
+            <div class="panel-body items useritemmini" ng-repeat="suggestion in suggestions">
+                <h6>
+                    <span ng-click="followUser(suggestion, $index)" class="pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
+                        <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
+                        <span class='pull-left background-image-fffix'>
+                            <img class="img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }">
+                        </span>
+                    </a>&nbsp;
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
+                        <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
+                    </a>
+                    <br>&nbsp;
+                    <a ui-sref="tatami.home.profile.statuses({ username: suggestion.username })">
+                        <small>@{{ suggestion.username }}</small>
+                    </a>
+                </h6>
+            </div>
+        </div>
+        <div style="opacity: 0.5; text-align:center;">
+            Version: <pom>version</pom>, Build: <pom>build</pom>
+        </div>
+    </section>
+</div>
