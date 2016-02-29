@@ -374,6 +374,7 @@
 
         <tatami.google.clientId></tatami.google.clientId>
         <tatami.google.clientSecret></tatami.google.clientSecret>
+        <tatami.token.validityInSeconds>7200</tatami.token.validityInSeconds>
 
         <!--Test configurations: Sonar, unit test, code coverage -->
 
@@ -464,10 +465,20 @@
     </repositories>
 
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.1.0</maven>
     </prerequisites>
 
     <dependencies>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-plus</artifactId>
+            <version>v1-rev345-1.21.0</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-json-org</artifactId>
