@@ -145,7 +145,39 @@
     <build>
         <finalName>tatami-mobile-${project.version}</finalName>
         <plugins>
-            <plugin>
+	<plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/node_modules/</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>        
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>exec-maven-plugin</artifactId>
+		<version>1.2.1</version>
+		<executions>
+			<execution>
+				<id>install-npm-mobile-dependencies</id>
+				<phase>generate-sources</phase>
+				<configuration>
+					<executable>npm</executable>
+					<arguments>
+						<argument>install</argument>
+					</arguments>
+				</configuration>
+				<goals>
+					<goal>exec</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>    
+	<plugin>
                 <groupId>com.kelveden</groupId>
                 <artifactId>maven-karma-plugin</artifactId>
                 <version>1.6</version>
