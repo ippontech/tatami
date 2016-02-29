@@ -15,7 +15,6 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
             }
         });
         ProfileService.get().$promise.then(function(loggedUser) {
-            console.log(loggedUser);
             if(loggedUser.username) {
                 $state.go('timeline');
             } else {

@@ -16,7 +16,6 @@
         function request(config) {
             config.headers = config.headers || {};
             var token = $localStorage.get('token');
-            console.log(token);
 
             if (token && token.expires && token.expires > new Date().getTime()) {
                 config.headers['x-auth-token'] = token.token;
