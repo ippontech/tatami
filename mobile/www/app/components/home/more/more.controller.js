@@ -4,18 +4,15 @@
     angular.module('tatami')
         .controller('MoreController', moreController);
 
-    moreController.$inject = ['$http', '$state', '$localStorage', 'PathService'];
-    function moreController($http, $state, $localStorage, PathService ) {
+    moreController.$inject = ['$state', '$localStorage', '$ionicHistory'];
+    function moreController($state, $localStorage, $ionicHistory) {
         var vm = this;
 
         vm.logout = logout;
 
         function logout() {
-            $http.get(PathService.buildPath('/tatami/logout')).then(goToLogin)
-        }
-
-        function goToLogin() {
             $localStorage.set('token', '');
+            $ionicHistory.clearCache();
             $state.go('login');
         }
     }
