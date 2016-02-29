@@ -190,7 +190,6 @@ public class TagResource {
     public Collection<TagDTO> getTags(@RequestParam(required = false, value = "popular") String popular,
                                    @RequestParam(required = false, value = "user") String username,
                                    @RequestParam(required = false, value = "search") String search) {
-        log.error("in getTags in TagResource");
         Collection<TagDTO> tags = new ArrayList<TagDTO>();
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());

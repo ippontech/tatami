@@ -73,13 +73,10 @@ public class TimelineResource {
                                             @RequestParam(required = false) String start,
                                             @RequestParam(required = false) String finish) {
 
-        log.error("in /rest/statuses/home_timeline. listStatus()");
-
         if (count == null || count == 0) {
             count = 20; //Default value
         }
         try {
-            log.error("returning: " + timelineService.getTimeline(count, start, finish));
             return timelineService.getTimeline(count, start, finish);
         } catch (Exception e) {
             StringWriter stack = new StringWriter();
