@@ -88,6 +88,9 @@ public class User implements Serializable {
     @JsonIgnore
     private String domain;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
 
@@ -250,6 +253,12 @@ public class User implements Serializable {
     public void setDomain(String domain) {
         this.domain = domain;
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 
 
     @Override
