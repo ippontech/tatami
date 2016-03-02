@@ -104,6 +104,7 @@ public class StatusRepository {
 
 
     public Status createStatus(String login,
+                               String username,
                                boolean statusPrivate,
                                Group group,
                                Collection<String> attachmentIds,
@@ -118,7 +119,6 @@ public class StatusRepository {
         status.setStatusId(UUIDs.timeBased());
         status.setLogin(login);
         status.setType(StatusType.STATUS);
-        String username = DomainUtil.getUsernameFromLogin(login);
         status.setUsername(username);
         String domain = DomainUtil.getDomainFromLogin(login);
         status.setDomain(domain);

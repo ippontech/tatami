@@ -50,6 +50,9 @@ public class StatusUpdateService {
     private MentionService mentionService;
 
     @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private UserlineRepository userlineRepository;
 
     @Inject
@@ -223,10 +226,12 @@ public class StatusUpdateService {
         } else {
             currentLogin = user.getLogin();
         }
+        String username = userRepository.findOneByLogin(currentLogin).get().getUsername();
         String domain = DomainUtil.getDomainFromLogin(currentLogin);
 
         Status status =
                 statusRepository.createStatus(currentLogin,
+                        username,
                         statusPrivate,
                         group,
                         attachmentIds,
