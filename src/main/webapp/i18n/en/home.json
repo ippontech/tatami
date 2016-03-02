@@ -4,6 +4,11 @@
         "timeline": "Timeline",
         "mentions": "Mentions",
         "favorites": "Favorites",
+        "status": {
+            "reply": "Reply",
+            "share": "Share",
+            "favorite": "Favorite"
+        },
             "form": {
                 "cancel": "Cancel",
                 "presentation": "Launch presentation"

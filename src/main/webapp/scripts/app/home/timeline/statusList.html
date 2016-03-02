@@ -44,11 +44,14 @@
                                     <!--&lt;!&ndash;French&ndash;&gt;-->
                                     <!--<small ng-if="!isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}" am-time-ago="status.statusDate"></small>-->
                                     <!--<small ng-if="isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}">{{ status.statusDate | amDateFormat:'D MMMM' }}</small>-->
+
+                                    <small title="{{ 'status.prettyPrintStatusDate' }}">{{ status.prettyPrintStatusDate }}</small>
                                 </a>
                                 <a ng-if="status.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ status.locationURL }}" target="_blank"></a>
                             </h5>
 
                             <!--<div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>-->
+                            <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content"></div>
 
                             <small ng-if="status.groupId">
                                 <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="tatami.home.home.group.statuses({ groupId: status.groupId })">
@@ -115,15 +118,15 @@
                                     <span>
                                         <button ng-click="openReplyModal(status)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span translate="tatami.home.status.reply"></span>
+                                            <span translate="home.status.reply"></span>
                                         </button>
                                         <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
-                                            <span translate="tatami.home.status.share"></span>
+                                            <span translate="home.status.share"></span>
                                         </button>
                                         <button ng-click="favoriteStatus(status, $index)" class="btn-link status-action status-action-favorite button-ios">
                                             <i class="glyphicon glyphicon-star"></i>
-                                            <span translate="tatami.home.status.favorite"></span>
+                                            <span translate="home.status.favorite"></span>
                                         </button>
                                         <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
