@@ -166,7 +166,7 @@ public class TimelineResource {
     /**
      * POST /statuses/ -> create a new Status
      */
-    @RequestMapping(value = "/rest/statuses/",
+    @RequestMapping(value = "/rest/statuses",
             method = RequestMethod.POST,
             produces = "application/json")
     @Timed
