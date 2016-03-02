@@ -25,6 +25,9 @@ public class UserDTO {
     private String password;
 
     @Size(max = 50)
+    private String username;
+
+    @Size(max = 50)
     private String firstName;
 
     @Size(max = 50)
@@ -61,14 +64,14 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this(user.getLogin(), null, user.getFirstName(), user.getLastName(),
+        this(user.getLogin(), null, user.getUsername(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities(), user.getJobTitle(), user.getPhoneNumber(), user.getMentionEmail(),
             user.getRssUid(), user.getWeeklyDigest(),
             user.getDailyDigest(), user.getDomain());
     }
 
-    public UserDTO(String login, String password, String firstName, String lastName,
+    public UserDTO(String login, String password, String username, String firstName, String lastName,
         String email, boolean activated, String langKey, Set<String> authorities,
                    String jobTitle, String phoneNumber,
                    boolean mentionEmail, String rssUid, boolean weeklyDigest,
@@ -76,6 +79,7 @@ public class UserDTO {
 
         this.login = login;
         this.password = password;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -97,6 +101,14 @@ public class UserDTO {
 
     public String getLogin() {
         return login;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -140,6 +152,17 @@ public class UserDTO {
     public boolean isDailyDigest() { return dailyDigest; }
 
     public String getDomain() { return domain; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDTO user = (UserDTO) o;
+
+        return !(username != null ? !username.equals(user.username) : user.username != null);
+
+    }
 
     public String toString() {
         return "UserDTO{" +
