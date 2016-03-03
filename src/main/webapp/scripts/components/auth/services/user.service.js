@@ -1,6 +1,5 @@
 tatamiJHipsterApp
     .factory('UserService', ['$resource', function($resource) {
-    console.log("in UserService");
     var responseTransform = function(users) {
         users = angular.fromJson(users);
 
