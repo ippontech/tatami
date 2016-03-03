@@ -55,84 +55,84 @@ PostModule.config(['$stateProvider', function($stateProvider) {
             },
             onEnter: onEnterArrayStatusView
         })
-        .state('tatami.home.status.post', {
+        .state('home.status.post', {
             url: '',
             params: {
                 'statusIdReply': null
             },
             onEnter: onEnterArrayStatusView
         })
-        .state('tatami.home.search.post', {
+        .state('home.search.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.timeline.post', {
+        .state('home.home.timeline.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.mentions.post', {
+        .state('home.home.mentions.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.favorites.post', {
+        .state('home.home.favorites.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.company.post', {
+        .state('home.home.company.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.tag.post', {
+        .state('home.home.tag.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.group.statuses.post', {
+        .state('home.home.group.statuses.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.home.group.members.post', {
+        .state('home.home.group.members.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.profile.statuses.post', {
+        .state('home.profile.statuses.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.profile.following.post', {
+        .state('home.profile.following.post', {
             url: '',
             params: {
                 'statusId': null
             },
             onEnter: onEnterArray
         })
-        .state('tatami.home.profile.followers.post', {
+        .state('home.profile.followers.post', {
             url: '',
             params: {
                 'statusId': null
