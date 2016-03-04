@@ -1,3 +1,6 @@
 <ion-view view-title="Mentions">
-    <tatami-status-list statuses="vm.mentioned" current-user="vm.currentUser" tatami-refresher="vm.getNewStatuses()"></tatami-status-list>
+    <tatami-status-list statuses="vm.mentioned"
+                        current-user="vm.currentUser"
+                        tatami-refresher="vm.getNewStatuses()"
+                        tatami-infinite-refresher="vm.getOldStatuses(finalStatus)"></tatami-status-list>
 </ion-view>

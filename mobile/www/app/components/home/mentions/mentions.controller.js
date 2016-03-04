@@ -12,6 +12,7 @@
 
         vm.remove = remove;
         vm.getNewStatuses = getNewStatuses;
+        vm.getOldStatuses = getOldStatuses;
 
         remove.$inject = ['mention'];
         function remove(mention) {
@@ -20,6 +21,11 @@
 
         function getNewStatuses() {
             return TatamiStatusRefresherService.refreshMentions();
+        }
+
+        getOldStatuses.$inject = ['finalStatus'];
+        function getOldStatuses(finalStatus) {
+            return TatamiStatusRefresherService.getOldMentions(finalStatus);
         }
     }
 })();
