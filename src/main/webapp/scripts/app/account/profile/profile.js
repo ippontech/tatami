@@ -3,7 +3,7 @@
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('profile', {
+            .state('account.profile', {
                 parent: 'account',
                 url: '/profile',
 

@@ -1,0 +1,45 @@
+<div class="col-lg-8">
+    <div class="alert alert-status">
+        <div class = well>
+            <div>
+                <h2 translate="account.topPosters.title"></h2>
+                <div class="useritem">
+                    <table class="table noCollapse">
+                        <tbody>
+                        <tr>
+                            <th style="border-top: 0" translate="account.topPosters.username"></th>
+                            <th style="border-top: 0" translate="account.topPosters.count"></th>
+                            <th style="border-top: 0"></th>
+                        </tr>
+                        </tbody>
+                        <tbody class="items">
+                        <tr ng-repeat="user in topPosters">
+                            <td style="text-align: left">
+                                <div class="pull-left background-image-fffix little-marge-right">
+                                    <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.info.avatarURL + ')' }">
+                                </div>
+                                <h4>
+                                    <a ui-sref="home.profile.statuses({ username: user.info.username })">
+                                        <strong>
+                                            {{ user.info.firstName + ' ' + user.info.lastName }}
+                                        </strong>
+                                    </a>
+                                    <br>
+                                    <a ui-sref="home.profile.statuses({ username: user.info.username })">
+                                        <small>
+                                            @{{ user.info.username }}
+                                        </small>
+                                    </a>
+                                </h4>
+                            </td>
+                            <td>
+                                {{ user.statusCount }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
