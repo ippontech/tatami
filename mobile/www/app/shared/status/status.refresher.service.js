@@ -11,7 +11,8 @@
             refreshMentions: refreshMentions,
             refreshFavorites: refreshFavorites,
             refreshUserTimeline: refreshUserTimeline,
-            getOldFromHomeTimeline: getOldFromHomeTimeline
+            getOldFromHomeTimeline: getOldFromHomeTimeline,
+            getOldMentions: getOldMentions
         };
 
         return service;
@@ -38,6 +39,11 @@
             return StatusService.getHomeTimeline({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
         }
 
+        getOldMentions.$inject = ['finalStatus'];
+        function getOldMentions(finalStatus) {
+            return HomeService.getMentions({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
+        }
+
         updateStatuses.$inject = ['statuses'];
         function updateStatuses(statuses) {
             $rootScope.$broadcast('scroll.refreshComplete');
@@ -48,7 +54,6 @@
         updateInfiniteStatuses.$inject = ['statuses'];
         function updateInfiniteStatuses(statuses) {
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
-            console.log(statuses);
 
             return statuses;
         }
