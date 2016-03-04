@@ -37,6 +37,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/ngToast/dist/ngToast.js',
+            'main/webapp/bower_components/moment/moment.js',
+            'main/webapp/bower_components/angular-moment/angular-moment.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
