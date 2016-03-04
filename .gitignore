@@ -126,3 +126,8 @@ Desktop.ini
 # Maven Wrapper
 ######################
 !.mvn/wrapper/maven-wrapper.jar
+
+######################
+# Bower Components
+######################
+/src/main/webapp/bower_components/**
