@@ -10,7 +10,8 @@
             refreshHomeTimeline: refreshHomeTimeline,
             refreshMentions: refreshMentions,
             refreshFavorites: refreshFavorites,
-            refreshUserTimeline: refreshUserTimeline
+            refreshUserTimeline: refreshUserTimeline,
+            getOldFromHomeTimeline: getOldFromHomeTimeline
         };
 
         return service;
@@ -32,9 +33,22 @@
             return HomeService.getFavorites().$promise.then(updateStatuses);
         }
 
+        getOldFromHomeTimeline.$inject = ['finalStatus'];
+        function getOldFromHomeTimeline(finalStatus) {
+            return StatusService.getHomeTimeline({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
+        }
+
         updateStatuses.$inject = ['statuses'];
         function updateStatuses(statuses) {
             $rootScope.$broadcast('scroll.refreshComplete');
+
+            return statuses;
+        }
+
+        updateInfiniteStatuses.$inject = ['statuses'];
+        function updateInfiniteStatuses(statuses) {
+            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            console.log(statuses);
 
             return statuses;
         }
