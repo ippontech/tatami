@@ -5,6 +5,9 @@ angular.module('tatamiJHipsterApp')
 
         for(var i = 0; i < statuses.length; i++) {
             statuses[i]['avatarURL'] = statuses[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+                if (statuses[i].avatar == null) {
+                    statuses[i]['avatarURL'] = '/assets/images/default_image_profile.png';
+                }
 
             if(statuses[i].geoLocalization) {
                 var latitude = statuses[i].geoLocalization.split(',')[0].trim();
