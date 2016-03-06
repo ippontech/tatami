@@ -1,54 +1,71 @@
+(function() {
 'use strict';
 
-angular.module('tatamiJHipsterApp')
-    .config(function ($stateProvider) {
-        $stateProvider
-            .state('timelineHome', {
-                abstract: false,
-                parent: 'site',
-                data: {
-                    authorities: [],
-                    pageTitle: 'tatami.home.title'
-                },
-                url: '/home',
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/home/home.html',
-                        controller: 'HomeController'
+    angular.module('tatamiJHipsterApp')
+        .config(homeConfig);
+
+    homeConfig.$inject = ['$stateProvider'];
+    function homeConfig($stateProvider) {
+            $stateProvider
+                .state('timelineHome', {
+                    abstract: false,
+                    parent: 'site',
+                    data: {
+                        authorities: [],
+                        pageTitle: 'tatami.home.title'
+                    },
+                    url: '/home',
+                    views: {
+                        'content@': {
+                            templateUrl: 'scripts/app/home/home.html',
+                            controller: 'HomeController'
+                        }
+                    },
+                    resolve: {
+                        profile: getProfile,
+                        profileInfo: getProfileInfo,
+                        mainTranslatePartialLoader: getMainTranslatePartialLoader
                     }
-                },
-                resolve: {
-                    profile: ['ProfileService', function (ProfileService) {
-                        return ProfileService.get().$promise;
-                    }],
-                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader',
-                        function ($translate,$translatePartialLoader) {
-                            $translatePartialLoader.addPart('home');
-                            return $translate.refresh();
-                    }],
-                    profileInfo: ['Account', function(Account) {
-                        return Account.get().$promise;
-                    }]
-                }
-            })
-            //state for all views that use home sidebar
-            .state('sidebarHome', {
-                parent: 'timelineHome',
-                url: '^/home',
-                abstract: true,
-                resolve: {
-                    groups: ['GroupService', function (GroupService) {
-                        return GroupService.query().$promise;
-                    }],
-                    tags: ['TagService', function (TagService) {
-                        return TagService.query({popular: true}).$promise;
-                    }],
-                    suggestions: ['UserService', function (UserService) {
-                        return UserService.getSuggestions().$promise;
-                    }],
-                    showModal: function () {
-                        return false;
+                })
+                //state for all views that use home sidebar
+                .state('sidebarHome', {
+                    parent: 'timelineHome',
+                    url: '^/home',
+                    abstract: true,
+                    resolve: {
+                        groups: getGroups,
+                        tags: getTags,
+                        suggestions: getSuggestions,
+                        showModal: function () {
+                            return false;
+                        }
                     }
-                }
-            })
-    });
+                });
+            };
+
+        getProfile.$inject = ['ProfileService'];
+        function getProfile(ProfileService) {
+            return ProfileService.get().$promise;
+        }
+        getProfileInfo.$inject = ['Account'];
+        function getProfileInfo(Account){
+            return Account.get().$promise;
+        }
+        getMainTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+        function getMainTranslatePartialLoader($translate, $translatePartialLoader) {
+            $translatePartialLoader.addPart('home');
+            return $translate.refresh();
+        }
+        getGroups.$inject = ['GroupService'];
+        function getGroups(GroupService) {
+            return GroupService.get().$promise;
+        }
+        getTags.$inject = ['TagService'];
+        function getTags(TagService) {
+            return TagService.query({popular: true}).$promise;
+        }
+        getSuggestions.$inject = ['UserService'];
+        function getSuggestions(UserService) {
+            return UserService.get().$promise;
+        }
+})();
