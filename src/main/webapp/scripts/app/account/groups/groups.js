@@ -6,7 +6,16 @@ angular.module('tatamiJHipsterApp')
             .state('account.groups', {
                 parent: 'account',
                 url: '/groups',
+
                 templateUrl: 'scripts/app/account/groups/groups.html',
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('account');
+                        return $translate.refresh();
+                    }]
+                },
                 controller: 'GroupsController'
+
             })
+
     });

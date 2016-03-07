@@ -7,6 +7,13 @@ angular.module('tatamiJHipsterApp')
                 parent: 'account',
                 url: '/tags',
                 templateUrl: 'scripts/app/account/tags/tags.html',
-                controller: 'tagsController'
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('account');
+                        return $translate.refresh();
+                    }]
+                },
+                controller: 'ProfileController'
+
             })
     });

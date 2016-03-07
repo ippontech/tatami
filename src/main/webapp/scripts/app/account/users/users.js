@@ -7,6 +7,8 @@ angular.module('tatamiJHipsterApp')
                 parent: 'account',
                 url: '/users',
                 templateUrl: 'scripts/app/account/users/users.html',
-                controller: 'usersController'
+                controller: 'UsersController'
             })
     });
+
+

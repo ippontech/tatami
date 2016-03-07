@@ -10,3 +10,5 @@ tatamiJHipsterApp
                 controller: 'PreferencesController'
             })
     });
+
+
