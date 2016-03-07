@@ -6,7 +6,6 @@ angular.module('tatamiJHipsterApp')
             .state('account.tags', {
                 parent: 'account',
                 url: '/tags',
-
                 templateUrl: 'scripts/app/account/tags/tags.html',
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -17,5 +16,4 @@ angular.module('tatamiJHipsterApp')
                 controller: 'ProfileController'
 
             })
-
     });
