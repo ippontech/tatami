@@ -1,6 +1,7 @@
 angular.module('tatamiJHipsterApp')
-.controller('StatusListController', ['$scope', '$state', '$timeout', '$window', 'StatusService', 'statuses', 'profileInfo', 'showModal',
-    function($scope, $state, $timeout, $window, StatusService, statuses, profileInfo, showModal) {
+.controller('StatusListController', ['$scope', '$state', '$stateParams', '$timeout', '$window', '$uibModal', 'StatusService',
+'PostModalService','statuses', 'profileInfo', 'showModal',
+    function($scope, $state, $stateParams, $timeout, $window, $uibModal, StatusService, PostModalService, statuses, profileInfo, showModal) {
 
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');
@@ -39,7 +40,7 @@ angular.module('tatamiJHipsterApp')
                         args = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
                     }
 
-                    else if($state.$current.name == 'tatami.home.profile.statuses') {
+                    else if($state.$current.name == 'home.profile.statuses') {
                         args = { username: $scope.$stateParams.username, start: statuses[0].timelineId };
                     }
 
@@ -56,7 +57,7 @@ angular.module('tatamiJHipsterApp')
                         args = { groupId: $scope.$stateParams.groupId };
                     }
 
-                    else if($state.$current.name == 'tatami.home.profile.statuses') {
+                    else if($state.$current.name == 'home.profile.statuses') {
                         args = { username: $scope.$stateParams.username };
                     }
 
@@ -97,7 +98,7 @@ angular.module('tatamiJHipsterApp')
                     GroupService.getStatuses(args, success, error);
                 }
 
-                else if($state.$current.name == 'tatami.home.profile.statuses') {
+                else if($state.$current.name == 'home.profile.statuses') {
                     StatusService.getUserTimeline(args, success, error);
                 }
             }, pollingDelay);
@@ -192,8 +193,8 @@ angular.module('tatamiJHipsterApp')
             return $translate.use();
         };
 
-        $scope.openReplyModal = function(status) {
-            $scope.$state.go($scope.$state.current.name + '.post', { statusId: status.statusId });
+        $scope.openReplyModal = function(statusId) {
+            PostModalService.openPostModal(statusId);
         };
 
         $scope.favoriteStatus = function(status, index) {

@@ -15,7 +15,9 @@ PostModule.controller('PostController', [
     'SearchService',
     '$stateParams',
     '$state',
-    function($scope, $uibModalInstance, $translate, Upload, StatusService, GeolocalisationService, curStatus, SearchService, $stateParams, $state) {
+    function($scope, $uibModalInstance, $translate, Upload, StatusService, GeolocalisationService, curStatus,
+    SearchService, $stateParams, $state) {
+
         $scope.$state = $state;
         $scope.isOneDayOrMore = function(date) {
             return moment().diff(moment(date), 'days', true) >= 1;
@@ -130,13 +132,13 @@ PostModule.controller('PostController', [
         $scope.closeModal = function() {
             $uibModalInstance.dismiss();
             $scope.reset();
-            $scope.$state.go('^');
+            //$scope.$state.go('^');
         };
 
         //Handles closing the modal via escape and clicking outside the modal
-        $uibModalInstance.result.finally(function() {
-            $scope.$state.go('^');
-        });
+        //$uibModalInstance.result.finally(function() {
+        //    $scope.$state.go('^');
+        //});
 
 
         /**

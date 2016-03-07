@@ -43,7 +43,7 @@
         <div class="container">
             <div ui-view="content"></div>
 
-            <div ng-if="!$state.includes('tatami.home')" style="opacity: 0.5; text-align:center;">
+            <div ng-if="!$state.includes('home')" style="opacity: 0.5; text-align:center;">
                 Version: <pom>version</pom>, Build: <pom>build</pom>
             </div>
         </div>
@@ -186,6 +186,7 @@
     <script src="scripts/shared/services/StatusService.js"></script>
     <script src="scripts/shared/services/GeolocService.js"></script>
     <script src="scripts/shared/services/GroupService.js"></script>
+    <script src="scripts/shared/services/PostModalService.js"></script>
     <script src="scripts/shared/filters/PlaceholderFilter.js"></script>
     <script src="scripts/shared/filters/MarkdownFilter.js"></script>
     <script src="scripts/shared/filters/EmoticonFilter.js"></script>

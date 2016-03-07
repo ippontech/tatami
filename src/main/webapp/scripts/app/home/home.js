@@ -8,7 +8,7 @@ angular.module('tatamiJHipsterApp')
                 parent: 'site',
                 data: {
                     authorities: [],
-                    pageTitle: 'tatami.home.title'
+                    pageTitle: 'home.title'
                 },
                 url: '/home',
                 views: {
@@ -24,6 +24,7 @@ angular.module('tatamiJHipsterApp')
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader',
                         function ($translate,$translatePartialLoader) {
                             $translatePartialLoader.addPart('home');
+                            $translatePartialLoader.addPart('status');
                             return $translate.refresh();
                     }],
                     profileInfo: ['Account', function(Account) {
