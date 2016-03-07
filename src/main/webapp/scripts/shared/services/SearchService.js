@@ -4,7 +4,7 @@ tatamiJHipsterApp
         users = angular.fromJson(users);
 
         for(var i = 0; i < users.length; i++) {
-            users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+            users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
         }
 
         return users;
@@ -12,7 +12,7 @@ tatamiJHipsterApp
 
     return $resource('/tatami/rest/search/:term', { term: '@term' },
     {
-        'query': { 
+        'query': {
             method: 'GET', isArray: true, transformResponse: responseTransform
         },
         'get': {
