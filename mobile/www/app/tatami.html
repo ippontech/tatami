@@ -10,7 +10,7 @@
             Tatami
         </a>
     </div>
-    <div class="buttons" ng-if="!vm.$state.includes('login')">
+    <div class="buttons" ng-if="!(vm.$state.includes('login') || vm.$state.includes('post'))">
         <a ui-sref="post">
             <button class="button button-clear ion-android-create"></button>
         </a>
