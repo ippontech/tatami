@@ -30,7 +30,7 @@
         }
 
         function googleLogin() {
-            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + vm.clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
+            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + vm.clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
 
             ref.addEventListener('loadstart', onStart);
 
