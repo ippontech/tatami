@@ -1,5 +1,5 @@
 <ion-header-bar class="bar-header bar-dark">
-    <div class="buttons">
+    <div class="buttons" ng-if="!vm.$state.includes('login')">
         <a ui-sref="suggested">
             <button class="button button-clear ion-android-person-add"></button>
         </a>
@@ -10,7 +10,7 @@
             Tatami
         </a>
     </div>
-    <div class="buttons">
+    <div class="buttons" ng-if="!vm.$state.includes('login')">
         <a ui-sref="post">
             <button class="button button-clear ion-android-create"></button>
         </a>

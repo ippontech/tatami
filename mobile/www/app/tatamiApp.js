@@ -35,7 +35,9 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
             .state('tatami', {
                 url: '',
                 abstract: true,
-                templateUrl: 'app/tatami.html'
+                templateUrl: 'app/tatami.html',
+                controller: 'TatamiCtrl',
+                controllerAs: 'vm'
             });
 
         $httpProvider.interceptors.push('authInterceptor');
