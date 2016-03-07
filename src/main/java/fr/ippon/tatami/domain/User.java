@@ -34,6 +34,9 @@ public class User implements Serializable {
     @Size(max=50)
     private String username;
 
+    @Column(name = "avatar")
+    private String avatar;
+
     @Size(max = 50)
     private String firstName;
 
@@ -121,6 +124,14 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getFirstName() {
@@ -280,6 +291,7 @@ public class User implements Serializable {
         return "User{" +
             "login='" + login + '\'' +
             ", username='" + username + '\'' +
+            ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +

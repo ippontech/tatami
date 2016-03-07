@@ -155,6 +155,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "joe",                  // login
             "password",             // password
             "joeusername",          // username
+            "avatar",               // avatar
             "Joe",                  // firstName
             "Shmoe",                // lastName
             "joe@example.com",      // e-mail
@@ -187,6 +188,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "funky-log!n",          // login <-- invalid
             "password",             // password
             "username",              // username
+            "avatar",               // avatar
             "Funky",                // firstName
             "One",                  // lastName
             "funky@example.com",    // e-mail
@@ -219,6 +221,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "bob",              // login
             "password",         // password
             "username",         // username
+            "avatar",           // avatar
             "Bob",              // firstName
             "Green",            // lastName
             "invalid",          // e-mail <-- invalid
@@ -252,6 +255,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "alice",                // login
             "password",             // password
             "username",             // username
+            "avatar",               // avatar
             "Alice",                // firstName
             "Something",            // lastName
             "alice@example.com",    // e-mail
@@ -268,7 +272,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         // Duplicate login, different e-mail
-        UserDTO dup = new UserDTO(u.getLogin(), u.getPassword(), u.getUsername(), u.getLogin(), u.getLastName(),
+        UserDTO dup = new UserDTO(u.getLogin(), u.getPassword(), u.getUsername(), u.getAvatar(), u.getLogin(), u.getLastName(),
             "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain());
@@ -299,6 +303,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "john",                 // login
             "password",             // password
             "username",             // username
+            "avatar",               // avatar
             "John",                 // firstName
             "Doe",                  // lastName
             "john@example.com",     // e-mail
@@ -315,7 +320,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         );
 
         // Duplicate e-mail, different login
-        UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getUsername(), u.getLogin(), u.getLastName(),
+        UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getUsername(), u.getAvatar(), u.getLogin(), u.getLastName(),
             u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain());
@@ -345,6 +350,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "badguy",               // login
             "password",             // password
             "username",             // username
+            "avatar",               // avatar
             "Bad",                  // firstName
             "Guy",                  // lastName
             "badguy@example.com",   // e-mail

@@ -13,6 +13,7 @@ tatamiJHipsterApp
     return $resource('/tatami/rest/users/:username', null,
     {
         'get': {
+            isArray: true,
             method: 'GET', params: { username: '@username' },
             transformResponse: function(user) {
                 user = angular.fromJson(user);
