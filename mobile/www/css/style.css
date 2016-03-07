@@ -20,6 +20,11 @@
 .profile-name .subheading, .profile-name .date {
     vertical-align: top;
 }
+
+div .tatami-avatar {
+    min-height: 42px;
+}
+
 .bar .bar-header .title {
     left:0!important;
     right:0!important;
@@ -42,7 +47,7 @@
 }
 
 .platform-ios .tatami-header {
-    top: 44px;
+    top: 64px;
 }
 
 .platform-ios .tatami-footer {
