@@ -2,11 +2,6 @@ angular.module('tatamiJHipsterApp')
 .factory('GroupService', ['$resource', function($resource) {
     return $resource('/tatami/rest/groups/:groupId', null,
     {
-        'get': {
-            method: 'GET',
-            isArray: true,
-            url: '/tatami/rest/groups'
-        },
         'getStatuses': {
             method: 'GET',
             isArray: true,
@@ -48,6 +43,6 @@ angular.module('tatamiJHipsterApp')
         'getRecommendations': { method: 'GET', isArray: true, url: '/tatami/rest/groupmemberships/suggestions' },
         'join': { method: 'PUT', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
         'leave': { method: 'DELETE', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
-        'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' },
+        'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' }
     });
 }]);

@@ -13,7 +13,7 @@ tatamiJHipsterApp
     return $resource('/tatami/rest/users/:username', null,
     {
         'get': {
-            method: 'GET', isArray: true, params: { username: '@username' },
+            method: 'GET', params: { username: '@username' },
             transformResponse: function(user) {
                 user = angular.fromJson(user);
                 user['avatarURL'] = user.avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
