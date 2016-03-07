@@ -1,7 +1,18 @@
 angular.module('tatamiJHipsterApp')
-.controller('StatusListController', ['$scope', '$state', '$stateParams', '$timeout', '$window', '$uibModal', 'StatusService',
-'PostModalService','statuses', 'profileInfo', 'showModal',
-    function($scope, $state, $stateParams, $timeout, $window, $uibModal, StatusService, PostModalService, statuses, profileInfo, showModal) {
+.controller('StatusListController', [
+	'$scope', 
+	'$state', 
+	'$stateParams', 
+	'$timeout', 
+	'$window', 
+	'$uibModal',
+	'$translate', 
+	'StatusService',
+	'PostModalService',
+	'statuses', 
+	'profileInfo', 
+	'showModal',
+    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, StatusService, PostModalService, statuses, profileInfo, showModal) {
 
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');

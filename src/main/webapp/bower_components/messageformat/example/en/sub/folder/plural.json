@@ -1,3 +1,0 @@
-{
-  "test": "Your {NUM, plural, one{message} other{messages}} go here."
-}

@@ -123,7 +123,7 @@ PostModule.controller('PostController', [
                 $scope.status.replyTo = status.statusId;
             }
             else {
-                $scope.currentStatus.avatarURL = '/assets/img/default_image_profile.png';
+                $scope.currentStatus.avatarURL = '/assets/images/default_image_profile.png';
             }
         };
 

@@ -13,10 +13,7 @@ tatamiJHipsterApp
                         } catch(e) {
                             parsedProfile = {};
                         }
-                        parsedProfile['avatarURL'] = parsedProfile.avatar === '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
-                        if (typeof parsedProfile.avatar == 'undefined') {
-                            parsedProfile['avatarURL'] = '/assets/images/default_image_profile.png';
-                        }
+                        parsedProfile['avatarURL'] = parsedProfile.avatar ==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
                         return parsedProfile;
                     }
                 },
