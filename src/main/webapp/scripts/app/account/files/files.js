@@ -10,3 +10,5 @@ angular.module('tatamiJHipsterApp')
                 controller: 'FilesController'
             })
     });
+
+
