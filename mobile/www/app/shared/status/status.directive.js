@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', 'StatusService'];
-    function controller($scope, $state, StatusService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService'];
+    function controller($scope, $state, $ionicPopup, StatusService) {
         var vm = this;
 
         vm.status = $scope.status;
@@ -33,9 +33,22 @@
         vm.goToConversation = goToConversation;
 
         function remove() {
-            StatusService.delete({ statusId : vm.status.statusId }, function() {
-                $scope.onDelete(vm.status);
-            })
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete',
+                template: 'Are you sure you want to delete the status?'
+            });
+
+            confirmPopup.then(checkDelete);
+
+            checkDelete.$inject = ['decision'];
+            function checkDelete(decision) {
+                if(decision) {
+                    StatusService.delete({ statusId : vm.status.statusId }, function() {
+                        $scope.onDelete(vm.status);
+                    });
+                }
+            }
+
         }
 
         function favorite() {
