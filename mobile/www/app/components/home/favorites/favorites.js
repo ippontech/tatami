@@ -33,6 +33,7 @@
 
     run.$inject = ['TatamiState'];
     function run(TatamiState) {
+        TatamiState.addProfileState('favorites', 'home');
         TatamiState.addStatusState('favorites', 'home');
     }
 })();
