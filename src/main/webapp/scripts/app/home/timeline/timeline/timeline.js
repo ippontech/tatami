@@ -8,15 +8,14 @@ angular.module('tatamiJHipsterApp')
                 url: '/timeline',
                 views: {
                     'homeSide@timelineHome': {
-                        templateUrl: 'scripts/app/shared/sidebar/home/homeSidebar.html',
+                        templateUrl: 'scripts/app/home/timeline/sidebar/homeSidebar.html',
                         controller: 'HomeSidebarController'
                     },
                     'homeBodyHeader@timelineHome': {
-                        templateUrl: 'scripts/app/home/timeline/timelineHeader.html',
-                        controller: 'HomeSidebarController'
+                        templateUrl: 'scripts/app/home/timeline/timeline/timelineHeader.html',
                     },
                     'homeBodyContent@timelineHome': {
-                        templateUrl: 'scripts/app/home/timeline/statusList.html',
+                        templateUrl: 'scripts/app/home/timeline/statuslist/statusList.html',
                         controller: 'StatusListController'
                     }
                 },
