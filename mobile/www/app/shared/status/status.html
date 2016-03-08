@@ -23,6 +23,6 @@
         <div class="col-25 button button-clear ion-chatbox tatami-button" ng-click="vm.postReply()"></div>
         <div class="col-25 button button-clear ion-star tatami-button" ng-click="vm.favorite()" ng-class="{ 'button-energized': vm.status.favorite }"></div>
         <div class="col-25 button button-clear ion-trash-a tatami-button" ng-if="vm.isCurrentUser" ng-click="vm.remove()"></div>
-        <div class="col-25 button button-clear ion-share tatami-button" ng-if="!vm.isCurrentUser"></div>
+        <div class="col-25 button button-clear ion-share tatami-button" ng-if="!vm.isCurrentUser" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }"></div>
     </div>
 </span>

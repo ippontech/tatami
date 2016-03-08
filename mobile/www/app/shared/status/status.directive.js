@@ -32,6 +32,7 @@
         vm.postReply = postReply;
         vm.goToConversation = goToConversation;
         vm.goToProfile = goToProfile;
+        vm.shareStatus = shareStatus;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -53,9 +54,7 @@
         }
 
         function favorite() {
-            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function(result) {
-                vm.status = result
-            })
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus)
         }
 
         function postReply() {
@@ -72,6 +71,15 @@
         function goToProfile(username) {
             var destinationState = $state.current.name.split('.')[0] + '.profile';
             $state.go(destinationState, { username : username });
+        }
+
+        function shareStatus() {
+            StatusService.update({ statusId: vm.status.statusId }, { shared: !vm.status.shareByMe }, setStatus);
+        }
+
+        setStatus.$inject = ['status'];
+        function setStatus(status) {
+            vm.status = status;
         }
     }
 })();
