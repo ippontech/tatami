@@ -1,6 +1,6 @@
 angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngResource', 'ngCordova'])
 
-    .run(['$ionicPlatform', '$state', '$localStorage', 'ProfileService', '$rootScope', function ($ionicPlatform, $state, $localStorage, ProfileService, $rootScope) {
+    .run(['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', 'ProfileService', '$rootScope', function ($ionicPlatform, $state, $localStorage, $ionicHistory, ProfileService, $rootScope) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -19,8 +19,15 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
 
         function resume() {
             var token = $localStorage.get('token');
-            $state.go('login');
+            if(token === '') {
+                $state.go('login');
+            }
+            else {
+                $ionicHistory.clearCache();
+                $state.reload();
+            }
         }
+
         ProfileService.get().$promise.then(function(loggedUser) {
             if(loggedUser.username) {
                 $state.go('timeline');
