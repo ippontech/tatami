@@ -253,7 +253,7 @@ public class StatusUpdateService {
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
-            manageMentions(status, null, currentLogin, domain, new ArrayList<String>());
+            manageMentions(status, null, currentLogin, new ArrayList<String>());
 
         } else { // Public status
             Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
@@ -270,7 +270,7 @@ public class StatusUpdateService {
             manageStatusTags(status, group);
 
             // add status to the mentioned users' timeline
-            manageMentions(status, group, currentLogin, domain, followersForUser);
+            manageMentions(status, group, currentLogin, followersForUser);
 
             // Increment status count for the current user
             counterRepository.incrementStatusCounter(currentLogin);
@@ -345,7 +345,7 @@ public class StatusUpdateService {
         }
     }
 
-    private void manageMentions(Status status, Group group, String currentLogin, String domain, Collection<String> followersForUser) {
+    private void manageMentions(Status status, Group group, String currentLogin, Collection<String> followersForUser) {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
             String mentionedUsername = extractUsernameWithoutAt(m.group());
@@ -353,18 +353,16 @@ public class StatusUpdateService {
                     !mentionedUsername.equals(currentLogin) &&
                     !followersForUser.contains(mentionedUsername)) {
 
-                log.debug("Mentionning : {}", mentionedUsername);
-                String mentionedLogin =
-                        DomainUtil.getLoginFromUsernameAndDomain(mentionedUsername, domain);
+                log.debug("Mentioning : {}", mentionedUsername);
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
                 if (!isPublicGroup(group)) {
-                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedLogin);
+                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedUsername);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                        mentionUser(mentionedLogin, status);
+                        mentionUser(mentionedUsername, status);
                     }
                 } else { // This is a public status
-                    mentionUser(mentionedLogin, status);
+                    mentionUser(mentionedUsername, status);
                 }
             }
         }

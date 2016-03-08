@@ -487,25 +487,23 @@ public class TimelineService {
     /**
      * The userline contains the user's own status
      *
-     * @param username the user to retrieve the userline of
+     * @param login the user to retrieve the userline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserline(String username, int nbStatus, String start, String finish) {
-        String login;
+    public Collection<StatusDTO> getUserline(String login, int nbStatus, String start, String finish) {
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        if (username == null || username.isEmpty()) { // current user
+        if (login == null || login.isEmpty()) { // current user
             login = currentUser.getLogin();
         } else {  // another user, in the same domain
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
         List<String> statuses = userlineRepository.getUserline(login, nbStatus, start, finish);
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
-            return getUserline(username, nbStatus, start, finish);
+            return getUserline(login, nbStatus, start, finish);
         }
         return dtos;
     }
