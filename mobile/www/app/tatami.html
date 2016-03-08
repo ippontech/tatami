@@ -1,7 +1,12 @@
 <ion-header-bar class="bar-header bar-dark">
-    <div class="buttons" ng-if="!vm.$state.includes('login')">
+    <div class="buttons" ng-if="!vm.$state.includes('login') && !vm.$state.includes('follow')">
         <a ui-sref="suggested">
             <button class="button button-clear ion-android-person-add"></button>
+        </a>
+    </div>
+    <div class="buttons" ng-if="vm.$state.includes('follow')">
+        <a ui-sref="timeline">
+            <button class="button button-clear ion-ios-list"></button>
         </a>
     </div>
     <div class="title">
