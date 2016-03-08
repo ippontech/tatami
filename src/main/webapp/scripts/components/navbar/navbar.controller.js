@@ -18,7 +18,7 @@ tatamiJHipsterApp
         $scope.restart = function () {
         }
 
-        $scope.openModal = function () {
+        $scope.openPostModal = function () {
             PostModalService.openPostModal();
         }
 

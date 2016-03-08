@@ -1,7 +1,7 @@
 tatamiJHipsterApp
-.service('PostModalService', ['$state', '$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
-    this.openPostModal = function(statusId) {
-       $stateParams.statusId = angular.isDefined(statusId) ? statusId : null;
+.service('PostModalService', ['$uibModal', function($uibModal) {
+    this.openPostModal = function(id) {
+       var statusId = angular.isDefined(id) ? id : null;
        $uibModal.open({
            templateUrl: '/scripts/components/navbar/post/PostView.html',
            controller: 'PostController',
@@ -10,8 +10,8 @@ tatamiJHipsterApp
            keyboard: true,
            resolve: {
                curStatus: ['StatusService', function(StatusService) {
-                   if($stateParams.statusId !== null) {
-                       return StatusService.get({ statusId: $stateParams.statusId }).$promise;
+                   if(statusId !== null) {
+                       return StatusService.get({ statusId: statusId }).$promise;
                    }
                }],
                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
