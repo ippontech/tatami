@@ -3,8 +3,10 @@
         <img ng-src="{{ vm.status.avatarURL }}"/>
 
         <div class="profile-name">
-            <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
-            <span class="inline subheading">{{vm.status.username}}</span>
+            <a ng-click="vm.goToProfile(vm.status.username)">
+                <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
+                <span class="inline subheading">/ @{{vm.status.username}}</span>
+            </a>
             <span class="inline date">&nbsp;&#183; {{vm.status.prettyPrintStatusDate}}</span>
         </div>
     </div>

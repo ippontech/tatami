@@ -31,6 +31,7 @@
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
         vm.postReply = postReply;
         vm.goToConversation = goToConversation;
+        vm.goToProfile = goToProfile;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -61,9 +62,16 @@
             $state.go('post', { statusId : vm.status.statusId });
         }
 
+        goToConversation.$inject = ['statusId'];
         function goToConversation(statusId) {
             var destinationState = $state.current.name.split('.')[0] + '.status';
             $state.go(destinationState, { statusId : statusId });
+        }
+
+        goToProfile.$inject = ['username'];
+        function goToProfile(username) {
+            var destinationState = $state.current.name.split('.')[0] + '.profile';
+            $state.go(destinationState, { username : username });
         }
     }
 })();
