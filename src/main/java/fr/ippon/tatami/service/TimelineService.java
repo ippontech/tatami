@@ -182,7 +182,7 @@ public class TimelineService {
         User currentUser = null;
         Collection<Group> usergroups;
         List<String> favoriteLine;
-        if (!SecurityUtils.isAuthenticated()) {
+        if (SecurityUtils.isAuthenticated()) {
             currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             usergroups = groupService.getGroupsForUser(currentUser);
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
