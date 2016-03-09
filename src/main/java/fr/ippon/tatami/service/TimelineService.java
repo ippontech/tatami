@@ -245,8 +245,8 @@ public class TimelineService {
                         statusUser = userRepository.findOneByLogin(mentionFriend.getFollowerLogin()).get();
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
-//                        statusDTO.setAvatar(statusUser.getAvatar());
-//                        statusDTO.setUsername(statusUser.getUsername());
+                        statusDTO.setAvatar(statusUser.getAvatar());
+                        statusDTO.setUsername(statusUser.getUsername());
                         statuses.add(statusDTO);
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;
@@ -344,8 +344,7 @@ public class TimelineService {
                 statusDTO.setAttachments(status.getAttachments());
             }
             statusDTO.setContent(status.getContent());
-//            statusDTO.setUsername(statusUser.getUsername());
-            statusDTO.setUsername(statusUser.getLogin());
+            statusDTO.setUsername(statusUser.getUsername());
             if (status.getStatusPrivate() == null) {
                 statusDTO.setStatusPrivate(false);
             } else {
@@ -360,7 +359,7 @@ public class TimelineService {
             }
             statusDTO.setFirstName(statusUser.getFirstName());
             statusDTO.setLastName(statusUser.getLastName());
-//            statusDTO.setAvatar(statusUser.getAvatar());
+            statusDTO.setAvatar(statusUser.getAvatar());
             statusDTO.setDetailsAvailable(status.isDetailsAvailable());
             line.add(statusDTO);
         }

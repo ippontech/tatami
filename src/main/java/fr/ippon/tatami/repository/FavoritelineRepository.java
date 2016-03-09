@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 /**
@@ -58,6 +59,7 @@ public class FavoritelineRepository {
                 .column("status")
                 .from("favline")
                 .where(eq("key", login))
+                .orderBy(desc("status"))
                 .limit(50);
         ResultSet results = session.execute(statement);
 
