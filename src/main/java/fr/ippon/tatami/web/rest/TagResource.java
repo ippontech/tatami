@@ -5,7 +5,6 @@ import fr.ippon.tatami.config.JHipsterProperties;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
-//import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;

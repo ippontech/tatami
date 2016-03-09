@@ -91,8 +91,8 @@ public class User implements Serializable {
     @JsonIgnore
     private String domain;
 
-    @Column(name = "avatar")
-    private String avatar;
+    @Column(name = "attachmentsSize")
+    private long attachmentsSize;
 
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
@@ -265,11 +265,13 @@ public class User implements Serializable {
         this.domain = domain;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public long getAttachmentsSize() {
+        return attachmentsSize;
     }
 
-    public void setAvatar(String avatar) { this.avatar = avatar; }
+    public void setAttachmentsSize(long attachmentsSize) {
+        this.attachmentsSize = attachmentsSize < 0 ? 0 : attachmentsSize;
+    }
 
 
     @Override

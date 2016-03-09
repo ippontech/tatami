@@ -6,7 +6,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +37,9 @@ public class AvatarService {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private AuthenticationService authenticationService;
-
     public String createAvatar(Avatar avatar) {
 
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 
         if (currentUser.getAvatar() != null && !("").equals(currentUser.getAvatar())) {
             deleteAvatar(currentUser.getAvatar());
@@ -70,8 +67,8 @@ public class AvatarService {
     public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
-        User currentUser = authenticationService.getCurrentUser();
-        userRepository.updateUser(currentUser);
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        userRepository.save(currentUser);
     }
 
     private byte[] scaleImage(byte[] data) throws IOException {
@@ -93,7 +90,7 @@ public class AvatarService {
     }
 
     public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
         if (dbAvatar != null) {
             return dbAvatar;

@@ -27,7 +27,7 @@ public class AuthenticationService {
                 (UserDetails) securityContext
                         .getAuthentication().getPrincipal();
 
-        return userRepository.findUserByLogin(springSecurityUser.getUsername());
+        return userRepository.findOneByLogin(springSecurityUser.getUsername()).get();
     }
 
     public boolean hasAuthenticatedUser() {

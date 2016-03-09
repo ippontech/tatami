@@ -6,7 +6,7 @@ import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
@@ -64,9 +64,6 @@ public class FileResource {
 
     @Inject
     private UserRepository userRepository;
-
-    @Inject
-    private AuthenticationService authenticationService;
 
     @PostConstruct
     public void init() {
@@ -218,10 +215,10 @@ public class FileResource {
 
         uploadedFiles.add(uploadedFile);
 
-        User user = authenticationService.getCurrentUser();
-        user.setAvatar(avatar.getAvatarId());
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        currentUser.setAvatar(avatar.getAvatarId());
 
-        userRepository.save(user);
+        userRepository.save(currentUser);
 
         return uploadedFiles;
 
@@ -253,9 +250,9 @@ public class FileResource {
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
         uploadedFiles.add(uploadedFile);
         if (avatar.getAvatarId() != null) {
-            User user = authenticationService.getCurrentUser();
-            user.setAvatar(avatar.getAvatarId());
-            userRepository.save(user);
+            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            currentUser.setAvatar(avatar.getAvatarId());
+            userRepository.save(currentUser);
         }
         return uploadedFiles;
 
@@ -279,10 +276,10 @@ public class FileResource {
 
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
-        User user = authenticationService.getCurrentUser();
-        user.setAvatar(avatar.getAvatarId());
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        currentUser.setAvatar(avatar.getAvatarId());
 
-        userRepository.save(user);
+        userRepository.save(currentUser);
 
     }
 

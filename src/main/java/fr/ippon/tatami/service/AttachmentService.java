@@ -7,7 +7,7 @@ import fr.ippon.tatami.repository.AttachmentRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +42,11 @@ public class AttachmentService {
     private UserRepository userRepository;
 
     @Inject
-    private AuthenticationService authenticationService;
-
-    @Inject
     private Environment env;
 
     public String createAttachment(Attachment attachment) throws StorageSizeException {
 
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
@@ -67,13 +64,12 @@ public class AttachmentService {
         attachment.setThumbnail(computeThumbnail(attachment));
 
         attachmentRepository.createAttachment(attachment);
-        userAttachmentRepository.addAttachmentId(authenticationService.getCurrentUser().getLogin(),
+        userAttachmentRepository.addAttachmentId(SecurityUtils.getCurrentUser().getUsername(),
                 attachment.getAttachmentId());
 
         // Refresh user data, to reduce the risk of errors
-        currentUser = authenticationService.getCurrentUser();
         currentUser.setAttachmentsSize(currentUser.getAttachmentsSize() + attachment.getSize());
-        userRepository.updateUser(currentUser);
+        userRepository.save(currentUser);
         return attachment.getAttachmentId();
     }
 
@@ -90,7 +86,7 @@ public class AttachmentService {
     public Collection<String> getAttachmentIdsForCurrentUser(int pagination, String finish) {
         Collection<String> attachmentIds =
                 userAttachmentRepository.
-                        findAttachmentIds(authenticationService.getCurrentUser().getLogin(), pagination,finish);
+                        findAttachmentIds(SecurityUtils.getCurrentUser().getUsername(), pagination,finish);
 
         log.debug("Collection of attachments : {}", attachmentIds.size());
 
@@ -99,24 +95,23 @@ public class AttachmentService {
 
     public void deleteAttachment(Attachment attachment) {
         log.debug("Removing attachment : {}", attachment);
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
 
         for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getLogin())) {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
                 userAttachmentRepository.removeAttachmentId(currentUser.getLogin(), attachment.getAttachmentId());
                 attachmentRepository.deleteAttachment(attachment);
                 // Refresh user data, to reduce the risk of errors
-                currentUser = authenticationService.getCurrentUser();
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();
                 currentUser.setAttachmentsSize(newAttachmentsSize);
-                userRepository.updateUser(currentUser);
+                userRepository.save(currentUser);
                 break;
             }
         }
     }
 
     public Collection<Long> getDomainQuota() {
-        User currentUser = authenticationService.getCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
