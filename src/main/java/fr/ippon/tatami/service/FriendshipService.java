@@ -50,11 +50,9 @@ public class FriendshipService {
      *
      * @return true if the operation succeeds, false otherwise
      */
-    public boolean followUser(String usernameToFollow) {
-        log.debug("Following user : {}", usernameToFollow);
+    public boolean followUser(String loginToFollow) {
+        log.debug("Following user : {}", loginToFollow);
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String loginToFollow = DomainUtil.getLoginFromUsernameAndDomain(usernameToFollow, domain);
         User followedUser = userRepository.findOneByLogin(loginToFollow).get();
         if (followedUser != null && !followedUser.equals(currentUser)) {
             if (counterRepository.getFriendsCounter(currentUser.getLogin()) > 0) {
@@ -85,10 +83,9 @@ public class FriendshipService {
      *
      * @return true if the operation succeeds, false otherwise
      */
-    public boolean unfollowUser(String usernameToUnfollow) {
-        log.debug("Removing followed user : {}", usernameToUnfollow);
+    public boolean unfollowUser(String loginToUnfollow) {
+        log.debug("Removing followed user : {}", loginToUnfollow);
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String loginToUnfollow = this.getLoginFromUsername(usernameToUnfollow);
         User userToUnfollow = userRepository.findOneByLogin(loginToUnfollow).get();
         return unfollowUser(currentUser, userToUnfollow);
     }
@@ -133,8 +130,7 @@ public class FriendshipService {
         return followerRepository.findFollowersForUser(login);
     }
 
-    public Collection<User> getFriendsForUser(String username) {
-        String login = this.getLoginFromUsername(username);
+    public Collection<User> getFriendsForUser(String login) {
         Collection<String> friendLogins = friendRepository.findFriendsForUser(login);
         Collection<User> friends = new ArrayList<User>();
         for (String friendLogin : friendLogins) {
@@ -144,8 +140,7 @@ public class FriendshipService {
         return friends;
     }
 
-    public Collection<User> getFollowersForUser(String username) {
-        String login = this.getLoginFromUsername(username);
+    public Collection<User> getFollowersForUser(String login) {
         Collection<String> followersLogins = followerRepository.findFollowersForUser(login);
         Collection<User> followers = new ArrayList<User>();
         for (String followerLogin : followersLogins) {
@@ -199,9 +194,10 @@ public class FriendshipService {
         return isFollowing;
     }
 
-    private String getLoginFromUsername(String username) {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
-    }
+//    This method is on the chopping block to be removed. It seems that we dont need a username column.
+//    private String getLoginFromUsername(String username) {
+//        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+//        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+//        return DomainUtil.getLoginFromUsernameAndDomain(username, domain);
+//    }
 }

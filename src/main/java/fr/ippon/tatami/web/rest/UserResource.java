@@ -76,13 +76,13 @@ public class UserResource {
      * The user needs to be activated on creation.
      * </p>
      */
-    @RequestMapping(value = "/users",
+    @RequestMapping(value = "/rest/users",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
-        log.debug("REST request to save User : {}", managedUserDTO);
+        log.debug("rest request to save User : {}", managedUserDTO);
         if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
@@ -109,13 +109,13 @@ public class UserResource {
     /**
      * PUT  /users -> Updates an existing User.
      */
-    @RequestMapping(value = "/users",
+    @RequestMapping(value = "/rest/users",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<ManagedUserDTO> updateUser(@RequestBody ManagedUserDTO managedUserDTO) throws URISyntaxException {
-        log.debug("REST request to update User : {}", managedUserDTO);
+        log.debug("rest request to update User : {}", managedUserDTO);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "E-mail already in use")).body(null);
@@ -147,7 +147,7 @@ public class UserResource {
     /**
      * GET  /users -> get all users.
      */
-    @RequestMapping(value = "/users",
+    @RequestMapping(value = "/rest/users",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -168,7 +168,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
-        log.debug("REST request to get User : {}", login);
+        log.debug("rest request to get User : {}", login);
         return userService.getUserWithAuthoritiesByLogin(login)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
@@ -177,13 +177,13 @@ public class UserResource {
     /**
      * DELETE  USER :login -> delete the "login" User.
      */
-    @RequestMapping(value = "/users/{login}",
+    @RequestMapping(value = "/rest/users/{login}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        log.debug("REST request to delete User: {}", login);
+        log.debug("rest request to delete User: {}", login);
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
     }
@@ -197,7 +197,7 @@ public class UserResource {
 //    @ResponseBody
 //    @Timed
 //    public UserDTO getUser(@PathVariable("username") String username) {
-//        this.log.debug("REST request to get Profile : {}", username);
+//        this.log.debug("rest request to get Profile : {}", username);
 ////        User user = userService.getUserByUsername(username);
 //        User user = userRepository.findOneByLogin(username).get();
 //

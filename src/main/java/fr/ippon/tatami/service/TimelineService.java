@@ -182,7 +182,7 @@ public class TimelineService {
         User currentUser = null;
         Collection<Group> usergroups;
         List<String> favoriteLine;
-        if (!SecurityUtils.isAuthenticated()) {
+        if (SecurityUtils.isAuthenticated()) {
             currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
             usergroups = groupService.getGroupsForUser(currentUser);
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getLogin());
@@ -245,8 +245,8 @@ public class TimelineService {
                         statusUser = userRepository.findOneByLogin(mentionFriend.getFollowerLogin()).get();
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
-//                        statusDTO.setAvatar(statusUser.getAvatar());
-//                        statusDTO.setUsername(statusUser.getUsername());
+                        statusDTO.setAvatar(statusUser.getAvatar());
+                        statusDTO.setUsername(statusUser.getUsername());
                         statuses.add(statusDTO);
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;
@@ -344,8 +344,7 @@ public class TimelineService {
                 statusDTO.setAttachments(status.getAttachments());
             }
             statusDTO.setContent(status.getContent());
-//            statusDTO.setUsername(statusUser.getUsername());
-            statusDTO.setUsername(statusUser.getLogin());
+            statusDTO.setUsername(statusUser.getUsername());
             if (status.getStatusPrivate() == null) {
                 statusDTO.setStatusPrivate(false);
             } else {
@@ -360,7 +359,7 @@ public class TimelineService {
             }
             statusDTO.setFirstName(statusUser.getFirstName());
             statusDTO.setLastName(statusUser.getLastName());
-//            statusDTO.setAvatar(statusUser.getAvatar());
+            statusDTO.setAvatar(statusUser.getAvatar());
             statusDTO.setDetailsAvailable(status.isDetailsAvailable());
             line.add(statusDTO);
         }
@@ -487,25 +486,23 @@ public class TimelineService {
     /**
      * The userline contains the user's own status
      *
-     * @param username the user to retrieve the userline of
+     * @param login the user to retrieve the userline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserline(String username, int nbStatus, String start, String finish) {
-        String login;
+    public Collection<StatusDTO> getUserline(String login, int nbStatus, String start, String finish) {
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        if (username == null || username.isEmpty()) { // current user
+        if (login == null || login.isEmpty()) { // current user
             login = currentUser.getLogin();
         } else {  // another user, in the same domain
             String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            login = DomainUtil.getLoginFromUsernameAndDomain(username, domain);
         }
         List<String> statuses = userlineRepository.getUserline(login, nbStatus, start, finish);
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
-            return getUserline(username, nbStatus, start, finish);
+            return getUserline(login, nbStatus, start, finish);
         }
         return dtos;
     }

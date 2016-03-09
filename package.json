@@ -8,9 +8,9 @@
     "src/main/webapp/bower_components"
   ],
   "dependencies": {
-    "angular-moment": "^0.10.3",
-    "bower": "^1.6.3",
-    "moment": "^2.11.2"
+    "angular-moment": "0.10.3",
+    "bower": "1.6.3",
+    "moment": "2.11.2"
   },
   "devDependencies": {
     "grunt": "0.4.5",

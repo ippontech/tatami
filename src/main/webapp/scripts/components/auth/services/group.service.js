@@ -11,7 +11,7 @@ angular.module('tatamiJHipsterApp')
                 statuses = angular.fromJson(statuses);
 
                 for(var i = 0; i < statuses.length; i++) {
-                    statuses[i]['avatarURL'] = statuses[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+                    statuses[i]['avatarURL'] = statuses[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
 
                     if(statuses[i].geoLocalization) {
                         var latitude = statuses[i].geoLocalization.split(',')[0].trim();
@@ -34,7 +34,7 @@ angular.module('tatamiJHipsterApp')
                 users = angular.fromJson(users);
 
                 for(var i = 0; i < users.length; i++) {
-                    users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+                    users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
                 }
 
                 return users;
@@ -43,6 +43,7 @@ angular.module('tatamiJHipsterApp')
         'getRecommendations': { method: 'GET', isArray: true, url: '/tatami/rest/groupmemberships/suggestions' },
         'join': { method: 'PUT', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
         'leave': { method: 'DELETE', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
-        'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' }
+        'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' },
+        'get': { method: 'GET', isArray: true, url: '/tatami/rest/groups' }
     });
 }]);

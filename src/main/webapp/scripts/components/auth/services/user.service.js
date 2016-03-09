@@ -1,11 +1,10 @@
 tatamiJHipsterApp
     .factory('UserService', ['$resource', function($resource) {
-    console.log("in UserService");
     var responseTransform = function(users) {
         users = angular.fromJson(users);
 
         for(var i = 0; i < users.length; i++) {
-            users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
+            users[i]['avatarURL'] = users[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + users[i].avatar + '/photo.jpg';
         }
 
         return users;
@@ -14,10 +13,11 @@ tatamiJHipsterApp
     return $resource('/tatami/rest/users/:username', null,
     {
         'get': {
+            isArray: true,
             method: 'GET', params: { username: '@username' },
             transformResponse: function(user) {
                 user = angular.fromJson(user);
-                user['avatarURL'] = user.avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+                user['avatarURL'] = user.avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
                 return user;
             }
         },
@@ -39,7 +39,7 @@ tatamiJHipsterApp
                 suggestions = angular.fromJson(suggestions);
 
                 for(var i = 0; i < suggestions.length; i++) {
-                    suggestions[i]['avatarURL'] = suggestions[i].avatar==='' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + suggestions[i].avatar + '/photo.jpg';
+                    suggestions[i]['avatarURL'] = suggestions[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + suggestions[i].avatar + '/photo.jpg';
                     suggestions[i]['followingUser'] = false;
                 }
 
