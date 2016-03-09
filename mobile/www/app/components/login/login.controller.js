@@ -61,7 +61,7 @@
 
             onSuccess.$inject = ['result'];
             function onSuccess(result) {
-                $localStorage.set('token', result.data);
+                $localStorage.set('token', result.data.token);
                 ref.close();
                 $state.go('timeline');
             }
