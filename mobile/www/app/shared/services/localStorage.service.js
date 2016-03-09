@@ -8,7 +8,8 @@
     function localStorage($window) {
         var service = {
             get: getFromLocalStorage,
-            set: setFromLocalStorage
+            set: setFromLocalStorage,
+            clear: clearLocalStorage
         };
 
         return service;
@@ -21,6 +22,10 @@
         setFromLocalStorage.$inject = ['key', 'value'];
         function setFromLocalStorage(key, value) {
             $window.localStorage[key] = JSON.stringify(value);
+        }
+
+        function clearLocalStorage() {
+            $window.localStorage.clear();
         }
     }
 })();
