@@ -11,7 +11,7 @@
         vm.logout = logout;
 
         function logout() {
-            $localStorage.set('token', undefined);
+            $localStorage.clear();
             $ionicHistory.clearCache();
             $state.go('login');
         }
