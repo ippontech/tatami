@@ -51,6 +51,8 @@ public class UserXAuthController {
 
     private static final Logger log = LoggerFactory.getLogger(UserXAuthController.class);
 
+    private static final String GOOGLE_AUTH_CODE_HEADER_NAME = "x-auth-code-header";
+
     @Inject
     private UserService userService;
 
@@ -92,7 +94,7 @@ public class UserXAuthController {
     @Timed
     public Token getGoogleUser(ServletRequest servletRequest) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String authorizationCode = httpServletRequest.getHeader(XAuthTokenFilter.XAUTH_TOKEN_HEADER_NAME);
+        String authorizationCode = httpServletRequest.getHeader(GOOGLE_AUTH_CODE_HEADER_NAME);
 
         Token authToken = null;
         if(StringUtils.hasText(authorizationCode)){
@@ -100,9 +102,9 @@ public class UserXAuthController {
                 Person user = getGoogleUserInfo(authorizationCode);
                 UserDetails userDetails = getUserDetails(user);
                 GoogleAuthenticationToken token = new GoogleAuthenticationToken(userDetails);
+                authToken = tokenProvider.createToken(userDetails);
                 Authentication authentication = authenticationManager.authenticate(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                authToken = tokenProvider.createToken(userDetails);
             } catch (IOException ioe) {
                 log.error("{}", ioe);
             }

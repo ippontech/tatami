@@ -53,7 +53,7 @@
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
                         method: 'POST',
                         headers: {
-                            'x-auth-token': requestToken
+                            'x-auth-code-header': requestToken
                         }
                     }).then(onSuccess, onFail);
                 }
