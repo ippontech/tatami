@@ -34,6 +34,7 @@
 
     run.$inject = ['TatamiState'];
     function run(TatamiState) {
+        TatamiState.addProfileState('timeline', 'home');
         TatamiState.addStatusState('timeline', 'home');
     }
 

@@ -36,6 +36,9 @@
             profileViews['suggested@follow'] = { 'suggested@follow': profileViewConfig };
             profileViews['following@follow'] = { 'following@follow': profileViewConfig };
             profileViews['follower@follow'] = { 'follower@follow': profileViewConfig };
+            profileViews['timeline@home'] = { 'timeline@home': profileViewConfig };
+            profileViews['mentions@home'] = { 'mentions@home': profileViewConfig };
+            profileViews['favorites@home'] = { 'favorites@home': profileViewConfig };
 
             var service = {
                 addStatusState: addStatusState,

@@ -30,7 +30,18 @@
         }
 
         function googleLogin() {
-            var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + vm.clientId + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
+            var emailScope = 'https://www.googleapis.com/auth/plus.profile.emails.read';
+            var profileScope = 'https://www.googleapis.com/auth/plus.me';
+            var googleUrl = 'https://accounts.google.com/o/oauth2/auth?' +
+                            'client_id=' + vm.clientId + '&' +
+                            'redirect_uri=http://localhost/callback&' +
+                            'scope=' + emailScope + ' ' + profileScope + '&' +
+                            'approval_prompt=force&response_type=code&access_type=offline';
+
+            var openMethod = ionic.Platform.isAndroid() ? {openExternal : true} : '_blank';
+
+            var ref = window.open(googleUrl, openMethod, 'location=no');
+
 
             ref.addEventListener('loadstart', onStart);
 
@@ -38,12 +49,11 @@
             function onStart(event) {
                 if((event.url).startsWith("http://localhost/callback")) {
                     var requestToken = (event.url).split("code=")[1];
-
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
                         method: 'POST',
                         headers: {
-                            'x-auth-token': requestToken
+                            'x-auth-code-header': requestToken
                         }
                     }).then(onSuccess, onFail);
                 }
@@ -51,7 +61,7 @@
 
             onSuccess.$inject = ['result'];
             function onSuccess(result) {
-                $localStorage.set('token', result.data);
+                $localStorage.set('token', result.data.token);
                 ref.close();
                 $state.go('timeline');
             }
