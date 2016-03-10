@@ -123,7 +123,10 @@ PostModule.controller('PostController', [
             };
             // for multiple files:
             $scope.uploadFiles = function (files) {
+<<<<<<< 8e7b76a58e81cd9d28a0ed328b635cf67d1875e7
             console.log(files);
+=======
+>>>>>>> Add methods to handle uploads
                 if (files && files.length) {
                     for (var i = 0; i < files.length; i++) {
                         $scope.uploadStatus.isUploading = true;
