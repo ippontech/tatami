@@ -3,15 +3,15 @@ tatamiJHipsterApp
     function($scope, $translate, Account, userLogin, ProfileService, ngToast) {
 
 //        // Current state of the view
-//        $scope.current = {
-//            avatar: []
-//        };
+        $scope.current = {
+            avatar: []
+        };
 //
 //        // Status of the current upload
-//        $scope.uploadStatus = {
-//            isUploading: false,
-//            progress: 0
-//        };
+        $scope.uploadStatus = {
+            isUploading: false,
+            progress: 0
+        };
 //
 //        // Resolve the user data, profileInfo is inherited from account state
 //        // Since profileInfo is a resolve from the parent state, updating the model will cause
@@ -38,25 +38,25 @@ tatamiJHipsterApp
         };
 //
 //        // Handle user avatar changes based on drag and drop
-//        $scope.$watch('current.avatar', function() {
-//            for(var i = 0; i < $scope.current.avatar.length; ++i){
-//                var file = $scope.current.avatar[i];
-//                $scope.uploadStatus.isUploading = true;
-//                $scope.upload = $upload.upload({
-//                    url: '/tatami/rest/fileupload/avatar',
-//                    file: file,
-//                    fileFormDataName: 'uploadFile'
-//                }).progress(function(evt) {
-//                    $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
-//                }).success(function() {
-//                    $scope.uploadStatus.isUploading = false;
-//                    $scope.uploadStatus.progress = 0;
-//                    $scope.$state.reload();
-//                }).error(function() {
-//                    $scope.uploadStatus.isUploading = false;
-//                    $scope.uploadStatus.progress = 0;
-//                });
-//            }
-//        });
+        $scope.$watch('current.avatar', function() {
+           for(var i = 0; i < $scope.current.avatar.length; ++i){
+                var file = $scope.current.avatar[i];
+                $scope.uploadStatus.isUploading = true;
+                $scope.upload = $upload.upload({
+                    url: '/tatami/rest/fileupload/avatar',
+                    file: file,
+                   fileFormDataName: 'uploadFile'
+               }).progress(function(evt) {
+                $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
+                }).success(function() {
+                   $scope.uploadStatus.isUploading = false;
+                    $scope.uploadStatus.progress = 0;
+                   $scope.$state.reload();
+               }).error(function() {
+                    $scope.uploadStatus.isUploading = false;
+                   $scope.uploadStatus.progress = 0;
+                });
+           }
+        });
        }
 ]);
