@@ -5,7 +5,6 @@ tatamiJHipsterApp
         $scope.isAuthenticated = Principal.isAuthenticated;
         $scope.inProduction = ENV === 'prod';
         $scope.$state = $state;
-        console.log($state.$current);
         $scope.logout = function () {
             Auth.logout();
             $state.go('home');
