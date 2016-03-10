@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tatamiJHipsterApp')
     .controller('HomeSidebarController', ['$scope', '$state', 'UserService', 'TagService', 'profile', 'groups', 'suggestions', 'tags',
     function($scope, $state, UserService, TagService, profile, groups, suggestions, tags) {

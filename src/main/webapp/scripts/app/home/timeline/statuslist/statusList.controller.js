@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tatamiJHipsterApp')
 .controller('StatusListController', [
 	'$scope',
