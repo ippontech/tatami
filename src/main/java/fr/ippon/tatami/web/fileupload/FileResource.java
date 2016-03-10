@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping("/tatami")
 public class FileResource {
 
     private static final Logger log = LoggerFactory.getLogger(FileResource.class);
