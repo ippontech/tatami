@@ -1,6 +1,8 @@
 {
   "account": {
 
+    "logout": "Logout",
+
     "profile": {
       "title": "Profile",
       "dropPhoto": "Drop your photo here to update it",
