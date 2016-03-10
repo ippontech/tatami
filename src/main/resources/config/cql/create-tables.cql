@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS tatamijhipster.status (
+CREATE TABLE IF NOT EXISTS status (
     statusId timeuuid,
     type varchar,
     login varchar,
@@ -20,33 +20,33 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.status (
     PRIMARY KEY(statusId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.timeline (
+CREATE TABLE IF NOT EXISTS timeline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key,status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.domain (
+CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
     login varchar,
     created timeuuid,
     PRIMARY KEY(domainId, login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.timeline (
+CREATE TABLE IF NOT EXISTS timeline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key,status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.domain (
+CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
     login varchar,
     created timeuuid,
     PRIMARY KEY(domainId, login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.counter (
+CREATE TABLE IF NOT EXISTS counter (
     login varchar,
     STATUS_COUNTER counter,
     FOLLOWERS_COUNTER counter,
@@ -54,73 +54,73 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.counter (
     PRIMARY KEY(login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.friends (
+CREATE TABLE IF NOT EXISTS friends (
     login varchar,
     friendLogin varchar,
     PRIMARY KEY(login,friendLogin)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.followers (
+CREATE TABLE IF NOT EXISTS followers (
     key varchar,
     login varchar,
     PRIMARY KEY(key,login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.dayline (
+CREATE TABLE IF NOT EXISTS dayline (
     domainDay varchar,
     username varchar,
     statusCount counter,
     PRIMARY KEY(domainDay, username)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.tagline (
+CREATE TABLE IF NOT EXISTS tagline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.userline (
+CREATE TABLE IF NOT EXISTS userline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.shares (
+CREATE TABLE IF NOT EXISTS shares (
     status timeuuid,
     login varchar,
     PRIMARY KEY(status, login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.tagFollowers (
+CREATE TABLE IF NOT EXISTS tagFollowers (
     key varchar,
     login varchar,
     PRIMARY KEY(key, login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.favline (
+CREATE TABLE IF NOT EXISTS favline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.domainline (
+CREATE TABLE IF NOT EXISTS domainline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.mentionline (
+CREATE TABLE IF NOT EXISTS mentionline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
-CREATE TABLE IF NOT EXISTS tatamijhipster.groupline (
+CREATE TABLE IF NOT EXISTS groupline (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.group (
+CREATE TABLE IF NOT EXISTS group (
     id timeuuid,
     domain varchar,
     name varchar,
@@ -130,42 +130,42 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.group (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.userGroup (
+CREATE TABLE IF NOT EXISTS userGroup (
     login varchar,
     groupId timeuuid,
     role varchar,
     PRIMARY KEY(login, groupId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.groupMember (
+CREATE TABLE IF NOT EXISTS groupMember (
     groupId timeuuid,
     login varchar,
     role varchar,
     PRIMARY KEY(groupId, login)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.userTags (
+CREATE TABLE IF NOT EXISTS userTags (
     login varchar,
     friendLogin varchar,
     time timestamp,
     PRIMARY KEY(login, friendLogin)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.trends (
+CREATE TABLE IF NOT EXISTS trends (
     domain varchar,
     id timeuuid,
     tag varchar,
     PRIMARY KEY(domain, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.userTrends (
+CREATE TABLE IF NOT EXISTS userTrends (
     login varchar,
     id timeuuid,
     tag varchar,
     PRIMARY KEY(login, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.avatar (
+CREATE TABLE IF NOT EXISTS avatar (
     id timeuuid,
     filename varchar,
     content blob,
@@ -174,24 +174,24 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.avatar (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.timelineShares (
+CREATE TABLE IF NOT EXISTS timelineShares (
     key varchar,
     status timeuuid,
     PRIMARY KEY(key,status)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.appleDevice (
+CREATE TABLE IF NOT EXISTS appleDevice (
     login varchar,
     deviceId varchar,
     PRIMARY KEY(login,deviceId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.appleDeviceUser (
+CREATE TABLE IF NOT EXISTS appleDeviceUser (
     deviceId varchar,
     login varchar,
     PRIMARY KEY(deviceId,login)
 );
-CREATE TABLE IF NOT EXISTS tatamijhipster.attachment (
+CREATE TABLE IF NOT EXISTS attachment (
     id timeuuid,
     filename varchar,
     content blob,
@@ -201,33 +201,33 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.attachment (
     PRIMARY KEY(id,filename)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.groupCounter (
+CREATE TABLE IF NOT EXISTS groupCounter (
     domain varchar,
     groupId timeuuid,
     counter counter,
     PRIMARY KEY(domain,groupId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.statusAttachments (
+CREATE TABLE IF NOT EXISTS statusAttachments (
     statusId timeuuid,
     attachmentId timeuuid,
     created timestamp,
     PRIMARY KEY(statusId,attachmentId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.tagCounter (
+CREATE TABLE IF NOT EXISTS tagCounter (
     key varchar,
     TAG_COUNTER counter,
     PRIMARY KEY(key)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.userAttachments (
+CREATE TABLE IF NOT EXISTS userAttachments (
     login varchar,
     attachmentId timeuuid,
     PRIMARY KEY(login,attachmentId)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.domainConfiguration (
+CREATE TABLE IF NOT EXISTS domainConfiguration (
     domain varchar,
     subscriptionLevel varchar,
     storageSize varchar,
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.domainConfiguration (
 );
 
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.user (
+CREATE TABLE IF NOT EXISTS user (
     id text,
     login text,
     password text,
@@ -262,37 +262,37 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.user (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.user_by_login (
+CREATE TABLE IF NOT EXISTS user_by_login (
     login text,
     id text,
     PRIMARY KEY(login, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.user_by_email (
+CREATE TABLE IF NOT EXISTS user_by_email (
     email text,
     id text,
     PRIMARY KEY(email, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.user_by_activation_key (
+CREATE TABLE IF NOT EXISTS user_by_activation_key (
     activation_key text,
     id text,
     PRIMARY KEY(activation_key, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.user_by_reset_key (
+CREATE TABLE IF NOT EXISTS user_by_reset_key (
     reset_key text,
     id text,
     PRIMARY KEY(reset_key, id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.activation_key_by_creation_date (
+CREATE TABLE IF NOT EXISTS activation_key_by_creation_date (
     creation_date timeuuid,
     activation_key text,
     PRIMARY KEY(creation_date, activation_key)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.persistent_token (
+CREATE TABLE IF NOT EXISTS persistent_token (
     series text,
     token_date timestamp,
     user_agent text,
@@ -303,45 +303,45 @@ CREATE TABLE IF NOT EXISTS tatamijhipster.persistent_token (
     PRIMARY KEY(series)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.persistent_token_by_user (
+CREATE TABLE IF NOT EXISTS persistent_token_by_user (
     user_id text,
     persistent_token_series text,
     PRIMARY KEY(user_id)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.rss (
+CREATE TABLE IF NOT EXISTS rss (
     rss_uid varchar,
     login varchar,
     PRIMARY KEY(rss_uid)
 );
 
-CREATE TABLE IF NOT EXISTS tatamijhipster.mail_digest (
+CREATE TABLE IF NOT EXISTS mail_digest (
     digest_id varchar,
     login varchar,
     created timestamp,
     PRIMARY KEY(digest_id,login)
 );
 
-INSERT INTO tatamijhipster.user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
+INSERT INTO user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('1','system','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', 'system', '', '','System','system@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {'ROLE_USER', 'ROLE_ADMIN'});
 
-INSERT INTO tatamijhipster.user_by_login (login, id)
+INSERT INTO user_by_login (login, id)
 VALUES('system','1');
 
-INSERT INTO tatamijhipster.user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
+INSERT INTO user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('2','anonymousUser','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO', 'anonymousUser', '', '','Anonymous','anonymous@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {});
 
-INSERT INTO tatamijhipster.user_by_login (login, id)
+INSERT INTO user_by_login (login, id)
 VALUES('anonymousUser','2');
 
-INSERT INTO tatamijhipster.user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
+INSERT INTO user (id, login, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('3','admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', 'admin', '', '','Administrator','admin@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {'ROLE_USER', 'ROLE_ADMIN'});
 
-INSERT INTO tatamijhipster.user_by_login (login, id)
+INSERT INTO user_by_login (login, id)
 VALUES('admin','3');
 
-INSERT INTO tatamijhipster.user (id, login, password, username, avatar, firstname, lastname, email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
+INSERT INTO user (id, login, password, username, avatar, firstname, lastname, email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('4','user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K', 'user', '', '','User','user@localhost', 'Developer', '8041234567', true,'en','', true, '', true, true, 'ippon.fr', {'ROLE_USER'});
 
-INSERT INTO tatamijhipster.user_by_login (login, id)
+INSERT INTO user_by_login (login, id)
 VALUES('user','4');

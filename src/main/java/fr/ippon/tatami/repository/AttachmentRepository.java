@@ -65,7 +65,8 @@ public class AttachmentRepository {
     public void deleteAttachment(Attachment attachment) {
         log.debug("Deleting attachment : {}", attachment);
         Statement statement = QueryBuilder.delete().from("Attachment")
-                .where(eq("id", UUID.fromString(attachment.getAttachmentId())));
+                .where(eq("id", UUID.fromString(attachment.getAttachmentId())))
+                .and(eq("filename", attachment.getFilename()));
         session.execute(statement);
     }
 
@@ -86,7 +87,8 @@ public class AttachmentRepository {
         Statement statement = QueryBuilder.select()
                 .column(CONTENT)
                 .from("Attachment")
-                .where(eq("id", UUID.fromString(attachmentId)));
+                .where(eq("id", UUID.fromString(attachmentId)))
+                .and(eq("filename", attachment.getFilename()));
 
         ResultSet results = session.execute(statement);
         attachment.setContent(results.one().getBytes(CONTENT).array());
@@ -94,7 +96,8 @@ public class AttachmentRepository {
         statement = QueryBuilder.select()
                 .column(THUMBNAIL)
                 .from("Attachment")
-                .where(eq("id", UUID.fromString(attachmentId)));
+                .where(eq("id", UUID.fromString(attachmentId)))
+                .and(eq("filename", attachment.getFilename()));
 
         results = session.execute(statement);
         attachment.setThumbnail(results.one().getBytes(THUMBNAIL).array());
@@ -143,7 +146,8 @@ public class AttachmentRepository {
         }
         Statement statement = QueryBuilder.update("Attachment")
                 .with(set(THUMBNAIL, thumbnail))
-                .where(eq("id", UUID.fromString(attach.getAttachmentId())));
+                .where(eq("id", UUID.fromString(attach.getAttachmentId())))
+                .and(eq("filename", attach.getFilename()));
         session.execute(statement);
         return attach;
 	}
