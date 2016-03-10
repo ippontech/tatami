@@ -106,7 +106,7 @@ PostModule.controller('PostController', [
             $scope.upload = function (file) {
                 $scope.uploadStatus.isUploading = true;
                 Upload.upload({
-                    url: '/rest/fileupload',
+                    url: '/tatami/rest/fileupload',
                     data: {file: file},
                     fileFormDataName: 'uploadFile'
                 }).then(function (data) {
@@ -123,15 +123,11 @@ PostModule.controller('PostController', [
             };
             // for multiple files:
             $scope.uploadFiles = function (files) {
-<<<<<<< 8e7b76a58e81cd9d28a0ed328b635cf67d1875e7
-            console.log(files);
-=======
->>>>>>> Add methods to handle uploads
                 if (files && files.length) {
                     for (var i = 0; i < files.length; i++) {
                         $scope.uploadStatus.isUploading = true;
                         Upload.upload({
-                            url: '/rest/fileupload',
+                            url: '/tatami/rest/fileupload',
                             data: { uploadFile: files[i] },
                         }).then(function (data) {
                             $scope.current.attachments.push(data.data[0]);

@@ -63,7 +63,7 @@ tatamiJHipsterApp
             $scope.upload = function (file) {
                 $scope.uploadStatus.isUploading = true;
                 Upload.upload({
-                    url: '/rest/fileupload/avatar',
+                    url: '/tatami/rest/fileupload/avatar',
                     data: {uploadFile: file},
                     fileFormDataName: 'uploadFile'
                 }).then(function (data) {
@@ -83,7 +83,7 @@ tatamiJHipsterApp
                     for (var i = 0; i < files.length; i++) {
                         $scope.uploadStatus.isUploading = true;
                         Upload.upload({
-                            url: '/rest/fileupload',
+                            url: '/tatami/rest/fileupload/avatar',
                             data: { uploadFile: files[i] },
                         }).then(function (data) {
                             $scope.current.attachments.push(data.data[0]);
