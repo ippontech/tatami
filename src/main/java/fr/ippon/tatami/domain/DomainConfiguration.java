@@ -38,7 +38,7 @@ public class DomainConfiguration implements Serializable {
 
 
 
-                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/tatami/tatami.properties");
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("tatami.properties");
 
                 Properties props = new Properties();
                 props.load(inputStream);

@@ -9,6 +9,7 @@ import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.exception.StorageSizeException;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -20,8 +21,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Properties;
 
 
 @Service
@@ -131,14 +134,31 @@ public class AttachmentService {
     private byte[] computeThumbnail(Attachment attachment) {
     	byte[] result = new byte[0];
 
-    	String[] imagesExtensions = env.getProperty("tatami.attachment.thumbnail.extensions").split(",");
-    	for(String ext : imagesExtensions) {
-    		if(attachment.getFilename().endsWith(ext)) {
-    			attachment.setHasThumbnail(true);
-    			break;
-    		}
-    	}
-    	if(attachment.getHasThumbnail()) {
+            InputStream inputStream=null;
+            try{
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("tatami.properties");
+
+                Properties props = new Properties();
+                props.load(inputStream);
+
+                String[] imagesExtentions = ("tatami.attachment.thumbnail.extensions").split(",");
+
+
+                for (String ext : imagesExtentions) {
+                    if (attachment.getFilename().endsWith(ext)) {
+                        attachment.setHasThumbnail(true);
+                        break;
+                    }
+                }
+
+            } catch(IOException e){
+                throw new IllegalStateException(e);
+            }finally{
+                // apache commons / IO
+                IOUtils.closeQuietly(inputStream);
+            }
+
+        if(attachment.getHasThumbnail()) {
     		try {
     			BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 				thumbnail.createGraphics()

@@ -42,7 +42,7 @@ public class DomainConfigurationRepository {
                         "FROM domainConfiguration " +
                         "WHERE domain = :domain");
         deleteByLoginStmt = session.prepare("DELETE FROM user " +
-                "WHERE login = :login");
+                "WHERE id = :id");
     }
 
     public void updateDomainConfiguration(DomainConfiguration domainConfiguration) {
