@@ -13,6 +13,7 @@ angular.module('tatamiJHipsterApp')
                     },
                     'homeBodyHeader@timelineHome': {
                         templateUrl: 'scripts/app/home/timeline/timeline/timelineHeader.html',
+                        controller: 'HomeController'
                     },
                     'homeBodyContent@timelineHome': {
                         templateUrl: 'scripts/app/home/timeline/statuslist/statusList.html',

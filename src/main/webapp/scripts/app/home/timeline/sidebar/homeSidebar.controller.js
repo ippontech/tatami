@@ -1,6 +1,6 @@
 angular.module('tatamiJHipsterApp')
-    .controller('HomeSidebarController', ['$scope', 'UserService', 'TagService', 'profile', 'groups', 'suggestions', 'tags',
-    function($scope, UserService, TagService, profile, groups, suggestions, tags) {
+    .controller('HomeSidebarController', ['$scope', '$state', 'UserService', 'TagService', 'profile', 'groups', 'suggestions', 'tags',
+    function($scope, $state, UserService, TagService, profile, groups, suggestions, tags) {
         $scope.profile = profile;
         $scope.groups = groups;
         $scope.suggestions = suggestions;
