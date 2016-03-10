@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
-            .state('settings', {
+            .state('account.settings', {
                 parent: 'account',
                 url: '/settings',
                 data: {

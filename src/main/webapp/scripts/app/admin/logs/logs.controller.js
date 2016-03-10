@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('LogsController', function ($scope, LogsService) {
         $scope.loggers = LogsService.findAll();
 

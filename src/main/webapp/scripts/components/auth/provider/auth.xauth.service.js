@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('AuthServerProvider', function loginService($http, localStorageService, Base64) {
         return {
             login: function(credentials) {

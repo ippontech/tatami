@@ -1,4 +1,4 @@
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('PreferencesService', ['$resource', function ($resource) {
         return $resource('/tatami/rest/account/preferences', null,
             {

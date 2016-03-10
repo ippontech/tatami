@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('ResetFinishController', function ($scope, $stateParams, $timeout, Auth) {
 
         $scope.keyMissing = $stateParams.key === undefined;

@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
@@ -50,7 +52,7 @@ public class UserResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testGetExistingUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/users/admin")
+        restUserMockMvc.perform(get("/tatami/rest/users/admin")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
@@ -59,7 +61,7 @@ public class UserResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testGetUnknownUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/users/unknown")
+        restUserMockMvc.perform(get("/tatami/rest/users/unknown")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

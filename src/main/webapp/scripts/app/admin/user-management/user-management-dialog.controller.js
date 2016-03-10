@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp').controller('UserManagementDialogController',
+tatamiJHipsterApp.controller('UserManagementDialogController',
     ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 'Language',
         function($scope, $stateParams, $uibModalInstance, entity, User, Language) {
 

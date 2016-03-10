@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .service('DateUtils', function ($filter) {
 
     this.convertLocaleDateToServer = function(date) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('ConfigurationService', function ($rootScope, $filter, $http) {
         return {
             get: function() {

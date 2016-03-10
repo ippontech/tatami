@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('authInterceptor', function ($rootScope, $q, $location, localStorageService) {
         return {
             // Add authorization token to headers

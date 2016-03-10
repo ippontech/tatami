@@ -1,21 +1,27 @@
 <div>
+    {{userProfile.email}}
     <div id="mainPanel" class="container">
         <br>
         <div class="row">
             <!-- The nagivation sidebar -->
             <div id="navigation">
                 <div>
+
                     <div class="col-lg-4 alert">
+                        <div class = well>
 
                             <div id="avatar">
                                 <div class="row text-center nomargin avatar-float-center-container">
+                                    <div class="col-lg-12"><img src="/assets/images/default_image_profile.png"></div>
+
                                     <div>
                                         <img class="nomargin avatar img-rounded" ng-src="{{ profile.avatarURL }}">
                                     </div>
+
                                     <br>
                                     <div>
                                         <a ui-sref="home.profile.statuses({ username: profile.username })">
-                                            <h3 class="user-profile">{{ profile.firstName + ' ' + profile.lastName }}</h3>
+                                            <h3 class="user-profile">{{ userProfile.firstName + ' ' + profile.lastName }}</h3>
                                         </a>
                                         <a ui-sref="home.profile.statuses({ username: profile.username })">
                                             <p>@{{ profile.username }}</p>
@@ -25,64 +31,89 @@
                             </div>
 
 
-                            <div class="tabbable alert alert-status">
-                                <ul class="adminMenu nav nav-pills nav-stacked nomargin">
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.profile">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                            <span translate="account.profile.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.preferences">
-                                            <span class="glyphicon glyphicon-cog"></span>
-                                            <span translate="account.preferences.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.password">
-                                            <span class="glyphicon glyphicon-lock"></span>
-                                            <span translate="account.password.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.files">
-                                            <span class="glyphicon glyphicon-file"></span>
-                                            <span translate="account.files.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ng-class="{ 'active': $state.current.name.indexOf('account.users') != -1 }">
-                                        <a ui-sref="account.users">
-                                            <span class="glyphicon glyphicon-globe"></span>
-                                            <span translate="account.users.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.groups">
-                                            <span class="glyphicon glyphicon-th-large"></span>
-                                            <span translate="account.groups.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ng-class="{ 'active': $state.current.name.indexOf('account.tags') != -1 }">
-                                        <a ui-sref="account.tags">
-                                            <span class="glyphicon glyphicon-tags"></span>
-                                            <span translate="account.tags.title"></span>
-                                        </a>
-                                    </li>
-                                    <li ui-sref-active="active">
-                                        <a ui-sref="account.topPosters">
-                                            <span class="glyphicon glyphicon-signal"></span>
-                                            <span translate="account.topPosters.title"></span>
-                                        </a>
-                                    </li>
-                                </ul>
+
+                            <div class = well>
+                                <div class="tabbable alert alert-status">
+                                    <ul class="adminMenu nav nav-pills nav-stacked nomargin">
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.profile">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                <span translate="account.profile.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.preferences">
+                                                <span class="glyphicon glyphicon-cog"></span>
+                                                <span translate="account.preferences.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.password">
+                                                <span class="glyphicon glyphicon-lock"></span>
+                                                <span translate="account.password.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.files">
+                                                <span class="glyphicon glyphicon-file"></span>
+                                                <span translate="account.files.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.users">
+                                                <span class="glyphicon glyphicon-globe"></span>
+                                                <span translate="account.users.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.groups">
+                                                <span class="glyphicon glyphicon-th-large"></span>
+                                                <span translate="account.groups.title"></span>
+                                            </a>
+                                        </li>
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.tags">
+                                                <span class="glyphicon glyphicon-tags"></span>
+                                                <span translate="account.tags.title"></span>
+                                            </a>
+                                        </li>
+                                        <!--
+                                                                            <li ng-class="{ 'active': $state.current.name.indexOf('account.users') != -1 }">
+                                                                                <a ui-sref="account.users">
+                                                                                    <span class="glyphicon glyphicon-globe"></span>
+                                                                                    <span translate="account.users.title"></span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li ng-class="{ 'active': $state.current.name.indexOf('account.groups') != -1 }">
+                                                                                <a ui-sref="account.groups">
+                                                                                    <span class="glyphicon glyphicon-th-large"></span>
+                                                                                    <span translate="account.groups.title"></span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li ng-class="{ 'active': $state.current.name.indexOf('account.tags') != -1 }">
+                                                                                <a ui-sref="account.tags">
+                                                                                    <span class="glyphicon glyphicon-tags"></span>
+                                                                                    <span translate="account.tags.title"></span>
+                                                                                </a>
+                                                                            </li>
+                                                                            -->
+                                        <li ui-sref-active="active">
+                                            <a ui-sref="account.topPosters">
+                                                <span class="glyphicon glyphicon-signal"></span>
+                                                <span translate="account.topPosters.title"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+>>>>>>> story-transitionToJhipster
+
+
                             </div>
-
-
+                        </div>
                     </div>
                 </div>
+                <div ui-view></div>
             </div>
-            <div ui-view></div>
         </div>
     </div>
-</div>

@@ -20,9 +20,6 @@
 
        <link rel="stylesheet" href="assets/styles/tatami.css">
 
-
-        <link rel="stylesheet" href="assets/styles/tatami.css">
-
         <!-- endbuild -->
 
         <style>
@@ -40,10 +37,10 @@
         <![endif]-->
 
         <div ui-view="navbar" ng-cloak=""></div>
-        <div class="container">
+        <div class="container-fluid">
             <div ui-view="content"></div>
 
-            <div ng-if="!$state.includes('tatami.home')" style="opacity: 0.5; text-align:center;">
+            <div ng-if="!$state.includes('home')" style="opacity: 0.5; text-align:center;">
                 Version: <pom>version</pom>, Build: <pom>build</pom>
             </div>
         </div>
@@ -69,6 +66,8 @@
         <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
         <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
         <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/angular-moment/angular-moment.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-translate/angular-translate.js"></script>
@@ -112,9 +111,12 @@
     <script src="scripts/components/interceptor/notification.interceptor.js"></script>
     <script src="scripts/components/navbar/navbar.directive.js"></script>
     <script src="scripts/components/navbar/navbar.controller.js"></script>
+<<<<<<< HEAD
     <script src="scripts/components/user/user.service.js"></script>
     <script src="scripts/components/user/groups.service.js"></script>
     <script src="scripts/components/user/search.service.js"></script>
+=======
+>>>>>>> story-transitionToJhipster
     <script src="scripts/components/util/truncate.filter.js"></script>
     <script src="scripts/components/util/base64.service.js"></script>
     <script src="scripts/components/util/capitalize.filter.js"></script>
@@ -125,10 +127,14 @@
     <script src="scripts/components/util/data-util.service.js"></script>
     <script src="scripts/components/util/sort.directive.js"></script>
     <script src="scripts/app/account/account.js"></script>
+<<<<<<< HEAD
     <script src="scripts/app/account/form.controller.js"></script>
     <script src="scripts/app/account/groups/groups.controller.js"></script>
     <script src="scripts/app/account/groups/creation/groups.create.controller.js"></script>
     <script src="scripts/app/account/groups/list/groups.list.controller.js"></script>
+=======
+        <script src="scripts/app/account/AccountController.js"></script>
+>>>>>>> story-transitionToJhipster
     <script src="scripts/app/login/activate/activate.js"></script>
     <script src="scripts/app/login/activate/activate.controller.js"></script>
     <script src="scripts/app/login/login.js"></script>
@@ -173,18 +179,52 @@
     <script src="scripts/components/language/language.controller.js"></script>
     <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
     <script src="scripts/app/account/profile/profile.controller.js"></script>
-        <script src="scripts/app/account/password/password.controller.js"></script>
-        <script src="scripts/app/account/password/password.js"></script>
+    <script src="scripts/app/account/password/password.controller.js"></script>
+    <script src="scripts/app/account/password/password.js"></script>
 
     <!-- endbuild -->
 
     <script src="scripts/app/about/about.js"></script>
     <script src="scripts/app/account/profile/profile.js"></script>
+    <script src="scripts/app/account/tags/tags.js"></script>
+    <script src="scripts/app/account/tags/tags.controller.js"></script>
+    <script src="scripts/app/account/files/files.js"></script>
+    <script src="scripts/app/account/files/files.controller.js"></script>
+    <script src="scripts/app/account/users/users.js"></script>
+    <script src="scripts/app/account/users/users.controller.js"></script>
+    <script src="scripts/app/account/groups/groups.js"></script>
+    <script src="scripts/app/account/topPosters/topPosters.js"></script>
     <script src="scripts/components/auth/services/user.service.js"></script>
     <script src="scripts/app/account/preferences/preferences.controller.js"></script>
     <script src="scripts/app/account/preferences/preferences.js"></script>
     <script src="scripts/components/auth/services/preferences.service.js"></script>
-
+    <script src="scripts/components/navbar/post/PostModule.js"></script>
+    <script src="scripts/components/navbar/post/PostController.js"></script>
+    <script src="scripts/shared/services/SearchService.js"></script>
+    <script src="scripts/shared/services/GeolocService.js"></script>
+    <script src="scripts/shared/services/PostModalService.js"></script>
+    <script src="scripts/shared/filters/PlaceholderFilter.js"></script>
+    <script src="scripts/shared/filters/MarkdownFilter.js"></script>
+    <script src="scripts/shared/filters/EmoticonFilter.js"></script>
+    <script src="scripts/app/home/home.js"></script>
+    <script src="scripts/app/home/home.controller.js"></script>
+    <script src="scripts/app/home/timeline/sidebar/homeSidebar.controller.js"></script>
+    <script src="scripts/components/auth/services/home.service.js"></script>
+    <script src="scripts/components/auth/services/tag.service.js"></script>
+    <script src="scripts/components/auth/services/status.service.js"></script>
+    <script src="scripts/components/auth/services/group.service.js"></script>
+    <script src="scripts/app/home/timeline/statuslist/statusList.controller.js"></script>
+    <script src="scripts/app/home/presentation/presentation.js"></script>
+    <script src="scripts/app/home/presentation/welcome.controller.js"></script>
+    <script src="scripts/app/shared/filters/EmoticonFilter.js"></script>
+    <script src="scripts/app/shared/filters/MarkdownFilter.js"></script>
+    <script src="assets/js/marked/marked.js"></script>
+    <script src="scripts/app/shared/configs/MarkedConfig.js"></script>
+    <script src="scripts/app/home/timeline/timeline/timeline.js"></script>
+    <script src="scripts/app/home/timeline/mentions/mentions.js"></script>
+    <script src="scripts/app/home/timeline/favorites/favorites.js"></script>
+    <script src="scripts/app/home/timeline/tag/tag.js"></script>
+    <script src="scripts/app/home/timeline/tag/tagHeader.controller.js"></script>
 
 </body>
 </html>

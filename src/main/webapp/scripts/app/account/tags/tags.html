@@ -1,0 +1,51 @@
+<div class="col-lg-8">
+    <div class="alert alert-status">
+        <div class = well>
+            <h2 translate="account.tags.title"></h2>
+            <div class="tabMenu">
+                <ul class="nav nav-tabs">
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags.following' }">
+                        <a ui-sref="account.tags.following" translate="account.tags.following"></a>
+                    </li>
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags.trends' }">
+                        <a ui-sref="account.tags.trends" translate="account.tags.trends"></a>
+                    </li>
+                    <li ng-class="{ 'active': $state.current.name === 'account.tags.search' }">
+                        <a ui-sref="account.tags.search" translate="account.tags.search"></a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <form class="row-fluid littleMargeBot">
+                    <input ng-show="$state.current.name === 'account.tags.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.tags.search' | translate }}">
+                </form>
+                <table class="table noCollapse">
+                    <tbody>
+                    <tr>
+                        <th style="border-top :0" translate="account.tags.tag"></th>
+                        <th style="border-top :0"></th>
+                    </tr>
+                    </tbody>
+                    <tbody class="items">
+                    <div>
+                        <tr ng-repeat="tag in tags">
+                            <td>
+                                <a ui-sref="tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
+                            </td>
+                            <td class="follow">
+                                <button type="button" ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': tag.followed && hover, 'btn-info': tag.followed && !hover }">
+                                <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'">
+                                    <span ng-if="!tag.followed" class="hidden-phone" translate="home.tag.follow"></span>
+                                    <span ng-if="tag.followed && !hover" class="hidden-phone" translate="home.tag.following"></span>
+                                    <span ng-if="tag.followed && hover" class="hidden-phone" translate="home.tag.unfollow"></span>
+                                </span>
+                                </button>
+                            </td>
+                        </tr>
+                    </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

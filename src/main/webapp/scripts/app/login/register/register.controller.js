@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('RegisterController', function ($scope, $translate, $timeout, Auth) {
         $scope.success = null;
         $scope.error = null;

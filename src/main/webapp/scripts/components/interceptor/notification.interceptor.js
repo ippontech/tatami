@@ -1,6 +1,6 @@
  'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('notificationInterceptor', function ($q, AlertService) {
         return {
             response: function(response) {

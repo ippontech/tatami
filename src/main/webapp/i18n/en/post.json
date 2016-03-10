@@ -1,0 +1,25 @@
+{
+    "post": {
+        "mandatory": "Comment is mandatory",
+        "content": {
+            "mandatory": "Please fill out this field."
+        },
+        "update": "Update your status",
+        "replyTo": "Reply",
+        "preview": "Preview",
+        "edit": "Edit",
+        "characters": {
+            "left": "Characters Left:"
+        },
+        "options": "Options",
+        "shareLocation": "Share Location",
+        "group": "Group",
+        "reply": "Reply to this status",
+        "files": "Files",
+        "drop": {
+            "file": "Drop your files here"
+        },
+        "markdown": "Markdown Supported",
+        "button": "Post"
+    }
+}

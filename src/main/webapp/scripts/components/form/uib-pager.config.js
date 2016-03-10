@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .config(function (uibPagerConfig) {
         uibPagerConfig.itemsPerPage = 20;
         uibPagerConfig.previousText = '«';

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('HealthController', function ($scope, MonitoringService, $uibModal) {
         $scope.updatingHealth = true;
         $scope.separator = '.';

@@ -1,0 +1,48 @@
+<div>
+    <ul class="homebody-nav nav nav-justified">
+        <li ui-sref-active="active">
+            <a ui-sref="timeline">
+                <span class="glyphicon glyphicon-th-list"></span>
+                <span translate="home.timeline"></span>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="mentions">
+                <span class="glyphicon glyphicon-comment"></span>
+                <span translate="home.mentions"></span>
+            </a>
+        </li>
+        <li ui-sref-active="active">
+            <a ui-sref="favorites">
+                <span class="glyphicon glyphicon-star"></span>
+                <span translate="home.favorites"></span>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-content tatams-margin">
+        <div class="tatams-content-title">
+            <h3 tour-step
+                order="1"
+                title="<b>{{ 'home.welcome.timeline.title' | translate }}</b>"
+                content="{{ 'home.welcome.timeline.line1' | translate }}
+                <ul>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint1' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint2' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint3' | translate }}</li>
+                    <li>{{ 'tatami.welcome.timeline.bulletPoint4' | translate }}</li>
+                </ul>
+                <p>{{ 'tatami.welcome.timeline.afterBP1' | translate }}</p>
+                <p>{{ 'tatami.welcome.timeline.afterBP2' | translate }}</p>
+                <p>{{ 'tatami.welcome.timeline.afterBP3' | translate }}</p>
+                <br>"
+                placement="left"
+                skip="false"
+                on-end="onTourEnd(tour)">
+                <strong ng-if="currentState == 'timeline'" translate="home.timeline"></strong>
+                <strong ng-if="currentState == 'mentions'" translate="home.mentions"></strong>
+                <strong ng-if="currentState == 'favorites'" translate="home.favorites"></strong>
+                <strong ng-if="currentState == 'company'" translate="home.companyTimeline"></strong>
+            </h3>
+        </div>
+    </section>
+</div>

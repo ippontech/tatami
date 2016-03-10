@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('UserManagementDetailController', function ($scope, $stateParams, User) {
         $scope.user = {};
         $scope.load = function (login) {

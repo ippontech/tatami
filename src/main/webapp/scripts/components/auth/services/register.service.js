@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('Register', function ($resource) {
         return $resource('tatami/register', {}, {
         });

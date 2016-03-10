@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('Account', function Account($resource) {
         return $resource('/tatami/rest/account/profile', {}, {
             'get': { method: 'GET', params: {}, isArray: false,

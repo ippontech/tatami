@@ -1,0 +1,19 @@
+{
+     "status": {
+                    "replyTo": "In reply to",
+                    "private": "Private Message",
+                    "reply": "Reply",
+                    "share": "Share",
+                    "favorite": "Favorite",
+                    "delete": "Delete",
+                    "confirmDelete": "Are you sure you want to delete this status?",
+                    "sharedYour": "shared your status",
+                    "followed": "followed you",
+                    "shared": "shared",
+                    "groupAdmin": "Group Administrator",
+                    "announce": "Announce",
+                    "isAnnounced": "Announced by",
+                    "viewConversation": "View Conversation",
+                    "shares": "Shares"
+                }
+}

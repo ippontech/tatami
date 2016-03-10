@@ -1,18 +1,13 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
-    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal, ENV) {
+tatamiJHipsterApp
+    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal, ENV, PostModalService) {
         $scope.isAuthenticated = Principal.isAuthenticated;
-        $scope.$state = $state;
         $scope.inProduction = ENV === 'prod';
-
         $scope.logout = function () {
             Auth.logout();
             $state.go('home');
         };
-
-        $scope.openPostModal = function () {
-        }
 
         $scope.changeLanguage = function () {
         }
@@ -22,5 +17,10 @@ angular.module('tatamiJHipsterApp')
 
         $scope.restart = function () {
         }
+
+        $scope.openPostModal = function () {
+            PostModalService.openPostModal();
+        }
+
     });
 

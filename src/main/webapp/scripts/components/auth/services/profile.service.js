@@ -1,6 +1,6 @@
 
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('ProfileService', ['$resource', function ($resource) {
         return $resource('/tatami/rest/account/profile', null,
             {
@@ -13,7 +13,7 @@ angular.module('tatamiJHipsterApp')
                         } catch(e) {
                             parsedProfile = {};
                         }
-                        parsedProfile['avatarURL'] = parsedProfile.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
+                        parsedProfile['avatarURL'] = parsedProfile.avatar ==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
                         return parsedProfile;
                     }
                 },

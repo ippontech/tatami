@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .controller('MetricsController', function ($scope, MonitoringService, $uibModal) {
         $scope.metrics = {};
         $scope.updatingMetrics = true;

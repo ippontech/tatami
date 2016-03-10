@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .directive('jhSort', function () {
         return {
             restrict: 'A',

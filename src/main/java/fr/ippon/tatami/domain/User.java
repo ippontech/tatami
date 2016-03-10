@@ -31,6 +31,12 @@ public class User implements Serializable {
     @Size(min = 60, max = 60)
     private String password;
 
+    @Size(max=50)
+    private String username;
+
+    @Column(name = "avatar")
+    private String avatar;
+
     @Size(max = 50)
     private String firstName;
 
@@ -110,6 +116,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getFirstName() {
@@ -268,6 +290,8 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
             "login='" + login + '\'' +
+            ", username='" + username + '\'' +
+            ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +

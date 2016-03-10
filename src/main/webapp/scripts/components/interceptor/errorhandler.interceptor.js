@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tatamiJHipsterApp')
+tatamiJHipsterApp
     .factory('errorHandlerInterceptor', function ($q, $rootScope) {
         return {
             'responseError': function (response) {
