@@ -39,6 +39,7 @@
                             'approval_prompt=force&response_type=code&access_type=offline';
 
             var openMethod = ionic.Platform.isAndroid() ? {openExternal : true} : '_blank';
+            //navigator.app.loadUrl(googleUrl, {openExternal : true});
 
             var ref = window.open(googleUrl, openMethod, 'location=no');
 
@@ -47,7 +48,10 @@
 
             onStart.$inject = ['event'];
             function onStart(event) {
+                var requestToken = (event.url).split("code=")[1];
+                alert(requestToken);
                 if((event.url).startsWith("http://localhost/callback")) {
+                    alert('here');
                     var requestToken = (event.url).split("code=")[1];
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
