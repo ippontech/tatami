@@ -65,7 +65,7 @@
             <div class="panel-body items">
                 <div ng-repeat="tag in tags">
                     <!--the label class seems to be breaking the glyphicon-plus icon:-->
-                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover }">
+                    <span ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': tag.followed && hover, 'label-info': tag.followed && !hover, 'label-glyphicon-plus': !tag.followed }">
                         <span class="glyphicon" ng-class="tag.followed ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
                     <span class="glyphicon" ng-class="tag.trendingUp ? 'glyphicon-arrow-up' : 'glyphicon-arrow-down'"></span>
