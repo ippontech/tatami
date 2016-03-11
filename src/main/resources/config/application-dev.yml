@@ -58,3 +58,6 @@ jhipster:
 
 tatami:
         url: http://localhost:8080
+        attachment:
+            thumbnail:
+                extensions: .gif,.jpg,.jpeg,.png
