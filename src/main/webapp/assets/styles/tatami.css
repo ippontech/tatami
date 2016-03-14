@@ -1,3 +1,15 @@
+h3 {
+  line-height: 30px;
+}
+
+.label-glyphicon-plus {
+  background-color: #999;
+}
+
+.panel-heading {
+  font-size: 17.5px;
+}
+
 .indent {
     padding-left: 50px;
 }
@@ -587,6 +599,7 @@ margin-bottom: 20px;
     background-color: white;
     margin-bottom: 0;
     border-radius: 5px 5px 0 0;
+    height: 40px;
 }
 
 .tatams-content h3 {

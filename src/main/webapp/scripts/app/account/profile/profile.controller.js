@@ -3,9 +3,9 @@ tatamiJHipsterApp
     function($scope, $state, $translate, Account, Upload, userLogin, ProfileService, ngToast) {
 
 //        // Current state of the view
-//        $scope.current = {
-//            avatar: []
-//        };
+        $scope.current = {
+            avatar: []
+        };
 //
 //        Status of the current upload
           $scope.uploadStatus = {

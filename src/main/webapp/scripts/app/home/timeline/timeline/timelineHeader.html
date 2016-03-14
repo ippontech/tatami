@@ -38,10 +38,10 @@
                 placement="left"
                 skip="false"
                 on-end="onTourEnd(tour)">
-                <strong ng-if="state == 'timeline'" translate="home.timeline"></strong>
-                <strong ng-if="state == 'mentions'" translate="home.mentions"></strong>
-                <strong ng-if="state == 'favorites'" translate="home.favorites"></strong>
-                <strong ng-if="state == 'company'" translate="home.companyTimeline"></strong>
+                <strong ng-if="currentState == 'timeline'" translate="home.timeline"></strong>
+                <strong ng-if="currentState == 'mentions'" translate="home.mentions"></strong>
+                <strong ng-if="currentState == 'favorites'" translate="home.favorites"></strong>
+                <strong ng-if="currentState == 'company'" translate="home.companyTimeline"></strong>
             </h3>
         </div>
     </section>

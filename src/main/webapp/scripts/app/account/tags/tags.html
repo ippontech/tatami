@@ -30,7 +30,7 @@
                     <div>
                         <tr ng-repeat="tag in tags">
                             <td>
-                                <a ui-sref="home.home.tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
+                                <a ui-sref="tag({ tag: tag.name })" title="{{ tag.name }}">#{{ tag.name }}</a>
                             </td>
                             <td class="follow">
                                 <button type="button" ng-click="followTag(tag, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': tag.followed && hover, 'btn-info': tag.followed && !hover }">

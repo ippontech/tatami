@@ -1,18 +1,23 @@
+'use strict';
+
 angular.module('tatamiJHipsterApp')
 .controller('StatusListController', [
-	'$scope', 
-	'$state', 
-	'$stateParams', 
-	'$timeout', 
-	'$window', 
+	'$scope',
+	'$state',
+	'$stateParams',
+	'$timeout',
+	'$window',
 	'$uibModal',
-	'$translate', 
+	'$translate',
+	'GroupService',
+	'HomeService',
 	'StatusService',
 	'PostModalService',
-	'statuses', 
-	'profileInfo', 
+	'TagService',
+	'statuses',
+	'profileInfo',
 	'showModal',
-    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, StatusService, PostModalService, statuses, profileInfo, showModal) {
+    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, profileInfo, showModal) {
 
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');

@@ -4,33 +4,35 @@
             <form class="form-horizontal row-fluid">
                 <h2 translate="global.account.preferences.title"></h2>
                 <legend translate="global.account.preferences.notifications"></legend>
+
                 <div class="control-group">
+
                     <div class="controls">
-                        <label class="checkbox">
+                        <label class="checkbox" style="left: 50px">
                         <input name="mentionEmail" type="checkbox" ng-model="userPreferences.mentionEmail" ng-checked="userPreferences.mentionEmail">{{ 'account.preferences.notification.email.mention' | translate }}
                         </label>
                     </div>
                     <div class="controls">
-                        <label class="checkbox">
+                        <label class="checkbox" style="left: 50px">
                         <input name="dailyDigest" type="checkbox" ng-model="userPreferences.dailyDigest" ng-checked="userPreferences.dailyDigest"> {{ 'global.account.preferences.notification.email.dailyDigest' | translate }}
                         </label>
                     </div>
                     <div class="controls">
-                        <label class="checkbox">
+                        <label class="checkbox" style="left: 50px">
                         <input name="weeklyDigest" type="checkbox" ng-model="userPreferences.weeklyDigest" ng-checked="userPreferences.weeklyDigest"> {{ 'global.account.preferences.notification.email.weeklyDigest' | translate }}
                         </label>
                     </div>
                     <div class="controls">
-                        <label class="checkbox">
+                        <label class="checkbox" style="left: 50px">
                         <input name="rssUidActive" type="checkbox" ng-model="userPreferences.rssUidActive" ng-checked="userPreferences.rssUidActive"> {{ 'global.account.preferences.notification.rss.timeline' | translate }}
                         </label>
                         <a ng-if="userPreferences.rssUidActive" href="/tatami/syndic/{{ userPreferences.rssUid }}">{{ 'global.account.preferences.notification.rss.link' | translate }}</a>
                     </div>
-                </div>
+                    </div>
                 <fieldset>
-                    <div class="return"></div>
+                    <div class="return">
                     <div class="form-actions">
-                        <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="entity.action.save"></button>
+                        <button type="submit" class="input-xlarge btn btn-primary btn-block" ng-click="savePrefs()" translate="entity.action.save" style="left: 50px"></button>
                     </div>
                 </fieldset>
             </form>

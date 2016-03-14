@@ -4,6 +4,7 @@ tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
             .state('account', {
+
                 abstract: true,
                 parent: 'site',
                 data: {
@@ -14,7 +15,7 @@ tatamiJHipsterApp
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/account/account.html',
-
+                        controller: 'AccountController'
                     }
 
                 },
