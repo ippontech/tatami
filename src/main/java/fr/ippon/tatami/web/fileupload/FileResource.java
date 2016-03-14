@@ -16,6 +16,9 @@ import fr.ippon.tatami.web.rest.dto.AvatarMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,41 +77,29 @@ public class FileResource {
     @RequestMapping(value = "/file/{attachmentId}/*",
             method = RequestMethod.GET)
     @Timed
-    public void download(@PathVariable("attachmentId") String attachmentId,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws IOException {
+    public ResponseEntity download(@PathVariable("attachmentId") String attachmentId) throws IOException {
+
+        HttpHeaders responseHeaders = new HttpHeaders();
 
         // Cache the file in the browser
-        response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
-        response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
+        responseHeaders.setExpires(System.currentTimeMillis() + CACHE_SECONDS * 1000L);
+        responseHeaders.set(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
 
-        // Put the file in the response
+        // Get attachment data
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
+        byte[] attachmentContent = attachment.getContent();
         if (attachment == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.sendRedirect("/tatami/file/file_not_found");
+            //response.sendRedirect("/tatami/file/file_not_found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             // ETag support
-            response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
-            String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
+            responseHeaders.set(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
+            String requestETag = responseHeaders.getFirst(HEADER_IF_NONE_MATCH);
             if (requestETag != null && requestETag.equals(attachmentId)) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            } else {
-                try {
-                    byte[] fileContent = attachment.getContent();
-                    response.getOutputStream().write(fileContent);
-                } catch (IOException e) {
-                    log.info("Error writing file to output stream. {}", e.getMessage());
-                }
+                return new ResponseEntity<>(attachmentContent, HttpStatus.NOT_MODIFIED);
             }
+            return new ResponseEntity<>(attachmentContent, HttpStatus.OK);
         }
-
-        try {
-            response.flushBuffer();
-        } catch (IOException e) {
-            log.info("Error flushing the output stream. {}", e.getMessage());
-        }
-
     }
 
     @RequestMapping(value = "/thumbnail/{attachmentId}/*",
