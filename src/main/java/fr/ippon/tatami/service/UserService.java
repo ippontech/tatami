@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.MailDigestRepository;
 import fr.ippon.tatami.repository.RssUidRepository;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.util.RandomUtil;
@@ -38,6 +39,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
+    private UserSearchRepository userSearchRepository;
+
+    @Inject
     private RssUidRepository rssUidRepository;
 
     @Inject
@@ -51,6 +55,7 @@ public class UserService {
                 user.setActivated(true);
                 user.setActivationKey(null);
                 userRepository.save(user);
+                userSearchRepository.save(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -70,6 +75,7 @@ public class UserService {
                 user.setResetKey(null);
                 user.setResetDate(null);
                 userRepository.save(user);
+                userSearchRepository.save(user);
                 return user;
            });
     }
@@ -81,6 +87,7 @@ public class UserService {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(new Date());
                 userRepository.save(user);
+                userSearchRepository.save(user);
                 return user;
             });
     }
@@ -113,6 +120,7 @@ public class UserService {
         authorities.add(AuthoritiesConstants.USER);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+        userSearchRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -138,6 +146,7 @@ public class UserService {
         user.setResetDate(new Date());
         user.setActivated(true);
         userRepository.save(user);
+        userSearchRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -152,6 +161,7 @@ public class UserService {
             u.setJobTitle(jobTitle);
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
+            userSearchRepository.save(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
@@ -164,6 +174,7 @@ public class UserService {
             u.setWeeklyDigest(weeklyDigest);
             u.setDailyDigest(dailyDigest);
             userRepository.save(u);
+            userSearchRepository.save(u);
             log.debug("Change Preferences for User: {}", u);
         });
     }
@@ -171,6 +182,7 @@ public class UserService {
     public void deleteUserInformation(String login) {
         userRepository.findOneByLogin(login).ifPresent(u -> {
             userRepository.delete(u);
+            userSearchRepository.delete(u);
             log.debug("Deleted User: {}", u);
         });
     }
@@ -180,6 +192,7 @@ public class UserService {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
+            userSearchRepository.save(u);
             log.debug("Changed password for User: {}", u);
         });
     }
@@ -266,6 +279,7 @@ public class UserService {
             "weeklyDigest={} for user {}", registration, currentUser.getLogin());
         try {
             userRepository.save(currentUser);
+            userSearchRepository.save(currentUser);
 //            userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating preferences : " + cve);
