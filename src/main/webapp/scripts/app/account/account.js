@@ -32,16 +32,8 @@ tatamiJHipsterApp
                 }
 
             })
-            .state('account.password', {
-                        url: '/password',
-                        templateUrl: 'scripts/app/login/password/password.html',
-                        controller: 'PasswordController'
-            })
-            .state('account.groups', {
-                url: '/groups',
-                templateUrl: 'scripts/app/account/form.html',
-                controller: 'FormController'
-            })
+
+
             .state('account.groups.main', {
                 url: '',
                 templateUrl: 'scripts/app/account/groups/groups.html',
