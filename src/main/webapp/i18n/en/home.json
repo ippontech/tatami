@@ -26,6 +26,15 @@
                 "myGroups": "My Groups",
                 "trends": "Trends",
                 "whoToFollow": "Who to Follow"
+            },
+            "status": {
+                "reply": "Reply",
+                "share": "Share",
+                "favorite": "Favorite",
+                "announce": "Announce",
+                "delete": "Delete",
+                "replyTo": "In reply to ",
+                "viewConversation": "View Conversation"
             }
     }
 }

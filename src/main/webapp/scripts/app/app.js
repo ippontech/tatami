@@ -6,7 +6,7 @@ var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar',
     'ngToast', 'angularMoment'])
 
-    .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
+    .run(function ($rootScope, $stateParams, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
         // update the window title using params in the following
         // precendence
         // 1. titleKey parameter
@@ -21,6 +21,8 @@ var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule
             });
         };
 
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {

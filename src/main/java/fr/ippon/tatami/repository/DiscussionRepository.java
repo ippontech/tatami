@@ -1,10 +1,23 @@
 package fr.ippon.tatami.repository;
 
+import com.datastax.driver.core.*;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.mapping.Mapper;
+import com.datastax.driver.mapping.MappingManager;
+import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.DiscussionRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 /**
  * Cassandra implementation of the StatusDetails repository.
@@ -19,7 +32,42 @@ import java.util.Collection;
 @Repository
 public class DiscussionRepository {
 
+    @Inject
+    Session session;
 
+    private Mapper<Status> mapper;
+
+    private PreparedStatement findStatusIdsInDiscussionStmt;
+
+    @PostConstruct
+    public void init() {
+        mapper = new MappingManager(session).mapper(Status.class);
+
+        findStatusIdsInDiscussionStmt = session.prepare(
+            "SELECT statusId " +
+                "FROM status " +
+                "WHERE discussionId = :originalStatusId");
+
+    }
+
+    public Collection<String> findStatusIdsInDiscussion(String originalStatusId) {
+        BoundStatement stmt = findStatusIdsInDiscussionStmt.bind();
+        stmt.setString("originalStatusId", originalStatusId);
+        ResultSet resultSet = session.execute(stmt);
+        Collection<String> stringCollection = new ArrayList<>();
+        String rowValueToBeAdded = null;
+        while (!resultSet.isExhausted()) {
+            String unedittedRowValue = resultSet.one().toString();
+            if (unedittedRowValue.contains("Row")){
+//                This trims unusable text from the row value:
+                rowValueToBeAdded = unedittedRowValue.substring(4, unedittedRowValue.length() - 1);
+            } else {
+                rowValueToBeAdded = unedittedRowValue;
+            }
+            stringCollection.add(rowValueToBeAdded);
+        }
+        return stringCollection;
+    }
 
     @CacheEvict(value = "status-cache", key = "#originalStatusId")
     public void addReplyToDiscussion(String originalStatusId, String replyStatusId) {
@@ -33,22 +81,42 @@ public class DiscussionRepository {
     }
 
 
-    public Collection<String> findStatusIdsInDiscussion(String originalStatusId) {
-//        ColumnSlice<Long, String> result = createSliceQuery(keyspaceOperator,
-//                StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
-//                .setColumnFamily(DISCUSSION_CF)
-//                .setKey(originalStatusId)
-//                .setRange(null, null, false, Integer.MAX_VALUE)
-//                .execute()
-//                .get();
+//    public Collection<String> findStatusIdsInDiscussion(String originalStatusId) {
+////        ColumnSlice<Long, String> result = createSliceQuery(keyspaceOperator,
+////                StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
+////                .setColumnFamily(DISCUSSION_CF)
+////                .setKey(originalStatusId)
+////                .setRange(null, null, false, Integer.MAX_VALUE)
+////                .execute()
+////                .get();
+////
+////        Collection<String> statusIds = new LinkedHashSet<String>();
+////        for (HColumn<Long, String> column : result.getColumns()) {
+////            statusIds.add(column.getValue());
+////        }
+////        return statusIds;
 //
-//        Collection<String> statusIds = new LinkedHashSet<String>();
-//        for (HColumn<Long, String> column : result.getColumns()) {
-//            statusIds.add(column.getValue());
+//
+//        Statement statement = QueryBuilder.select()
+//            .column("discussionId")
+//            .from("status")
+//            .where(eq("statusId", originalStatusId))
+//            .orderBy(desc("statusDate"));
+////            .limit(50);
+//        ResultSet results = session.execute(statement);
+//
+//        Collection<String> resultCollection = new ArrayList<>();
+//        while(results.one() != null) {
+//            resultCollection.add(results.one().toString());
 //        }
-//        return statusIds;
-        return null;
-    }
+//
+//        return resultCollection;
+////        return results
+////            .all()
+////            .stream()
+////            .map(e -> e.getDate("statusId").toString())
+////            .collect(Collectors.toList());
+//    }
 
 
     public boolean hasReply(String statusId) {

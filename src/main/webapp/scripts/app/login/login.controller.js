@@ -18,7 +18,7 @@ tatamiJHipsterApp
                 if ($rootScope.previousStateName === 'register') {
                     $state.go('home');
                 } else {
-                    $rootScope.back();
+                    $state.go('timeline');
                 }
             }).catch(function () {
                 $scope.authenticationError = true;

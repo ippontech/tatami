@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand"> <!--ui-sref="home.home.timeline"-->
+            <a class="navbar-brand" ui-sref="timeline">
                 <span>
                     <img title="{{ 'global.topMenu.title' | translate }}" src="/assets/images/company-logo.png">
                 </span>
@@ -135,7 +135,15 @@
                 </li>
 
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul ng-if="$state.includes('account')" class="nav navbar-nav navbar-right">
+                <li>
+                    <a id="logout" ng-click="logout()">
+                        <span class="glyphicon glyphicon-off"></span>
+                        <span translate="account.logout"></span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="$state.includes('sidebarHome')">
 
                 <li tour-step
                     order="0"
@@ -245,7 +253,7 @@
                     </button>
                 </li> <!-- Post Button -->
             </ul>
-            <form class="navbar-form navbar-right" role="search">
+            <form class="navbar-form navbar-right" role="search" ng-if="$state.includes('sidebarHome')">
                 <div class="col-span-6">
                     <input name="searchBar"
                            ng-keypress="searchStatuses($event)"
