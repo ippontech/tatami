@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.MailService;
@@ -25,6 +26,9 @@ import java.net.URISyntaxException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.
@@ -58,6 +62,9 @@ public class UserResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private UserSearchRepository userSearchRepository;
 
     @Inject
     private MailService mailService;
@@ -217,5 +224,19 @@ public class UserResource {
     public Collection<User> suggestions() {
         String login = SecurityUtils.getCurrentUserLogin();
         return suggestionService.suggestUsers(login);
+    }
+
+    /**
+     * SEARCH  /_search/users/:query -> search for the User corresponding
+     * to the query.
+     */
+    @RequestMapping(value = "/rest/search/users/{query}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<User> search(@PathVariable String query) {
+        return StreamSupport
+            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
     }
 }
