@@ -7,7 +7,7 @@ tatamiJHipsterApp
                 parent: 'account',
                 url: '/profile',
 
-                templateUrl: 'scripts/app/account/profile/profile.html',
+                templateUrl: 'scripts/app/account/groups/groups.html',
                 resolve: {
                     userLogin: ['profileInfo', function(profileInfo) {
                             return profileInfo.data;
