@@ -1,19 +1,11 @@
 <section class="tatams-container">
-    <section ng-if="newMessages" ng-click="loadNewStatuses()" class="refresh-button pointer">
-        <div class="text-center refresh-button-style">
-            <span class="badge">{{ newMessages.length }}</span>
-            <span ng-if="newMessages.length == 1" translate="home.newMessage"></span>
-            <span ng-if="newMessages.length > 1" translate="home.newMessages"></span>
-        </div>
-    </section>
-    <section class="timeline" infinite-scroll="requestOldStatuses()" infinite-scroll-disabled="busy">
+    <section class="timeline">
         <div class="tatams" ng-repeat="status in statuses">
-            <div class="tatam pointer tatam-border-lr tatam-hover" style="display: block;">
+            <div ng-class="{ 'tatam-background': status.statusId != $stateParams.statusId, 'status-top-rounded': $index == 0 && $index != statuses.length - 1, 'status-bottom-rounded': $index == statuses.length - 1 && $index != 0, 'status-both-rounded': $index == 0 && $index == statuses.length - 1 }" class="tatam pointer tatam-border-lr" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false">
-
                     <div ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
                         <div class="pull-left background-image-fffix statusitem-img">
-                            <a ui-sref="home.profile.statuses({ username: status.username })">
+                            <a ui-sref="tatami.home.profile.statuses({ username: status.username })">
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
@@ -21,27 +13,27 @@
                             <h5 class="statusitem-name">
                                 <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
-                                    <a ui-sref="home.profile.statuses({ username: status.username })">
+                                    <a ui-sref="tatami.home.profile.statuses({ username: status.username })">
                                         <span class="text-muted">@{{ status.sharedByUsername }}</span>
                                     </a>
-                                    <span translate="status.shared"></span>
+                                    <span translate="home.status.shared"></span>
                                     <br>
                                 </small>
                                 <span ng-if="status.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet">&nbsp;</span>
                                 <span ng-if="status.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user">&nbsp;</span>
-                                <a ui-sref="home.profile.statuses({ username: status.username })">
+                                <a ui-sref="tatami.home.profile.statuses({ username: status.username })">
                                     <strong>{{ status.firstName + ' ' + status.lastName }}</strong>
                                     <small>@{{ status.username }}</small>
                                 </a>
-                                <span ng-if="status.type == 'MENTION_SHARE'" translate="status.sharedYour"></span>
-                                <span ng-if="status.type == 'MENTION_FRIEND'" translate="status.followed"></span>
+                                <span ng-if="status.type == 'MENTION_SHARE'" translate="home.status.sharedYour"></span>
+                                <span ng-if="status.type == 'MENTION_FRIEND'" translate="home.status.followed"></span>
                                 <small> · </small>
                                 <!-- Replace hover title with hover bubble -->
-                                <a ui-sref="home.status({ statusId: status.statusId })">
+                                <a ui-sref="tatami.home.status({ statusId: status.statusId })">
                                     <!--English-->
                                     <small ng-if="!isOneDayOrMore(status.statusDate) && getLanguageKey() == 'en'" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}" am-time-ago="status.statusDate"></small>
                                     <small ng-if="isOneDayOrMore(status.statusDate) && getLanguageKey() == 'en'" title="{{ status.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}">{{ status.statusDate | amDateFormat:'MMM D' }}</small>
-                                    <!--&lt;!&ndash;French&ndash;&gt;-->
+                                    <!--French-->
                                     <small ng-if="!isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}" am-time-ago="status.statusDate"></small>
                                     <small ng-if="isOneDayOrMore(status.statusDate) && getLanguageKey() == 'fr'" title="{{ status.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}">{{ status.statusDate | amDateFormat:'D MMMM' }}</small>
                                 </a>
@@ -51,7 +43,7 @@
                             <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>
 
                             <small ng-if="status.groupId">
-                                <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="home.home.group.statuses({ groupId: status.groupId })">
+                                <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="tatami.home.home.group.statuses({ groupId: status.groupId })">
                                 {{ status.groupName }}
                                 </a>
                                 <br>
@@ -59,28 +51,28 @@
 
                             <small ng-if="status.statusPrivate">
                                 <span class="glyphicon glyphicon-lock"></span>
-                                <span translate="status.private"></span>
+                                <span translate="home.status.private"></span>
                                 <br>
                             </small>
 
                             <small ng-if="status.type === 'ANNOUNCEMENT'">
                                 <span class="glyphicon glyphicon-bullhorn">
-                                    {{ 'status.isAnnounced' | translate }}
+                                    {{ 'home.status.isAnnounced' | translate }}
                                 </span>
-                                <a ui-sref="home.status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
+                                <a ui-sref="tatami.home.status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
                             </small>
 
                             <small ng-if="status.replyTo && status.type !== 'ANNOUNCEMENT'">
                                 <span class="glyphicon glyphicon-share-alt"></span>
-                                <span translate="status.replyTo"></span>
-                                <a ui-sref="home.status({ statusId: status.replyTo })">@{{ status.replyToUsername }}</a>
+                                <span translate="home.status.replyTo"></span>
+                                <a ui-sref="tatami.home.status({ statusId: status.replyTo })">@{{ status.replyToUsername }}</a>
                                 <br>
                             </small>
 
                             <small ng-if="!status.activated && status.type !== 'ANNOUNCEMENT'">
                                 <div class="badge hidden-phone progress-bar-danger">
                                     <span class="glyphicon glyphicon-off"></span>
-                                    <span translate="account.users.deactivated"></span>
+                                    <span translate="tatami.account.users.deactivated"></span>
                                 </div>
                             </small>
 
@@ -88,19 +80,19 @@
                                 <div class="attachments">
                                     <div>
                                         <span ng-repeat="attachment in status.attachments">
-                                        <a ng-href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
-                                            <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
+                                        <a href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
+                                        <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
                                         </a>
                                         </span>
                                     </div>
                                 </div>
 
                                 <div ng-show="expanded && status.shares != null && status.shares.length != 0" id="share">
-                                    <span translate="status.shares"></span>
+                                    <span translate="home.status.shares"></span>
                                     <span class="badge">{{ status.shares.length }}</span>
                                     <div>
                                         <span ng-repeat="user in status.shares">
-                                            <a ui-sref="home.profile.statuses({ username: user.username })">
+                                            <a ui-sref="tatami.home.profile.statuses({ username: user.username })">
                                                 <div class="img img-rounded img-small share-img-fffix" ng-attr-title="@{{ user.username }}" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                                             </a>
                                         </span>
@@ -108,41 +100,41 @@
                                 </div>
                             </small>
                         </div>
+
                         <div ng-if="status.type == 'STATUS' || status.type == 'SHARE' || status.type == 'ANNOUNCEMENT'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
                             <div>
                                 <small class="statusitem-footer">
                                     <span>
-                                        <button ng-click="openReplyModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
+                                        <button ng-click="openReplyModal(status)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span translate="status.reply"></span>
+                                            <span translate="home.status.reply"></span>
                                         </button>
                                         <button ng-if="status.username != profile.username && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
-                                            <span translate="status.share"></span>
+                                            <span translate="home.status.share"></span>
                                         </button>
                                         <button ng-click="favoriteStatus(status, $index)" class="btn-link status-action status-action-favorite button-ios">
                                             <i class="glyphicon glyphicon-star"></i>
-                                            <span translate="status.favorite"></span>
+                                            <span translate="home.status.favorite"></span>
                                         </button>
                                         <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
-                                            <span translate="status.announce"></span>
+                                            <span translate="home.status.announce"></span>
                                         </button>
-                                        <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index,('status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
+                                        <button ng-if="status.username == profile.username" ng-click="deleteStatus(status, $index, ('tatami.status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
-                                            <span translate="status.delete"></span>
+                                            <span translate="home.status.delete"></span>
                                         </button>
                                     </span>
                                     <span ng-if="status.replyTo" class="pull-right">
-                                        <a ui-sref="status({ statusId: status.statusId })" class="btn-link status-action button-ios">
-                                            <span translate="status.viewConversation"></span>
+                                        <a ui-sref="tatami.home.status({ statusId: status.statusId })" class="btn-link status-action button-ios">
+                                            <span translate="home.status.viewConversation"></span>
                                         </a>
                                     </span>
                                 </small>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

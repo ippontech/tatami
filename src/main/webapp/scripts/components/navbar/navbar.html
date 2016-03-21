@@ -256,9 +256,8 @@
             <form class="navbar-form navbar-right" role="search" ng-if="$state.includes('sidebarHome')">
                 <div class="col-span-6">
                     <input name="searchBar"
-                           ng-keypress="searchStatuses($event)"
-                           ng-model="searchString"
-                           ng-change="changeInput(searchString)"
+                           ng-model="search.term"
+                           ng-change="search()"
                            typeahead-focus-first="false"
                            typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)"
                            typeahead-on-select="goToPage($item, $model, $label)"
