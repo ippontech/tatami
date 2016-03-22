@@ -26,8 +26,8 @@
         }
     }
 
-    authExpiredInterceptor.$inject = ['$q', '$localStorage', '$state'];
-    function authExpiredInterceptor($q, $localStorage, $state) {
+    authExpiredInterceptor.$inject = ['$q', '$localStorage', '$injector'];
+    function authExpiredInterceptor($q, $localStorage, $injector) {
         var interceptor = {
             responseError: responseError
         };
@@ -36,8 +36,10 @@
 
         responseError.$inject = ['response'];
         function responseError(response) {
+            alert('auth expired');
             if(response.status === 401 && (response.data.error == 'invalid_token' || response.data.error == 'Unauthorized')) {
-                $localStorage.set('token', '');
+                $localStorage.clear();
+                var $state = $injector.get('$state');
                 $state.go('login');
             }
 
