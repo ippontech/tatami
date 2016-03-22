@@ -19,23 +19,22 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
         $ionicPlatform.on('resume', resume);
 
         function resume() {
-            var token = $localStorage.get('token').token;
-            if(!token) {
-                $state.go('login');
-            }
-            else {
+
+            if(isValidToken()) {
+                $state.go('timeline');
+            } else {
+                $localStorage.clear();
                 $ionicHistory.clearCache();
-                $state.reload();
+                $state.go('login');
             }
         }
 
-        var token = $localStorage.get('token');
-        console.log(token);
-        if(token && token.expires && token.expires > new Date().getTime()) {
-            $state.go('timeline');
-        } else {
-            $localStorage.clear();
-            $state.go('login');
+        resume();
+
+        function isValidToken() {
+            var token = $localStorage.get('token');
+            console.log(token);
+            return token && token.expires && token.expires > new Date().getTime()
         }
     }])
 
@@ -57,6 +56,4 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
 
-        // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/login');
     });
