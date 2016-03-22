@@ -374,7 +374,7 @@
 
         <tatami.google.clientId></tatami.google.clientId>
         <tatami.google.clientSecret></tatami.google.clientSecret>
-        <tatami.token.validityInSeconds>7200</tatami.token.validityInSeconds>
+        <tatami.token.validityInSeconds>2592000</tatami.token.validityInSeconds>
 
         <!--Test configurations: Sonar, unit test, code coverage -->
 
