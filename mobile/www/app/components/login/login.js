@@ -23,7 +23,7 @@
             return $http({
                 url: PathService.buildPath('/tatami/rest/client/id'),
                 method: 'GET'
-            })
+            });
         }
     }
 })();

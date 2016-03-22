@@ -36,7 +36,6 @@
 
         responseError.$inject = ['response'];
         function responseError(response) {
-            alert('auth expired');
             if(response.status === 401 && (response.data.error == 'invalid_token' || response.data.error == 'Unauthorized')) {
                 $localStorage.clear();
                 var $state = $injector.get('$state');
