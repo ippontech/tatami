@@ -16,6 +16,12 @@
 
         getFromLocalStorage.$inject = ['key'];
         function getFromLocalStorage(key) {
+            if(isLocalStorageUndefined(key)) {
+                return undefined;
+            }
+            if($window.localStorage[key] === 'undefined') {
+                alert('it is undefined');
+            }
             return JSON.parse($window.localStorage[key] || '{}');
         }
 
@@ -26,6 +32,11 @@
 
         function clearLocalStorage() {
             $window.localStorage.clear();
+        }
+
+        isLocalStorageUndefined.$inject = ['key'];
+        function isLocalStorageUndefined(key) {
+            return $window.localStorage.length === 0 || $window.localStorage[key] === 'undefined';
         }
     }
 })();
