@@ -49,9 +49,9 @@
             onStart.$inject = ['event'];
             function onStart(event) {
                 var requestToken = (event.url).split("code=")[1];
-                alert(requestToken);
+                //alert(requestToken);
                 if((event.url).startsWith("http://localhost/callback")) {
-                    alert('here');
+                    //alert('here');
                     var requestToken = (event.url).split("code=")[1];
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
@@ -65,6 +65,7 @@
 
             onSuccess.$inject = ['result'];
             function onSuccess(result) {
+                alert(result.data.token);
                 $localStorage.set('token', result.data.token);
                 ref.close();
                 $state.go('timeline');
