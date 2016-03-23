@@ -132,3 +132,8 @@ Desktop.ini
 # Bower Components
 ######################
 /src/main/webapp/bower_components/**
+
+######################
+# ElasticSearch
+######################
+/data/**
