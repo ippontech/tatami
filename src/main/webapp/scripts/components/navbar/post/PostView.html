@@ -167,7 +167,7 @@
                 <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
                     <div class="bar progress-bar progress-bar-info" style="width: {{uploadStatus.progress}}%;"></div>
                 </div>
-                <div ngf-drop="uploadFiles($files)" ngf-multiple="true"
+                <div ngf-drop="uploadFiles($files)" ngf-select="uploadFiles($files)" ngf-multiple="true"
                      class="drop-box dropzone well" translate="post.drop.file">
                 </div>
                 <div ng-show="current.attachments.length != 0" ng-repeat="attachment in current.attachments">
