@@ -47,9 +47,9 @@
         function getProfile(ProfileService) {
             return ProfileService.get().$promise;
         }
-        getProfileInfo.$inject = ['Account'];
-        function getProfileInfo(Account){
-            return Account.get().$promise;
+        getProfileInfo.$inject = ['AccountService'];
+        function getProfileInfo(AccountService){
+            return AccountService.get().$promise;
         }
         getMainTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
         function getMainTranslatePartialLoader($translate, $translatePartialLoader) {

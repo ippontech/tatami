@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .factory('Principal', function Principal($q, Account) {
+    .factory('Principal', function Principal($q, AccountService) {
         var _identity,
             _authenticated = false;
 
@@ -56,7 +56,7 @@ tatamiJHipsterApp
                 }
 
                 // retrieve the identity data from the server, update the identity object, and then resolve.
-                Account.get().$promise
+                AccountService.get().$promise
                     .then(function (account) {
                         _identity = account.data;
                         _authenticated = true;

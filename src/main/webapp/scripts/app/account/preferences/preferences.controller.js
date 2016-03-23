@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('PreferencesController', function($scope, $translate, Account, profileInfo, PreferencesService, ngToast) {
+    .controller('PreferencesController', function($scope, $translate, AccountService, profileInfo, PreferencesService, ngToast) {
         $scope.profile = profileInfo;
         $scope.userPreferences = profileInfo.data;
 
