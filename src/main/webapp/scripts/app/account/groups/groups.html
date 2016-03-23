@@ -57,18 +57,23 @@
 
                 <div class="tabMenu">
                     <ul class="nav nav-tabs">
-                        <li ng-class="{ 'active': $state.current.name === 'account.groups.main.top.list' }">
-                            <a ui-sref="account.groups.main.top.list" translate="account.groups.myGroups">
+                        <!--<li ng-class="{ 'active': $state.current.name === 'manage' }">
+                            <a ui-sref="manage" translate="account.groups.myGroups">
+                            </a>
+                        </li>-->
+                        <li ng-class="{ 'active': $state.current.name === 'mine' }">
+                            <a ui-sref="mine" translate="account.groups.myGroups">
                             </a>
                         </li>
-                        <li ng-class="{ 'active': $state.current.name === 'account.groups.main.top.recommended' }">
-                            <a ui-sref="account.groups.main.top.recommended" translate="account.groups.recommended" ng-click="display()">
+                        <li ng-class="{ 'active': $state.current.name === 'recommended' }">
+                            <a ui-sref="recommended" translate="account.groups.recommended" ng-click="display()">
                             </a>
                         </li>
-                        <li ng-class="{ 'active': $state.current.name === 'account.groups.main.top.search' }">
-                            <a ui-sref="account.groups.main.top.search" translate="account.groups.search">
+                        <li ng-class="{ 'active': $state.current.name === 'search' }">
+                            <a ui-sref="search" translate="account.groups.search">
                             </a>
                         </li>
+
                     </ul>
                 </div>
 

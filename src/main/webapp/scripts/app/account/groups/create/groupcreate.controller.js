@@ -1,4 +1,4 @@
-GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'GroupService', 'ngToast', function($scope, $translate, GroupService, ngToast) {
+tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 'GroupService', 'ngToast', function($scope, $translate, GroupService, ngToast) {
     $scope.current = {};
     /**
      * When creating a group, the POST requires this payload
@@ -29,6 +29,7 @@ GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'Grou
      * Resets the group creation view
      */
     $scope.reset = function() {
+           console.log($scope.groups);
         $scope.groups = {};
         $scope.current.createGroup = false;
     };
@@ -37,6 +38,7 @@ GroupsModule.controller('GroupsCreateController', ['$scope', '$translate', 'Grou
      * Creates a new group on the server
      */
     $scope.createNewGroup = function() {
+        console.log($scope.groups);
         GroupService.save($scope.groups, function() {
             $scope.reset();
             $scope.$state.reload();

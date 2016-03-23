@@ -3,12 +3,12 @@
 tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
-            .state('groups', {
+            .state('create', {
                 templateUrl: 'scripts/app/account/groups/groups.html',
-                controller: 'GroupsController',
+                controller: 'GroupsCreateController',
 
-                parent: 'account',
-                url: '/groups',
+                parent: 'groups',
+                url: '/create',
 
                 data: {
                     authorities: ['ROLE_USER'],

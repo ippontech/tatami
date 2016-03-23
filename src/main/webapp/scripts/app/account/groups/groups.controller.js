@@ -1,21 +1,25 @@
-GroupsModule.controller('GroupsController', [
+tatamiJHipsterApp
+    .controller('GroupsController', [
     '$scope',
+    '$state',
     'GroupService',
     'SearchService',
-    'userGroups',
+    /*'userGroups',*/
     'profileInfo',
-    function($scope, GroupService, SearchService, userGroups, profileInfo) {
-        $scope.userGroups = userGroups;
-
+    function($scope, $state, GroupService, SearchService, /*userGroups,*/ profileInfo) {
+        //$scope.userGroups = userGroups;
+        $scope.$state = $state;
+        console.log($state.$current);
         /**
          * Determines the current look of the group page
          * When createGroup is true, we display the group creation view
          */
+
         $scope.current = {
             searchString: $scope.$stateParams.q
         };
 
-        $scope.search = function() {
+        /*$scope.search = function() {
             // Update the route
             $scope.$state.transitionTo('tatami.account.groups.main.top.search',
                 { q: $scope.current.searchString },
@@ -26,7 +30,7 @@ GroupsModule.controller('GroupsController', [
                 // Now update the user groups
                 $scope.userGroups = result;
             });
-        };
+        };*/
 
         $scope.joinLeaveGroup = function(group) {
             if(!group.member) {
@@ -35,7 +39,7 @@ GroupsModule.controller('GroupsController', [
                     null,
                     function(response) {
                         if(response.isMember) {
-                            $scope.$state.reload();
+                            $state.reload();
                         }
                     }
                 );
@@ -47,7 +51,7 @@ GroupsModule.controller('GroupsController', [
                     null,
                     function(response) {
                         if(response) {
-                            $scope.$state.reload();
+                            $state.reload();
                         }
                     }
                 );

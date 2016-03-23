@@ -1,4 +1,5 @@
-GroupsModule.controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'UserService', 'members', function($scope, group, GroupService, UserService, members) {
+tatamiJHipsterApp
+    .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'UserService', 'members', function($scope, group, GroupService, UserService, members) {
     $scope.group = group;
     $scope.members = members;
     $scope.searchedMembers = {};
