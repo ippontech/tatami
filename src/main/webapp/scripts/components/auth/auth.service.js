@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, AccountService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -78,7 +78,7 @@ tatamiJHipsterApp
             updateAccount: function (account, callback) {
                 var cb = callback || angular.noop;
 
-                return Account.save(account,
+                return AccountService.save(account,
                     function () {
                         return cb(account);
                     },
