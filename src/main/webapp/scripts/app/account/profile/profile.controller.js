@@ -1,6 +1,6 @@
 tatamiJHipsterApp
-    .controller('ProfileController', ['$scope', '$state', '$translate', 'Account', 'Upload', 'userLogin', 'ProfileService', 'ngToast',
-    function($scope, $state, $translate, Account, Upload, userLogin, ProfileService, ngToast) {
+    .controller('ProfileController', ['$scope', '$state', '$translate', 'Upload', 'userLogin', 'ProfileService', 'ngToast',
+    function($scope, $state, $translate, Upload, userLogin, ProfileService, ngToast) {
 
 //        // Current state of the view
         $scope.current = {
@@ -45,7 +45,7 @@ tatamiJHipsterApp
                 }).then(function (data) {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
-                    //$scope.$state.reload();
+                    $scope.$state.reload();
                 }, function (resp) {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
