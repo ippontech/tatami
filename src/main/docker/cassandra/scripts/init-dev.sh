@@ -4,9 +4,12 @@ function log {
     echo "[$(date)]: $*"
 }
 
+# create migration script
 cat /cql/create-keyspace.cql > create-keyspace-tables.cql
 echo "USE TatamiJHipster;" >> create-keyspace-tables.cql
 cat /cql/create-tables.cql >> create-keyspace-tables.cql
+ls /cql/migration/*_added_entity_*.cql 2> /dev/null | xargs cat >> create-keyspace-tables.cql
+ls /cql/migration/V*.cql 2> /dev/null | xargs cat >> create-keyspace-tables.cql
 
 retryCount=0
 maxRetry=20
@@ -25,8 +28,9 @@ else
   exit 1
 fi
 
-log "launch migration script"
-cqlsh -f create-keyspace-tables.cql --connect-timeout=60 tatami-cassandra
+log "execute migration script"
+
+cqlsh -f create-keyspace-tables.cql tatami-cassandra
 
 if [ $? -eq 0 ]; then
   log "migration done"
