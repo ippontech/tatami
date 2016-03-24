@@ -1,15 +1,11 @@
 #!/bin/bash
 
+# Protect from iterating on empty directories
+shopt -s nullglob
+
 function log {
     echo "[$(date)]: $*"
 }
-
-# create migration script
-cat /cql/create-keyspace.cql > create-keyspace-tables.cql
-echo "USE TatamiJHipster;" >> create-keyspace-tables.cql
-cat /cql/create-tables.cql >> create-keyspace-tables.cql
-ls /cql/migration/*_added_entity_*.cql 2> /dev/null | xargs cat >> create-keyspace-tables.cql
-ls /cql/migration/V*.cql 2> /dev/null | xargs cat >> create-keyspace-tables.cql
 
 retryCount=0
 maxRetry=20
@@ -28,14 +24,40 @@ else
   exit 1
 fi
 
-log "execute migration script"
+log "execute migration scripts"
 
+log "create keyspace and base tables"
+cat /cql/create-keyspace.cql > create-keyspace-tables.cql
+echo "USE TatamiJHipster;" >> create-keyspace-tables.cql
+cat /cql/create-tables.cql >> create-keyspace-tables.cql
 cqlsh -f create-keyspace-tables.cql tatami-cassandra
 
-if [ $? -eq 0 ]; then
-  log "migration done"
-  exit 0
-else
-  log "migration failed"
-  exit 1
-fi
+# loop over new entities scripts
+for cqlFile in /cql/*_added_entity_*.cql; do
+    filename=${cqlFile##*/}
+    log "execute: " $filename
+    echo "USE TatamiJHipster;" > $filename
+    cat $cqlFile >> $filename
+    cqlsh -f $filename tatami-cassandra
+    if [ $? -ne 0 ]; then
+        log "fail to apply script " $filename
+        log "stop applying database changes"
+        exit 1
+    fi
+done
+
+# loop over migration scripts
+for cqlFile in /cql/migration/V*.cql; do
+    filename=${cqlFile##*/}
+    log "execute: " $filename
+    echo "USE TatamiJHipster;" > $filename
+    cat $cqlFile >> $filename
+    cqlsh -f $filename tatami-cassandra
+    if [ $? -ne 0 ]; then
+        log "fail to apply script " $filename
+        log "stop applying database changes"
+        exit 1
+    fi
+done
+
+log "migration done"
