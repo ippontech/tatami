@@ -38,20 +38,14 @@
                             'scope=' + emailScope + ' ' + profileScope + '&' +
                             'approval_prompt=force&response_type=code&access_type=offline';
 
-            var openMethod = ionic.Platform.isAndroid() ? {openExternal : true} : '_blank';
-            //navigator.app.loadUrl(googleUrl, {openExternal : true});
-
-            var ref = window.open(googleUrl, openMethod, 'location=no');
-
+            var ref = window.open(googleUrl, '_blank', 'location=no');
 
             ref.addEventListener('loadstart', onStart);
 
             onStart.$inject = ['event'];
             function onStart(event) {
-                var requestToken = (event.url).split("code=")[1];
-                //alert(requestToken);
-                if((event.url).startsWith("http://localhost/callback")) {
-                    //alert('here');
+
+                if((event.url).indexOf('http://localhost/callback') == 0) {
                     var requestToken = (event.url).split("code=")[1];
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
@@ -65,7 +59,6 @@
 
             onSuccess.$inject = ['result'];
             function onSuccess(result) {
-                alert(result.data.token);
                 $localStorage.set('token', result.data.token);
                 ref.close();
                 $state.go('timeline');

@@ -23,6 +23,8 @@
             return $http({
                 url: PathService.buildPath('/tatami/rest/client/id'),
                 method: 'GET'
+            }).catch(function(error) {
+                alert(JSON.stringify(error));
             });
         }
     }
