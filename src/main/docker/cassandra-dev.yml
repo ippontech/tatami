@@ -5,8 +5,6 @@ services:
         build:
             context: .
             dockerfile: cassandra/Cassandra-Dev.Dockerfile
-        # volumes:
-        #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data
         ports:
             - 7000:7000
             - 7001:7001
@@ -21,3 +19,11 @@ services:
             - tatami-cassandra:seed
         environment:
             - CASSANDRA_SEEDS=seed
+    migration:
+        links:
+            - tatami-cassandra
+        build:
+            context: .
+            dockerfile: cassandra/Cassandra-migration.Dockerfile
+        volumes:
+            - ../resources/config/cql:/cql:ro
