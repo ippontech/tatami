@@ -2,9 +2,7 @@ version: '2'
 services:
     tatami-cassandra:
         container_name: tatami-cassandra
-        build:
-            context: .
-            dockerfile: cassandra/Cassandra-Dev.Dockerfile
+        image: cassandra:2.2.3
         ports:
             - 7000:7000
             - 7001:7001
@@ -12,14 +10,13 @@ services:
             - 9042:9042
             - 9160:9160
     tatami-cassandra-node:
-        build:
-            context: .
-            dockerfile: cassandra/Cassandra-Dev.Dockerfile
+        image: cassandra:2.2.3
         links:
             - tatami-cassandra:seed
         environment:
             - CASSANDRA_SEEDS=seed
-    migration:
+    tatami-cassandra-migration:
+        container_name: tatami-cassandra-migration
         links:
             - tatami-cassandra
         build:

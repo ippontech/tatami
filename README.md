@@ -88,12 +88,25 @@ From the root directory, simply run:
     docker-compose -f src/main/docker/cassandra-dev.yml build
     docker-compose -f src/main/docker/cassandra-dev.yml up -d
 
-Docker-compose will start 3 containers:
-- A container with the Cassandra node contact point
-- A container with a second Cassandra node joining the cluster
-- A container to apply the keypsace and schema creation and data migration
+Docker-compose will start 3 services:
+- **tatami-cassandra**, a container with the Cassandra node contact point
+- **tatami-cassandra-node-1**, a container with a second Cassandra node joining the cluster
+- **tatami-cassandra-migration** a container to apply the keypsace and schema creation and data migration
 
-The migration container is responsible to apply all the migration scripts from src/main/resources/config/cql in the following order:
+
+To stop the cluster, run:
+
+    docker-compose -f src/main/docker/cassandra-dev.yml build
+
+You can dynamically add nodes to the Cassandra cluster, but you should increment the number one by one as the cluster
+will fail to add more than one node at the same time.
+To dynamically change the number of nodes joining the Cassandra cluster, run:
+
+    docker-compose -f src/main/docker/cassandra-dev.yml scale tatami-cassandra-node=NUMBER_OF_NODES
+
+
+
+The migration service is responsible to apply all the migration scripts from src/main/resources/config/cql in the following order:
 1. create-keyspace.cql
 2. create-tables.cql
 3. all \*_added_entity_\*.cql in alphabetical order
