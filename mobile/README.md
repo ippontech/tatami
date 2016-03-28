@@ -26,4 +26,7 @@ Deploy to Device
 
 ### Android
 
-Coming soon.
+- Connect device
+- Run the following command
+    - `ionic build android && ionic run android`
+

@@ -44,7 +44,6 @@
 
             onStart.$inject = ['event'];
             function onStart(event) {
-
                 if((event.url).indexOf('http://localhost/callback') == 0) {
                     var requestToken = (event.url).split("code=")[1];
                     $http({
