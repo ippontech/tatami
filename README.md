@@ -113,9 +113,9 @@ Although there is no tool like FlywayDB or Liquibase for Cassandra, this convent
 ## Problem with current JHipster implementation
  - Scripts are not automatically applied in the Cassandra cluster for dev.
  - No failure handling.
-  When run manually with "docker exec <container id> init or entities, if any of the query has a problem then the following queries are still applied.
+  When run manually with `docker exec <container id> init or entities`, if any of the query has a problem then the following queries are still applied.
   This is because cqlsh does not stop on query failure. But we made it more dangerous by first concat all the CQL files.
-- When adding a new entity, the cql script is not added to AbstractCassandraTest
+- When adding a new entity model generated with the JHipster entity generator, the CQL script is not added to AbstractCassandraTest
 
 
 ## Access Cassandra in Mac OS/x
