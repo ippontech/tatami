@@ -25,6 +25,7 @@
             statusViews['suggested@follow'] = { 'suggested@follow': statusViewConfig };
             statusViews['following@follow'] = { 'following@follow': statusViewConfig };
             statusViews['follower@follow'] = { 'follower@follow': statusViewConfig };
+            statusViews['company@home'] = { 'more@home': statusViewConfig };
 
             var profileViewConfig = {
                 templateUrl: 'app/shared/state/profile/profile.html',
@@ -39,6 +40,7 @@
             profileViews['timeline@home'] = { 'timeline@home': profileViewConfig };
             profileViews['mentions@home'] = { 'mentions@home': profileViewConfig };
             profileViews['favorites@home'] = { 'favorites@home': profileViewConfig };
+            profileViews['company@home'] = { 'more@home': profileViewConfig };
 
             var service = {
                 addStatusState: addStatusState,
