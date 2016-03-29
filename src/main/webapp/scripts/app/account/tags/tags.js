@@ -13,7 +13,7 @@ angular.module('tatamiJHipsterApp')
                         return $translate.refresh();
                     }]
                 },
-                controller: 'ProfileController'
+
 
             })
     });
