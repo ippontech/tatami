@@ -8,6 +8,7 @@
     function tatamiStatusRefresherService($rootScope, StatusService, HomeService) {
         var service = {
             refreshHomeTimeline: refreshHomeTimeline,
+            refreshCompanyTimeline: refreshCompanyTimeline,
             refreshMentions: refreshMentions,
             refreshFavorites: refreshFavorites,
             refreshUserTimeline: refreshUserTimeline,
@@ -19,6 +20,10 @@
 
         function refreshHomeTimeline() {
             return StatusService.getHomeTimeline().$promise.then(updateStatuses);
+        }
+
+        function refreshCompanyTimeline() {
+            return HomeService.getCompanyTimeline().$promise.then(updateStatuses);
         }
 
         refreshUserTimeline.$inject = ['user'];
