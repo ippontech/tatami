@@ -9,11 +9,16 @@
         var vm = this;
 
         vm.logout = logout;
+        vm.goToCompanyTimeline = goToCompanyTimeline;
 
         function logout() {
             $localStorage.clear();
             $ionicHistory.clearCache();
             $state.go('login');
+        }
+
+        function goToCompanyTimeline() {
+            $state.go('company');
         }
     }
 })();
