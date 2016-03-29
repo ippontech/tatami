@@ -1,0 +1,14 @@
+FROM alpine:3.3
+
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm
+RUN apk add --no-cache openjdk8 && \
+    ln -sf "${JAVA_HOME}/bin/" "/usr/bin/"
+
+# add directly the war
+ADD *.war /app.war
+
+RUN sh -c 'touch /app.war'
+VOLUME /tmp
+CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.war"]
+
+EXPOSE 8080
