@@ -13,6 +13,7 @@
             refreshFavorites: refreshFavorites,
             refreshUserTimeline: refreshUserTimeline,
             getOldFromHomeTimeline: getOldFromHomeTimeline,
+            getOldFromCompanyTimeline: getOldFromCompanyTimeline,
             getOldMentions: getOldMentions
         };
 
@@ -42,6 +43,11 @@
         getOldFromHomeTimeline.$inject = ['finalStatus'];
         function getOldFromHomeTimeline(finalStatus) {
             return StatusService.getHomeTimeline({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
+        }
+
+        getOldFromCompanyTimeline.$inject = ['finalStatus'];
+        function getOldFromCompanyTimeline(finalStatus) {
+            return HomeService.getCompanyTimeline({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
         }
 
         getOldMentions.$inject = ['finalStatus'];

@@ -16,5 +16,10 @@
         function getNewStatuses() {
             return TatamiStatusRefresherService.refreshCompanyTimeline();
         }
+
+        getOldStatuses.$inject = ['finalStatus'];
+        function getOldStatuses(finalStatus) {
+            return TatamiStatusRefresherService.getOldFromCompanyTimeline(finalStatus);
+        }
     }
 })();
