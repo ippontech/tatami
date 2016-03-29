@@ -13,6 +13,14 @@ tatamiJHipsterApp
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'global.menu.account.groups'
+                },
+                resolve: {
+                    userGroups: getGroups
                 }
+
             })
+            getGroups.$inject = ['GroupService'];
+                    function getGroups(GroupService) {
+                        return GroupService.get().$promise;
+                    }
     });

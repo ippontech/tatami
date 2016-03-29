@@ -1,5 +1,6 @@
 tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 'GroupService', 'ngToast', function($scope, $translate, GroupService, ngToast) {
     $scope.current = {};
+    $scope.current.createGroup = false;
     /**
      * When creating a group, the POST requires this payload
      * @type {{name: string, description: string, publicGroup: boolean, archivedGroup: boolean}}

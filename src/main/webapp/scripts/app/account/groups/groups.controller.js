@@ -4,12 +4,11 @@ tatamiJHipsterApp
     '$state',
     'GroupService',
     'SearchService',
-    /*'userGroups',*/
+    'userGroups',
     'profileInfo',
-    function($scope, $state, GroupService, SearchService, /*userGroups,*/ profileInfo) {
-        //$scope.userGroups = userGroups;
+    function($scope, $state, GroupService, SearchService, userGroups, profileInfo) {
+        $scope.userGroups = userGroups;
         $scope.$state = $state;
-        console.log($state.$current);
         /**
          * Determines the current look of the group page
          * When createGroup is true, we display the group creation view

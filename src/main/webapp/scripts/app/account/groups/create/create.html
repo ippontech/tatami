@@ -1,0 +1,48 @@
+<div>
+    <button class="show btn btn-xlarge btn-block btn-primary" type="button" translate="account.groups.createNewGroup" ng-click="newGroup()"></button>
+
+    <fieldset class="hide" style="display: block;" ng-show="current.createGroup">
+        <legend translate="account.groups.create"></legend>
+    </fieldset>
+    <div ng-if="current.createGroup">
+    <div class="control-group">
+        <label class="control-label" for="name" translate="account.groups.name"></label>
+        <div class="controls">
+            <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-lg-12" value="" ng-model="groups.name">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="description" translate="account.groups.description"></label>
+        <div class="controls">
+            <textarea name="description" class="input-xlarge col-lg-12" ng-model="groups.description"></textarea>
+        </div>
+    </div>
+
+
+    <div class="control-group">
+        <label class="control-label" for="publicGroup" translate="account.groups.access"></label>
+
+        <div class="controls">
+            <label class="radio" style="left: 50px">
+                <input type="radio" name="publicGroup" value="true" ng-checked="true" required="" ng-model="groups.publicGroup"> {{ 'account.groups.public' | translate }}
+            </label>
+            <label class="radio" style="left: 50px">
+                <input type="radio" name="publicGroup" value="false" required="" ng-model="groups.publicGroup"> {{ 'account.groups.private' | translate }}
+            </label>
+        </div>
+    </div>
+
+    <div class="alertColor">
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <span translate="account.groups.publicWarning"></span>
+    </div>
+    <br>
+    <div class="return"></div>
+    <br>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary col-lg-7 little-marge-right" translate="account.groups.create" ng-click="createNewGroup()"></button>
+        <button type="reset" class="btn btn-default col-lg-4" translate="form.cancel" ng-click="cancelGroupCreate()"></button>
+    </div>
+    </div>
+</div>

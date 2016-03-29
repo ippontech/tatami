@@ -109,7 +109,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     @Override
     public int compareTo(UserGroupDTO o) {
-        return this.username.compareTo(o.getUsername());
+        return this.login.compareTo(o.getLogin());
     }
 
     @Override
