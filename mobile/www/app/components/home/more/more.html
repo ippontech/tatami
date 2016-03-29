@@ -1,8 +1,15 @@
 <ion-view>
     <ion-content>
         <ion-list>
-            <button ng-click="vm.goToCompanyTimeline()" class="button ion-briefcase button-full button-calm">Company Timeline</button>
-            <button ng-click="vm.logout()" class="button ion-power button-full button-assertive">Logout</button>
+            <ion-item ng-click="vm.goToCompanyTimeline()" class="text-center">
+                <span class="ion-briefcase calm"></span>&nbsp;
+                <span class="calm">Company Timeline</span>
+            </ion-item>
+            <ion-item class="item-divider"></ion-item>
+            <ion-item ng-click="vm.logout()" class="text-center">
+                <span class="ion-power assertive"></span>&nbsp;
+                <span class="assertive">Logout</span>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
