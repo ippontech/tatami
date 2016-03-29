@@ -22,7 +22,6 @@
                         }
                     },
                     resolve: {
-                        profile: getProfile,
                         profileInfo: getProfileInfo,
                         mainTranslatePartialLoader: getMainTranslatePartialLoader
                     }
@@ -43,10 +42,6 @@
                 });
             };
 
-        getProfile.$inject = ['ProfileService'];
-        function getProfile(ProfileService) {
-            return ProfileService.get().$promise;
-        }
         getProfileInfo.$inject = ['AccountService'];
         function getProfileInfo(AccountService){
             return AccountService.get().$promise;

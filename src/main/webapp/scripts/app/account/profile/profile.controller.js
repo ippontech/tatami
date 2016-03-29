@@ -1,6 +1,6 @@
 tatamiJHipsterApp
-    .controller('ProfileController', ['$scope', '$state', '$translate', 'Upload', 'userLogin', 'ProfileService', 'ngToast',
-    function($scope, $state, $translate, Upload, userLogin, ProfileService, ngToast) {
+    .controller('ProfileController', ['$scope', '$state', '$translate', 'Upload', 'userLogin', 'AccountService', 'ngToast',
+    function($scope, $state, $translate, Upload, userLogin, AccountService, ngToast) {
 
 //        // Current state of the view
         $scope.current = {
@@ -23,7 +23,7 @@ tatamiJHipsterApp
 
         // Update the user information
         $scope.updateUser = function() {
-            ProfileService.update($scope.userProfile, function() {
+            AccountService.update($scope.userProfile, function() {
                 ngToast.create({
                     content: $translate.instant('account.profile.save')
                 });
