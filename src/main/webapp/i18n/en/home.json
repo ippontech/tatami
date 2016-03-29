@@ -25,7 +25,10 @@
             "sidebar": {
                 "myGroups": "My Groups",
                 "trends": "Trends",
-                "whoToFollow": "Who to Follow"
+                "whoToFollow": "Who to Follow",
+                "private": "PVT",
+                "public": "PUB",
+                "administrator": "A"
             },
             "status": {
                 "reply": "Reply",
