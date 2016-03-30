@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('tatamiJHipsterApp')
-    .controller('HomeSidebarController', ['$scope', '$state', 'UserService', 'TagService', 'profileInfo', 'groups', 'suggestions', 'tags',
-    function($scope, $state, UserService, TagService, profileInfo, groups, suggestions, tags) {
-        $scope.profile = profileInfo.data;
+    .controller('HomeSidebarController', ['$scope', '$state', 'UserService', 'TagService', 'groups', 'suggestions', 'tags',
+    function($scope, $state, UserService, TagService, groups, suggestions, tags) {
         $scope.groups = groups;
         $scope.suggestions = suggestions;
         $scope.tags = tags;
