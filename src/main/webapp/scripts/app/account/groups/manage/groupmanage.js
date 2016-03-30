@@ -3,7 +3,7 @@
 tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
-            .state('manage', {
+            .state('groups.manage', {
                 templateUrl: 'scripts/app/account/groups/groups.html',
                 controller: 'GroupsManageController',
 
