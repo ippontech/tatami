@@ -4,10 +4,11 @@ tatamiJHipsterApp
     '$state',
     'GroupService',
     'SearchService',
-    'userGroups',
     'profileInfo',
-    function($scope, $state, GroupService, SearchService, userGroups, profileInfo) {
-        $scope.userGroups = userGroups;
+    function($scope, $state, GroupService, SearchService, profileInfo) {
+        if($scope.$state.name === 'groups') {
+            $scope.$state.go('list');
+        }
         $scope.$state = $state;
         /**
          * Determines the current look of the group page

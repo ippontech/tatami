@@ -27,54 +27,6 @@
 
                 <div ui-view="list"></div>
             </form>
-            <div>
-                <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.is('search')" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.groups.search' | translate }}">
-                </form>
-                <table class="table noCollapse">
-                    <tbody>
-                    <tr>
-                        <th style="border-top: 0" translate="account.groups.name"></th>
-                        <th style="border-top: 0" translate="account.groups.access"></th>
-                        <th style="border-top: 0" translate="account.groups.members"></th>
-                        <th style="border-top: 0"></th>
-                    </tr>
-                    </tbody>
-                    <tbody class="items">
-                    <div>
-                        <tr ng-repeat="group in userGroups">
-                            <td>
-                                <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
-                            </td>
-                            <td>
-                                <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="account.groups.public"></span>
-                                <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="account.groups.private"></span>
-                                <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="account.groups.archived"></span>
-                            </td>
-                            <td>
-                                {{ group.counter }}
-                            </td>
-                            <td>
-                        <span ng-if="group.administrator">
-                            <button type="button" ui-sref="account.groups.manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone">
-                                <span class="glyphicon glyphicon-th-large"></span>
-                                <span translate="account.groups.manage"></span>
-                            </button>
-                        </span>
-
-                                <button type="button" ng-if="!group.administrator" ng-click="joinLeaveGroup(group)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': group.member && hover, 'btn-info': group.member && !hover }">
-                            <span class="glyphicon" ng-class="group.member ? 'glyphicon-minus' : 'glyphicon-plus'">
-                                <span ng-if="!group.member" class="hidden-phone" translate="account.groups.join"></span>
-                                <span ng-if="group.member && !hover" class="hidden-phone" translate="account.groups.joined"></span>
-                                <span ng-if="group.member && hover" class="hidden-phone" translate="account.groups.leave"></span>
-                            </span>
-                                </button>
-                            </td>
-                        </tr>
-                    </div>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </div>

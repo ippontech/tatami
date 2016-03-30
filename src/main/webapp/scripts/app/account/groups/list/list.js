@@ -3,18 +3,16 @@
 tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
-            .state('groups', {
-                abstract: true,
-                template: '<ui-view></ui-view>',
-                controller: 'GroupsController',
+            .state('list', {
 
-                parent: 'account',
-                url: '/groups',
 
+                parent: 'groups',
+                url: '/list',
+
+                templateUrl: 'scripts/app/account/groups/groups.html',
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'global.menu.account.groups'
                 }
             })
-
     });
