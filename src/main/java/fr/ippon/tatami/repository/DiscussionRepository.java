@@ -39,22 +39,28 @@ public class DiscussionRepository {
 
     private PreparedStatement findStatusIdsInDiscussionStmt;
 
+    private PreparedStatement insertByStatusId;
+
     @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Status.class);
 
         findStatusIdsInDiscussionStmt = session.prepare(
             "SELECT statusId " +
-                "FROM status " +
-                "WHERE discussionId = :originalStatusId");
+                "FROM discussion " +
+                "WHERE discussionId = :originalStatusId " +
+                "ORDER BY statusId ASC");
 
+        insertByStatusId = session.prepare(
+            "INSERT INTO discussion (statusId, discussionId) " +
+                "VALUES (:statusId, :discussionId)");
     }
 
     public Collection<String> findStatusIdsInDiscussion(String originalStatusId) {
         BoundStatement stmt = findStatusIdsInDiscussionStmt.bind();
         stmt.setString("originalStatusId", originalStatusId);
         ResultSet resultSet = session.execute(stmt);
-        Collection<String> stringCollection = new ArrayList<>();
+        Collection<String> statusIdsInDiscussion = new ArrayList<>();
         String rowValueToBeAdded = null;
         while (!resultSet.isExhausted()) {
             String unedittedRowValue = resultSet.one().toString();
@@ -64,20 +70,17 @@ public class DiscussionRepository {
             } else {
                 rowValueToBeAdded = unedittedRowValue;
             }
-            stringCollection.add(rowValueToBeAdded);
+            statusIdsInDiscussion.add(rowValueToBeAdded);
         }
-        return stringCollection;
+        return statusIdsInDiscussion;
     }
 
     @CacheEvict(value = "status-cache", key = "#originalStatusId")
-    public void addReplyToDiscussion(String originalStatusId, String replyStatusId) {
-//        Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-//        mutator.insert(originalStatusId, DISCUSSION_CF,
-//                HFactory.createColumn(
-//                        Calendar.getInstance().getTimeInMillis(),
-//                        replyStatusId,
-//                        LongSerializer.get(),
-//                        StringSerializer.get()));
+    public void addReplyToDiscussion(String discussionId, String statusId) {
+        BoundStatement stmt = insertByStatusId.bind();
+        stmt.setUUID("statusId", UUID.fromString(statusId));
+        stmt.setString("discussionId", discussionId);
+        session.execute(stmt);
     }
 
 
