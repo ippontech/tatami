@@ -1,28 +1,36 @@
 <ion-view name="login-view" view-title="Login">
     <ion-content class="has-header has-subheader">
-        <div class="list list-inset">
-            <label class="item item-input">
-                <input type="text" placeholder="E-mail" ng-model="vm.user.email">
-            </label>
-            <label class="item item-input">
-                <input type="password" placeholder="Password" ng-model="vm.user.password">
-            </label>
-        </div>
+        <div ng-if="!vm.loginProgress">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="E-mail" ng-model="vm.user.email">
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Password" ng-model="vm.user.password">
+                </label>
+            </div>
 
-        <div class="padding">
-            <button ng-disabled="!vm.user.email && !vm.user.password" class="button button-block button-calm" ng-click="vm.login()">Login</button>
-        </div>
-        <div class="padding">
-            <button ng-click="vm.googleLogin()" class="button button-block button-stable">
-                Log into Google
-            </button>
-        </div>
+            <div class="padding">
+                <button ng-disabled="!vm.user.email && !vm.user.password" class="button button-block button-calm"
+                        ng-click="vm.login()">Login
+                </button>
+            </div>
+            <div class="padding">
+                <button ng-click="vm.googleLogin()" class="button button-block button-stable">
+                    Log into Google
+                </button>
+            </div>
 
-        <div ng-if="vm.shown" class="bar bar-positive">
-            <h1 class="title">Logged In!</h1>
+            <div ng-if="vm.shown" class="bar bar-positive">
+                <h1 class="title">Logged In!</h1>
+            </div>
+            <div ng-if="vm.failed" class="bar bar-assertive">
+                <h1 class="title">Failed to log in!</h1>
+            </div>
         </div>
-        <div ng-if="vm.failed" class="bar bar-assertive">
-            <h1 class="title">Failed to log in!</h1>
+        <div ng-if="vm.loginProgress" class="text-center">
+            <img src="img/loading.gif" width="100" height="100"/>
+            <h4 class="title">Login in progress !</h4>
         </div>
     </ion-content>
 </ion-view>

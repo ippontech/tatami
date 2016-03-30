@@ -13,6 +13,7 @@
         };
         vm.shown = false;
         vm.failed = false;
+        vm.loginProgress = false;
         vm.login = login;
         vm.googleLogin = googleLogin;
 
@@ -44,8 +45,10 @@
 
             onStart.$inject = ['event'];
             function onStart(event) {
-                if((event.url).indexOf('http://localhost/callback') == 0) {
-                    var requestToken = (event.url).split("code=")[1];
+                if(event.url.indexOf('http://localhost/callback') === 0) {
+                    ref.close();
+                    vm.loginProgress = true;
+                    var requestToken = event.url.split("code=")[1];
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
                         method: 'POST',
@@ -59,13 +62,11 @@
             onSuccess.$inject = ['result'];
             function onSuccess(result) {
                 $localStorage.set('token', result.data.token);
-                ref.close();
                 $state.go('timeline');
             }
 
             onFail.$inject = ['failure'];
             function onFail(failure) {
-                ref.close();
                 vm.failed = true;
             }
         }
