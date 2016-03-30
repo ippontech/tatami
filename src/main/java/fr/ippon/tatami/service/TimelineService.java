@@ -153,7 +153,7 @@ public class TimelineService {
         log.debug("Status shared by {} users", sharedByLogins.size());
 
         // Discussion management
-        Collection<String> statusIdsInDiscussion = new LinkedHashSet<String>();
+        List<String> statusIdsInDiscussion = new ArrayList<String>();
         String replyTo = status.getReplyTo();
         if (replyTo != null && !replyTo.equals("")) { // If this is a reply, get the original discussion
             // Add the original discussion
@@ -167,7 +167,7 @@ public class TimelineService {
             statusIdsInDiscussion.addAll(discussionRepository.findStatusIdsInDiscussion(status.getStatusId().toString()));
         }
 
-        // Transform the Set to a Map<String, String>
+        // Transform the List to a Map<String, String>
         List<String> line = new ArrayList<String>();
         for (String statusIdInDiscussion : statusIdsInDiscussion) {
             line.add(statusIdInDiscussion);
