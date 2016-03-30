@@ -29,7 +29,7 @@
             </form>
             <div>
                 <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.is('account.groups.main.top.search')" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.groups.search' | translate }}">
+                    <input ng-show="$state.is('search')" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.groups.search' | translate }}">
                 </form>
                 <table class="table noCollapse">
                     <tbody>
