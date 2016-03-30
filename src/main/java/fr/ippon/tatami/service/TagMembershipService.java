@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.TagFollowerRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
-//import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.web.rest.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.TagDTO;
@@ -35,9 +34,6 @@ public class TagMembershipService {
 
     @Inject
     private UserRepository userRepository;
-
-//    @Inject
-//    private AuthenticationService authenticationService;
 
     public boolean followTag(TagDTO tag) {
         log.debug("Following tag : {}", tag);

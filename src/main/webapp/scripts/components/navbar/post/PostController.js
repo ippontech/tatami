@@ -77,30 +77,73 @@ PostModule.controller('PostController', [
 
         /**
          * Watches the current.files ng-model and handles uploads
-         */
+
         $scope.$watch('current.files', function() {
             if($scope.current.files !== null) {
                 for(var i = 0; i < $scope.current.files.length; ++i) {
                     var file = $scope.current.files[i];
                     $scope.uploadStatus.isUploading = true;
-                    $scope.upload = Upload.upload({
+                    $scope.upload = $upload.upload({
                         url: '/tatami/rest/fileupload',
                         file: file,
                         fileFormDataName: 'uploadFile'
                     }).progress(function(evt) {
                         $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
                     }).success(function(data) {
-                        $scope.current.attachments.push(data[0]);
+                        $scope.current.attachments.push(data.data[0]);
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
-                        $scope.status.attachmentIds.push(data[0].attachmentId);
+                        $scope.status.attachmentIds.push(data.data[0].attachmentId);
                     }).error(function() {
                         $scope.uploadStatus.isUploading = false;
                         $scope.uploadStatus.progress = 0;
                     })
                 }
             }
-        });
+        });*/
+
+            // upload on file select or drop
+            $scope.upload = function (file) {
+                $scope.uploadStatus.isUploading = true;
+                Upload.upload({
+                    url: '/tatami/rest/fileupload',
+                    data: {file: file},
+                    fileFormDataName: 'uploadFile'
+                }).then(function (data) {
+                    $scope.current.attachments.push(data.data[0]);
+                    $scope.uploadStatus.isUploading = false;
+                    $scope.uploadStatus.progress = 0;
+                    $scope.status.attachmentIds.push(data.data[0].attachmentId);
+                }, function (resp) {
+                    $scope.uploadStatus.isUploading = false;
+                    $scope.uploadStatus.progress = 0;
+                }, function (evt) {
+                    $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
+                });
+            };
+            // for multiple files:
+            $scope.uploadFiles = function (files) {
+                if (files && files.length) {
+                    for (var i = 0; i < files.length; i++) {
+                        $scope.uploadStatus.isUploading = true;
+                        Upload.upload({
+                            url: '/tatami/rest/fileupload',
+                            data: { uploadFile: files[i] },
+                        }).then(function (data) {
+                            $scope.current.attachments.push(data.data[0]);
+                            $scope.uploadStatus.isUploading = false;
+                            $scope.uploadStatus.progress = 0;
+                            $scope.status.attachmentIds.push(data.data[0].attachmentId);
+                        }, function (resp) {
+                            $scope.uploadStatus.isUploading = false;
+                            $scope.uploadStatus.progress = 0;
+                        }, function (evt) {
+                            $scope.uploadStatus.progress = parseInt(100.0 * evt.loaded / evt.total);
+                        });
+                    }
+                }
+            }
+
         $scope.fileSize = function(file) {
             if(file.size / 1000 < 1000) {
                 return parseInt(file.size / 1000) + "K";

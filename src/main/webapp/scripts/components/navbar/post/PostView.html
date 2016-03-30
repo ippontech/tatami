@@ -76,7 +76,7 @@
                             </a>
                             <a ng-if="currentStatus.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ currentStatus.locationURL }}" target="_blank"></a>
                         </h5>
-                        
+
                         <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-if="currentStatus.groupId">
@@ -120,7 +120,7 @@
 
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()"> 
+                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
                     <span class="glyphicon glyphicon-map-marker"></span> {{ 'post.shareLocation' | translate }}
                 </label>
             </div>
@@ -160,17 +160,16 @@
                     </option>
                 </select>
             </div>-->
-            <div class="controls status-files" ng-file-drop ng-file-select ng-model="current.files" ng-multiple="true">
+            <div class="controls status-files" ng-model="current.files" ng-multiple="true">
                 <label translate="post.files">
 
                 </label>
                 <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
                     <div class="bar progress-bar progress-bar-info" style="width: {{uploadStatus.progress}}%;"></div>
                 </div>
-                <div class="dropzone well" file-dropzone translate="post.drop.file">
-
+                <div ngf-drop="uploadFiles($files)" ngf-select="uploadFiles($files)" ngf-multiple="true"
+                     class="drop-box dropzone well" translate="post.drop.file">
                 </div>
-
                 <div ng-show="current.attachments.length != 0" ng-repeat="attachment in current.attachments">
                     <p>
                         {{ attachment.name }} ({{ fileSize(attachment) }})
@@ -201,7 +200,7 @@
             <div ng-show="!current.reply" class="controls status-private">
                 <div class="checkbox">
                     <label>
-                        <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true"> 
+                        <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
                         <span class="glyphicon glyphicon-lock"></span> {{ 'status.private' | translate }}
                     </label>
                 </div>

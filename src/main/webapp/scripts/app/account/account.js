@@ -25,8 +25,8 @@ tatamiJHipsterApp
                         $translatePartialLoader.addPart('account');
                         return $translate.refresh();
                     }],
-                    profileInfo: ['Account', function(Account) {
-                        return Account.get().$promise;
+                    profileInfo: ['AccountService', function(AccountService) {
+                        return AccountService.get().$promise;
                     }],
 
                 }
@@ -57,8 +57,8 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             abstract: true,
             templateUrl: 'app/components/account/AccountView.min.html',
             resolve: {
-                profileInfo: ['Account', function(Account) {
-                    return Account.get().$promise;
+                profileInfo: ['AccountService', function(AccountService) {
+                    return AccountService.get().$promise;
                 }],
                 userRoles: ['$http', function($http) {
                     return $http({ method: 'GET', url: '/tatami/rest/account/admin' }).then(function(result) {

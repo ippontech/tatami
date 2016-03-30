@@ -55,3 +55,9 @@ jhipster:
             host: localhost
             port: 2003
             prefix: TatamiJHipster
+
+tatami:
+        url: http://localhost:8080
+        attachment:
+            thumbnail:
+                extensions: .gif,.jpg,.jpeg,.png

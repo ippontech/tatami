@@ -1,9 +1,22 @@
 'use strict';
 
 tatamiJHipsterApp
-    .factory('Account', function Account($resource) {
+    .factory('AccountService', function AccountService($resource) {
         return $resource('/tatami/rest/account/profile', {}, {
-            'get': { method: 'GET', params: {}, isArray: false,
+            'get': {
+                method: 'GET',
+                transformResponse: function (profile) {
+                 var parsedProfile = {};
+                 try {
+                     parsedProfile = angular.fromJson(profile);
+                 } catch(e) {
+                     parsedProfile = {};
+                 }
+                 parsedProfile['avatarURL'] = parsedProfile.avatar ==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + parsedProfile.avatar + '/photo.jpg';
+                 return parsedProfile;
+                },
+                params: {},
+                isArray: false,
                 interceptor: {
                     response: function(response) {
                         // expose response

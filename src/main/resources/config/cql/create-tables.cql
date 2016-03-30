@@ -258,6 +258,7 @@ CREATE TABLE IF NOT EXISTS user (
     daily_digest_subscription boolean,
     domain text,
     authorities set<text>,
+    attachmentsSize bigint,
     PRIMARY KEY(id)
 );
 

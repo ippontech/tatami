@@ -22,6 +22,8 @@ public final class Constants {
 
     public static final String TATAMIBOT_NAME = "tatamibot";
 
+    public static final int AVATAR_SIZE = 200;
+
     private Constants() {
     }
 }
