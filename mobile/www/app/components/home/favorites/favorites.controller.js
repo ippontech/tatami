@@ -18,7 +18,6 @@
 
         getEmpty.$inject = ['finalStatus'];
         function getEmpty(finalStatus) {
-            console.log('testing');
             var deferred = $q.defer();
             deferred.resolve([]);
             return deferred.promise;
