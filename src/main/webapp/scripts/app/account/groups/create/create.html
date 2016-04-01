@@ -1,4 +1,3 @@
-<div>
     <button class="show btn btn-xlarge btn-block btn-primary" type="button" translate="account.groups.createNewGroup" ng-click="newGroup()"></button>
 
     <fieldset class="hide" style="display: block;" ng-show="current.createGroup">
@@ -8,14 +7,14 @@
     <div class="control-group">
         <label class="control-label" for="name" translate="account.groups.name"></label>
         <div class="controls">
-            <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-lg-12" value="" ng-model="groups.name">
+            <input name="name" type="text" required="required" size="30" maxlength="50" class="form-control" value="" ng-model="groups.name">
         </div>
     </div>
 
     <div class="control-group">
         <label class="control-label" for="description" translate="account.groups.description"></label>
         <div class="controls">
-            <textarea name="description" class="input-xlarge col-lg-12" ng-model="groups.description"></textarea>
+            <textarea name="description" class="form-control" ng-model="groups.description"></textarea>
         </div>
     </div>
 
@@ -40,9 +39,8 @@
     <br>
     <div class="return"></div>
     <br>
-    <div class="form-actions">
+    <div class="form-actions clearfix">
         <button type="submit" class="btn btn-primary col-lg-7 little-marge-right" translate="account.groups.create" ng-click="createNewGroup()"></button>
         <button type="reset" class="btn btn-default col-lg-4" translate="account.groups.cancel" ng-click="cancelGroupCreate()"></button>
     </div>
     </div>
-</div>
