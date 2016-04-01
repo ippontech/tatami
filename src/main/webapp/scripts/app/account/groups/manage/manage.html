@@ -55,24 +55,24 @@
                     <tr ng-repeat="member in members">
                         <td style="text-align: left">
                             <div class="pull-left background-image-fffix little-marge-right">
-                                <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
+                                <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }">
                             </div>
                             <h4>
-                                <a ui-sref="home.profile.statuses({ username: member.username })">
+                                <a ui-sref="home.profile.statuses({ username: profile.username })">
                                     <strong>
-                                        {{ member.firstName + ' ' + member.lastName }}
+                                        {{ profile.firstName + ' ' + profile.lastName }}
                                     </strong>
                                 </a>
                                 <br>
-                                <a ui-sref="home.profile.statuses({ username: member.username })">
+                                <a ui-sref="home.profile.statuses({ username: profile.username })">
                                     <small>
-                                        @{{ member.username }}
+                                        @{{ profile.username }}
                                     </small>
                                 </a>
                             </h4>
                         </td>
                         <td>
-                            {{ 'account.groups.' + member.role | lowercase | translate }}
+                            {{ 'Administrator' + member.role | lowercase | translate }}
                         </td>
                         <td ng-show="member.role === 'MEMBER'">
                             <button ng-click="removeUser(member)" class="pull-right btn btn-danger hidden-phone" type="button">

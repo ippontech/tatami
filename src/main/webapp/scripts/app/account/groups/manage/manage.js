@@ -5,7 +5,7 @@ tatamiJHipsterApp
         $stateProvider
             .state('manage', {
                 templateUrl: 'scripts/app/account/groups/manage/manage.html',
-                //controller: 'GroupsManageController',
+                controller: 'GroupsManageController',
 
                 parent: 'groups',
                 url: '/:groupId',
@@ -16,7 +16,7 @@ tatamiJHipsterApp
                 },
                 resolve: {
                     group : getGroup,
-                    //members: getMembers
+                    members : getMembers
                 }
 
             })
@@ -26,8 +26,11 @@ tatamiJHipsterApp
         }
         getMembers.$inject = ['GroupService', '$stateParams'];
         function getMembers(GroupService, $stateParams) {
+            console.log($stateParams.groupId);
             return GroupService.getMembers({groupId: $stateParams.groupId}).$promise;
 
         }
+
+
 
     });

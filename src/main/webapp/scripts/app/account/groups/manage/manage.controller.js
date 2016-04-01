@@ -2,6 +2,7 @@ tatamiJHipsterApp
     .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'UserService', 'members', function($scope, group, GroupService, UserService, members) {
     $scope.group = group;
     $scope.members = members;
+        console.log($scope.members);
     $scope.searchedMembers = {};
     $scope.current = { searchString: '' };
 

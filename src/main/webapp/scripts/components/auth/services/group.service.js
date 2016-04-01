@@ -29,7 +29,7 @@ angular.module('tatamiJHipsterApp')
             method: 'GET',
             isArray: true,
             params: { groupId: '@groupId' },
-            url: '/tatami/rest/groups/:groupId/members/',
+            url: '/tatami/rest/groups',
             transformResponse: function(users) {
                 users = angular.fromJson(users);
 
