@@ -1,9 +1,8 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('PreferencesController', function($scope, $translate, AccountService, profileInfo, PreferencesService, ngToast) {
-        $scope.profile = profileInfo;
-        $scope.userPreferences = profileInfo.data;
+    .controller('PreferencesController', function($scope, $translate, PreferencesService, ngToast) {
+        $scope.userPreferences = $scope.profile;
 
         $scope.savePrefs = function() {
            $scope.validatePrefs();

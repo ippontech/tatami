@@ -15,15 +15,13 @@ angular.module('tatamiJHipsterApp')
 	'PostModalService',
 	'TagService',
 	'statuses',
-	'profileInfo',
 	'showModal',
-    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, profileInfo, showModal) {
+    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, showModal) {
 
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');
         }
 
-        $scope.profile = profileInfo;
         $scope.statuses = statuses;
         $scope.busy = false;
 
