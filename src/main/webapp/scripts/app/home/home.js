@@ -59,7 +59,7 @@
         }
         getGroups.$inject = ['GroupService'];
         function getGroups(GroupService) {
-            return GroupService.get().$promise;
+            return GroupService.getGroups().$promise;
         }
         getTags.$inject = ['TagService'];
         function getTags(TagService) {

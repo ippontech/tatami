@@ -3,7 +3,6 @@ tatamiJHipsterApp
     $scope.group = group;
     $scope.members = members;
     $scope.searchedMembers = {};
-
     $scope.current = { searchString: '' };
 
     $scope.updateGroup = function() {
