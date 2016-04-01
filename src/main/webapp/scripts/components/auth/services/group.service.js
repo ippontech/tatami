@@ -29,7 +29,7 @@ angular.module('tatamiJHipsterApp')
             method: 'GET',
             isArray: true,
             params: { groupId: '@groupId' },
-            url: '/tatami/rest/groups/:groupId/members/',
+            url: '/tatami/rest/groups',
             transformResponse: function(users) {
                 users = angular.fromJson(users);
 
@@ -44,6 +44,6 @@ angular.module('tatamiJHipsterApp')
         'join': { method: 'PUT', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
         'leave': { method: 'DELETE', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
         'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' },
-        'get': { method: 'GET', isArray: true, url: '/tatami/rest/groups' }
+        'getGroups': { method: 'GET', isArray: true, url: '/tatami/rest/groups' }
     });
 }]);

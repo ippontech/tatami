@@ -2,8 +2,8 @@
     <section ng-if="newMessages" ng-click="loadNewStatuses()" class="refresh-button pointer">
         <div class="text-center refresh-button-style">
             <span class="badge">{{ newMessages.length }}</span>
-            <span ng-if="newMessages.length == 1" translate="home.newMessage"></span>
-            <span ng-if="newMessages.length > 1" translate="home.newMessages"></span>
+            <span ng-if="newMessages.length == 1" translate="global.newMessage"></span>
+            <span ng-if="newMessages.length > 1" translate="global.newMessages"></span>
         </div>
     </section>
     <section class="timeline" infinite-scroll="requestOldStatuses()" infinite-scroll-disabled="busy">

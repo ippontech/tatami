@@ -20,6 +20,13 @@ CREATE TABLE IF NOT EXISTS status (
     PRIMARY KEY(statusId)
 );
 
+CREATE TABLE IF NOT EXISTS discussion (
+    statusId timeuuid,
+    discussionId varchar,
+    PRIMARY KEY(discussionId,statusId)
+) WITH CLUSTERING ORDER BY (statusId ASC);
+CREATE INDEX ON discussion (statusId);
+
 CREATE TABLE IF NOT EXISTS timeline (
     key varchar,
     status timeuuid,

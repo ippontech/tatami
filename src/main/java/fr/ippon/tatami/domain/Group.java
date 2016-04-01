@@ -5,24 +5,40 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.UUID;
+import com.datastax.driver.mapping.annotations.*;
+import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
 
 /**
  * A group.
  */
+
+@Table(name = "group")
+@Document(indexName = "group")
 public class Group implements Comparable<Group>, Serializable, Cloneable {
 
+    @Id
+    @PartitionKey
     private UUID groupId;
 
+    @Column(name = "publicgroup")
     private boolean publicGroup;
 
+    @Column(name = "archivedgroup")
     private boolean archivedGroup;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
     @JsonIgnore
+    @Column(name = "domain")
     private String domain;
+
 
     private long counter;
 

@@ -23,6 +23,13 @@ tatamiJHipsterApp
                         return response;
                     }
                 }
+            },
+                'update': {
+                 method: 'POST',
+                 transformRequest: function (profile) {
+                     delete profile['avatarURL'];
+                     return angular.toJson(profile);
+                 }
             }
         });
     });

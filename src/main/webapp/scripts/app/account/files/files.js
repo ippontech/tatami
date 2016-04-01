@@ -6,8 +6,8 @@ angular.module('tatamiJHipsterApp')
             .state('account.files', {
                 parent: 'account',
                 url: '/files',
-                templateUrl: 'scripts/app/account/files/files.html',
-                controller: 'FilesController'
+                templateUrl: 'scripts/app/account/files/files.html'
+
             })
     });
 

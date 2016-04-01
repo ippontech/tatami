@@ -1,0 +1,148 @@
+<div class="col-lg-8">
+    <div class="alert alert-status">
+        <div class= well>
+            <form class="form-horizontal row-fluid">
+                <h2 translate="account.groups.title"></h2>
+                <fieldset>
+                    <legend translate="account.groups.update"></legend>
+                    <div class="control-group">
+                        <label class="control-label" for="name" translate="account.groups.name"></label>
+                        <div class="controls">
+                            <input name="name" type="text" required="required" size="30" maxlength="50" class="input-xlarge col-lg-12" ng-model="group.name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="description" translate="account.groups.description"></label>
+                        <div class="controls">
+                            <textarea name="description" class="input-xlarge col-lg-12" ng-model="group.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="archivedGroup" translate="account.groups.archive" ></label>
+                        <div class="controls">
+                            <label class="radio" style="left: 50px">
+                                <input type="radio" name="archivedGroup" ng-value="true" ng-model="group.archivedGroup" required="">
+                                {{ 'account.groups.allowArchive' | translate }}
+                            </label>
+                            <label class="radio" style="left: 50px">
+                                <input type="radio" name="archivedGroup" ng-value="false" ng-model="group.archivedGroup" required="">
+                                {{ 'account.groups.denyArchive' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="alert alertColor">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        <span translate="account.groups.archiveWarning"></span>
+                    </div>
+                    <br>
+                    <div class="return"></div>
+                    <br>
+                    <div class="form-actions">
+                        <button ng-click="updateGroup()" type="submit" class="btn btn-primary col-lg-12" translate="Save"></button>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="useritem">
+                <table class="table noCollapse">
+                    <tbody>
+                    <tr>
+                        <th style="border-top: 0" translate="account.groups.username"></th>
+                        <th style="border-top: 0" translate="account.groups.role"></th>
+                        <th style="border-top: 0"></th>
+                    </tr>
+                    </tbody>
+                    <tbody class="items">
+                    <tr ng-repeat="member in members">
+                        <td style="text-align: left">
+                            <div class="pull-left background-image-fffix little-marge-right">
+                                <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }">
+                            </div>
+                            <h4>
+                                <a ui-sref="home.profile.statuses({ username: profile.username })">
+                                    <strong>
+                                        {{ profile.firstName + ' ' + profile.lastName }}
+                                    </strong>
+                                </a>
+                                <br>
+                                <a ui-sref="home.profile.statuses({ username: profile.username })">
+                                    <small>
+                                        @{{ profile.username }}
+                                    </small>
+                                </a>
+                            </h4>
+                        </td>
+                        <td>
+                            {{ 'Administrator' + member.role | lowercase | translate }}
+                        </td>
+                        <td ng-show="member.role === 'MEMBER'">
+                            <button ng-click="removeUser(member)" class="pull-right btn btn-danger hidden-phone" type="button">
+                                <span translate="account.groups.remove"></span>
+                            </button>
+                            <!-- <button ng-click="removeUser(member)" type="button" class="btn btn-danger input-block-level glyphicon-minus delete" translate=""></button> -->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <form class="form-horizontal row-fluid">
+                <fieldset>
+                    <legend translate="account.groups.addMember"></legend>
+                    <div class="control-group">
+                        <label class="control-label" for="username" translate="account.groups.username"></label>
+                        <div class="controls">
+                            <input name="username" ng-model="current.searchString" ng-trim="false" ng-change="search()" type="text" autocomplete="off" required="required" class="input-xlarge col-lg-12">
+                            <!--
+                            <ul class="typeahead dropdown-menu" style="top: 34px; left: 180px;">
+                                <li data-value="2" class="active">
+                                    <a href="#">
+                                        <img class="avatar img-rounded img-small" src="/img/default_image_profile.png">
+                                            @<strong>2</strong> - Bob loblaw
+                                    </a>
+                                </li>
+                            </ul>
+                            -->
+                            <table class="table">
+                                <tbody>
+                                <tr ng-repeat="member in searchedMembers">
+                                    <td style="text-align: left">
+                                        <div class="pull-left background-image-fffix little-marge-right">
+                                            <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
+                                        </div>
+                                        <h4>
+                                            <a ui-sref="home.profile.statuses({ username: member.username })">
+                                                <strong>
+                                                    {{ member.firstName + ' ' + member.lastName }}
+                                                </strong>
+                                            </a>
+                                            <br>
+                                            <a ui-sref="home.profile.statuses({ username: member.username })">
+                                                <small>
+                                                    @{{ member.username }}
+                                                </small>
+                                            </a>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <button ng-click="addUser(member)" class="pull-right btn btn-primary hidden-phone" type="button">
+                                            <span translate="account.groups.add"></span>
+                                        </button>
+                                        <!-- <button ng-click="addUser(member)" type="button" class="btn btn-success input-block-level glyphicon-plus delete" translate="account.groups.add"></button> -->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="return"></div>
+                    <!--
+                    <br>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success col-lg-12" translate="form.save"></button>
+                    </div>
+                    -->
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

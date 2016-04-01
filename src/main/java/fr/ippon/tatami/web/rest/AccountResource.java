@@ -72,7 +72,7 @@ public class AccountResource {
                     User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
-                    userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getDomain());
+                    userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getEmail().split("@")[1]);
                     String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
                     request.getServerName() +              // "myhost"

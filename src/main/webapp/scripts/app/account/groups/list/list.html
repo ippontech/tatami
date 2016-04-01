@@ -1,0 +1,34 @@
+    <table class="table noCollapse">
+        <tbody>
+        <tr>
+            <th style="border-top: 0" translate="account.groups.name"></th>
+            <th style="border-top: 0" translate="account.groups.access"></th>
+            <th style="border-top: 0" translate="account.groups.members"></th>
+            <th style="border-top: 0"></th>
+        </tr>
+        </tbody>
+        <tbody class="items">
+            <tr ng-repeat="group in userGroups">
+                <td>
+                    <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                </td>
+                <td>
+                    <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="account.groups.public"></span>
+                    <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="account.groups.private"></span>
+                    <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="account.groups.archived"></span>
+                </td>
+                <td>
+                    {{ group.counter }}
+                </td>
+                <td>
+                        <span ng-if="group.administrator">
+                            <button type="button" ui-sref="manage({ groupId: group.groupId })" class="pull-right btn btn-primary hidden-phone">
+                                <span class="glyphicon glyphicon-th-large"></span>
+                                <span translate="account.groups.manage"></span>
+                            </button>
+                        </span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>

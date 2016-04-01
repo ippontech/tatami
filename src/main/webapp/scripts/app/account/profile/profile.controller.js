@@ -1,6 +1,6 @@
 tatamiJHipsterApp
-    .controller('ProfileController', ['$scope', '$state', '$translate', 'Upload', 'userLogin', 'ProfileService', 'ngToast',
-    function($scope, $state, $translate, Upload, userLogin, ProfileService, ngToast) {
+    .controller('ProfileController', ['$scope', '$state', '$translate', 'Upload', 'AccountService', 'ngToast',
+    function($scope, $state, $translate, Upload, AccountService, ngToast) {
 
 //        // Current state of the view
         $scope.current = {
@@ -18,12 +18,12 @@ tatamiJHipsterApp
 //        // the first and last name in the side bar and text area to sync. Is this undesired?
 
 
-        $scope.userProfile = userLogin;
+        $scope.userProfile = $scope.profile;
 
 
         // Update the user information
         $scope.updateUser = function() {
-            ProfileService.update($scope.userProfile, function() {
+            AccountService.update($scope.userProfile, function() {
                 ngToast.create({
                     content: $translate.instant('account.profile.save')
                 });

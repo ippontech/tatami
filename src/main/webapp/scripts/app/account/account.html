@@ -61,8 +61,8 @@
                                                 <span translate="account.users.title"></span>
                                             </a>
                                         </li>
-                                        <li ui-sref-active="active">
-                                            <a ui-sref="account.groups">
+                                        <li ng-class="{ 'active': $state.includes('groups') }">
+                                            <a ui-sref="mine">
                                                 <span class="glyphicon glyphicon-th-large"></span>
                                                 <span translate="account.groups.title"></span>
                                             </a>
