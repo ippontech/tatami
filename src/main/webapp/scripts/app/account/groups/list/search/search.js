@@ -8,7 +8,7 @@ tatamiJHipsterApp
                 parent: 'list',
                 url: '/search',
                 views: {
-                    'search': {
+                    'list': {
                         templateUrl: 'scripts/app/account/groups/list/search/search.html',
                         controller: 'GroupsListSearchController'
                     }

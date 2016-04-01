@@ -12,16 +12,25 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.repository.search.GroupSearchRepository;
+import fr.ippon.tatami.repository.GroupRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+
 
 /**
  * REST controller for managing groups
@@ -37,6 +46,12 @@ public class GroupResource {
 
     @Inject
     private GroupService groupService;
+
+    @Inject
+    private GroupRepository groupRepository;
+
+    @Inject
+    private GroupSearchRepository groupSearchRepository;
 
     @Inject
     private UserService userService;
@@ -380,5 +395,31 @@ public class GroupResource {
             }
         }
         return null;
+    }
+
+    /**
+     * SEARCH  /_search/users/:query -> search for the User corresponding
+     * to the query.
+     */
+    @RequestMapping(value = "/rest/search/groups/{query}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<Group> search(@PathVariable String query) {
+        List<Group> groups = new ArrayList<Group>();
+        Group g = new Group();
+        g.setName(query);
+        g.setPublicGroup(true);
+        g.setDescription("Test data");
+        g.setDomain("1");
+        g.setGroupId(groupRepository.createGroup(g.getDomain(), g.getName(), g.getDescription(), g.isPublicGroup()));
+
+        groups.add(g);
+        return groups;
+        /*
+        StreamSupport
+            .stream(groupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+            */
     }
 }

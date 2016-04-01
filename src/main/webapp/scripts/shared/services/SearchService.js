@@ -23,6 +23,12 @@ tatamiJHipsterApp
             isArray: true,
             url: '/tatami/rest/search/users/:query',
             transformResponse: responseTransform
+        },
+        'searchGroups': {
+            method: 'GET',
+            isArray: true,
+            url: '/tatami/rest/search/groups/:query',
+            transformResponse: responseTransform
         }
     });
 }]);
