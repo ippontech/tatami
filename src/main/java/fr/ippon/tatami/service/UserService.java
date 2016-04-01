@@ -8,16 +8,20 @@ import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 
 import java.lang.String;
 import java.time.ZonedDateTime;
+
+import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.xml.DomUtils;
 
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
@@ -39,6 +43,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
+    private SearchService searchService;
+
+    @Inject
     private UserSearchRepository userSearchRepository;
 
     @Inject
@@ -55,7 +62,6 @@ public class UserService {
                 user.setActivated(true);
                 user.setActivationKey(null);
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -75,7 +81,6 @@ public class UserService {
                 user.setResetKey(null);
                 user.setResetDate(null);
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 return user;
            });
     }
@@ -87,7 +92,6 @@ public class UserService {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(new Date());
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 return user;
             });
     }
@@ -120,7 +124,7 @@ public class UserService {
         authorities.add(AuthoritiesConstants.USER);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
-        userSearchRepository.save(newUser);
+        searchService.addUser(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -146,7 +150,7 @@ public class UserService {
         user.setResetDate(new Date());
         user.setActivated(true);
         userRepository.save(user);
-        userSearchRepository.save(user);
+        searchService.addUser(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -157,11 +161,13 @@ public class UserService {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
+            u.setDomain(DomainUtil.getDomainFromLogin(email));
             u.setLangKey(langKey);
             u.setJobTitle(jobTitle);
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
-            userSearchRepository.save(u);
+            searchService.removeUser(u);
+            searchService.addUser(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
@@ -174,7 +180,6 @@ public class UserService {
             u.setWeeklyDigest(weeklyDigest);
             u.setDailyDigest(dailyDigest);
             userRepository.save(u);
-            userSearchRepository.save(u);
             log.debug("Change Preferences for User: {}", u);
         });
     }
@@ -182,7 +187,7 @@ public class UserService {
     public void deleteUserInformation(String login) {
         userRepository.findOneByLogin(login).ifPresent(u -> {
             userRepository.delete(u);
-            userSearchRepository.delete(u);
+            searchService.removeUser(u);
             log.debug("Deleted User: {}", u);
         });
     }
@@ -192,7 +197,6 @@ public class UserService {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
-            userSearchRepository.save(u);
             log.debug("Changed password for User: {}", u);
         });
     }
@@ -279,7 +283,7 @@ public class UserService {
             "weeklyDigest={} for user {}", registration, currentUser.getLogin());
         try {
             userRepository.save(currentUser);
-            userSearchRepository.save(currentUser);
+            userSearchRepository.index(currentUser);
 //            userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating preferences : " + cve);
@@ -328,5 +332,52 @@ public class UserService {
             }
         }
         return users;
+    }
+
+    public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+//        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+//        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
+        for (User user : users) {
+            UserDTO userDTO = getUserDTOFromUser(user);
+            userDTO.setYou(user.equals(currentUser));
+//            if (!userDTO.isYou()) {
+//                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+//                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+//            }
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
+    };
+
+    public UserDTO buildUserDTO(User user) {
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        UserDTO userDTO = getUserDTOFromUser(user);
+        userDTO.setYou(user.equals(currentUser));
+//        if (!userDTO.isYou()) {
+//            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+//            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+//            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+//            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+//        }
+        return userDTO;
+    }
+
+    private UserDTO getUserDTOFromUser(User user) {
+        UserDTO friend = new UserDTO();
+        friend.setLogin(user.getLogin());
+        friend.setUsername(user.getUsername());
+        friend.setAvatar(user.getAvatar());
+        friend.setFirstName(user.getFirstName());
+        friend.setLastName(user.getLastName());
+        friend.setJobTitle(user.getJobTitle());
+        friend.setPhoneNumber(user.getPhoneNumber());
+        friend.setAttachmentsSize(user.getAttachmentsSize());
+//        friend.setStatusCount(user.getStatusCount());
+//        friend.setFriendsCount(user.getFriendsCount());
+//        friend.setFollowersCount(user.getFollowersCount());
+        friend.setActivated(user.getActivated());
+        return friend;
     }
 }

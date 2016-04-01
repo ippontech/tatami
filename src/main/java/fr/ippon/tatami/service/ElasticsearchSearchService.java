@@ -7,7 +7,6 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.GroupRepository;
-import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -33,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
+@Service
 public class ElasticsearchSearchService implements SearchService {
 
     private static final Logger log = LoggerFactory.getLogger(ElasticsearchSearchService.class);
@@ -55,9 +56,6 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Inject
     private Client client;
-
-    @Inject
-    private String indexNamePrefix;
 
     @Inject
     private GroupRepository groupRepository;
@@ -118,16 +116,16 @@ public class ElasticsearchSearchService implements SearchService {
         for (String type : TYPES) {
             try {
                 CreateIndexRequestBuilder createIndex = client.admin().indices().prepareCreate(type);
-                URL mappingUrl = getClass().getClassLoader().getResource("META-INF/elasticsearch/index/" + type + ".json");
+                URL mappingUrl = getClass().getClassLoader().getResource("config/elasticsearch/" + type + "/mappings.json");
+                URL settingUrl = getClass().getClassLoader().getResource("config/elasticsearch/" + type + "/settings.json");
 
                 ObjectMapper jsonMapper = new ObjectMapper();
-                JsonNode indexConfig = jsonMapper.readTree(mappingUrl);
-                JsonNode indexSettings = indexConfig.get("settings");
+                JsonNode mappings = jsonMapper.readTree(mappingUrl);
+                JsonNode indexSettings = jsonMapper.readTree(settingUrl);
                 if (indexSettings != null && indexSettings.isObject()) {
                     createIndex.setSettings(jsonMapper.writeValueAsString(indexSettings));
                 }
 
-                JsonNode mappings = indexConfig.get("mappings");
                 if (mappings != null && mappings.isObject()) {
                     for (Iterator<Map.Entry<String, JsonNode>> i = mappings.fields(); i.hasNext(); ) {
                         Map.Entry<String, JsonNode> field = i.next();
@@ -481,7 +479,7 @@ public class ElasticsearchSearchService implements SearchService {
         });
     }
 
-    private Collection<String> searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
+    private Collection<String>  searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
         try {
 
             SearchRequestBuilder searchRequest = client.prepareSearch(mapper.type())
