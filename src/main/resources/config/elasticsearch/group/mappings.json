@@ -1,0 +1,36 @@
+{
+    "group": {
+        "properties": {
+            "groupId": {
+                "type": "string",
+                "index": "not_analyzed",
+                "include_in_all": false
+            },
+            "domain": {
+                "type": "string",
+                "analyzer": "lowercase"
+            },
+            "name": {
+                "type": "multi_field",
+                "path": "just_name",
+                "fields": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "name-not-analyzed": {
+                        "type": "string",
+                        "analyzer": "lowercase"
+                    },
+                    "prefix" : {
+                        "type" : "string",
+                        "index_analyzer" : "prefixIndex",
+                        "search_analyzer" : "prefixSearch"
+                    }
+                }
+            },
+            "description": {
+                "type": "string"
+            }
+        }
+    }
+}
