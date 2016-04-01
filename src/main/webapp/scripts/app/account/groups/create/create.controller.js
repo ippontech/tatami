@@ -45,7 +45,7 @@ tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 
             $scope.$state.reload();
             // Alert user of new group creation
             ngToast.create({
-                content: $translate.instant('tatami.account.groups.save')
+                content: $translate.instant('account.groups.save')
             });
         }, function() {
             ngToast.create({

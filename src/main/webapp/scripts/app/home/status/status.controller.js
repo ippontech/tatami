@@ -5,13 +5,10 @@ angular.module('tatamiJHipsterApp')
     '$scope',
     '$translate',
     'StatusService',
-    'profile',
     'status',
     'context',
-    function($scope, $translate, StatusService, profile, status, context) {
+    function($scope, $translate, StatusService, status, context) {
 //        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
-
-        $scope.profile = profile;
 
         if(context.discussionStatuses.length === 0) {
             $scope.statuses = [status];

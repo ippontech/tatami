@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
+import fr.ippon.tatami.repository.search.GroupSearchRepository;
 
 /**
  * Service bean for managing groups.
@@ -39,6 +40,9 @@ public class GroupService {
     private UserGroupRepository userGroupRepository;
 
     @Inject
+    private GroupSearchRepository groupSearchRepository;
+
+    @Inject
     private UserRepository userRepository;
 
 //    @Inject
@@ -57,7 +61,7 @@ public class GroupService {
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
         Group group = getGroupById(domain, groupId);
-//        searchService.addGroup(group);
+        //groupSearchRepository.save(group);
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)

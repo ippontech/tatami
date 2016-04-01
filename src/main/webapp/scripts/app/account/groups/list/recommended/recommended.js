@@ -9,7 +9,7 @@ tatamiJHipsterApp
                 parent: 'list',
                 url: '/recommended',
                 views: {
-                    'recommended': {
+                    'list': {
                         templateUrl: 'scripts/app/account/groups/list/recommended/recommended.html',
                         controller: 'GroupsListRecommendedController'
                     }
