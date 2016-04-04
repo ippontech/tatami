@@ -59,17 +59,7 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Inject
     private GroupRepository groupRepository;
-
-    @PostConstruct
-    private void init() {
-        TYPES.forEach(type -> {
-            if (!client.admin().indices().prepareExists(type).execute().actionGet().isExists()) {
-                log.info("Index {} does not exists in Elasticsearch, creating it!", type);
-                createIndex();
-            }
-        });
-    }
-
+    
     @Override
     public boolean reset() {
         log.info("Reseting ElasticSearch Index");
