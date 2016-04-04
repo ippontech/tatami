@@ -1,6 +1,6 @@
 <ion-view name="login-view" view-title="Login">
-    <ion-content class="has-header has-subheader">
-        <div ng-if="!vm.loginProgress">
+    <ion-content ng-if="!vm.loginProgress" class="has-header has-subheader">
+        <div>
             <div class="list list-inset">
                 <label class="item item-input">
                     <input type="text" placeholder="E-mail" ng-model="vm.user.email">
@@ -28,9 +28,11 @@
                 <h1 class="title">Failed to log in!</h1>
             </div>
         </div>
-        <div ng-if="vm.loginProgress" class="text-center">
-            <img src="img/loading.gif" width="100" height="100"/>
+    </ion-content>
+    <ion-content ng-if="vm.loginProgress" class="has-header">
+        <div class="text-center">
             <h4 class="title">Login in progress !</h4>
+            <img src="img/loading.gif" width="50" height="50"/>
         </div>
     </ion-content>
 </ion-view>
