@@ -276,7 +276,6 @@ public class StatusUpdateService {
             counterRepository.incrementStatusCounter(currentLogin);
 
             // Add to the searchStatus engine
-            // Commenting out for now.
             searchService.addStatus(status);
 
             // add status to the company wall
