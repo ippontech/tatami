@@ -85,8 +85,8 @@ Dockerized Cassandra cluster for Tatami is an improvement of[JHipster original](
 
 From the root directory, simply run:
 
-    docker-compose -f src/main/docker/cassandra-dev.yml build
-    docker-compose -f src/main/docker/cassandra-dev.yml up -d
+    docker-compose -f src/main/docker/cassandra.yml build
+    docker-compose -f src/main/docker/cassandra.yml up -d
 
 Docker-compose will start 3 services:
 - **tatami-cassandra**, a container with the Cassandra node contact point
@@ -96,15 +96,13 @@ Docker-compose will start 3 services:
 
 To stop the cluster, run:
 
-    docker-compose -f src/main/docker/cassandra-dev.yml build
+    docker-compose -f src/main/docker/cassandra.yml build
 
 You can dynamically add nodes to the Cassandra cluster, but you should increment the number one by one as the cluster
 will fail to add more than one node at the same time.
 To dynamically change the number of nodes joining the Cassandra cluster, run:
 
-    docker-compose -f src/main/docker/cassandra-dev.yml scale tatami-cassandra-node=NUMBER_OF_NODES
-
-
+    docker-compose -f src/main/docker/cassandra.yml scale tatami-cassandra-node=NUMBER_OF_NODES
 
 The migration service is responsible to apply all the migration scripts from src/main/resources/config/cql in the following order:
 1. create-keyspace.cql
