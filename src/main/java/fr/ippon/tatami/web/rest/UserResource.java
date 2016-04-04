@@ -78,7 +78,7 @@ public class UserResource {
     /**
      * POST  /users -> Creates a new user.
      * <p>
-     * Creates a new user if the login and email are not already used, and sends an
+     * Creates a new user if the username and email are not already used, and sends an
      * mail with an activation link.
      * The user needs to be activated on creation.
      * </p>
@@ -90,7 +90,7 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("rest request to save User : {}", managedUserDTO);
-        if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
+        if (userRepository.findOneByUsername(managedUserDTO.getUsername()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
                 .body(null);
@@ -107,8 +107,8 @@ public class UserResource {
             request.getServerPort() +              // "80"
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
-            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getLogin()))
+            return ResponseEntity.created(new URI("/api/users/" + newUser.getUsername()))
+                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getUsername()))
                 .body(newUser);
         }
     }
@@ -127,14 +127,14 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin());
+        existingUser = userRepository.findOneByUsername(managedUserDTO.getUsername());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
-                user.setLogin(managedUserDTO.getLogin());
+                user.setUsername(managedUserDTO.getUsername());
                 user.setFirstName(managedUserDTO.getFirstName());
                 user.setLastName(managedUserDTO.getLastName());
                 user.setEmail(managedUserDTO.getEmail());
@@ -143,7 +143,7 @@ public class UserResource {
                 user.setAuthorities(managedUserDTO.getAuthorities());
                 userRepository.save(user);
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getLogin()))
+                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getUsername()))
                     .body(new ManagedUserDTO(userRepository
                         .findOne(managedUserDTO.getId())));
             })
@@ -168,31 +168,31 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/:login -> get the "login" user.
+     * GET  /users/:username -> get the "username" user.
      */
-    @RequestMapping(value = "/rest/users/{login:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/rest/users/{username:[_'.@a-z0-9-]+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
-        log.debug("rest request to get User : {}", login);
-        return userService.getUserWithAuthoritiesByLogin(login)
+    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String username) {
+        log.debug("rest request to get User : {}", username);
+        return userService.getUserWithAuthoritiesByUsername(username)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**
-     * DELETE  USER :login -> delete the "login" User.
+     * DELETE  USER :username -> delete the "username" User.
      */
-    @RequestMapping(value = "/rest/users/{login}",
+    @RequestMapping(value = "/rest/users/{username}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        log.debug("rest request to delete User: {}", login);
-        userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        log.debug("rest request to delete User: {}", username);
+        userService.deleteUserInformation(username);
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", username)).build();
     }
 
     /**
@@ -206,7 +206,7 @@ public class UserResource {
 //    public UserDTO getUser(@PathVariable("username") String username) {
 //        this.log.debug("rest request to get Profile : {}", username);
 ////        User user = userService.getUserByUsername(username);
-//        User user = userRepository.findOneByLogin(username).get();
+//        User user = userRepository.findOneByUsername(username).get();
 //
 //        return new UserDTO(user);
 //
@@ -222,8 +222,8 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        String login = SecurityUtils.getCurrentUserLogin();
-        return suggestionService.suggestUsers(login);
+        String username = SecurityUtils.getCurrentUserUsername();
+        return suggestionService.suggestUsers(username);
     }
 
     /**

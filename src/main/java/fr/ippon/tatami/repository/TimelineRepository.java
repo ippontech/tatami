@@ -28,7 +28,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
  * Cassandra implementation of the Timeline repository.
  * <p/>
  * Structure :
- * - Key : login
+ * - Key : username
  * - Name : status Id
  * - Value : ""
  *
@@ -42,7 +42,7 @@ public class TimelineRepository extends AbstractLineRepository {
 
     private Mapper<Status> mapper;
 
-    private PreparedStatement findByLoginStmt;
+    private PreparedStatement findByUsernameStmt;
 
     private PreparedStatement deleteByIdStmt;
 
@@ -50,7 +50,7 @@ public class TimelineRepository extends AbstractLineRepository {
     @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Status.class);
-        findByLoginStmt = session.prepare(
+        findByUsernameStmt = session.prepare(
                 "SELECT * " +
                         "FROM timeline " +
                         "WHERE key = :key");
@@ -62,39 +62,39 @@ public class TimelineRepository extends AbstractLineRepository {
     }
 
 
-    public boolean isStatusInTimeline(String login, String statusId) {
-        return findByLoginAndStatusId(TIMELINE_CF,login,UUID.fromString(statusId));
+    public boolean isStatusInTimeline(String username, String statusId) {
+        return findByUsernameAndStatusId(TIMELINE_CF,username,UUID.fromString(statusId));
     }
 
-    public void addStatusToTimeline(String login, String statusId) {
-        addStatus(login,TIMELINE_CF,statusId);
+    public void addStatusToTimeline(String username, String statusId) {
+        addStatus(username,TIMELINE_CF,statusId);
     }
 
-    public void removeStatusesFromTimeline(String login, Collection<String> statusIdsToDelete) {
-        removeStatuses(login,TIMELINE_CF,statusIdsToDelete);
+    public void removeStatusesFromTimeline(String username, Collection<String> statusIdsToDelete) {
+        removeStatuses(username,TIMELINE_CF,statusIdsToDelete);
     }
 
-    public void shareStatusToTimeline(String sharedByLogin, String timelineLogin, Share share) {
-        shareStatus(timelineLogin, share, TIMELINE_CF, TIMELINE_SHARES_CF);
+    public void shareStatusToTimeline(String sharedByUsername, String timelineUsername, Share share) {
+        shareStatus(timelineUsername, share, TIMELINE_CF, TIMELINE_SHARES_CF);
     }
 
-    public void announceStatusToTimeline(String announcedByLogin, List<String> logins, Announcement announcement) {
+    public void announceStatusToTimeline(String announcedByUsername, List<String> usernames, Announcement announcement) {
         PreparedStatement insertAnnouncementPreparedStatement = session.prepare(
                 "INSERT INTO timeline (key, status) VALUES (?, ?);");
 
         BatchStatement batch = new BatchStatement();
-        logins.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
+        usernames.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
         session.executeAsync(batch);
     }
 
-    public List<String> getTimeline(String login, int size, String start, String finish) {
-        return getLineFromTable(TIMELINE_CF,login,size,start,finish);
+    public List<String> getTimeline(String username, int size, String start, String finish) {
+        return getLineFromTable(TIMELINE_CF,username,size,start,finish);
     }
 
-    public void deleteTimeline(String login) {
+    public void deleteTimeline(String username) {
         Statement statement = QueryBuilder.delete()
                 .from(TIMELINE_CF)
-                .where(eq("key",login));
+                .where(eq("key",username));
         session.execute(statement);
     }
 

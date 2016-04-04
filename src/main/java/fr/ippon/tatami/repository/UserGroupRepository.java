@@ -20,7 +20,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * Cassandra implementation of the User groups repository.
  * <p/>
  * Structure :
- * - Key = login
+ * - Key = username
  * - Name = group ID
  * - Value = role
  *
@@ -34,37 +34,37 @@ public class UserGroupRepository {
 
 
 
-    public void addGroupAsMember(String login, UUID groupId) {
+    public void addGroupAsMember(String username, UUID groupId) {
         Statement statement = QueryBuilder.insertInto("userGroup")
-                .value("login", login)
+                .value("username", username)
                 .value("groupId", groupId)
                 .value("role", GroupRoles.MEMBER);
         session.execute(statement);
     }
 
 
-    public void addGroupAsAdmin(String login, UUID groupId) {
+    public void addGroupAsAdmin(String username, UUID groupId) {
         Statement statement = QueryBuilder.insertInto("userGroup")
-                .value("login", login)
+                .value("username", username)
                 .value("groupId", groupId)
                 .value("role", GroupRoles.ADMIN);
         session.execute(statement);
     }
 
 
-    public void removeGroup(String login, UUID groupId) {
+    public void removeGroup(String username, UUID groupId) {
         Statement statement = QueryBuilder.delete().from("userGroup")
-                .where(eq("login", login))
+                .where(eq("username", username))
                 .and(eq("groupId", groupId));
         session.execute(statement);
     }
 
 
-    public List<UUID> findGroups(String login) {
+    public List<UUID> findGroups(String username) {
         Statement statement = QueryBuilder.select()
                 .column("groupId")
                 .from("userGroup")
-                .where(eq("login", login));
+                .where(eq("username", username));
         ResultSet results = session.execute(statement);
         return results
                 .all()
@@ -74,11 +74,11 @@ public class UserGroupRepository {
     }
 
 
-    public Collection<UUID> findGroupsAsAdmin(String login) {
+    public Collection<UUID> findGroupsAsAdmin(String username) {
         Statement statement = QueryBuilder.select()
                 .all()
                 .from("userGroup")
-                .where(eq("login", login));
+                .where(eq("username", username));
         ResultSet results = session.execute(statement);
         return results
                 .all()

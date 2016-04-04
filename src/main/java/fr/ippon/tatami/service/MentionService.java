@@ -31,10 +31,10 @@ public class MentionService {
      * A status that mentions a user is put in the user's mentionline and in his timeline.
      * The mentioned user can also be notified by email.
      */
-    public void mentionUser(String mentionedLogin, Status status) {
-        mentionlineRepository.addStatusToMentionline(mentionedLogin, status.getStatusId().toString());
+    public void mentionUser(String mentionedUsername, Status status) {
+        mentionlineRepository.addStatusToMentionline(mentionedUsername, status.getStatusId().toString());
 
-        User mentionnedUser = userRepository.findOneByLogin(mentionedLogin).get();
+        User mentionnedUser = userRepository.findOneByUsername(mentionedUsername).get();
 
 //        Derek Zuk 2/21/2016: I am commenting this out for now.
 //        if (mentionnedUser != null && (mentionnedUser.getMentionEmail() == null
@@ -42,12 +42,12 @@ public class MentionService {
 //            if (status.getStatusPrivate()) { // Private status
 //                mailService.sendUserPrivateMessageEmail(mentionnedUser, status);
 //                if (applePushService != null) {
-//                    applePushService.notifyUser(mentionedLogin, status);
+//                    applePushService.notifyUser(mentionedUsername, status);
 //                }
 //            } else {
 //                mailService.sendUserMentionEmail(mentionnedUser, status);
 //                if (applePushService != null) {
-//                    applePushService.notifyUser(mentionedLogin, status);
+//                    applePushService.notifyUser(mentionedUsername, status);
 //                }
 //            }
 //        }

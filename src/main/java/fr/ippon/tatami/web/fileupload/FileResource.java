@@ -207,7 +207,7 @@ public class FileResource {
 
         uploadedFiles.add(uploadedFile);
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);
@@ -242,7 +242,7 @@ public class FileResource {
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
         uploadedFiles.add(uploadedFile);
         if (avatar.getAvatarId() != null) {
-            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
             currentUser.setAvatar(avatar.getAvatarId());
             userRepository.save(currentUser);
         }
@@ -268,7 +268,7 @@ public class FileResource {
 
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);

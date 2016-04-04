@@ -49,19 +49,19 @@ public class AttachmentService {
 
     public String createAttachment(Attachment attachment) throws StorageSizeException {
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
         long newAttachmentsSize = currentUser.getAttachmentsSize() + attachment.getSize();
         if (newAttachmentsSize > domainConfiguration.getStorageSizeAsLong()) {
-            log.info("User " + currentUser.getLogin() +
+            log.info("User " + currentUser.getUsername() +
                     " has tried to exceed his storage capacity. current storage=" +
                     currentUser.getAttachmentsSize() +
                     ", storage capacity=" +
                     domainConfiguration.getStorageSizeAsLong());
 
-            throw new StorageSizeException("User storage exceeded for user " + currentUser.getLogin());
+            throw new StorageSizeException("User storage exceeded for user " + currentUser.getUsername());
         }
 
         attachment.setThumbnail(computeThumbnail(attachment));
@@ -98,11 +98,11 @@ public class AttachmentService {
 
     public void deleteAttachment(Attachment attachment) {
         log.debug("Removing attachment : {}", attachment);
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
 
-        for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getLogin())) {
+        for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getUsername())) {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
-                userAttachmentRepository.removeAttachmentId(currentUser.getLogin(), attachment.getAttachmentId());
+                userAttachmentRepository.removeAttachmentId(currentUser.getUsername(), attachment.getAttachmentId());
                 attachmentRepository.deleteAttachment(attachment);
                 // Refresh user data, to reduce the risk of errors
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();
@@ -114,7 +114,7 @@ public class AttachmentService {
     }
 
     public Collection<Long> getDomainQuota() {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 

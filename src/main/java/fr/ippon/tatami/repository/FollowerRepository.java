@@ -20,8 +20,8 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * Cassandra implementation of the Follower repository.
  * <p/>
  * Structure :
- * - Key = login
- * - Name = follower login
+ * - Key = username
+ * - Name = follower username
  * - Value = time
  *
  * @author Julien Dubois
@@ -33,29 +33,29 @@ public class FollowerRepository extends AbstractFollowerRepository {
     Session session;
 
     @Override
-    @CacheEvict(value = "followers-cache", key = "#login")
-    public void addFollower(String login, String followerLogin) {
-        super.addFollower(login, followerLogin);
+    @CacheEvict(value = "followers-cache", key = "#username")
+    public void addFollower(String username, String followerUsername) {
+        super.addFollower(username, followerUsername);
     }
 
     @Override
-    @CacheEvict(value = "followers-cache", key = "#login")
-    public void removeFollower(String login, String followerLogin) {
-        super.removeFollower(login, followerLogin);
+    @CacheEvict(value = "followers-cache", key = "#username")
+    public void removeFollower(String username, String followerUsername) {
+        super.removeFollower(username, followerUsername);
     }
 
     @Cacheable("followers-cache")
-    public Collection<String> findFollowersForUser(String login) {
+    public Collection<String> findFollowersForUser(String username) {
 
         Statement statement = QueryBuilder.select()
-                .column("login")
+                .column("username")
                 .from("followers")
-                .where(eq("key", login));
+                .where(eq("key", username));
         ResultSet results = session.execute(statement);
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("login"))
+                .map(e -> e.getString("username"))
                 .collect(Collectors.toList());
     }
 

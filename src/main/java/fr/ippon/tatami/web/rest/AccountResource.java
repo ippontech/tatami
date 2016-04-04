@@ -64,12 +64,12 @@ public class AccountResource {
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
-        return userRepository.findOneByLogin(userDTO.getLogin())
+        return userRepository.findOneByUsername(userDTO.getUsername())
             .map(user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(userDTO.getEmail())
                 .map(user -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
-                    User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
+                    User user = userService.createUserInformation(userDTO.getUsername(), userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
                     userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getEmail().split("@")[1]);
@@ -133,11 +133,11 @@ public class AccountResource {
     @Timed
     public ResponseEntity<String> saveAccount(@RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+        if (existingUser.isPresent() && (!existingUser.get().getUsername().equalsIgnoreCase(userDTO.getUsername()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
-            .findOneByLogin(SecurityUtils.getCurrentUser().getUsername())
+            .findOneByUsername(SecurityUtils.getCurrentUser().getUsername())
             .map(u -> {
                 userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber());
@@ -207,7 +207,7 @@ public class AccountResource {
     @Timed
     public Preferences getPreferences() {
         log.debug("REST request to get account's preferences");
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
 
         return new Preferences(currentUser);
     }
@@ -224,7 +224,7 @@ public class AccountResource {
         log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
-            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
             currentUser.setMentionEmail(newPreferences.getMentionEmail());
             currentUser.setDailyDigest(newPreferences.getDailyDigest());
             currentUser.setWeeklyDigest(newPreferences.getWeeklyDigest());
@@ -268,8 +268,8 @@ public class AccountResource {
 //    @ResponseBody
 //    @Timed
 //    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
-//        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-//        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+//        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+//        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
 //        if (userService.isDomainHandledByLDAP(domain)) {
 //            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 //            return null;
@@ -289,7 +289,7 @@ public class AccountResource {
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
         log.debug("REST request to set account's password");
         try {
-            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!passwordEncoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {

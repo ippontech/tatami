@@ -1,5 +1,5 @@
 <div>
-    <h2><span translate="user-management.detail.title">User</span> "{{user.login}}"</h2>
+    <h2><span translate="user-management.detail.title">User</span> "{{user.username}}"</h2>
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -12,10 +12,10 @@
             <tbody>
             <tr>
                 <td>
-                    <span translate="user-management.login">Login</span>
+                    <span translate="user-management.username">Username</span>
                 </td>
                 <td>
-                    <input type="text" class="input-sm form-control" value="{{user.login}}" readonly>
+                    <input type="text" class="input-sm form-control" value="{{user.username}}" readonly>
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <input type="text" class="input-sm form-control" value="{{user.activated}}" readonly>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>
                     <span translate="user-management.langKey">LangKey</span>
@@ -59,7 +59,7 @@
                     <input type="text" class="input-sm form-control" value="{{user.langKey}}" readonly>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>
                     <span translate="user-management.createdBy">CreatedBy</span>

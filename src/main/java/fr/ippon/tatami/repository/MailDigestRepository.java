@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * <p/>
  * Structure :
  * - Key = digestType_[day]_domain
- * - Name = login
+ * - Name = username
  * - Value = time
  * <p/>
  * Note : in the key, the [day] part is only used for weekly digest and
@@ -45,7 +45,7 @@ public class MailDigestRepository {
 
     private PreparedStatement unsubscribeFromDigest;
 
-    private PreparedStatement getLoginsRegisteredToDigest;
+    private PreparedStatement getUsernamesRegisteredToDigest;
 
 
     @PostConstruct
@@ -53,41 +53,41 @@ public class MailDigestRepository {
         mapper = new MappingManager(session).mapper(User.class);
 
         subscribeToDigest = session.prepare(
-            "INSERT INTO mail_digest (digest_id, login, created) " +
-                "VALUES (:digest_id, :login, :created)");
+            "INSERT INTO mail_digest (digest_id, username, created) " +
+                "VALUES (:digest_id, :username, :created)");
 
         unsubscribeFromDigest = session.prepare(
             "DELETE FROM mail_digest " +
                 "WHERE digest_id = :digest_id " +
-                "AND login = :login");
+                "AND username = :username");
 
-        getLoginsRegisteredToDigest = session.prepare(
-            "SELECT login FROM mail_digest " +
+        getUsernamesRegisteredToDigest = session.prepare(
+            "SELECT username FROM mail_digest " +
                 "WHERE digest_id = :digest_id " +
                 "LIMIT :pageLimit");
     }
 
-    public void subscribeToDigest(DigestType digestType, String login, String domain, String day) {
+    public void subscribeToDigest(DigestType digestType, String username, String domain, String day) {
         BoundStatement stmt = subscribeToDigest.bind();
         Calendar cal = Calendar.getInstance();
         Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
         stmt.setString("digest_id", buildKey(digestType, domain, day));
-        stmt.setString("login", login);
+        stmt.setString("username", username);
         stmt.setDate("created", timestamp);
         session.execute(stmt);
     }
 
-    public void unsubscribeFromDigest(DigestType digestType, String login, String domain, String day) {
+    public void unsubscribeFromDigest(DigestType digestType, String username, String domain, String day) {
         BoundStatement stmt = unsubscribeFromDigest.bind();
         stmt.setString("digest_id", buildKey(digestType, domain, day));
-        stmt.setString("login", login);
+        stmt.setString("username", username);
         session.execute(stmt);
     }
 
-    public List<String> getLoginsRegisteredToDigest(DigestType digestType, String domain,
+    public List<String> getUsernamesRegisteredToDigest(DigestType digestType, String domain,
                                                     String day, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
-        BoundStatement stmt = getLoginsRegisteredToDigest.bind();
+        BoundStatement stmt = getUsernamesRegisteredToDigest.bind();
         stmt.setString("digest_id", buildKey(digestType, domain, day));
         stmt.setInt("pageLimit", maxColumns+1);
 
@@ -96,7 +96,7 @@ public class MailDigestRepository {
             .all()
             .stream()
             .skip(pagination)
-            .map(e -> e.getString("login"))
+            .map(e -> e.getString("username"))
             .collect(Collectors.toList());
     }
 

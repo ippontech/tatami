@@ -11,12 +11,12 @@
             <p class="lead" translate="main.subtitle">This is your homepage</p>
 
             <div ng-switch="isAuthenticated()">
-                <div class="alert alert-success" ng-switch-when="true" translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
-                    You are logged in as user "{{account.login}}".
+                <div class="alert alert-success" ng-switch-when="true" translate="main.logged.message" translate-values="{username: '{{account.username}}'}">
+                    You are logged in as user "{{account.username}}".
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.authenticated">
-                    If you want to <a class="alert-link" href="#/login">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
+                    If you want to <a class="alert-link" href="#/login">sign in</a>, you can try the default accounts:<br/>- Administrator (username="admin" and password="admin") <br/>- User (username="user" and password="user").
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.register">

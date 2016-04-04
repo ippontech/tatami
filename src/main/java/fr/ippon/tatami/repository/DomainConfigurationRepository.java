@@ -32,7 +32,7 @@ public class DomainConfigurationRepository {
     private PreparedStatement findOneByDomainStmt;
 
 
-    private PreparedStatement deleteByLoginStmt;
+    private PreparedStatement deleteByUsernameStmt;
 
     @PostConstruct
     public void init() {
@@ -41,7 +41,7 @@ public class DomainConfigurationRepository {
                 "SELECT * " +
                         "FROM domainConfiguration " +
                         "WHERE domain = :domain");
-        deleteByLoginStmt = session.prepare("DELETE FROM user " +
+        deleteByUsernameStmt = session.prepare("DELETE FROM user " +
                 "WHERE id = :id");
     }
 

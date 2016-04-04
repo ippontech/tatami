@@ -62,8 +62,8 @@ angular.module('tatamiJHipsterApp')
                     }
                 }
 
-                for(var i = 0; i < details.sharedByLogins.length; i++) {
-                    details.sharedByLogins[i]['avatarURL'] = details.sharedByLogins[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByLogins[i].avatar + '/photo.jpg';
+                for(var i = 0; i < details.sharedByUsernames.length; i++) {
+                    details.sharedByUsernames[i]['avatarURL'] = details.sharedByUsernames[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByUsernames[i].avatar + '/photo.jpg';
                 }
 
                 return details;

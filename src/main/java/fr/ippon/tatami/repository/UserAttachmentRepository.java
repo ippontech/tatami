@@ -21,7 +21,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
  * Cassandra implementation of the UserAttachment repository.
  * <p/>
  * Structure :
- * - Key = login
+ * - Key = username
  * - Name = attachmentId
  * - Value = time
  *
@@ -33,25 +33,25 @@ public class UserAttachmentRepository {
     @Inject
     private Session session;
 
-    public void addAttachmentId(String login, String attachmentId) {
+    public void addAttachmentId(String username, String attachmentId) {
         Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.USER_ATTACHMENT_CF)
-                .value("login", login)
+                .value("username", username)
                 .value("attachmentId", UUID.fromString(attachmentId));
         session.execute(statement);
     }
 
-    public void removeAttachmentId(String login, String attachmentId) {
+    public void removeAttachmentId(String username, String attachmentId) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.USER_ATTACHMENT_CF)
-                .where(eq("login", login))
+                .where(eq("username", username))
                 .and(eq("attachmentId",UUID.fromString(attachmentId)));
         session.execute(statement);
     }
 
-    public Collection<String> findAttachmentIds(String login, int pagination, String finish) {
+    public Collection<String> findAttachmentIds(String username, int pagination, String finish) {
         Select.Where where = QueryBuilder.select()
                 .column("attachmentId")
                 .from(ColumnFamilyKeys.USER_ATTACHMENT_CF)
-                .where(eq("login", login));
+                .where(eq("username", username));
         if(finish != null) {
             where.and(gt("attachmentId", UUID.fromString(finish)));
         }
@@ -66,11 +66,11 @@ public class UserAttachmentRepository {
                 .collect(Collectors.toList());
     }
 
-    public Collection<String> findAttachmentIds(String login) {
+    public Collection<String> findAttachmentIds(String username) {
         Statement statement = QueryBuilder.select()
                 .column("attachmentId")
                 .from(ColumnFamilyKeys.USER_ATTACHMENT_CF)
-                .where(eq("login", login))
+                .where(eq("username", username))
                 .limit(Constants.CASSANDRA_MAX_ROWS);
 
         ResultSet results = session.execute(statement);

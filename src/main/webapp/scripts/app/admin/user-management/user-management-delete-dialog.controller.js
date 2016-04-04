@@ -7,8 +7,8 @@ tatamiJHipsterApp
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
-        $scope.confirmDelete = function (login) {
-            User.delete({login: login},
+        $scope.confirmDelete = function (username) {
+            User.delete({username: username},
                 function () {
                     $uibModalInstance.close(true);
                 });

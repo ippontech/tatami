@@ -107,7 +107,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         authorities.add(AuthoritiesConstants.ADMIN);
 
         User user = new User();
-        user.setLogin("test");
+        user.setUsername("test");
         user.setFirstName("john");
         user.setLastName("doe");
         user.setEmail("john.doe@jhipter.com");
@@ -125,7 +125,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())//----------------------
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.login").value("test"))
+                .andExpect(jsonPath("$.username").value("test"))
                 .andExpect(jsonPath("$.firstName").value("john"))
                 .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
@@ -152,9 +152,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     @Transactional
     public void testRegisterValid() throws Exception {
         UserDTO u = new UserDTO(
-            "joe",                  // login
+            "joe",                  // username
             "password",             // password
-            "joeusername",          // username
             "avatar",               // avatar
             "Joe",                  // firstName
             "Shmoe",                // lastName
@@ -177,7 +176,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findOneByLogin("joe");
+        Optional<User> user = userRepository.findOneByUsername("joe");
         assertThat(user.isPresent()).isTrue();
     }
 
@@ -185,9 +184,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     @Transactional
     public void testRegisterInvalidLogin() throws Exception {
         UserDTO u = new UserDTO(
-            "funky-log!n",          // login <-- invalid
+            "funky-log!n",              // username <-- invalid
             "password",             // password
-            "username",              // username
             "avatar",               // avatar
             "Funky",                // firstName
             "One",                  // lastName
@@ -218,9 +216,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     @Transactional
     public void testRegisterInvalidEmail() throws Exception {
         UserDTO u = new UserDTO(
-            "bob",              // login
-            "password",         // password
             "username",         // username
+            "password",         // password
             "avatar",           // avatar
             "Bob",              // firstName
             "Green",            // lastName
@@ -243,7 +240,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByUsername("bob");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -252,9 +249,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     public void testRegisterDuplicateLogin() throws Exception {
         // Good
         UserDTO u = new UserDTO(
-            "alice",                // login
+            "alice",             // username
             "password",             // password
-            "username",             // username
             "avatar",               // avatar
             "Alice",                // firstName
             "Something",            // lastName
@@ -271,8 +267,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr"              // domain
         );
 
-        // Duplicate login, different e-mail
-        UserDTO dup = new UserDTO(u.getLogin(), u.getPassword(), u.getUsername(), u.getAvatar(), u.getLogin(), u.getLastName(),
+        // Duplicate username, different e-mail
+        UserDTO dup = new UserDTO(u.getUsername(), u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain());
@@ -284,7 +280,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
-        // Duplicate login
+        // Duplicate username
         restMvc.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -300,9 +296,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     public void testRegisterDuplicateEmail() throws Exception {
         // Good
         UserDTO u = new UserDTO(
-            "john",                 // login
+            "john",             // username
             "password",             // password
-            "username",             // username
             "avatar",               // avatar
             "John",                 // firstName
             "Doe",                  // lastName
@@ -319,8 +314,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr"              // domain
         );
 
-        // Duplicate e-mail, different login
-        UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getUsername(), u.getAvatar(), u.getLogin(), u.getLastName(),
+        // Duplicate e-mail, different username
+        UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain());
@@ -339,7 +334,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByLogin("johnjr");
+        Optional<User> userDup = userRepository.findOneByUsername("johnjr");
         assertThat(userDup.isPresent()).isFalse();
     }
 
@@ -347,9 +342,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
     @Transactional
     public void testRegisterAdminIsIgnored() throws Exception {
         UserDTO u = new UserDTO(
-            "badguy",               // login
+            "badguy",             // username
             "password",             // password
-            "username",             // username
             "avatar",               // avatar
             "Bad",                  // firstName
             "Guy",                  // lastName
@@ -372,7 +366,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
-        Optional<User> userDup = userRepository.findOneByLogin("badguy");
+        Optional<User> userDup = userRepository.findOneByUsername("badguy");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
             .containsExactly(AuthoritiesConstants.USER);

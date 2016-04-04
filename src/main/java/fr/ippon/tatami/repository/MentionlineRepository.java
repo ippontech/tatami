@@ -13,7 +13,7 @@ import java.util.List;
  * Cassandra implementation of the Userline repository.
  * <p/>
  * Structure :
- * - Key : login
+ * - Key : username
  * - Name : status Id
  * - Value : ""
  *
@@ -22,14 +22,14 @@ import java.util.List;
 @Repository
 public class MentionlineRepository extends AbstractLineRepository {
 
-    private PreparedStatement findByLoginStmt;
+    private PreparedStatement findByUsernameStmt;
 
     private PreparedStatement deleteByIdStmt;
 
 
     @PostConstruct
     public void init() {
-        findByLoginStmt = session.prepare(
+        findByUsernameStmt = session.prepare(
                 "SELECT * " +
                         "FROM mentionline " +
                         "WHERE key = :key");
@@ -41,16 +41,16 @@ public class MentionlineRepository extends AbstractLineRepository {
     }
 
 
-    public void addStatusToMentionline(String mentionedLogin, String statusId) {
-        addStatus(mentionedLogin, ColumnFamilyKeys.MENTIONLINE, statusId);
+    public void addStatusToMentionline(String mentionedUsername, String statusId) {
+        addStatus(mentionedUsername, ColumnFamilyKeys.MENTIONLINE, statusId);
     }
 
-    public void removeStatusesFromMentionline(String mentionedLogin, Collection<String> statusIdsToDelete) {
-        removeStatuses(mentionedLogin, ColumnFamilyKeys.MENTIONLINE, statusIdsToDelete);
+    public void removeStatusesFromMentionline(String mentionedUsername, Collection<String> statusIdsToDelete) {
+        removeStatuses(mentionedUsername, ColumnFamilyKeys.MENTIONLINE, statusIdsToDelete);
     }
 
-    public List<String> getMentionline(String login, int size, String start, String finish) {
-        return getLineFromTable("mentionLine", login, size, start, finish);
+    public List<String> getMentionline(String username, int size, String start, String finish) {
+        return getLineFromTable("mentionLine", username, size, start, finish);
     }
 
     @Override

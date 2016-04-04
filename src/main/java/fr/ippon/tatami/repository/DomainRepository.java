@@ -24,7 +24,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * <p/>
  * Structure :
  * - Key = domain
- * - Name = login
+ * - Name = username
  * - Value = time
  *
  * @author Julien Dubois
@@ -37,33 +37,33 @@ public class DomainRepository {
     private Session session;
 
 
-    public void addUserInDomain(String domain, String login) {
+    public void addUserInDomain(String domain, String username) {
         Statement statement = QueryBuilder.insertInto("domain")
                 .value(DOMAIN_ID, domain)
-                .value("login", login)
+                .value("username", username)
                 .value("created", UUIDs.timeBased());
         session.execute(statement);
     }
 
 
-    public void updateUserInDomain(String domain, String login) {
-        this.addUserInDomain(domain, login);
+    public void updateUserInDomain(String domain, String username) {
+        this.addUserInDomain(domain, username);
     }
 
 
-    public void deleteUserInDomain(String domain, String login) {
+    public void deleteUserInDomain(String domain, String username) {
         Statement statement = QueryBuilder.delete()
                 .from("domain")
                 .where(eq(DOMAIN_ID,domain))
-                .and(eq("login",login));
+                .and(eq("username",username));
         session.execute(statement);
     }
 
 
-    public List<String> getLoginsInDomain(String domain, int pagination) {
+    public List<String> getUsernamesInDomain(String domain, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
         Statement statement = QueryBuilder.select()
-                .column("login")
+                .column("username")
                 .from("domain")
                 .where(eq(DOMAIN_ID, domain))
                 .limit(maxColumns+1);
@@ -73,14 +73,14 @@ public class DomainRepository {
                 .all()
                 .stream()
                 .skip(pagination)
-                .map(e -> e.getString("login"))
+                .map(e -> e.getString("username"))
                 .collect(Collectors.toList());
     }
 
 
-    public List<String> getLoginsInDomain(String domain) {
+    public List<String> getUsernamesInDomain(String domain) {
         Statement statement = QueryBuilder.select()
-                .column("login")
+                .column("username")
                 .from("domain")
                 .where(eq(DOMAIN_ID, domain));
 
@@ -88,7 +88,7 @@ public class DomainRepository {
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("login"))
+                .map(e -> e.getString("username"))
                 .collect(Collectors.toList());
     }
 

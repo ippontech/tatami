@@ -39,7 +39,7 @@ public class AvatarService {
 
     public String createAvatar(Avatar avatar) {
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
 
         if (currentUser.getAvatar() != null && !("").equals(currentUser.getAvatar())) {
             deleteAvatar(currentUser.getAvatar());
@@ -67,7 +67,7 @@ public class AvatarService {
     public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         userRepository.save(currentUser);
     }
 
@@ -90,7 +90,7 @@ public class AvatarService {
     }
 
     public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
         Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
         if (dbAvatar != null) {
             return dbAvatar;

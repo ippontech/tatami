@@ -29,10 +29,6 @@ public class Status implements AbstractStatus {
 
     @NotNull
     @Column
-    private String login;
-
-    @NotNull
-    @Column
     private String username;
 
     @NotNull
@@ -70,14 +66,6 @@ public class Status implements AbstractStatus {
 
     public void setType(StatusType type) {
         this.type = type;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getUsername() {

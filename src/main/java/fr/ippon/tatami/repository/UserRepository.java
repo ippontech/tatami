@@ -44,11 +44,11 @@ public class UserRepository {
 
     private PreparedStatement deleteByResetKeyStmt;
 
-    private PreparedStatement findOneByLoginStmt;
+    private PreparedStatement findOneByUsernameStmt;
 
-    private PreparedStatement insertByLoginStmt;
+    private PreparedStatement insertByUsernameStmt;
 
-    private PreparedStatement deleteByLoginStmt;
+    private PreparedStatement deleteByUsernameStmt;
 
     private PreparedStatement findOneByEmailStmt;
 
@@ -88,18 +88,18 @@ public class UserRepository {
             "DELETE FROM user_by_reset_key " +
             "WHERE reset_key = :reset_key");
 
-        findOneByLoginStmt = session.prepare(
+        findOneByUsernameStmt = session.prepare(
             "SELECT id " +
-            "FROM user_by_login " +
-            "WHERE login = :login");
+            "FROM user_by_username " +
+            "WHERE username = :username");
 
-        insertByLoginStmt = session.prepare(
-            "INSERT INTO user_by_login (login, id) " +
-                "VALUES (:login, :id)");
+        insertByUsernameStmt = session.prepare(
+            "INSERT INTO user_by_username (username, id) " +
+                "VALUES (:username, :id)");
 
-        deleteByLoginStmt = session.prepare(
-            "DELETE FROM user_by_login " +
-                "WHERE login = :login");
+        deleteByUsernameStmt = session.prepare(
+            "DELETE FROM user_by_username " +
+                "WHERE username = :username");
 
         findOneByEmailStmt = session.prepare(
             "SELECT id " +
@@ -141,9 +141,9 @@ public class UserRepository {
         return findOneFromIndex(stmt);
     }
 
-    public Optional<User> findOneByLogin(String login) {
-        BoundStatement stmt = findOneByLoginStmt.bind();
-        stmt.setString("login", login);
+    public Optional<User> findOneByUsername(String username) {
+        BoundStatement stmt = findOneByUsernameStmt.bind();
+        stmt.setString("username", username);
         return findOneFromIndex(stmt);
     }
 
@@ -160,8 +160,8 @@ public class UserRepository {
             if (!StringUtils.isEmpty(oldUser.getResetKey()) && !oldUser.getResetKey().equals(user.getResetKey())) {
                 session.execute(deleteByResetKeyStmt.bind().setString("reset_key", oldUser.getResetKey()));
             }
-            if (!StringUtils.isEmpty(oldUser.getLogin()) && !oldUser.getLogin().equals(user.getLogin())) {
-                session.execute(deleteByLoginStmt.bind().setString("login", oldUser.getLogin()));
+            if (!StringUtils.isEmpty(oldUser.getUsername()) && !oldUser.getUsername().equals(user.getUsername())) {
+                session.execute(deleteByUsernameStmt.bind().setString("username", oldUser.getUsername()));
             }
             if (!StringUtils.isEmpty(oldUser.getEmail()) && !oldUser.getEmail().equals(user.getEmail())) {
                 session.execute(deleteByEmailStmt.bind().setString("email", oldUser.getEmail()));
@@ -179,8 +179,8 @@ public class UserRepository {
               .setString("reset_key", user.getResetKey())
               .setString("id", user.getId()));
         }
-        batch.add(insertByLoginStmt.bind()
-            .setString("login", user.getLogin())
+        batch.add(insertByUsernameStmt.bind()
+            .setString("username", user.getUsername())
             .setString("id", user.getId()));
         batch.add(insertByEmailStmt.bind()
             .setString("email", user.getEmail())
@@ -198,7 +198,7 @@ public class UserRepository {
         if (!StringUtils.isEmpty(user.getResetKey())) {
             batch.add(deleteByResetKeyStmt.bind().setString("reset_key", user.getResetKey()));
         }
-        batch.add(deleteByLoginStmt.bind().setString("login", user.getLogin()));
+        batch.add(deleteByUsernameStmt.bind().setString("username", user.getUsername()));
         batch.add(deleteByEmailStmt.bind().setString("email", user.getEmail()));
         session.execute(batch);
     }

@@ -20,7 +20,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * <p/>
  * Structure :
  * - Key = group ID
- * - Name = login
+ * - Name = username
  * - Value = role
  *
  * @author Julien Dubois
@@ -29,35 +29,35 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 public class GroupMembersRepository {
 
     public static final String GROUP_MEMBER = "groupMember";
-    public static final String LOGIN = "login";
+    public static final String USERNAME = "username";
     public static final String ROLE = "role";
     public static final String GROUP_ID = "groupId";
     @Inject
     Session session;
 
 
-    public void addMember(UUID groupId, String login) {
+    public void addMember(UUID groupId, String username) {
         Statement statement = QueryBuilder.insertInto(GROUP_MEMBER)
                 .value(GROUP_ID, groupId)
-                .value(LOGIN, login)
+                .value(USERNAME, username)
                 .value(ROLE, GroupRoles.MEMBER);
         session.execute(statement);
     }
 
 
-    public void addAdmin(UUID groupId, String login) {
+    public void addAdmin(UUID groupId, String username) {
         Statement statement = QueryBuilder.insertInto(GROUP_MEMBER)
                 .value(GROUP_ID, groupId)
-                .value(LOGIN, login)
+                .value(USERNAME, username)
                 .value(ROLE, GroupRoles.MEMBER);
         session.execute(statement);
     }
 
 
-    public void removeMember(UUID groupId, String login) {
+    public void removeMember(UUID groupId, String username) {
         Statement statement = QueryBuilder.delete().from(GROUP_MEMBER)
                 .where(eq(GROUP_ID, groupId))
-                .and(eq(LOGIN, login));
+                .and(eq(USERNAME, username));
         session.execute(statement);
 
     }
@@ -73,7 +73,7 @@ public class GroupMembersRepository {
                 .all()
                 .stream()
                 .collect(Collectors.toMap(
-                        e -> e.getString(LOGIN),
+                        e -> e.getString(USERNAME),
                         e -> e.getString(ROLE)));
     }
 }

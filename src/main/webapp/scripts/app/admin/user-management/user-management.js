@@ -25,7 +25,7 @@ tatamiJHipsterApp
             })
             .state('user-management-detail', {
                 parent: 'admin',
-                url: '/user/:login',
+                url: '/user/:username',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                     pageTitle: 'user-management.detail.title'
@@ -57,7 +57,7 @@ tatamiJHipsterApp
                         resolve: {
                             entity: function () {
                                 return {
-                                    id: null, login: null, firstName: null, lastName: null, email: null,
+                                    id: null, username: null, firstName: null, lastName: null, email: null,
                                     activated: true, langKey: null, createdBy: null, createdDate: null,
                                     lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
                                     resetKey: null, authorities: null
@@ -73,7 +73,7 @@ tatamiJHipsterApp
             })
             .state('user-management.edit', {
                 parent: 'user-management',
-                url: '/{login}/edit',
+                url: '/{username}/edit',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                 },
@@ -84,7 +84,7 @@ tatamiJHipsterApp
                         size: 'lg',
                         resolve: {
                             entity: ['User', function(User) {
-                                return User.get({login : $stateParams.login});
+                                return User.get({username : $stateParams.username});
                             }]
                         }
                     }).result.then(function(result) {
@@ -96,7 +96,7 @@ tatamiJHipsterApp
             })
             .state('user-management.delete', {
                 parent: 'user-management',
-                url: '/{login}/delete',
+                url: '/{username}/delete',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                 },
@@ -107,7 +107,7 @@ tatamiJHipsterApp
                         size: 'md',
                         resolve: {
                             entity: ['User', function(User) {
-                                return User.get({login : $stateParams.login});
+                                return User.get({username : $stateParams.username});
                             }]
                         }
                     }).result.then(function(result) {

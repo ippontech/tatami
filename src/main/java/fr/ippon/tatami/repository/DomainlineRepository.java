@@ -25,14 +25,14 @@ public class DomainlineRepository extends AbstractLineRepository {
 
     private final static int COLUMN_TTL = 60 * 60 * 24 * 30; // The column is stored for 30 days.
 
-    private PreparedStatement findByLoginStmt;
+    private PreparedStatement findByUsernameStmt;
 
     private PreparedStatement deleteByIdStmt;
 
 
     @PostConstruct
     public void init() {
-        findByLoginStmt = session.prepare(
+        findByUsernameStmt = session.prepare(
                 "SELECT * " +
                         "FROM " + DOMAINLINE+
                         " WHERE key = :key");

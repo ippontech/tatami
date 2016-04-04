@@ -220,17 +220,18 @@ public class StatusUpdateService {
             startTime = Calendar.getInstance().getTimeInMillis();
             log.debug("Creating new status : {}", content);
         }
-        String currentLogin;
+        String currentUsername;
         if (user == null) {
-            currentLogin = SecurityUtils.getCurrentUserLogin();
+            currentUsername = SecurityUtils.getCurrentUserUsername();
         } else {
-            currentLogin = user.getLogin();
+            currentUsername = user.getUsername();
         }
-        String username = userRepository.findOneByLogin(currentLogin).get().getUsername();
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        String username = userRepository.findOneByUsername(currentUsername).get().getUsername();
+        String email = userRepository.findOneByUsername(currentUsername).get().getEmail();
+        String domain = DomainUtil.getDomainFromEmail(email);
 
         Status status =
-                statusRepository.createStatus(currentLogin,
+                statusRepository.createStatus(currentUsername,
                         username,
                         statusPrivate,
                         group,
@@ -249,19 +250,19 @@ public class StatusUpdateService {
         }
 
         // add status to the timeline
-        addStatusToTimelineAndNotify(currentLogin, status);
+        addStatusToTimelineAndNotify(currentUsername, status);
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
-            manageMentions(status, null, currentLogin, new ArrayList<String>());
+            manageMentions(status, null, currentUsername, new ArrayList<String>());
 
         } else { // Public status
-            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentUsername);
 
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId().toString());
+            userlineRepository.addStatusToUserline(status.getUsername(), status.getStatusId().toString());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -270,10 +271,10 @@ public class StatusUpdateService {
             manageStatusTags(status, group);
 
             // add status to the mentioned users' timeline
-            manageMentions(status, group, currentLogin, followersForUser);
+            manageMentions(status, group, currentUsername, followersForUser);
 
             // Increment status count for the current user
-            counterRepository.incrementStatusCounter(currentLogin);
+            counterRepository.incrementStatusCounter(currentUsername);
 
             // Add to the searchStatus engine
             // Commenting out for now.
@@ -293,21 +294,21 @@ public class StatusUpdateService {
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
             grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId().toString());
-            Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
+            Collection<String> groupMemberUsernames = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
-            for (String groupMemberLogin : groupMemberLogins) {
-                addStatusToTimelineAndNotify(groupMemberLogin, status);
+            for (String groupMemberUsername : groupMemberUsernames) {
+                addStatusToTimelineAndNotify(groupMemberUsername, status);
             }
             if (isPublicGroup(group)) { // for people not following the group but following the user
-                for (String followerLogin : followersForUser) {
-                    if (!groupMemberLogins.contains(followerLogin)) {
-                        addStatusToTimelineAndNotify(followerLogin, status);
+                for (String followerUsername : followersForUser) {
+                    if (!groupMemberUsernames.contains(followerUsername)) {
+                        addStatusToTimelineAndNotify(followerUsername, status);
                     }
                 }
             }
         } else { // only people following the user
-            for (String followerLogin : followersForUser) {
-                addStatusToTimelineAndNotify(followerLogin, status);
+            for (String followerUsername : followersForUser) {
+                addStatusToTimelineAndNotify(followerUsername, status);
             }
         }
     }
@@ -337,7 +338,7 @@ public class StatusUpdateService {
                 if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
                     trendsRepository.addTag(status.getDomain(), tag);
                 }
-                userTrendRepository.addTag(status.getLogin(), tag);
+                userTrendRepository.addTag(status.getUsername(), tag);
 
                 // Add the status to all users following this tag
                 addStatusToTagFollowers(status, group, tag);
@@ -345,12 +346,12 @@ public class StatusUpdateService {
         }
     }
 
-    private void manageMentions(Status status, Group group, String currentLogin, Collection<String> followersForUser) {
+    private void manageMentions(Status status, Group group, String currentUsername, Collection<String> followersForUser) {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
             String mentionedUsername = extractUsernameWithoutAt(m.group());
             if (mentionedUsername != null &&
-                    !mentionedUsername.equals(currentLogin) &&
+                    !mentionedUsername.equals(currentUsername) &&
                     !followersForUser.contains(mentionedUsername)) {
 
                 log.debug("Mentioning : {}", mentionedUsername);
@@ -373,14 +374,14 @@ public class StatusUpdateService {
                 tagFollowerRepository.findFollowers(status.getDomain(), tag);
 
         if (isPublicGroup(group)) { // This is a public status
-            for (String followerLogin : followersForTag) {
-                addStatusToTimelineAndNotify(followerLogin, status);
+            for (String followerUsername : followersForTag) {
+                addStatusToTimelineAndNotify(followerUsername, status);
             }
         } else {  // This is a private status
-            for (String followerLogin : followersForTag) {
-                Collection<UUID> groupIds = userGroupRepository.findGroups(followerLogin);
+            for (String followerUsername : followersForTag) {
+                Collection<UUID> groupIds = userGroupRepository.findGroups(followerUsername);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                    addStatusToTimelineAndNotify(followerLogin, status);
+                    addStatusToTimelineAndNotify(followerUsername, status);
                 }
             }
         }
@@ -390,9 +391,9 @@ public class StatusUpdateService {
      * A status that mentions a user is put in the user's mentionline and in his timeline.
      * The mentioned user can also be notified by email or iOS push.
      */
-    private void mentionUser(String mentionedLogin, Status status) {
-        addStatusToTimelineAndNotify(mentionedLogin, status);
-        mentionService.mentionUser(mentionedLogin, status);
+    private void mentionUser(String mentionedUsername, Status status) {
+        addStatusToTimelineAndNotify(mentionedUsername, status);
+        mentionService.mentionUser(mentionedUsername, status);
     }
 
     private String extractUsernameWithoutAt(String dest) {
@@ -406,8 +407,8 @@ public class StatusUpdateService {
     /**
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
-    private void addStatusToTimelineAndNotify(String login, Status status) {
-        timelineRepository.addStatusToTimeline(login, status.getStatusId().toString());
-        atmosphereService.notifyUser(login, status);
+    private void addStatusToTimelineAndNotify(String username, Status status) {
+        timelineRepository.addStatusToTimeline(username, status.getStatusId().toString());
+        atmosphereService.notifyUser(username, status);
     }
 }

@@ -25,14 +25,14 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE;
 @Repository
 public class TaglineRepository extends AbstractLineRepository {
 
-    private PreparedStatement findByLoginStmt;
+    private PreparedStatement findByUsernameStmt;
 
     private PreparedStatement deleteByIdStmt;
 
 
     @PostConstruct
     public void init() {
-        findByLoginStmt = session.prepare(
+        findByUsernameStmt = session.prepare(
                 "SELECT * " +
                         "FROM " + TAGLINE+
                         " WHERE key = :key");

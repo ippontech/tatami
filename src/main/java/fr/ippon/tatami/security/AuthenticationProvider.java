@@ -32,8 +32,8 @@ public class AuthenticationProvider implements org.springframework.security.auth
         UsernamePasswordAuthenticationToken token =
                 (UsernamePasswordAuthenticationToken) authentication;
 
-        String login = token.getName();
-        UserDetails user = userDetailsService.loadUserByUsername(login);
+        String username = token.getName();
+        UserDetails user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User does not exists");
         }

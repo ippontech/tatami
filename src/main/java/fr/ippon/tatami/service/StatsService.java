@@ -44,8 +44,8 @@ public class StatsService {
         if (date == null) {
             date = new Date();
         }
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         String day = DAYLINE_KEY_FORMAT.format(date);
         return daylineRepository.getDayline(domain, day);
     }

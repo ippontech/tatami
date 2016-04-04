@@ -26,7 +26,7 @@ import java.util.*;
  * Cassandra implementation of the status repository.
  * <p/>
  * Timeline and Userline have the same structure :
- * - Key : login
+ * - Key : username
  * - Name : status Id
  * - Value : ""
  *
@@ -37,7 +37,6 @@ public class StatusRepository {
 
     private final Logger log = LoggerFactory.getLogger(StatusRepository.class);
 
-    private static final String LOGIN = "login";
     private static final String TYPE = "type";
     private static final String USERNAME = "username";
     private static final String DOMAIN = "domain";
@@ -58,7 +57,7 @@ public class StatusRepository {
     private static final String ORIGINAL_STATUS_ID = "originalStatusId";
 
     //Mention Friend
-    private static final String FOLLOWER_LOGIN = "followerLogin";
+    private static final String FOLLOWER_USERNAME = "followerUsername";
 
 
     //Bean validation
@@ -103,8 +102,8 @@ public class StatusRepository {
 
 
 
-    public Status createStatus(String login,
-                               String username,
+    public Status createStatus(String username,
+                               String email,
                                boolean statusPrivate,
                                Group group,
                                Collection<String> attachmentIds,
@@ -117,10 +116,10 @@ public class StatusRepository {
 
         Status status = new Status();
         status.setStatusId(UUIDs.timeBased());
-        status.setLogin(login);
+        status.setUsername(username);
         status.setType(StatusType.STATUS);
         status.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        String domain = DomainUtil.getDomainFromEmail(email);
         status.setDomain(domain);
         status.setStatusPrivate(statusPrivate);
 
@@ -165,13 +164,11 @@ public class StatusRepository {
     }
 
 
-    public Share createShare(String login, String originalStatusId) {
+    public Share createShare(String username, String domain, String originalStatusId) {
         Share share = new Share();
-        share.setLogin(login);
-        share.setType(StatusType.SHARE);
-        String username = DomainUtil.getUsernameFromLogin(login);
         share.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        share.setType(StatusType.SHARE);
+        share.setUsername(username);
         share.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(share);
@@ -186,8 +183,8 @@ public class StatusRepository {
 
         abstractStatus.setStatusId(UUIDs.timeBased());
         abstractStatus.setStatusDate(Calendar.getInstance().getTime());
-        if (abstractStatus.getLogin() == null) {
-            throw new IllegalStateException("Login cannot be null for status: " + abstractStatus);
+        if (abstractStatus.getUsername() == null) {
+            throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
         }
         if (abstractStatus.getUsername() == null) {
             throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
@@ -199,20 +196,17 @@ public class StatusRepository {
         return QueryBuilder.insertInto("status")
                 .value("statusId",abstractStatus.getStatusId())
                 .value("statusDate",abstractStatus.getStatusDate())
-                .value("login", abstractStatus.getLogin())
+                .value("username", abstractStatus.getUsername())
                 .value("username",abstractStatus.getUsername())
                 .value("domain",abstractStatus.getDomain())
                 .value("type",abstractStatus.getType().name());
     }
 
 
-    public Announcement createAnnouncement(String login, String originalStatusId) {
+    public Announcement createAnnouncement(String username, String domain, String originalStatusId) {
         Announcement announcement = new Announcement();
-        announcement.setLogin(login);
-        announcement.setType(StatusType.ANNOUNCEMENT);
-        String username = DomainUtil.getUsernameFromLogin(login);
         announcement.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        announcement.setType(StatusType.ANNOUNCEMENT);
         announcement.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(announcement);
@@ -224,31 +218,27 @@ public class StatusRepository {
     }
 
 
-    public MentionFriend createMentionFriend(String login, String followerLogin) {
+    public MentionFriend createMentionFriend(String username, String domain, String followerUsername) {
         MentionFriend mentionFriend = new MentionFriend();
-        mentionFriend.setLogin(login);
-        mentionFriend.setType(StatusType.MENTION_FRIEND);
-        String username = DomainUtil.getUsernameFromLogin(login);
         mentionFriend.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        mentionFriend.setType(StatusType.MENTION_FRIEND);
+        mentionFriend.setUsername(username);
         mentionFriend.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(mentionFriend);
-        mentionFriend.setFollowerLogin(followerLogin);
-        inserter = inserter.value("followerLogin",followerLogin);
+        mentionFriend.setfollowerUsername(followerUsername);
+        inserter = inserter.value("followerUsername",followerUsername);
         log.debug("Persisting Announcement : {}", mentionFriend);
         session.execute(inserter);
         return mentionFriend;
     }
 
 
-    public MentionShare createMentionShare(String login, String originalStatusId) {
+    public MentionShare createMentionShare(String username, String domain, String originalStatusId) {
         MentionShare mentionShare = new MentionShare();
-        mentionShare.setLogin(login);
-        mentionShare.setType(StatusType.MENTION_SHARE);
-        String username = DomainUtil.getUsernameFromLogin(login);
         mentionShare.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        mentionShare.setType(StatusType.MENTION_SHARE);
+        mentionShare.setUsername(username);
         mentionShare.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(mentionShare);
@@ -295,7 +285,7 @@ public class StatusRepository {
             return null;
         }
         status.setStatusId(UUID.fromString(statusId));
-        status.setLogin(row.getString(LOGIN));
+        status.setUsername(row.getString(USERNAME));
         status.setUsername(row.getString(USERNAME));
 
         String domain = row.getString(DOMAIN);
@@ -324,7 +314,7 @@ public class StatusRepository {
     private AbstractStatus findMentionFriend(Row result) {
         MentionFriend mentionFriend = new MentionFriend();
         mentionFriend.setType(StatusType.MENTION_FRIEND);
-        mentionFriend.setFollowerLogin(result.getString(FOLLOWER_LOGIN));
+        mentionFriend.setfollowerUsername(result.getString(FOLLOWER_USERNAME));
         return mentionFriend;
     }
 
