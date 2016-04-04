@@ -14,7 +14,7 @@ function waitForClusterConnection() {
     while [ $? -ne 0 ] && [ "$retryCount" -ne "$maxRetry" ]; do
         log 'cassandra not reachable yet. sleep and retry. retryCount =' $retryCount
         sleep 5
-        retryCount+=1
+        ((retryCount+=1))
         cqlsh -e "Describe KEYSPACES;" $CASSANDRA_CONTACT_POINT &>/dev/null
     done
 
@@ -28,19 +28,9 @@ function waitForClusterConnection() {
 
 function executeScripts() {
     local filePattern=$1
-
     # loop over migration scripts
     for cqlFile in $filePattern; do
-        filename=${cqlFile##*/}
-        log "execute: " $filename
-        echo "USE $KEYSPACE_NAME;" > $filename
-        cat $cqlFile >> $filename
-        cqlsh -f $filename $CASSANDRA_CONTACT_POINT
-        if [ $? -ne 0 ]; then
-            log "fail to apply script " $filename
-            log "stop applying database changes"
-            exit 1
-        fi
+        . ./usr/local/bin/execute-cql $cqlFile
     done
 }
 
@@ -49,10 +39,7 @@ waitForClusterConnection
 log "execute migration scripts"
 
 log "create keyspace and base tables"
-cat /cql/create-keyspace.cql > create-keyspace-tables.cql
-echo "USE $KEYSPACE_NAME;" >> create-keyspace-tables.cql
-cat /cql/create-tables.cql >> create-keyspace-tables.cql
-cqlsh -f create-keyspace-tables.cql $CASSANDRA_CONTACT_POINT
+. ./usr/local/bin/init-dev
 
 executeScripts /cql/*_added_entity_*.cql
 executeScripts /cql/migration/V*.cql
