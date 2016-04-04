@@ -1,10 +1,13 @@
 package fr.ippon.tatami.domain;
 
+import com.datastax.driver.mapping.annotations.Table;
+
 import java.io.Serializable;
 
 /**
  * A Tag.
  */
+@Table(name = "tag")
 public class Tag implements Serializable {
 
     private String name;
