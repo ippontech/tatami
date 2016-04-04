@@ -85,8 +85,8 @@ public class StatusUpdateService {
     @Inject
     private CounterRepository counterRepository;
 
-//    @Inject
-//    private SearchService searchService;
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private DomainlineRepository domainlineRepository;
@@ -277,7 +277,7 @@ public class StatusUpdateService {
 
             // Add to the searchStatus engine
             // Commenting out for now.
-//            searchService.addStatus(status);
+            searchService.addStatus(status);
 
             // add status to the company wall
             addToCompanyWall(status, group);

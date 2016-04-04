@@ -45,8 +45,8 @@ public class GroupService {
     @Inject
     private UserRepository userRepository;
 
-//    @Inject
-//    private SearchService searchService;
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private FriendRepository friendRepository;
@@ -55,13 +55,13 @@ public class GroupService {
     public void createGroup(String name, String description, boolean publicGroup) {
         log.debug("Creating group : {}", name);
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, currentUser.getLogin());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getLogin(), groupId);
         Group group = getGroupById(domain, groupId);
-        //groupSearchRepository.save(group);
+        searchService.addGroup(group);
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
@@ -71,8 +71,8 @@ public class GroupService {
                 group.getName(),
                 group.getDescription(),
                 group.isArchivedGroup());
-//        searchService.removeGroup(group);
-//        searchService.addGroup(group);
+        searchService.removeGroup(group);
+        searchService.addGroup(group);
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String login) {
@@ -83,8 +83,8 @@ public class GroupService {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByLogin(member.getKey()).get();
             dto.setLogin(user.getLogin());
-//            dto.setUsername(user.getUsername());
-//            dto.setAvatar(user.getAvatar());
+            dto.setUsername(user.getUsername());
+            dto.setAvatar(user.getAvatar());
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
@@ -107,11 +107,11 @@ public class GroupService {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findOneByLogin(member.getKey()).get();
-            if (user.getLogin() == userWanted.getLogin()) {
+            if (user.getLogin().equals(userWanted.getLogin())) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setLogin(user.getLogin());
-//                dto.setUsername(user.getUsername());
-//                dto.setAvatar(user.getAvatar());
+                dto.setUsername(user.getUsername());
+                dto.setAvatar(user.getAvatar());
                 dto.setFirstName(user.getFirstName());
                 dto.setLastName(user.getLastName());
                 dto.setRole(member.getValue());

@@ -54,6 +54,10 @@ public class UserService {
     @Inject
     private MailDigestRepository mailDigestRepository;
 
+    public Optional<User> getCurrentUser() {
+        return userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+    }
+
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         userRepository.findOneByActivationKey(key)
