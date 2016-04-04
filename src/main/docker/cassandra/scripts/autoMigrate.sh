@@ -17,7 +17,7 @@ function waitForClusterConnection() {
     while [ $? -ne 0 ] && [ "$retryCount" -ne "$maxRetry" ]; do
         log 'cassandra not reachable yet. sleep and retry. retryCount =' $retryCount
         sleep 5
-        ((retryCount+=1))
+        retryCount+=1
         cqlsh -e "Describe KEYSPACES;" $CASSANDRA_CONTACT_POINT &>/dev/null
     done
 

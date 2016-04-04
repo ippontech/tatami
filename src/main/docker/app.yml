@@ -11,5 +11,5 @@ services:
             - 8080:8080
     tatami-cassandra:
         extends:
-            file: cassandra.yml
+            file: cassandra-cluster.yml
             service: tatami-cassandra

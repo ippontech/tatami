@@ -1,3 +1,6 @@
+# Start a Cassandra cluster with replication factor = 1 for all tables
+# automatically create all the tables and apply all the migration scripts
+# *use for local development*
 version: '2'
 services:
     tatami-cassandra:
@@ -21,6 +24,6 @@ services:
             - tatami-cassandra
         build:
             context: .
-            dockerfile: cassandra/Cassandra-migration.Dockerfile
+            dockerfile: cassandra/Cassandra-AutoMigration.Dockerfile
         volumes:
             - ../resources/config/cql:/cql:ro

@@ -10,7 +10,7 @@ services:
         container_name: tatami-cassandra
         build:
             context: .
-            dockerfile: cassandra/Cassandra-Prod.Dockerfile
+            dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
         # volumes:
         #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data
         links:
@@ -24,7 +24,7 @@ services:
     tatami-cassandra-node:
         build:
             context: .
-            dockerfile: cassandra/Cassandra-Prod.Dockerfile
+            dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
         links:
             - tatami-cassandra:seed
             - jhipster-opscenter:opscenter
