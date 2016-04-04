@@ -1,16 +1,16 @@
 angular.module('tatamiJHipsterApp')
-.controller('WelcomeController', ['$scope', '$modalInstance', '$rootScope', function($scope, $modalInstance, $rootScope) {
+.controller('WelcomeController', ['$scope', '$uibModalInstance', '$rootScope', function($scope, $uibModalInstance, $rootScope) {
     $scope.close = function() {
-        $modalInstance.dismiss();
+        $uibModalInstance.dismiss();
     };
 
     $scope.launchPresentation = function() {
         $rootScope.$broadcast('start-tour');
-        $modalInstance.dismiss();
+        $uibModalInstance.dismiss();
     };
 
     // Handles closing the modal via escape and clicking outside the modal
-    $modalInstance.result.finally(function() {
+    $uibModalInstance.result.finally(function() {
         $scope.$state.go('timelineHome.sidebarHome.timeline');
     });
 }]);
