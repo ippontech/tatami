@@ -3,9 +3,6 @@
 # Protect from iterating on empty directories
 shopt -s nullglob
 
-CASSANDRA_CONTACT_POINT="tatami-cassandra"
-KEYSPACE_NAME="TatamiJHipster"
-
 function log {
     echo "[$(date)]: $*"
 }
