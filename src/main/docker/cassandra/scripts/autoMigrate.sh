@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Orchestrate the automatic execution of all the cql migration scripts when starting the cluste
+# for local development
+
 # Protect from iterating on empty directories
 shopt -s nullglob
 

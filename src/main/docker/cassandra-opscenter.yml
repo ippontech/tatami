@@ -1,3 +1,6 @@
+# Start a Cassandra cluster with replication factor = 3 for all tables
+# and an opscenter application to monitor the cluster
+# *use for production*
 version: '2'
 services:
     jhipster-opscenter:
@@ -11,6 +14,9 @@ services:
         build:
             context: .
             dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
+        environment:
+            - KEYSPACE_NAME=TatamiJHipster
+            - CASSANDRA_CONTACT_POINT=tatami-cassandra
         # volumes:
         #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data
         links:
