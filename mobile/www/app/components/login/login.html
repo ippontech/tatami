@@ -1,5 +1,5 @@
 <ion-view name="login-view" view-title="Login">
-    <ion-content ng-if="!vm.loginProgress" class="has-header has-subheader">
+    <ion-content class="has-header has-subheader">
         <div>
             <div class="list list-inset">
                 <label class="item item-input">
@@ -27,12 +27,6 @@
             <div ng-if="vm.failed" class="bar bar-assertive">
                 <h1 class="title">Failed to log in!</h1>
             </div>
-        </div>
-    </ion-content>
-    <ion-content ng-if="vm.loginProgress" class="has-header">
-        <div class="text-center">
-            <h4 class="title">Login in progress !</h4>
-            <img src="img/loading.gif" width="50" height="50"/>
         </div>
     </ion-content>
 </ion-view>

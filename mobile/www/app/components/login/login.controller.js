@@ -4,8 +4,8 @@
     angular.module('tatami')
         .controller('LoginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'clientId', 'LoginService', 'PathService'];
-    function loginCtrl($scope, $state, $http, $localStorage, clientId, LoginService, PathService) {
+    loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'clientId', 'LoginService', 'PathService', '$ionicLoading'];
+    function loginCtrl($scope, $state, $http, $localStorage, clientId, LoginService, PathService, $ionicLoading) {
         var vm = this;
         vm.clientId = clientId.data.stringList[0];
         vm.user = {
@@ -13,7 +13,6 @@
         };
         vm.shown = false;
         vm.failed = false;
-        vm.loginProgress = false;
         vm.login = login;
         vm.googleLogin = googleLogin;
 
@@ -47,7 +46,10 @@
             function onStart(event) {
                 if(event.url.indexOf('http://localhost/callback') === 0) {
                     ref.close();
-                    vm.loginProgress = true;
+                    $ionicLoading.show({
+                        template: 'Login in progress...',
+                        hideOnStateChange: true
+                    });
                     var requestToken = event.url.split("code=")[1];
                     $http({
                         url: PathService.buildPath('/tatami/rest/oauth/token'),
