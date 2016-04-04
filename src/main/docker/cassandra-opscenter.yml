@@ -15,7 +15,6 @@ services:
             context: .
             dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
         environment:
-            - KEYSPACE_NAME=TatamiJHipster
             - CASSANDRA_CONTACT_POINT=tatami-cassandra
         # volumes:
         #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data

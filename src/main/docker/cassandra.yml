@@ -23,7 +23,6 @@ services:
         links:
             - tatami-cassandra
         environment:
-            - KEYSPACE_NAME=TatamiJHipster
             - CASSANDRA_CONTACT_POINT=tatami-cassandra
         build:
             context: .

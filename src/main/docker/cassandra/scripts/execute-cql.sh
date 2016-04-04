@@ -4,30 +4,24 @@ function log {
     echo "[$(date)]: $*"
 }
 
+KEYSPACE_NAME=tatamijhipster
+
 #usage checks
 if [ -z "$1" ]
   then
     echo "usage: ./execute-cql cqlFile.cql"
     exit 1
 fi
-if [ -z "$KEYSPACE_NAME" ]
-  then
-    echo "KEYSPACE_NAME env variable must be defined"
-    exit 1
-fi
 if [ -z "$CASSANDRA_CONTACT_POINT" ]
   then
-    echo "CASSANDRA_CONTACT_POINT env variable must be defined"
+    echo "CASSANDRA_CONTACT_POINT environment variable must be defined"
     exit 1
 fi
 
 cqlFile=$1
-filename=${cqlFile##*/}
 
-log "execute: " $filename
-echo "USE $KEYSPACE_NAME;" > $filename
-cat $cqlFile >> $filename
-cqlsh -f $filename $CASSANDRA_CONTACT_POINT
+log "execute: " $cqlFile
+cqlsh -k $KEYSPACE_NAME -f $cqlFile $CASSANDRA_CONTACT_POINT
 
 if [ $? -ne 0 ]; then
     log "fail to apply script " $filename
