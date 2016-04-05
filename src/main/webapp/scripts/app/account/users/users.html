@@ -4,56 +4,18 @@
             <h2 translate="account.users.title"></h2>
             <div class="tabMenu">
                 <ul class="nav nav-tabs">
-                    <li ng-class="{ 'active': $state.current.name === 'account.users.following' }">
-                        <a ui-sref="account.users.following" translate="account.users.following"></a>
+                    <li ng-class="{ 'active': $state.current.name === 'following' }">
+                        <a ui-sref="following" translate="account.users.following"></a>
                     </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.users.recommended' }">
-                        <a ui-sref="account.users.recommended" translate="account.users.recommended"></a>
+                    <li ng-class="{ 'active': $state.current.name === 'recommendedusers' }">
+                        <a ui-sref="recommendedusers" translate="account.users.recommended"></a>
                     </li>
-                    <li ng-class="{ 'active': $state.current.name === 'account.users.search' }">
-                        <a ui-sref="account.users.search" translate="account.users.search"></a>
+                    <li ng-class="{ 'active': $state.current.name === 'searchusers' }">
+                        <a ui-sref="searchusers" translate="account.users.search"></a>
                     </li>
                 </ul>
             </div>
-            <div>
-                <form class="row-fluid littleMargeBot">
-                    <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.users.search' | translate }}">
-                </form>
-                <div ng-repeat="user in usersList">
-                    <div class="useritem">
-                        <div class="pull-left background-image-fffix">
-                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
-                        </div>
-                        <h4>
-                    <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
-                        <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                    </span>
-                    <span ng-show="!user.activated">
-                        <span ng-class="!user.activated ? 'badge hidden-phone progress-bar-danger' : ''" class="glyphicon glyphicon-off">
-                            {{ 'account.users.deactivated' | translate }}
-                        </span>
-                    </span>
-                            <a ui-sref="home.profile.statuses({ username: user.username })">
-                                <strong>
-                                    {{ user.firstName + ' ' + user.lastName }}
-                                </strong>
-                            </a>
-                            <br>
-                            <a ui-sref="home.profile.statuses({ username: user.username })">
-                                <small>
-                                    @{{ user.username }}
-                                </small>
-                            </a>
-                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
-                        <span class="glyphicon glyphicon-minus" translate="admin.deactivate"></span>
-                    </span>
-                    <span ng-click="deactivate(user, $index)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
-                        <span class="glyphicon glyphicon-plus" translate="admin.activate"></span>
-                    </span>
-                        </h4>
-                    </div>
-                </div>
-            </div>
+            <div ui-view="list"></div>
         </div>
     </div>
 </div>
