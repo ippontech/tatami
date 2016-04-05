@@ -1,0 +1,6 @@
+
+<form class="littleMargeBot">
+    <input ng-model="search.term" ng-trim="false" ng-change="search()" type="text" class="search-query form-control" autocomplete="off" placeholder="{{ 'account.users.search' | translate }}">
+</form>
+<tatami-users-list users-list="usersList"></tatami-users-list>
+
