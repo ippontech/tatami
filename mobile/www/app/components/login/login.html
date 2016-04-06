@@ -1,6 +1,6 @@
 <ion-view name="login-view" view-title="Login">
     <ion-content class="has-header has-subheader">
-        <div>
+        <form ng-submit="vm.login()">
             <div class="list list-inset">
                 <label class="item item-input">
                     <input type="text" placeholder="E-mail" ng-model="vm.user.email">
@@ -11,8 +11,7 @@
             </div>
 
             <div class="padding">
-                <button ng-disabled="!vm.user.email && !vm.user.password" class="button button-block button-calm"
-                        ng-click="vm.login()">Login
+                <button ng-disabled="!vm.user.email && !vm.user.password" class="button button-block button-calm" type="submit">Login
                 </button>
             </div>
             <div class="padding">
@@ -27,6 +26,6 @@
             <div ng-if="vm.failed" class="bar bar-assertive">
                 <h1 class="title">Failed to log in!</h1>
             </div>
-        </div>
+        </form>
     </ion-content>
 </ion-view>
