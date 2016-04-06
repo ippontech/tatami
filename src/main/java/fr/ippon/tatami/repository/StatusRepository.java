@@ -103,7 +103,7 @@ public class StatusRepository {
 
 
     public Status createStatus(String username,
-                               String email,
+                               String domain,
                                boolean statusPrivate,
                                Group group,
                                Collection<String> attachmentIds,
@@ -119,7 +119,6 @@ public class StatusRepository {
         status.setUsername(username);
         status.setType(StatusType.STATUS);
         status.setUsername(username);
-        String domain = DomainUtil.getDomainFromEmail(email);
         status.setDomain(domain);
         status.setStatusPrivate(statusPrivate);
 

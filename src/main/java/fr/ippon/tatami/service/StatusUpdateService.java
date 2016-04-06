@@ -231,8 +231,8 @@ public class StatusUpdateService {
         String domain = DomainUtil.getDomainFromEmail(email);
 
         Status status =
-                statusRepository.createStatus(currentUsername,
-                        username,
+                statusRepository.createStatus(username,
+                        domain,
                         statusPrivate,
                         group,
                         attachmentIds,
