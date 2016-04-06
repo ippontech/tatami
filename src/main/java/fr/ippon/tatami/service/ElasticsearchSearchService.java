@@ -59,7 +59,7 @@ public class ElasticsearchSearchService implements SearchService {
 
     @Inject
     private GroupRepository groupRepository;
-    
+
     @Override
     public boolean reset() {
         log.info("Reseting ElasticSearch Index");

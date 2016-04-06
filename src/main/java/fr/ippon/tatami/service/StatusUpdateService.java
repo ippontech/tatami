@@ -97,6 +97,9 @@ public class StatusUpdateService {
     @Inject
     private AtmosphereService atmosphereService;
 
+    @Inject
+    private UserService userService;
+
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
@@ -222,12 +225,11 @@ public class StatusUpdateService {
         }
         String currentLogin;
         if (user == null) {
-            currentLogin = SecurityUtils.getCurrentUserLogin();
+            currentLogin = userService.getCurrentUser().get().getEmail();
         } else {
-            currentLogin = user.getLogin();
+            currentLogin = user.getEmail();
         }
-        String username = userRepository.findOneByLogin(currentLogin).get().getUsername();
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        String username = userService.getCurrentUser().get().getUsername();
 
         Status status =
                 statusRepository.createStatus(currentLogin,

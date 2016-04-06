@@ -194,7 +194,7 @@ public class TimelineService {
         for (String statusId : line) {
             AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
             if (abstractStatus != null) {
-                User statusUser = userRepository.findOneByLogin(abstractStatus.getLogin()).get();
+                User statusUser = userRepository.findOneByLogin(abstractStatus.getUsername()).get();
                 if (statusUser != null) {
                     // Security check
                     // bypass the security check when no user is logged in
@@ -431,7 +431,7 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getTimeline(int nbStatus, String start, String finish) {
-        String login = SecurityUtils.getCurrentUserLogin();
+        String login = userService.getCurrentUser().get().getEmail();
         return getUserTimeline(login, nbStatus, start, finish);
     }
 
