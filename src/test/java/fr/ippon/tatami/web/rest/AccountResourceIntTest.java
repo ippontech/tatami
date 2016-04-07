@@ -246,10 +246,11 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
     @Test
     @Transactional
+    // Duplicate usernames should be allowed:
     public void testRegisterDuplicateLogin() throws Exception {
         // Good
         UserDTO u = new UserDTO(
-            "alice",             // username
+            "alice",                // username
             "password",             // password
             "avatar",               // avatar
             "Alice",                // firstName
@@ -285,10 +286,11 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().isCreated());
 
+        // Duplicate usernames should be allowed:
         Optional<User> userDup = userRepository.findOneByEmail("alicejr@example.com");
-        assertThat(userDup.isPresent()).isFalse();
+        assertThat(userDup.isPresent()).isTrue();
     }
 
     @Test
@@ -334,8 +336,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByEmail("john@example.com");
-        assertThat(userDup.isPresent()).isFalse();
+        Optional<User> user = userRepository.findOneByEmail("john@example.com");
+        assertThat(user.get().getUsername().contains("john"));
     }
 
     @Test
