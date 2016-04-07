@@ -7,6 +7,7 @@
     "angular-marked": "~1.0.1",
     "angular-animate": "~1.5.3",
     "angular-sanitize": "~1.5.3",
-    "angular-resource": "~1.5.3"
+    "angular-resource": "~1.5.3",
+    "ngCordova": "~0.1.24-alpha"
   }
 }
