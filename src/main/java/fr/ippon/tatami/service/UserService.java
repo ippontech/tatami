@@ -8,6 +8,7 @@ import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 
@@ -46,6 +47,9 @@ public class UserService {
 
     @Inject
     private MailDigestRepository mailDigestRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -154,7 +158,7 @@ public class UserService {
 
     public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle,
                                       String phoneNumber) {
-        userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
@@ -169,7 +173,7 @@ public class UserService {
 
     public void updateUserPreferences(boolean mentionEmail, String rssUid,
                                       boolean weeklyDigest, boolean dailyDigest) {
-        userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             u.setMentionEmail(mentionEmail);
             u.setRssUid(rssUid);
             u.setWeeklyDigest(weeklyDigest);
@@ -189,7 +193,7 @@ public class UserService {
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
@@ -207,7 +211,7 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
@@ -219,7 +223,7 @@ public class UserService {
      */
     public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String rssUid = currentUser.getRssUid();
         if (booleanPreferencesRssTimeline) {
             // if we already have an rssUid it means it's already activated :
@@ -264,7 +268,7 @@ public class UserService {
      * update registration to weekly digest email.
      */
     public void updateWeeklyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setWeeklyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
@@ -292,7 +296,7 @@ public class UserService {
      * Update registration to daily digest email.
      */
     public void updateDailyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setDailyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 

@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.MentionFriend;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,9 @@ public class FriendshipService {
     @Inject
     private MentionlineRepository mentionlineRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     /**
      * Follow a user.
      *
@@ -52,7 +56,7 @@ public class FriendshipService {
      */
     public boolean followUser(String usernameToFollow) {
         log.debug("Following user : {}", usernameToFollow);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         User followedUser = userRepository.findOneByUsername(usernameToFollow).get();
         if (followedUser != null && !followedUser.equals(currentUser)) {
             if (counterRepository.getFriendsCounter(currentUser.getUsername()) > 0) {
@@ -85,7 +89,7 @@ public class FriendshipService {
      */
     public boolean unfollowUser(String usernameToUnfollow) {
         log.debug("Removing followed user : {}", usernameToUnfollow);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         User userToUnfollow = userRepository.findOneByUsername(usernameToUnfollow).get();
         return unfollowUser(currentUser, userToUnfollow);
     }
@@ -156,7 +160,7 @@ public class FriendshipService {
     public boolean isFollowed(String userUsername) {
         log.debug("Retrieving if you follow this user : {}", userUsername);
         boolean isFollowed = false;
-        User user = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         if (null != user && !userUsername.equals(user.getUsername())) {
             Collection<String> users = getFollowerIdsForUser(userUsername);
             if (null != users && users.size() > 0) {
@@ -177,7 +181,7 @@ public class FriendshipService {
     public boolean isFollowing(String userUsername) {
         log.debug("Retrieving if you follow this user : {}", userUsername);
         boolean isFollowing = false;
-        User user = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         if (null != user && !userUsername.equals(user.getUsername())) {
 //            Collection<User> users = getFriendsForUser(user.getUsername());
             Collection<User> users = getFriendsForUser(user.getUsername());
@@ -196,7 +200,7 @@ public class FriendshipService {
 
 //    This method is on the chopping block to be removed. It seems that we dont need a username column.
 //    private String getUsernameFromUsername(String username) {
-//        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+//        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 //        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
 //        return DomainUtil.getUsernameFromUsernameAndDomain(username, domain);
 //    }

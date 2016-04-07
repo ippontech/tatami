@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.TrendService;
@@ -47,6 +48,9 @@ public class TagResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
 //    @Inject
 //    private Authentication authenticationService;
@@ -120,7 +124,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public TagDTO lookupTag(@RequestParam("tag_name") String tagname) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getUsername());
         TagDTO tag = new TagDTO();
         tag.setName(tagname);
@@ -139,7 +143,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public Collection<TagDTO> getFollowedTags() {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getUsername());
         Collection<TagDTO> tags = new ArrayList<TagDTO>();
         for (String followedTag : followedTags) {
@@ -160,7 +164,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public Collection<TagDTO> getPopularTags() {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         List<TrendDTO> trends = trendService.getCurrentTrends(domain);
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getUsername());
@@ -186,7 +190,7 @@ public class TagResource {
                                    @RequestParam(required = false, value = "user") String username,
                                    @RequestParam(required = false, value = "search") String search) {
         Collection<TagDTO> tags = new ArrayList<TagDTO>();
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getUsername());
         Collection<String> tagNames;
@@ -194,10 +198,10 @@ public class TagResource {
         if (popular != null) {
             List<TrendDTO> trends;
             User user = null;
-            if (username != null) user = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+            if (username != null) user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 
             userRepository
-                .findOneByUsername(SecurityUtils.getCurrentUser().getUsername());
+                .findOneByEmail(userDetailsService.getUserEmail());
             if (user != null) {
                 trendService.getTrendsForUser(user.getUsername());
                 trends = trendService.getTrendsForUser(user.getUsername());
@@ -259,7 +263,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public TagDTO getTag(@PathVariable("tag") String tagName) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Collection<String> followedTags = userTagRepository.findTags(currentUser.getUsername());
         TagDTO tag = new TagDTO();
         tag.setName(tagName);

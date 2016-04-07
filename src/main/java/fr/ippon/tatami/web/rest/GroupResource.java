@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
@@ -62,6 +63,9 @@ public class GroupResource {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
 
     /**
      * Get groups of the current user.
@@ -72,7 +76,7 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Collection<Group> getGroups() {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         return groupService.getGroupsForUser(currentUser);
     }
 
@@ -85,7 +89,7 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Group getGroup(@PathVariable("groupId") String groupId) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         Group publicGroup = groupService.getGroupById(domain, UUID.fromString(groupId));
         if (publicGroup != null && publicGroup.isPublicGroup()) {
@@ -132,7 +136,7 @@ public class GroupResource {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return null;
             } else {
-                String domain = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get().getDomain();
+                String domain = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getDomain();
                 group.setDomain(domain);
                 group.setName(groupEdit.getName());
                 group.setDescription(groupEdit.getDescription());
@@ -233,7 +237,7 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Collection<Group> suggestions() {
-        String username = SecurityUtils.getCurrentUserUsername();
+        String username = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
         return groupService.buildGroupList(suggestionService.suggestGroups(username));
     }
 
@@ -248,7 +252,7 @@ public class GroupResource {
     @Timed
     public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
@@ -273,7 +277,7 @@ public class GroupResource {
     @Timed
     public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
@@ -313,7 +317,7 @@ public class GroupResource {
     @Timed
     public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
         User userToAdd = userRepository.findOneByUsername(username).get();
 
@@ -347,7 +351,7 @@ public class GroupResource {
     @Timed
     public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
         User userToremove = userRepository.findOneByUsername(username).get();
 

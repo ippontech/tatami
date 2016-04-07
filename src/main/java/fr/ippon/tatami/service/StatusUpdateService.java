@@ -6,6 +6,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -96,6 +97,9 @@ public class StatusUpdateService {
 
     @Inject
     private AtmosphereService atmosphereService;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -222,7 +226,7 @@ public class StatusUpdateService {
         }
         String currentUsername;
         if (user == null) {
-            currentUsername = SecurityUtils.getCurrentUserUsername();
+            currentUsername = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
         } else {
             currentUsername = user.getUsername();
         }

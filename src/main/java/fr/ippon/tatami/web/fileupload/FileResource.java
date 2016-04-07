@@ -7,6 +7,7 @@ import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
@@ -68,6 +69,9 @@ public class FileResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     @PostConstruct
     public void init() {
@@ -207,7 +211,7 @@ public class FileResource {
 
         uploadedFiles.add(uploadedFile);
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);
@@ -242,7 +246,7 @@ public class FileResource {
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
         uploadedFiles.add(uploadedFile);
         if (avatar.getAvatarId() != null) {
-            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             currentUser.setAvatar(avatar.getAvatarId());
             userRepository.save(currentUser);
         }
@@ -268,7 +272,7 @@ public class FileResource {
 
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);

@@ -6,6 +6,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
@@ -47,6 +48,9 @@ public class TimelineResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
 
     /**
@@ -182,7 +186,7 @@ public class TimelineResource {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds, status.getGeoLocalization());
         } else {
-            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
             Group group = null;
             UUID statusGroupId = UUID.fromString(status.getGroupId());

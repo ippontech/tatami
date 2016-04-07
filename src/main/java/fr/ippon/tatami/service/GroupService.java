@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class GroupService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
 //    @Inject
 //    private SearchService searchService;
 
@@ -54,7 +58,7 @@ public class GroupService {
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
         log.debug("Creating group : {}", name);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, currentUser.getUsername());
@@ -156,7 +160,7 @@ public class GroupService {
     }
 
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         return getGroupsWhereUserIsAdmin(currentUser);
     }
 
@@ -208,7 +212,7 @@ public class GroupService {
 
 
     public Collection<Group> buildGroupList(Collection<Group> groups) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         return buildGroupList(currentUser, groups);
     }
 
@@ -222,7 +226,7 @@ public class GroupService {
     }
 
     public Group buildGroup(Group group) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         return buildGroup(currentUser, group);
     }
 
@@ -295,7 +299,7 @@ public class GroupService {
     }
 
     public Group buildGroupIds(UUID groupId) {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         return buildGroupIds(currentUser, groupId);
     }
 

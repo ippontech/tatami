@@ -6,6 +6,7 @@ import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
@@ -74,6 +75,9 @@ public class UserResource {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     /**
      * POST  /users -> Creates a new user.
@@ -222,7 +226,7 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        String username = SecurityUtils.getCurrentUserUsername();
+        String username = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
         return suggestionService.suggestUsers(username);
     }
 

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.KeyAndPasswordDTO;
@@ -54,6 +55,8 @@ public class AccountResource {
     @Inject
     private PasswordEncoder passwordEncoder;
 
+    @Inject
+    private UserDetailsService userDetailsService;
 
 
     /**
@@ -137,7 +140,7 @@ public class AccountResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
-            .findOneByUsername(SecurityUtils.getCurrentUser().getUsername())
+            .findOneByEmail(userDetailsService.getUserEmail())
             .map(u -> {
                 userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber());
@@ -207,7 +210,7 @@ public class AccountResource {
     @Timed
     public Preferences getPreferences() {
         log.debug("REST request to get account's preferences");
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 
         return new Preferences(currentUser);
     }
@@ -224,7 +227,7 @@ public class AccountResource {
         log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
-            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             currentUser.setMentionEmail(newPreferences.getMentionEmail());
             currentUser.setDailyDigest(newPreferences.getDailyDigest());
             currentUser.setWeeklyDigest(newPreferences.getWeeklyDigest());
@@ -268,7 +271,7 @@ public class AccountResource {
 //    @ResponseBody
 //    @Timed
 //    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
-//        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+//        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 //        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
 //        if (userService.isDomainHandledByLDAP(domain)) {
 //            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -289,7 +292,7 @@ public class AccountResource {
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
         log.debug("REST request to set account's password");
         try {
-            User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!passwordEncoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {

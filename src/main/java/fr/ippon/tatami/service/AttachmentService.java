@@ -8,6 +8,7 @@ import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -47,9 +48,12 @@ public class AttachmentService {
     @Inject
     private Environment env;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     public String createAttachment(Attachment attachment) throws StorageSizeException {
 
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
@@ -98,7 +102,7 @@ public class AttachmentService {
 
     public void deleteAttachment(Attachment attachment) {
         log.debug("Removing attachment : {}", attachment);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 
         for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getUsername())) {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
@@ -114,7 +118,7 @@ public class AttachmentService {
     }
 
     public Collection<Long> getDomainQuota() {
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         DomainConfiguration domainConfiguration =
                 domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 

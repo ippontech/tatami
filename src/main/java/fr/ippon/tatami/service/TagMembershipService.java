@@ -5,6 +5,7 @@ import fr.ippon.tatami.repository.TagFollowerRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.TagDTO;
 import org.slf4j.Logger;
@@ -35,9 +36,12 @@ public class TagMembershipService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     public boolean followTag(TagDTO tag) {
         log.debug("Following tag : {}", tag);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getUsername())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
                 log.debug("User {} already follows tag {}", currentUser.getUsername(), tag);
@@ -55,7 +59,7 @@ public class TagMembershipService {
 
     public boolean unfollowTag(TagDTO tag) {
         log.debug("Removing followed tag : {}", tag);
-        User currentUser = userRepository.findOneByUsername(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         boolean tagAlreadyFollowed = false;
         for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getUsername())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
