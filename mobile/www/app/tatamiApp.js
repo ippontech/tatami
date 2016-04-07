@@ -1,6 +1,21 @@
-angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngResource', 'ngCordova'])
+(function() {
+    'use strict';
 
-    .run(['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', 'ProfileService', '$rootScope', function ($ionicPlatform, $state, $localStorage, $ionicHistory, ProfileService, $rootScope) {
+    angular.module('tatami', [
+        'ionic',
+        'tatami.services',
+        'tatami.providers',
+        'ngResource',
+        'ngCordova',
+        'hc.marked'
+    ]);
+
+    angular.module('tatami')
+        .run(tatamiRun)
+        .config(tatamiConfig);
+
+    tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', 'ProfileService', '$rootScope'];
+    function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, ProfileService, $rootScope) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -36,15 +51,15 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
             console.log(token);
             return token && token.expires && token.expires > new Date().getTime()
         }
-    }])
+    }
 
-    .config(function ($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider, $httpProvider) {
-
+    tatamiConfig.$inject = ['$resourceProvider', '$stateProvider', '$urlRouterProvider', '$compileProvider', '$httpProvider'];
+    function tatamiConfig($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider, $httpProvider) {
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
         $stateProvider
-            // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
             .state('tatami', {
                 url: '',
                 abstract: true,
@@ -55,5 +70,5 @@ angular.module('tatami', ['ionic', 'tatami.services', 'tatami.providers', 'ngRes
 
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
-
-    });
+    }
+})();
