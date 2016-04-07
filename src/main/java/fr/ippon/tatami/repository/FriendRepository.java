@@ -22,20 +22,20 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS;
 public class FriendRepository extends AbstractFriendRepository {
 
     @Override
-    @CacheEvict(value = "friends-cache", key = "#username")
-    public void addFriend(String username, String friendUsername) {
-        super.addFriend(username, friendUsername);
+    @CacheEvict(value = "friends-cache", key = "#email")
+    public void addFriend(String email, String friendEmail) {
+        super.addFriend(email, friendEmail);
     }
 
     @Override
-    @CacheEvict(value = "friends-cache", key = "#username")
-    public void removeFriend(String username, String friendUsername) {
-        super.removeFriend(username, friendUsername);
+    @CacheEvict(value = "friends-cache", key = "#email")
+    public void removeFriend(String email, String friendEmail) {
+        super.removeFriend(email, friendEmail);
     }
 
     @Cacheable("friends-cache")
-    public List<String> findFriendsForUser(String username) {
-        return super.findFriends(username);
+    public List<String> findFriendsForUser(String email) {
+        return super.findFriends(email);
     }
 
     @Override

@@ -21,31 +21,31 @@ public abstract class AbstractFriendRepository {
 
     protected abstract String getFriendsTable();
 
-    public void addFriend(String username, String friendTag) {
+    public void addFriend(String email, String friendTag) {
         Statement statement = QueryBuilder.insertInto(getFriendsTable())
-                .value("username", username)
-                .value("friendUsername", friendTag);
+                .value("email", email)
+                .value("friendEmail", friendTag);
         session.execute(statement);
 
     }
 
-    public void removeFriend(String username, String friendTag) {
+    public void removeFriend(String email, String friendTag) {
         Statement statement = QueryBuilder.delete().from(getFriendsTable())
-                .where(eq("username", username))
-                .and(eq("friendUsername", friendTag));
+                .where(eq("email", email))
+                .and(eq("friendEmail", friendTag));
         session.execute(statement);
     }
 
-    public List<String> findFriends(String username) {
+    public List<String> findFriends(String email) {
         Statement statement = QueryBuilder.select()
-                .column("friendUsername")
+                .column("friendEmail")
                 .from(getFriendsTable())
-                .where(eq("username", username));
+                .where(eq("email", email));
         ResultSet results = session.execute(statement);
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("friendUsername"))
+                .map(e -> e.getString("friendEmail"))
                 .collect(Collectors.toList());
     }
 }

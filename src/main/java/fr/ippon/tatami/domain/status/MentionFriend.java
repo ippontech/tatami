@@ -20,6 +20,10 @@ public class MentionFriend implements AbstractStatus {
 
     @NotNull
     @Column
+    private String email;
+
+    @NotNull
+    @Column
     private String username;
 
     @NotNull
@@ -101,10 +105,30 @@ public class MentionFriend implements AbstractStatus {
         this.followerUsername = followerUsername;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String followerEmail;
+
+    public String getFollowerEmail() {
+        return followerEmail;
+    }
+
+    public void setFollowerEmail(String followerEmail) {
+        this.followerEmail = followerEmail;
+    }
+
+
+
     @Override
     public String toString() {
         return "MentionFriend{" +
-                "followerUsername='" + followerUsername + '\'' +
+                "followerEmail='" + followerEmail + '\'' +
                 "} " + super.toString();
     }
 }

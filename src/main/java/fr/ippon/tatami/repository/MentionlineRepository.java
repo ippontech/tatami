@@ -41,8 +41,8 @@ public class MentionlineRepository extends AbstractLineRepository {
     }
 
 
-    public void addStatusToMentionline(String mentionedUsername, String statusId) {
-        addStatus(mentionedUsername, ColumnFamilyKeys.MENTIONLINE, statusId);
+    public void addStatusToMentionline(String mentionedEmail, String statusId) {
+        addStatus(mentionedEmail, ColumnFamilyKeys.MENTIONLINE, statusId);
     }
 
     public void removeStatusesFromMentionline(String mentionedUsername, Collection<String> statusIdsToDelete) {

@@ -79,13 +79,13 @@ public class GroupService {
 //        searchService.addGroup(group);
     }
 
-    public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String username) {
+    public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendUsernames = friendRepository.findFriendsForUser(username);
+        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
-            User user = userRepository.findOneByUsername(member.getKey()).get();
+            User user = userRepository.findOneByEmail(member.getKey()).get();
             dto.setUsername(user.getUsername());
 //            dto.setUsername(user.getUsername());
 //            dto.setAvatar(user.getAvatar());
@@ -96,7 +96,7 @@ public class GroupService {
             if (friendUsernames.contains(user.getUsername())) {
                 dto.setFriend(true);
             }
-            if (username.equals(user.getUsername())) {
+            if (email.equals(user.getEmail())) {
                 dto.setYou(true);
             }
             userGroupDTOs.add(dto);
@@ -110,7 +110,7 @@ public class GroupService {
     public UserGroupDTO getMembersForGroup(UUID groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            User user = userRepository.findOneByUsername(member.getKey()).get();
+            User user = userRepository.findOneByEmail(member.getKey()).get();
             if (user.getUsername() == userWanted.getUsername()) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setUsername(user.getUsername());

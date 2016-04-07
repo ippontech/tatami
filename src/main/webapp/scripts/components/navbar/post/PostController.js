@@ -162,7 +162,7 @@ PostModule.controller('PostController', [
             $scope.current.reply = defined;
             $scope.currentStatus = defined ? status : {};
             if(defined) {
-                $scope.status.content = '@' + $scope.currentStatus.username + ' ';
+                $scope.status.content = '@' + $scope.currentStatus.email + ' ';
                 $scope.status.replyTo = status.statusId;
             }
             else {
@@ -201,7 +201,7 @@ PostModule.controller('PostController', [
         };
 
         $scope.selectUser = function(item) {
-            return '@' + item.username;
+            return '@' + item.email;
         };
 
         $scope.fetchTags = function(term) {

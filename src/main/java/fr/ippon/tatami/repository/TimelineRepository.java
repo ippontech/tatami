@@ -63,15 +63,15 @@ public class TimelineRepository extends AbstractLineRepository {
 
 
     public boolean isStatusInTimeline(String username, String statusId) {
-        return findByUsernameAndStatusId(TIMELINE_CF,username,UUID.fromString(statusId));
+        return findByKeyAndStatusId(TIMELINE_CF,username,UUID.fromString(statusId));
     }
 
-    public void addStatusToTimeline(String username, String statusId) {
-        addStatus(username,TIMELINE_CF,statusId);
+    public void addStatusToTimeline(String email, String statusId) {
+        addStatus(email,TIMELINE_CF,statusId);
     }
 
-    public void removeStatusesFromTimeline(String username, Collection<String> statusIdsToDelete) {
-        removeStatuses(username,TIMELINE_CF,statusIdsToDelete);
+    public void removeStatusesFromTimeline(String email, Collection<String> statusIdsToDelete) {
+        removeStatuses(email,TIMELINE_CF,statusIdsToDelete);
     }
 
     public void shareStatusToTimeline(String sharedByUsername, String timelineUsername, Share share) {
@@ -87,8 +87,8 @@ public class TimelineRepository extends AbstractLineRepository {
         session.executeAsync(batch);
     }
 
-    public List<String> getTimeline(String username, int size, String start, String finish) {
-        return getLineFromTable(TIMELINE_CF,username,size,start,finish);
+    public List<String> getTimeline(String email, int size, String start, String finish) {
+        return getLineFromTable(TIMELINE_CF,email,size,start,finish);
     }
 
     public void deleteTimeline(String username) {

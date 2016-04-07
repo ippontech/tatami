@@ -33,29 +33,29 @@ public class FollowerRepository extends AbstractFollowerRepository {
     Session session;
 
     @Override
-    @CacheEvict(value = "followers-cache", key = "#username")
-    public void addFollower(String username, String followerUsername) {
-        super.addFollower(username, followerUsername);
+    @CacheEvict(value = "followers-cache", key = "#email")
+    public void addFollower(String email, String followerEmail) {
+        super.addFollower(email, followerEmail);
     }
 
     @Override
-    @CacheEvict(value = "followers-cache", key = "#username")
-    public void removeFollower(String username, String followerUsername) {
-        super.removeFollower(username, followerUsername);
+    @CacheEvict(value = "followers-cache", key = "#email")
+    public void removeFollower(String email, String followerEmail) {
+        super.removeFollower(email, followerEmail);
     }
 
     @Cacheable("followers-cache")
-    public Collection<String> findFollowersForUser(String username) {
+    public Collection<String> findFollowersForUser(String userEmail) {
 
         Statement statement = QueryBuilder.select()
-                .column("username")
+                .column("email")
                 .from("followers")
-                .where(eq("key", username));
+                .where(eq("key", userEmail));
         ResultSet results = session.execute(statement);
         return results
                 .all()
                 .stream()
-                .map(e -> e.getString("username"))
+                .map(e -> e.getString("email"))
                 .collect(Collectors.toList());
     }
 

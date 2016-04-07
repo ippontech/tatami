@@ -60,11 +60,11 @@ public class UserGroupRepository {
     }
 
 
-    public List<UUID> findGroups(String username) {
+    public List<UUID> findGroups(String email) {
         Statement statement = QueryBuilder.select()
                 .column("groupId")
                 .from("userGroup")
-                .where(eq("username", username));
+                .where(eq("email", email));
         ResultSet results = session.execute(statement);
         return results
                 .all()

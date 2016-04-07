@@ -39,6 +39,7 @@ public class StatusRepository {
 
     private static final String TYPE = "type";
     private static final String USERNAME = "username";
+    private static final String EMAIL = "email";
     private static final String DOMAIN = "domain";
     private static final String STATUS_DATE = "statusDate";
 
@@ -103,6 +104,7 @@ public class StatusRepository {
 
 
     public Status createStatus(String username,
+                               String email,
                                String domain,
                                boolean statusPrivate,
                                Group group,
@@ -117,6 +119,7 @@ public class StatusRepository {
         Status status = new Status();
         status.setStatusId(UUIDs.timeBased());
         status.setUsername(username);
+        status.setEmail(email);
         status.setType(StatusType.STATUS);
         status.setUsername(username);
         status.setDomain(domain);
@@ -285,7 +288,7 @@ public class StatusRepository {
         }
         status.setStatusId(UUID.fromString(statusId));
         status.setUsername(row.getString(USERNAME));
-        status.setUsername(row.getString(USERNAME));
+        status.setEmail(row.getString(EMAIL));
 
         String domain = row.getString(DOMAIN);
         if (domain != null) {

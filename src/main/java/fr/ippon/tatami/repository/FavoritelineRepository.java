@@ -34,7 +34,7 @@ public class FavoritelineRepository {
     Session session;
 
 
-    @CacheEvict(value = "favorites-cache", key = "#username")
+    @CacheEvict(value = "favorites-cache", key = "#email")
     public void addStatusToFavoriteline(String username, String statusId) {
         Statement statement = QueryBuilder.insertInto("favline")
                 .value("key", username)
@@ -43,7 +43,7 @@ public class FavoritelineRepository {
     }
 
 
-    @CacheEvict(value = "favorites-cache", key = "#username")
+    @CacheEvict(value = "favorites-cache", key = "#email")
     public void removeStatusFromFavoriteline(String username, String statusId) {
         Statement statement = QueryBuilder.delete()
                 .from("favline")

@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS status (
     statusId timeuuid,
     type varchar,
+    email varchar,
     username varchar,
     domain varchar,
     statusDate timestamp,
@@ -40,36 +41,36 @@ CREATE TABLE IF NOT EXISTS timeline (
 
 CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
-    username varchar,
+    email varchar,
     created timeuuid,
-    PRIMARY KEY(domainId, username)
+    PRIMARY KEY(domainId, email)
 );
 
 CREATE TABLE IF NOT EXISTS counter (
-    username varchar,
+    email varchar,
     STATUS_COUNTER counter,
     FOLLOWERS_COUNTER counter,
     FRIENDS_COUNTER counter,
-    PRIMARY KEY(username)
+    PRIMARY KEY(email)
 );
 
 CREATE TABLE IF NOT EXISTS friends (
-    username varchar,
-    friendUsername varchar,
-    PRIMARY KEY(username,friendUsername)
+    email varchar,
+    friendEmail varchar,
+    PRIMARY KEY(email,friendEmail)
 );
 
 CREATE TABLE IF NOT EXISTS followers (
     key varchar,
-    username varchar,
-    PRIMARY KEY(key,username)
+    email varchar,
+    PRIMARY KEY(key,email)
 );
 
 CREATE TABLE IF NOT EXISTS dayline (
     domainDay varchar,
-    username varchar,
+    email varchar,
     statusCount counter,
-    PRIMARY KEY(domainDay, username)
+    PRIMARY KEY(domainDay, email)
 );
 
 CREATE TABLE IF NOT EXISTS tagline (
@@ -86,14 +87,14 @@ CREATE TABLE IF NOT EXISTS userline (
 
 CREATE TABLE IF NOT EXISTS shares (
     status timeuuid,
-    username varchar,
-    PRIMARY KEY(status, username)
+    email varchar,
+    PRIMARY KEY(status, email)
 );
 
 CREATE TABLE IF NOT EXISTS tagFollowers (
     key varchar,
-    username varchar,
-    PRIMARY KEY(key, username)
+    email varchar,
+    PRIMARY KEY(key, email)
 );
 
 CREATE TABLE IF NOT EXISTS favline (
@@ -130,24 +131,24 @@ CREATE TABLE IF NOT EXISTS group (
 );
 
 CREATE TABLE IF NOT EXISTS userGroup (
-    username varchar,
+    email varchar,
     groupId timeuuid,
     role varchar,
-    PRIMARY KEY(username, groupId)
+    PRIMARY KEY(email, groupId)
 );
 
 CREATE TABLE IF NOT EXISTS groupMember (
     groupId timeuuid,
-    username varchar,
+    email varchar,
     role varchar,
-    PRIMARY KEY(groupId, username)
+    PRIMARY KEY(groupId, email)
 );
 
 CREATE TABLE IF NOT EXISTS userTags (
-    username varchar,
-    friendUsername varchar,
+    email varchar,
+    friendEmail varchar,
     time timestamp,
-    PRIMARY KEY(username, friendUsername)
+    PRIMARY KEY(email, friendEmail)
 );
 
 CREATE TABLE IF NOT EXISTS trends (
@@ -158,10 +159,10 @@ CREATE TABLE IF NOT EXISTS trends (
 );
 
 CREATE TABLE IF NOT EXISTS userTrends (
-    username varchar,
+    email varchar,
     id timeuuid,
     tag varchar,
-    PRIMARY KEY(username, id)
+    PRIMARY KEY(email, id)
 );
 
 CREATE TABLE IF NOT EXISTS avatar (
@@ -180,15 +181,15 @@ CREATE TABLE IF NOT EXISTS timelineShares (
 );
 
 CREATE TABLE IF NOT EXISTS appleDevice (
-    username varchar,
+    email varchar,
     deviceId varchar,
-    PRIMARY KEY(username,deviceId)
+    PRIMARY KEY(email,deviceId)
 );
 
 CREATE TABLE IF NOT EXISTS appleDeviceUser (
     deviceId varchar,
-    username varchar,
-    PRIMARY KEY(deviceId,username)
+    email varchar,
+    PRIMARY KEY(deviceId,email)
 );
 CREATE TABLE IF NOT EXISTS attachment (
     id timeuuid,
@@ -221,9 +222,9 @@ CREATE TABLE IF NOT EXISTS tagCounter (
 );
 
 CREATE TABLE IF NOT EXISTS userAttachments (
-    username varchar,
+    email varchar,
     attachmentId timeuuid,
-    PRIMARY KEY(username,attachmentId)
+    PRIMARY KEY(email,attachmentId)
 );
 
 CREATE TABLE IF NOT EXISTS domainConfiguration (
@@ -260,10 +261,10 @@ CREATE TABLE IF NOT EXISTS user (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS user_by_username (
-    username text,
+CREATE TABLE IF NOT EXISTS user_by_email (
+    email text,
     id text,
-    PRIMARY KEY(username, id)
+    PRIMARY KEY(email, id)
 );
 
 CREATE TABLE IF NOT EXISTS user_by_email (
@@ -295,7 +296,7 @@ CREATE TABLE IF NOT EXISTS persistent_token (
     token_date timestamp,
     user_agent text,
     token_value text,
-    username text,
+    email text,
     user_id text,
     ip_address text,
     PRIMARY KEY(series)
@@ -309,37 +310,37 @@ CREATE TABLE IF NOT EXISTS persistent_token_by_user (
 
 CREATE TABLE IF NOT EXISTS rss (
     rss_uid varchar,
-    username varchar,
+    email varchar,
     PRIMARY KEY(rss_uid)
 );
 
 CREATE TABLE IF NOT EXISTS mail_digest (
     digest_id varchar,
-    username varchar,
+    email varchar,
     created timestamp,
-    PRIMARY KEY(digest_id,username)
+    PRIMARY KEY(digest_id,email)
 );
 
 INSERT INTO user (id, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('1','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', 'system', '', '','System','system@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {'ROLE_USER', 'ROLE_ADMIN'});
 
-INSERT INTO user_by_username (username, id)
+INSERT INTO user_by_email (email, id)
 VALUES('system','1');
 
 INSERT INTO user (id, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('2','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO', 'anonymousUser', '', '','Anonymous','anonymous@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {});
 
-INSERT INTO user_by_username (username, id)
+INSERT INTO user_by_email (email, id)
 VALUES('anonymousUser','2');
 
 INSERT INTO user (id, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('3','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', 'admin', '', '','Administrator','admin@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'ippon.fr', {'ROLE_USER', 'ROLE_ADMIN'});
 
-INSERT INTO user_by_username (username, id)
+INSERT INTO user_by_email (email, id)
 VALUES('admin','3');
 
 INSERT INTO user (id, password, username, avatar, firstname, lastname, email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('4','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K', 'user', '', '','User','user@localhost', 'Developer', '8041234567', true,'en','', true, '', true, true, 'ippon.fr', {'ROLE_USER'});
 
-INSERT INTO user_by_username (username, id)
+INSERT INTO user_by_email (email, id)
 VALUES('user','4');

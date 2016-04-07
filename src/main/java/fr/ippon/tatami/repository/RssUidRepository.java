@@ -16,7 +16,7 @@ import javax.inject.Inject;
 /**
  * Revision of Cassandra implementation of the RssUid repository for CCM (Cassandra Cluster Manager).
  * <p/>
- * Structure : - Key = "rss_uid" - Name = key - Value = username
+ * Structure : - Key = "rss_uid" - Name = key - Value = email
  *
  * @author Pierre Rust
  * @author Derek Zuk
@@ -40,11 +40,11 @@ public class RssUidRepository {
         mapper = new MappingManager(session).mapper(User.class);
 
         generateRssUid = session.prepare(
-            "INSERT INTO rss (rss_uid,username) " +
-                "VALUES (:rss_uid, :username)");
+            "INSERT INTO rss (rss_uid,email) " +
+                "VALUES (:rss_uid, :email)");
 
         getUsernameByRssUid = session.prepare(
-            "SELECT username FROM rss " +
+            "SELECT email FROM rss " +
                 "WHERE rss_uid = :rss_uid");
 
         removeRssUid = session.prepare(
@@ -53,11 +53,11 @@ public class RssUidRepository {
 
     }
 
-    public String generateRssUid(String username) {
+    public String generateRssUid(String email) {
         BoundStatement stmt = generateRssUid.bind();
         String key = RandomUtil.generateActivationKey();
         stmt.setString("rss_uid", key);
-        stmt.setString("username", username);
+        stmt.setString("email", email);
         session.execute(stmt);
         return key;
     }
@@ -67,7 +67,7 @@ public class RssUidRepository {
         stmt.setString("rss_uid", rssUid);
         ResultSet results = session.execute(stmt);
         if (!results.isExhausted()) {
-            return results.one().getString("username");
+            return results.one().getString("email");
         }
         return null;
     }

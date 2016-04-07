@@ -30,4 +30,8 @@ public interface AbstractStatus extends Serializable {
     void setDomain(String domain);
 
     void setRemoved(boolean removed);
+
+    String getEmail();
+
+    void setEmail(String string);
 }

@@ -55,7 +55,7 @@ angular.module('tatamiJHipsterApp')
                     }
 
                     else if($state.$current.name == 'home.profile.statuses') {
-                        args = { username: $scope.$stateParams.username, start: statuses[0].timelineId };
+                        args = { email: $scope.$stateParams.email, start: statuses[0].timelineId };
                     }
 
                     else {
@@ -72,7 +72,7 @@ angular.module('tatamiJHipsterApp')
                     }
 
                     else if($state.$current.name == 'home.profile.statuses') {
-                        args = { username: $scope.$stateParams.username };
+                        args = { email: $scope.$stateParams.email };
                     }
 
                     else {
@@ -179,7 +179,7 @@ angular.module('tatamiJHipsterApp')
             }
 
             else if($state.$current.name == 'statuses') {
-                StatusService.getUserTimeline({ username: $scope.$stateParams.username, finish: $scope.finish }, loadOldStatuses);
+                StatusService.getUserTimeline({ email: $scope.$stateParams.email, finish: $scope.finish }, loadOldStatuses);
             }
         };
 
@@ -245,7 +245,7 @@ angular.module('tatamiJHipsterApp')
             if(status.type === 'STATUS' && status.shares === null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
-                        $scope.statuses[index].shares = response.sharedByUsernames;
+                        $scope.statuses[index].shares = response.sharedByEmails;
                 });
             }
         };

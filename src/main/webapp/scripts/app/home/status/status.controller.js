@@ -75,7 +75,7 @@ angular.module('tatamiJHipsterApp')
             if(status.type === 'STATUS' && status.shares === null) {
                 StatusService.getDetails({ statusId: status.statusId }, null,
                     function(response) {
-                        $scope.statuses[index].shares = response.sharedByUsernames;
+                        $scope.statuses[index].shares = response.sharedByEmails;
                 });
             }
         };

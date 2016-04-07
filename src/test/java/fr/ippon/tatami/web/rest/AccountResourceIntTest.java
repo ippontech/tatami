@@ -176,7 +176,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findOneByUsername("joe");
+        Optional<User> user = userRepository.findOneByEmail("joe@example.com");
         assertThat(user.isPresent()).isTrue();
     }
 
@@ -240,7 +240,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByUsername("bob");
+        Optional<User> user = userRepository.findOneByEmail("invalid");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -334,7 +334,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByUsername("johnjr");
+        Optional<User> userDup = userRepository.findOneByEmail("john@example.com");
         assertThat(userDup.isPresent()).isFalse();
     }
 
@@ -366,7 +366,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
-        Optional<User> userDup = userRepository.findOneByUsername("badguy");
+        Optional<User> userDup = userRepository.findOneByEmail("badguy@example.com");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
             .containsExactly(AuthoritiesConstants.USER);

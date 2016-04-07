@@ -90,19 +90,19 @@ public abstract class AbstractLineRepository {
                 .collect(Collectors.toList());
     }
 
-    protected void shareStatus(String username,
+    protected void shareStatus(String email,
                      Share share,
                      String columnFamily,
                      String sharesColumnFamily) {
 
-        if (!findByUsernameAndStatusId(columnFamily,username,share.getStatusId()) &&
-                !findByUsernameAndStatusId(sharesColumnFamily,username,share.getStatusId())) {
+        if (!findByKeyAndStatusId(columnFamily,email,share.getStatusId()) &&
+                !findByKeyAndStatusId(sharesColumnFamily,email,share.getStatusId())) {
             Statement statement = QueryBuilder.insertInto(columnFamily)
-                    .value("key", username)
+                    .value("key", email)
                     .value("status", share.getStatusId());
             session.execute(statement);
             statement = QueryBuilder.insertInto(sharesColumnFamily)
-                    .value("key", username)
+                    .value("key", email)
                     .value("status", share.getStatusId());
             session.execute(statement);
         } else {
@@ -111,7 +111,7 @@ public abstract class AbstractLineRepository {
         }
     }
 
-    protected boolean findByUsernameAndStatusId(String columnFamily, String key, UUID statusId) {
+    protected boolean findByKeyAndStatusId(String columnFamily, String key, UUID statusId) {
         Statement statement = QueryBuilder.select()
                 .column("key")
                 .from(columnFamily)

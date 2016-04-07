@@ -184,8 +184,8 @@ public class UserService {
         });
     }
 
-    public void deleteUserInformation(String username) {
-        userRepository.findOneByUsername(username).ifPresent(u -> {
+    public void deleteUserInformation(String email) {
+        userRepository.findOneByEmail(email).ifPresent(u -> {
             userRepository.delete(u);
             userSearchRepository.delete(u);
             log.debug("Deleted User: {}", u);
@@ -202,8 +202,8 @@ public class UserService {
         });
     }
 
-    public Optional<User> getUserWithAuthoritiesByUsername(String username) {
-        return userRepository.findOneByUsername(username).map(u -> {
+    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
+        return userRepository.findOneByEmail(email).map(u -> {
             u.getAuthorities().size();
             return u;
         });
@@ -318,16 +318,16 @@ public class UserService {
     }
 
     /**
-     * Return a collection of Users based on their username (ie : uid)
+     * Return a collection of Users based on their email addresses (ie : uid)
      *
-     * @param usernames the collection : must not be null
+     * @param emails the collection : must not be null
      * @return a Collection of User
      */
-    public Collection<User> getUsersByUsername(Collection<String> usernames) {
+    public Collection<User> getUsersByEmail(Collection<String> emails) {
         final Collection<User> users = new ArrayList<User>();
         User user;
-        for (String username : usernames) {
-            user = userRepository.findOneByUsername(username).get();
+        for (String email : emails) {
+            user = userRepository.findOneByEmail(email).get();
             if (user != null) {
                 users.add(user);
             }

@@ -18,7 +18,7 @@ tatamiJHipsterApp
         $scope.joinLeaveGroup = function(group) {
             if(!group.member) {
                 GroupService.join(
-                    { groupId: group.groupId, username: profileInfo.username },
+                    { groupId: group.groupId, email: profileInfo.email },
                     null,
                     function(response) {
                         if(response.isMember) {
@@ -30,7 +30,7 @@ tatamiJHipsterApp
 
             else {
                 GroupService.leave(
-                    { groupId: group.groupId, username: profileInfo.username },
+                    { groupId: group.groupId, email: profileInfo.email },
                     null,
                     function(response) {
                         if(response) {

@@ -84,7 +84,7 @@ tatamiJHipsterApp
                         size: 'lg',
                         resolve: {
                             entity: ['User', function(User) {
-                                return User.get({username : $stateParams.username});
+                                return User.get({email : $stateParams.email});
                             }]
                         }
                     }).result.then(function(result) {
@@ -107,7 +107,7 @@ tatamiJHipsterApp
                         size: 'md',
                         resolve: {
                             entity: ['User', function(User) {
-                                return User.get({username : $stateParams.username});
+                                return User.get({email : $stateParams.email});
                             }]
                         }
                     }).result.then(function(result) {

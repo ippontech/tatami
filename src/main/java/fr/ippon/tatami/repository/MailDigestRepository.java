@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * <p/>
  * Structure :
  * - Key = digestType_[day]_domain
- * - Name = username
+ * - Name = email
  * - Value = time
  * <p/>
  * Note : in the key, the [day] part is only used for weekly digest and
@@ -53,34 +53,34 @@ public class MailDigestRepository {
         mapper = new MappingManager(session).mapper(User.class);
 
         subscribeToDigest = session.prepare(
-            "INSERT INTO mail_digest (digest_id, username, created) " +
-                "VALUES (:digest_id, :username, :created)");
+            "INSERT INTO mail_digest (digest_id, email, created) " +
+                "VALUES (:digest_id, :email, :created)");
 
         unsubscribeFromDigest = session.prepare(
             "DELETE FROM mail_digest " +
                 "WHERE digest_id = :digest_id " +
-                "AND username = :username");
+                "AND email = :email");
 
         getUsernamesRegisteredToDigest = session.prepare(
-            "SELECT username FROM mail_digest " +
+            "SELECT email FROM mail_digest " +
                 "WHERE digest_id = :digest_id " +
                 "LIMIT :pageLimit");
     }
 
-    public void subscribeToDigest(DigestType digestType, String username, String domain, String day) {
+    public void subscribeToDigest(DigestType digestType, String email, String domain, String day) {
         BoundStatement stmt = subscribeToDigest.bind();
         Calendar cal = Calendar.getInstance();
         Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
         stmt.setString("digest_id", buildKey(digestType, domain, day));
-        stmt.setString("username", username);
+        stmt.setString("email", email);
         stmt.setDate("created", timestamp);
         session.execute(stmt);
     }
 
-    public void unsubscribeFromDigest(DigestType digestType, String username, String domain, String day) {
+    public void unsubscribeFromDigest(DigestType digestType, String email, String domain, String day) {
         BoundStatement stmt = unsubscribeFromDigest.bind();
         stmt.setString("digest_id", buildKey(digestType, domain, day));
-        stmt.setString("username", username);
+        stmt.setString("email", email);
         session.execute(stmt);
     }
 
@@ -96,7 +96,7 @@ public class MailDigestRepository {
             .all()
             .stream()
             .skip(pagination)
-            .map(e -> e.getString("username"))
+            .map(e -> e.getString("email"))
             .collect(Collectors.toList());
     }
 

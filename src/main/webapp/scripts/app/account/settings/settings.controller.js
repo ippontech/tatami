@@ -36,7 +36,7 @@ tatamiJHipsterApp
                 firstName: account.firstName,
                 langKey: account.langKey,
                 lastName: account.lastName,
-                username: account.username
+                email: account.email
             }
         }
     });

@@ -94,7 +94,7 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("rest request to save User : {}", managedUserDTO);
-        if (userRepository.findOneByUsername(managedUserDTO.getUsername()).isPresent()) {
+        if (userRepository.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
                 .body(null);
@@ -131,14 +131,14 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByUsername(managedUserDTO.getUsername());
+        existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
-                user.setUsername(managedUserDTO.getUsername());
+                user.setUsername(managedUserDTO.getEmail());
                 user.setFirstName(managedUserDTO.getFirstName());
                 user.setLastName(managedUserDTO.getLastName());
                 user.setEmail(managedUserDTO.getEmail());
@@ -147,7 +147,7 @@ public class UserResource {
                 user.setAuthorities(managedUserDTO.getAuthorities());
                 userRepository.save(user);
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getUsername()))
+                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getEmail()))
                     .body(new ManagedUserDTO(userRepository
                         .findOne(managedUserDTO.getId())));
             })
@@ -172,31 +172,31 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/:username -> get the "username" user.
+     * GET  /users/:username -> get User with the corresponding "email"
      */
-    @RequestMapping(value = "/rest/users/{username:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/rest/users/{email:[_'.@a-z0-9-]+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String username) {
-        log.debug("rest request to get User : {}", username);
-        return userService.getUserWithAuthoritiesByUsername(username)
+    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String email) {
+        log.debug("rest request to get User : {}", email);
+        return userService.getUserWithAuthoritiesByEmail(email)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**
-     * DELETE  USER :username -> delete the "username" User.
+     * DELETE  USER :username -> delete User with the corresponding "email".
      */
-    @RequestMapping(value = "/rest/users/{username}",
+    @RequestMapping(value = "/rest/users/{email}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
-        log.debug("rest request to delete User: {}", username);
-        userService.deleteUserInformation(username);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", username)).build();
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        log.debug("rest request to delete User: {}", email);
+        userService.deleteUserInformation(email);
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", email)).build();
     }
 
     /**
@@ -226,8 +226,8 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        String username = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
-        return suggestionService.suggestUsers(username);
+        String email = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
+        return suggestionService.suggestUsers(email);
     }
 
     /**

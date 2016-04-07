@@ -44,9 +44,9 @@ public class SharesRepository {
 
 
    @Cacheable("shared-cache")
-    public Collection<String> findUsernamesWhoSharedAStatus(String statusId) {
+    public Collection<String> findUserEmailsWhoSharedAStatus(String statusId) {
        Statement statement = QueryBuilder.select()
-               .column("username")
+               .column("email")
                .from(SHARES_CF)
                .where(eq("status", UUID.fromString(statusId)))
                .limit(100);
@@ -54,7 +54,7 @@ public class SharesRepository {
        return results
                .all()
                .stream()
-               .map(e -> e.getString("username"))
+               .map(e -> e.getString("email"))
                .collect(Collectors.toList());
     }
 

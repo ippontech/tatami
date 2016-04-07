@@ -152,9 +152,9 @@ public class TimelineService {
         details.setStatusId(status.getStatusId().toString());
 
         // Shares management
-        Collection<String> sharedByUsernames = sharesRepository.findUsernamesWhoSharedAStatus(status.getStatusId().toString());
-        details.setSharedByUsernames(userService.getUsersByUsername(sharedByUsernames));
-        log.debug("Status shared by {} users", sharedByUsernames.size());
+        Collection<String> sharedByEmails = sharesRepository.findUserEmailsWhoSharedAStatus(status.getStatusId().toString());
+        details.setSharedByEmails(userService.getUsersByEmail(sharedByEmails));
+        log.debug("Status shared by {} users", sharedByEmails.size());
 
         // Discussion management
         List<String> statusIdsInDiscussion = new ArrayList<String>();
@@ -199,7 +199,7 @@ public class TimelineService {
         for (String statusId : line) {
             AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
             if (abstractStatus != null) {
-                User statusUser = userRepository.findOneByUsername(abstractStatus.getUsername()).get();
+                User statusUser = userRepository.findOneByEmail(abstractStatus.getEmail()).get();
                 if (statusUser != null) {
                     // Security check
                     // bypass the security check when no user is logged in
@@ -227,7 +227,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the original status
                             statusDTO.setTimelineId(share.getStatusId().toString());
                             statusDTO.setSharedByUsername(share.getUsername());
-                            statusUser = userRepository.findOneByUsername(originalStatus.getUsername()).get();
+                            statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Original status has been deleted");
@@ -238,7 +238,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was shared
                             statusDTO.setTimelineId(mentionShare.getStatusId().toString());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
-                            statusUser = userRepository.findOneByUsername(mentionShare.getUsername()).get();
+                            statusUser = userRepository.findOneByEmail(mentionShare.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Mentioned status has been deleted");
@@ -247,7 +247,7 @@ public class TimelineService {
                         MentionFriend mentionFriend = (MentionFriend) abstractStatus;
                         statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
                         statusDTO.setSharedByUsername(mentionFriend.getUsername());
-                        statusUser = userRepository.findOneByUsername(mentionFriend.getfollowerUsername()).get();
+                        statusUser = userRepository.findOneByEmail(mentionFriend.getFollowerEmail()).get();
                         statusDTO.setFirstName(statusUser.getFirstName());
                         statusDTO.setLastName(statusUser.getLastName());
                         statusDTO.setAvatar(statusUser.getAvatar());
@@ -259,7 +259,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was announced
                             statusDTO.setTimelineId(announcement.getStatusId().toString());
                             statusDTO.setSharedByUsername(announcement.getUsername());
-                            statusUser = userRepository.findOneByUsername(originalStatus.getUsername()).get();
+                            statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Announced status has been deleted");
@@ -287,7 +287,7 @@ public class TimelineService {
     {
         Boolean isSharedByMe;
 
-        Collection<String> usernameWhoShare = sharesRepository.findUsernamesWhoSharedAStatus(statusDTO.getStatusId());
+        Collection<String> usernameWhoShare = sharesRepository.findUserEmailsWhoSharedAStatus(statusDTO.getStatusId());
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         if(usernameWhoShare.contains(currentUser.getUsername()) )
             isSharedByMe = true;
@@ -436,8 +436,8 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getTimeline(int nbStatus, String start, String finish) {
-        String username = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
-        return getUserTimeline(username, nbStatus, start, finish);
+        String email = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
+        return getUserTimeline(email, nbStatus, start, finish);
     }
 
     /**
@@ -448,18 +448,18 @@ public class TimelineService {
      *
      * This is used for RSS syndication.
      *
-     * @param username    of the user we want the timeline of
+     * @param email    Email address of the user we want the timeline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserTimeline(String username, int nbStatus, String start, String finish) {
+    public Collection<StatusDTO> getUserTimeline(String email, int nbStatus, String start, String finish) {
         List<String> statuses =
-                timelineRepository.getTimeline(username, nbStatus, start, finish);
+                timelineRepository.getTimeline(email, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
             Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
-            timelineRepository.removeStatusesFromTimeline(username, statusIdsToDelete);
+            timelineRepository.removeStatusesFromTimeline(email, statusIdsToDelete);
             return getTimeline(nbStatus, start, finish);
         }
         return dtos;

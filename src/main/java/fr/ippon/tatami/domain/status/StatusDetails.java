@@ -17,7 +17,7 @@ public class StatusDetails implements Serializable {
 
     private Collection<StatusDTO> discussionStatuses;
 
-    private Collection<User> sharedByUsernames;
+    private Collection<User> sharedByEmails;
 
     public String getStatusId() {
         return statusId;
@@ -35,12 +35,12 @@ public class StatusDetails implements Serializable {
         this.discussionStatuses = discussionStatuses;
     }
 
-    public Collection<User> getSharedByUsernames() {
-        return sharedByUsernames;
+    public Collection<User> getSharedByEmails() {
+        return sharedByEmails;
     }
 
-    public void setSharedByUsernames(Collection<User> sharedByUsernames) {
-        this.sharedByUsernames = sharedByUsernames;
+    public void setSharedByEmails(Collection<User> sharedByEmails) {
+        this.sharedByEmails = sharedByEmails;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class StatusDetails implements Serializable {
         return "StatusDetails{" +
                 "StatusId='" + statusId + '\'' +
                 ", discussionStatuses=" + discussionStatuses +
-                ", sharedByUsernames=" + sharedByUsernames +
+                ", sharedByEmails=" + sharedByEmails +
                 '}';
     }
 }

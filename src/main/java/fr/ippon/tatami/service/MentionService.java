@@ -31,10 +31,10 @@ public class MentionService {
      * A status that mentions a user is put in the user's mentionline and in his timeline.
      * The mentioned user can also be notified by email.
      */
-    public void mentionUser(String mentionedUsername, Status status) {
-        mentionlineRepository.addStatusToMentionline(mentionedUsername, status.getStatusId().toString());
+    public void mentionUser(String mentionedEmail, Status status) {
+        mentionlineRepository.addStatusToMentionline(mentionedEmail, status.getStatusId().toString());
 
-        User mentionnedUser = userRepository.findOneByUsername(mentionedUsername).get();
+        User mentionnedUser = userRepository.findOneByEmail(mentionedEmail).get();
 
 //        Derek Zuk 2/21/2016: I am commenting this out for now.
 //        if (mentionnedUser != null && (mentionnedUser.getMentionEmail() == null

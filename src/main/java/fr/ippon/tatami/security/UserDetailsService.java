@@ -36,9 +36,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     actually the user's email address.
     */
     public UserDetails loadUserByUsername(final String username) {
-
-        // SwitchUserFilter???
-
         log.debug("Authenticating {}", username);
         String lowercaseUsername = username.toLowerCase();
         Optional<User> userFromDatabase = userRepository.findOneByEmail(lowercaseUsername);

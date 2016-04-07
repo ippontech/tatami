@@ -46,23 +46,23 @@ public class SuggestionService {
      */
 
     @Cacheable("suggest-users-cache")
-    public Collection<User> suggestUsers(String username) {
+    public Collection<User> suggestUsers(String email) {
         Map<String, Integer> userCount = new HashMap<String, Integer>();
-        List<String> friendIds = friendshipService.getFriendIdsForUser(username);
+        List<String> friendIds = friendshipService.getFriendIdsForUser(email);
         List<String> sampleFriendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : sampleFriendIds) {
             List<String> friendsOfFriend = friendshipService.getFriendIdsForUser(friendId);
             friendsOfFriend = AnalysisUtil.reduceCollectionSize(friendsOfFriend, SUB_SAMPLE_SIZE);
             for (String friendOfFriend : friendsOfFriend) {
-                if (!friendIds.contains(friendOfFriend) && !friendOfFriend.equals(username)) {
+                if (!friendIds.contains(friendOfFriend) && !friendOfFriend.equals(email)) {
                     AnalysisUtil.incrementKeyCounterInMap(userCount, friendOfFriend);
                 }
             }
         }
-        List<String> mostFollowedUsers = AnalysisUtil.findMostUsedKeys(userCount);
+        List<String> mostFollowedUsersEmail = AnalysisUtil.findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
-        for (String mostFollowedUser : mostFollowedUsers) {
-            User suggestion = userRepository.findOneByUsername(mostFollowedUser).get();
+        for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
+            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail).get();
             if ( suggestion.getActivated() ){
                 userSuggestions.add(suggestion);
             }
@@ -90,7 +90,7 @@ public class SuggestionService {
         }
         List<String> mostFollowedGroups = AnalysisUtil.findMostUsedKeys(groupCount);
         List<Group> groupSuggestions = new ArrayList<Group>();
-        String email = userRepository.findOneByUsername(username).get().getEmail();
+        String email = userRepository.findOneByEmail(username).get().getEmail();
         String domain = DomainUtil.getDomainFromEmail(email);
         for (String mostFollowedGroup : mostFollowedGroups) {
             Group suggestion = groupService.getGroupById(domain, UUID.fromString(mostFollowedGroup));

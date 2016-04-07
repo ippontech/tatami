@@ -37,17 +37,17 @@ public class DomainRepository {
     private Session session;
 
 
-    public void addUserInDomain(String domain, String username) {
+    public void addUserInDomain(String domain, String email) {
         Statement statement = QueryBuilder.insertInto("domain")
                 .value(DOMAIN_ID, domain)
-                .value("username", username)
+                .value("email", email)
                 .value("created", UUIDs.timeBased());
         session.execute(statement);
     }
 
 
-    public void updateUserInDomain(String domain, String username) {
-        this.addUserInDomain(domain, username);
+    public void updateUserInDomain(String domain, String email) {
+        this.addUserInDomain(domain, email);
     }
 
 

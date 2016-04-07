@@ -19,20 +19,20 @@ public abstract class AbstractFollowerRepository {
 
     protected abstract String getFollowersCF();
 
-    public void addFollower(String key, String username) {
+    public void addFollower(String key, String email) {
         Calendar cal = Calendar.getInstance();
         Statement statement = QueryBuilder.insertInto(getFollowersCF())
                 .value("key", key)
-                .value("username", username);
+                .value("email", email);
         session.execute(statement);
 
     }
 
-    public void removeFollower(String key, String username) {
+    public void removeFollower(String key, String email) {
         Statement statement = QueryBuilder.delete()
                 .from(getFollowersCF())
                 .where(eq("key",key))
-                .and(eq("username",username));
+                .and(eq("email",email));
         session.execute(statement);
     }
 }
