@@ -10308,6 +10308,9 @@ a.button .icon:before, a.button.icon:before, a.button.icon-left:before, a.button
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+p .ul {
+  list-style: square; }
+
 .item-image i:last-child {
   position: absolute;
   border-radius: 50%;
