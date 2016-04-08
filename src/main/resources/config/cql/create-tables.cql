@@ -353,3 +353,5 @@ VALUES('4','user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K'
 
 INSERT INTO user_by_login (login, id)
 VALUES('user','4');
+
+CREATE INDEX domainID on tatamijhipster.user (domain);
