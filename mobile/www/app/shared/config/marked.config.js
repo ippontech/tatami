@@ -62,5 +62,19 @@
             }
         });
 
+        markedProvider.setRenderer({
+            link: customLink
+        });
+
+        customLink.$inject = ['href', 'title', 'text'];
+        function customLink(href, title, text) {
+            console.log('start');
+            console.log(href);
+            console.log(title);
+            console.log(text);
+            console.log('end');
+            return "<a href='" + href + "'" + (title ? " title='" + title + "'" : '') + " target='_blank'>" + text + "</a>";
+        }
+
     }
 })();
