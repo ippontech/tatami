@@ -162,7 +162,7 @@ PostModule.controller('PostController', [
             $scope.current.reply = defined;
             $scope.currentStatus = defined ? status : {};
             if(defined) {
-                $scope.status.content = '@' + $scope.currentStatus.email + ' ';
+                $scope.status.content = '@' + $scope.currentStatus.username + ' ';
                 $scope.status.replyTo = status.statusId;
             }
             else {

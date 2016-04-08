@@ -25,7 +25,7 @@ tatamiJHipsterApp
             })
             .state('user-management-detail', {
                 parent: 'admin',
-                url: '/user/:username',
+                url: '/user/:email',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                     pageTitle: 'user-management.detail.title'
@@ -73,7 +73,7 @@ tatamiJHipsterApp
             })
             .state('user-management.edit', {
                 parent: 'user-management',
-                url: '/{username}/edit',
+                url: '/{email}/edit',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                 },

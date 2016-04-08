@@ -258,7 +258,7 @@ public class StatusUpdateService {
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
-            manageMentions(status, null, currentEmail, new ArrayList<String>());
+            manageMentions(status, null, currentEmail, new ArrayList<String>(), domain);
 
         } else { // Public status
             Collection<String> followersForUser = followerRepository.findFollowersForUser(currentEmail);
@@ -275,7 +275,7 @@ public class StatusUpdateService {
             manageStatusTags(status, group);
 
             // add status to the mentioned users' timeline
-            manageMentions(status, group, currentEmail, followersForUser);
+            manageMentions(status, group, currentEmail, followersForUser, domain);
 
             // Increment status count for the current user
             counterRepository.incrementStatusCounter(currentEmail);
@@ -350,24 +350,25 @@ public class StatusUpdateService {
         }
     }
 
-    private void manageMentions(Status status, Group group, String currentEmail, Collection<String> followersForUser) {
+    private void manageMentions(Status status, Group group, String currentUser, Collection<String> followersForUser, String domain) {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
-            String mentionedEmail = extractUsernameWithoutAt(m.group());
-            if (mentionedEmail != null &&
-                    !mentionedEmail.equals(currentEmail) &&
-                    !followersForUser.contains(mentionedEmail)) {
+            String mentionedUser = extractUsernameWithoutAt(m.group());
+            String mentionedUserEmail = (mentionedUser + "@" + domain);
+            if (mentionedUser != null &&
+                    !mentionedUser.equals(currentUser) &&
+                    !followersForUser.contains(mentionedUser)) {
 
-                log.debug("Mentioning : {}", mentionedEmail);
+                log.debug("Mentioning : {}", mentionedUserEmail);
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
                 if (!isPublicGroup(group)) {
-                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedEmail);
+                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedUserEmail);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                        mentionUser(mentionedEmail, status);
+                        mentionUser(mentionedUserEmail, status);
                     }
                 } else { // This is a public status
-                    mentionUser(mentionedEmail, status);
+                    mentionUser(mentionedUserEmail, status);
                 }
             }
         }
@@ -395,9 +396,9 @@ public class StatusUpdateService {
      * A status that mentions a user is put in the user's mentionline and in his timeline.
      * The mentioned user can also be notified by email or iOS push.
      */
-    private void mentionUser(String mentionedUsername, Status status) {
-        addStatusToTimelineAndNotify(mentionedUsername, status);
-        mentionService.mentionUser(mentionedUsername, status);
+    private void mentionUser(String mentionedEmail, Status status) {
+        addStatusToTimelineAndNotify(mentionedEmail, status);
+        mentionService.mentionUser(mentionedEmail, status);
     }
 
     private String extractUsernameWithoutAt(String dest) {

@@ -73,7 +73,7 @@
                             <small ng-if="status.replyTo && status.type !== 'ANNOUNCEMENT'">
                                 <span class="glyphicon glyphicon-share-alt"></span>
                                 <span translate="status.replyTo"></span>
-                                <a ui-sref="home.status({ statusId: status.replyTo })">@{{ status.replyToEmail }}</a>
+                                <a ui-sref="home.status({ statusId: status.replyTo })">@{{ status.replyToUsername }}</a>
                                 <br>
                             </small>
 
