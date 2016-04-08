@@ -160,7 +160,7 @@ public class UserService {
         user.setActivated(true);
         user.setDailyDigest(false);
         user.setWeeklyDigest(false);
-        user.setMentionEmail
+        user.setMentionEmail(false);
         userRepository.save(user);
         searchService.addUser(user);
         log.debug("Created Information for User: {}", user);
