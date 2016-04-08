@@ -20,11 +20,13 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService'];
-    function controller($scope, $state, $ionicPopup, StatusService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService', 'marked'];
+    function controller($scope, $state, $ionicPopup, StatusService, marked) {
         var vm = this;
+        $scope.status.content = marked($scope.status.content);
 
         vm.status = $scope.status;
+
         vm.currentUser = $scope.currentUser;
         vm.remove = remove;
         vm.favorite = favorite;

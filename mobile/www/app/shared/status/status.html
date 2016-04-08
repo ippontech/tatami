@@ -12,7 +12,7 @@
     </div>
 
     <div class="item-body item-text-wrap">
-        <p>{{vm.status.content}}</p>
+        <p ng-bind-html="vm.status.content"></p>
         <p ng-if="vm.status.replyToUsername">
             <span class="ios-android-share"></span>
             <span>In reply to </span>
