@@ -254,7 +254,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was announced
                             statusDTO.setTimelineId(announcement.getStatusId().toString());
                             statusDTO.setSharedByUsername(announcement.getUsername());
-                            statusUser = userRepository.findOneByLogin(originalStatus.getLogin()).get();
+                            statusUser = userRepository.findOneByLogin(originalStatus.getUsername()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
                             log.debug("Announced status has been deleted");
@@ -616,8 +616,10 @@ public class TimelineService {
         Announcement announcement = statusRepository.createAnnouncement(currentLogin, status.getStatusId().toString());
 
         // add status to everyone's timeline
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
-        List<String> logins = domainRepository.getLoginsInDomain(domain);
+        //String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        String domain = announcement.getDomain();
+        log.info("Announcing to domain: "+domain);
+        List<String> logins = domainRepository.getEmailsInDomain(domain);
         timelineRepository.announceStatusToTimeline(currentLogin, logins, announcement);
 //        for (String login : logins) {
 //            atmosphereService.notifyUser(login, announcement);

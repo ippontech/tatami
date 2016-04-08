@@ -8,6 +8,7 @@ import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -84,6 +85,9 @@ public class StatusRepository {
 
     private PreparedStatement deleteByIdStmt;
 
+
+    @Inject
+    private UserRepository userRepository;
 
     @Inject
     Session session;
@@ -210,9 +214,12 @@ public class StatusRepository {
         Announcement announcement = new Announcement();
         announcement.setLogin(login);
         announcement.setType(StatusType.ANNOUNCEMENT);
-        String username = DomainUtil.getUsernameFromLogin(login);
+        User user = userRepository.findOneByLogin(login).get();
+        //String username = DomainUtil.getUsernameFromLogin(login);
+        String username = user.getUsername();
         announcement.setUsername(username);
-        String domain = DomainUtil.getDomainFromLogin(login);
+        //String domain = DomainUtil.getDomainFromLogin(login);
+        String domain = user.getDomain();
         announcement.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(announcement);

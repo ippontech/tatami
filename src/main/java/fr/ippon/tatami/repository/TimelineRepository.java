@@ -83,7 +83,7 @@ public class TimelineRepository extends AbstractLineRepository {
                 "INSERT INTO timeline (key, status) VALUES (?, ?);");
 
         BatchStatement batch = new BatchStatement();
-        logins.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
+        logins.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, announcement.getStatusId())));
         session.executeAsync(batch);
     }
 
