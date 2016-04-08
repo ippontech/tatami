@@ -18,7 +18,7 @@ tatamiJHipsterApp
                 $scope.error = null;
                 $scope.errorUserExists = null;
                 $scope.errorEmailExists = null;
-
+                console.log($scope.registerAccount); //for debug
                 Auth.createAccount($scope.registerAccount).then(function () {
                     $scope.success = 'OK';
                 }).catch(function (response) {

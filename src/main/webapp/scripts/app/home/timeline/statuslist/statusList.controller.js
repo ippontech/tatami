@@ -21,7 +21,7 @@ angular.module('tatamiJHipsterApp')
         if(showModal && $state.$current.name == 'timeline') {
             $state.go('timelinePresentation');
         }
-
+        $scope.$state.isAdmin = $state.isAdmin;
         $scope.statuses = statuses;
         $scope.busy = false;
 

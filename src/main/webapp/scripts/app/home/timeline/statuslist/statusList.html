@@ -124,7 +124,7 @@
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="status.favorite"></span>
                                         </button>
-                                        <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
+                                        <button ng-if="$state.isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
                                             <span translate="status.announce"></span>
                                         </button>

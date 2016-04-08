@@ -138,9 +138,13 @@ public class UserService {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setLogin(managedUserDTO.getLogin());
+        System.out.println("User login: "+managedUserDTO.getLogin());
+        user.setUsername(managedUserDTO.getLogin());
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail());
+        System.out.println("User email: "+managedUserDTO.getEmail());
+        user.setDomain(managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf('@')+1));
         user.setPhoneNumber(managedUserDTO.getPhoneNumber());
         user.setJobTitle(managedUserDTO.getJobTitle());
         if (managedUserDTO.getLangKey() == null) {
@@ -154,6 +158,9 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(new Date());
         user.setActivated(true);
+        user.setDailyDigest(false);
+        user.setWeeklyDigest(false);
+        user.setMentionEmail
         userRepository.save(user);
         searchService.addUser(user);
         log.debug("Created Information for User: {}", user);

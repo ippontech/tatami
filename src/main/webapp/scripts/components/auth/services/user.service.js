@@ -13,7 +13,7 @@ tatamiJHipsterApp
     return $resource('/tatami/rest/users/:username', null,
     {
         'get': {
-            isArray: true,
+            isArray: false,
             method: 'GET', params: { username: '@username' },
             transformResponse: function(user) {
                 user = angular.fromJson(user);
@@ -48,6 +48,9 @@ tatamiJHipsterApp
         },
         'follow': { method: 'PATCH', params: { username: '@username' } },
         'searchUsers': { method: 'GET', isArray: true, url: '/tatami/rest/users/:term', transformResponse: responseTransform },
-        'deactivate': { method: 'PATCH', params: { username: '@username' } }
+        'deactivate': { method: 'PATCH', params: { username: '@username' } },
+        'delete': { method: 'DELETE', params: { username: '@username' } },
+        'update': { method: 'PUT' },
+        'save': {method: 'POST' }
     });
 }]);

@@ -31,5 +31,6 @@ public class DomainUtil {
             return null;
         }
         return login.substring(0, login.indexOf("@"));
+        //return login; //So far these have been identical to username? -- jdh, nevermind
     }
 }

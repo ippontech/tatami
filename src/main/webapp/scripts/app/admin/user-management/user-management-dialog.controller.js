@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp.controller('UserManagementDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 'Language',
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'UserService', 'Language',
         function($scope, $stateParams, $uibModalInstance, entity, User, Language) {
 
         $scope.user = entity;

@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, Auth) {
+    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, Auth, Principal) {
         $scope.user = {};
         $scope.errors = {};
 
@@ -18,6 +18,7 @@ tatamiJHipsterApp
                 if ($rootScope.previousStateName === 'register') {
                     $state.go('home');
                 } else {
+                    $state.isAdmin = Principal.hasAnyAuthority(["ROLE_ADMIN"]);
                     $state.go('timeline');
                 }
             }).catch(function () {
