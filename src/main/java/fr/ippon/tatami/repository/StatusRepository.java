@@ -7,6 +7,7 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.domain.Attachment;
+import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
@@ -166,9 +167,9 @@ public class StatusRepository {
     }
 
 
-    public Share createShare(String username, String email, String domain, String originalStatusId) {
+    public Share createShare(String email, String domain, String originalStatusId) {
         Share share = new Share();
-        share.setUsername(username);
+        share.setUsername(DomainUtil.getUsernameFromEmail(email));
         share.setType(StatusType.SHARE);
         share.setEmail(email);
         share.setDomain(domain);
@@ -188,8 +189,8 @@ public class StatusRepository {
         if (abstractStatus.getUsername() == null) {
             throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
         }
-        if (abstractStatus.getUsername() == null) {
-            throw new IllegalStateException("Username cannot be null for status: " + abstractStatus);
+        if (abstractStatus.getEmail() == null) {
+            throw new IllegalStateException("Email cannot be null for status: " + abstractStatus);
         }
         if (abstractStatus.getDomain() == null) {
             throw new IllegalStateException("Domain cannot be null for status: " + abstractStatus);
@@ -205,9 +206,9 @@ public class StatusRepository {
     }
 
 
-    public Announcement createAnnouncement(String email, String username, String domain, String originalStatusId) {
+    public Announcement createAnnouncement(String email, String domain, String originalStatusId) {
         Announcement announcement = new Announcement();
-        announcement.setUsername(username);
+        announcement.setUsername(DomainUtil.getUsernameFromEmail(email));
         announcement.setType(StatusType.ANNOUNCEMENT);
         announcement.setDomain(domain);
         announcement.setEmail(email);

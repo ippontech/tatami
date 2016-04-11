@@ -517,7 +517,7 @@ public class TimelineService {
             User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             if (status.getUsername().equals(currentUser.getUsername())) {
                 statusRepository.removeStatus(status);
-                counterRepository.decrementStatusCounter(currentUser.getUsername());
+                counterRepository.decrementStatusCounter(currentUser.getEmail());
 //                searchService.removeStatus(status);
             }
         } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
@@ -533,17 +533,16 @@ public class TimelineService {
     public void shareStatus(String statusId) {
         log.debug("Share status : {}", statusId);
         String currentEmail = userDetailsService.getUserEmail();
-        String currentUsername = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {
             if (abstractStatus.getType().equals(StatusType.STATUS)) {
                 Status status = (Status) abstractStatus;
-                internalShareStatus(currentUsername, currentEmail, status);
+                internalShareStatus(currentEmail, status);
             } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
                 Share currentShare = (Share) abstractStatus;
                 // We share the original status
                 Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
-                internalShareStatus(currentUsername, currentEmail, originalStatus);
+                internalShareStatus(currentEmail, originalStatus);
             } else {
                 log.warn("Cannot share this type of status: " + abstractStatus);
             }
@@ -552,17 +551,17 @@ public class TimelineService {
         }
     }
 
-    private void internalShareStatus(String currentUsername, String currentEmail, Status status) {
+    private void internalShareStatus(String currentEmail, Status status) {
         // create share
-        Share share = statusRepository.createShare(currentUsername, currentEmail, status.getDomain(), status.getStatusId().toString());
+        Share share = statusRepository.createShare(currentEmail, status.getDomain(), status.getStatusId().toString());
 
         // add status to the user's userline and timeline
         userlineRepository.shareStatusToUserline(currentEmail, share);
         shareStatusToTimelineAndNotify(currentEmail, currentEmail, share);
         // add status to the follower's timelines
         Collection<String> followersForUser = followerRepository.findFollowersForUser(currentEmail);
-        for (String followerUsername : followersForUser) {
-            shareStatusToTimelineAndNotify(currentEmail, followerUsername, share);
+        for (String followerEmail : followersForUser) {
+            shareStatusToTimelineAndNotify(currentEmail, followerEmail, share);
         }
         // update the status details to add this share
         sharesRepository.newShareByEmail(status.getStatusId().toString(), currentEmail);
@@ -595,17 +594,16 @@ public class TimelineService {
     public void announceStatus(String statusId) {
         log.debug("Announce status : {}", statusId);
         String currentEmail = userDetailsService.getUserEmail();
-        String currentUsername = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {
             if (abstractStatus.getType().equals(StatusType.STATUS)) {
                 Status status = (Status) abstractStatus;
-                internalAnnounceStatus(currentEmail, currentUsername, status);
+                internalAnnounceStatus(currentEmail, status);
             } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
                 Share currentShare = (Share) abstractStatus;
                 // We announce the original status
                 Status originalStatus = (Status) statusRepository.findStatusById(currentShare.getOriginalStatusId());
-                internalAnnounceStatus(currentEmail, currentUsername, originalStatus);
+                internalAnnounceStatus(currentEmail, originalStatus);
             } else {
                 log.warn("Cannot announce this type of status: " + abstractStatus);
             }
@@ -614,9 +612,9 @@ public class TimelineService {
         }
     }
 
-    private void internalAnnounceStatus(String currentEmail, String currentUsername, Status status) {
+    private void internalAnnounceStatus(String currentEmail, Status status) {
         // create announcement
-        Announcement announcement = statusRepository.createAnnouncement(currentEmail, currentUsername, status.getDomain(), status.getStatusId().toString());
+        Announcement announcement = statusRepository.createAnnouncement(currentEmail, status.getDomain(), status.getStatusId().toString());
 
         // add status to everyone's timeline
         String domain = status.getDomain();
