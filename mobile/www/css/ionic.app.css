@@ -10308,9 +10308,6 @@ a.button .icon:before, a.button.icon:before, a.button.icon-left:before, a.button
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-p .ul {
-  list-style: square; }
-
 .item-image i:last-child {
   position: absolute;
   border-radius: 50%;
@@ -10319,3 +10316,7 @@ p .ul {
   background-color: black;
   top: 15px;
   right: 15px; }
+
+.link-span {
+  cursor: pointer;
+  color: #387ef5; }

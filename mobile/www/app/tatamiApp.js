@@ -70,5 +70,27 @@
 
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
+
+        $compileProvider.directive('compile', compile);
+
+        compile.$inject = ['$compile'];
+        function compile($compile) {
+            return directive;
+
+            directive.$inject = ['scope', 'element', 'attrs'];
+            function directive(scope, element, attrs) {
+                scope.$watch(
+                    function(scope) {
+                        return scope.$eval(attrs.compile);
+                    },
+                    function(value) {
+                        console.log(value);
+                        element.html(value);
+
+                        $compile(element.contents())(scope);
+                    }
+                );
+            }
+        }
     }
 })();
