@@ -20,10 +20,9 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService', 'marked'];
-    function controller($scope, $state, $ionicPopup, StatusService, marked) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService'];
+    function controller($scope, $state, $ionicPopup, StatusService) {
         var vm = this;
-        $scope.status.content = marked($scope.status.content);
 
         vm.status = $scope.status;
 
@@ -83,5 +82,15 @@
         function setStatus(status) {
             vm.status = status;
         }
+
+        document.onclick = function (e) {
+            e = e ||  window.event;
+            var element = e.target || e.srcElement;
+
+            if (element.tagName == 'A') {
+                window.open(element.href, "_blank", "location=yes");
+                return false;
+            }
+        };
     }
 })();

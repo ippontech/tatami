@@ -12,11 +12,11 @@
     </div>
 
     <div class="item-body item-text-wrap">
-        <p ng-bind-html="vm.status.content"></p>
+        <p compile="vm.status.content | markdown"></p>
         <p ng-if="vm.status.replyToUsername">
             <span class="ios-android-share"></span>
             <span>In reply to </span>
-            <a ng-click="vm.goToConversation(vm.status.replyTo)">@{{ vm.status.replyToUsername }}</a>
+            <span class="link-span" ng-click="vm.goToConversation(vm.status.replyTo)">@{{ vm.status.replyToUsername }}</span>
         </p>
     </div>
     <div class="row">
