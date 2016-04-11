@@ -1,0 +1,15 @@
+version: '2'
+services:
+    tatami-app:
+        image: tatami
+        external_links:
+            - tatami-cassandra:cassandra
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATA_CASSANDRA_CONTACTPOINTS=cassandra
+        ports:
+            - 8080:8080
+    tatami-cassandra:
+        extends:
+            file: cassandra-cluster.yml
+            service: tatami-cassandra

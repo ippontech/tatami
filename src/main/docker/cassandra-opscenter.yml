@@ -1,0 +1,37 @@
+# Start a Cassandra cluster with replication factor = 3 for all tables
+# and an opscenter application to monitor the cluster
+# *use for production*
+version: '2'
+services:
+    jhipster-opscenter:
+        container_name: jhipster-opscenter
+        build:
+            context: opscenter/
+        ports:
+            - 8888:8888
+    tatami-cassandra:
+        container_name: tatami-cassandra
+        build:
+            context: .
+            dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
+        environment:
+            - CASSANDRA_CONTACT_POINT=tatami-cassandra
+        # volumes:
+        #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data
+        links:
+            - jhipster-opscenter:opscenter
+        ports:
+            - 7000:7000
+            - 7001:7001
+            - 7199:7199
+            - 9042:9042
+            - 9160:9160
+    tatami-cassandra-node:
+        build:
+            context: .
+            dockerfile: cassandra/Cassandra-Opscenter.Dockerfile
+        links:
+            - tatami-cassandra:seed
+            - jhipster-opscenter:opscenter
+        environment:
+            - CASSANDRA_SEEDS=seed
