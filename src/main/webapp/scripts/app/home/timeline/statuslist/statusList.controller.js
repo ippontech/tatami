@@ -112,7 +112,7 @@ angular.module('tatamiJHipsterApp')
                     GroupService.getStatuses(args, success, error);
                 }
 
-                else if($state.$current.name == 'home.profile.statuses') {
+                else if($state.$current.name == 'statuses') {
                     StatusService.getUserTimeline(args, success, error);
                 }
             }, pollingDelay);
