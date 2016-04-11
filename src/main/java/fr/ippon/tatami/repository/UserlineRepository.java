@@ -23,7 +23,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
  * Cassandra implementation of the Userline repository.
  * <p/>
  * Structure :
- * - Key : username
+ * - Key : email
  * - Name : status Id
  * - Value : ""
  *
@@ -46,28 +46,28 @@ public class UserlineRepository extends AbstractLineRepository {
 
     }
 
-    public void addStatusToUserline(String username, String statusId) {
+    public void addStatusToUserline(String email, String statusId) {
         Statement statement = QueryBuilder.insertInto("userline")
-                .value("key", username)
+                .value("key", email)
                 .value("status", UUID.fromString(statusId));
         session.execute(statement);
     }
 
-    public void removeStatusesFromUserline(String username, Collection<String> statusIdsToDelete) {
-        removeStatuses(username,"userline",statusIdsToDelete);
+    public void removeStatusesFromUserline(String email, Collection<String> statusIdsToDelete) {
+        removeStatuses(email,"userline",statusIdsToDelete);
     }
 
-    public void shareStatusToUserline(String currentUsername, Share share) {
-        shareStatus(currentUsername, share, USERLINE_CF, USERLINE_SHARES_CF);
+    public void shareStatusToUserline(String currentEmail, Share share) {
+        shareStatus(currentEmail, share, USERLINE_CF, USERLINE_SHARES_CF);
     }
 
-    public List<String> getUserline(String username, int size, String start, String finish) {
-        return getLineFromTable("userline", username, size, start, finish);
+    public List<String> getUserline(String email, int size, String start, String finish) {
+        return getLineFromTable("userline", email, size, start, finish);
     }
 
-    public void deleteUserline(String username) {
+    public void deleteUserline(String email) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.USERLINE_CF)
-                .where(eq("username", username));
+                .where(eq("email", email));
         session.execute(statement);
     }
 

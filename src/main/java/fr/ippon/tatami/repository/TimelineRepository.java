@@ -28,7 +28,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.TIMELINE_SHARES_CF;
  * Cassandra implementation of the Timeline repository.
  * <p/>
  * Structure :
- * - Key : username
+ * - Key : email
  * - Name : status Id
  * - Value : ""
  *
@@ -42,7 +42,7 @@ public class TimelineRepository extends AbstractLineRepository {
 
     private Mapper<Status> mapper;
 
-    private PreparedStatement findByUsernameStmt;
+    private PreparedStatement findByKeyStmt;
 
     private PreparedStatement deleteByIdStmt;
 
@@ -50,7 +50,7 @@ public class TimelineRepository extends AbstractLineRepository {
     @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Status.class);
-        findByUsernameStmt = session.prepare(
+        findByKeyStmt = session.prepare(
                 "SELECT * " +
                         "FROM timeline " +
                         "WHERE key = :key");
@@ -62,8 +62,8 @@ public class TimelineRepository extends AbstractLineRepository {
     }
 
 
-    public boolean isStatusInTimeline(String username, String statusId) {
-        return findByKeyAndStatusId(TIMELINE_CF,username,UUID.fromString(statusId));
+    public boolean isStatusInTimeline(String email, String statusId) {
+        return findByKeyAndStatusId(TIMELINE_CF,email,UUID.fromString(statusId));
     }
 
     public void addStatusToTimeline(String email, String statusId) {
@@ -74,16 +74,16 @@ public class TimelineRepository extends AbstractLineRepository {
         removeStatuses(email,TIMELINE_CF,statusIdsToDelete);
     }
 
-    public void shareStatusToTimeline(String sharedByUsername, String timelineUsername, Share share) {
-        shareStatus(timelineUsername, share, TIMELINE_CF, TIMELINE_SHARES_CF);
+    public void shareStatusToTimeline(String sharedByEmail, String timelineEmail, Share share) {
+        shareStatus(timelineEmail, share, TIMELINE_CF, TIMELINE_SHARES_CF);
     }
 
-    public void announceStatusToTimeline(String announcedByUsername, List<String> usernames, Announcement announcement) {
+    public void announceStatusToTimeline(String announcedByUserEmail, List<String> emails, Announcement announcement) {
         PreparedStatement insertAnnouncementPreparedStatement = session.prepare(
                 "INSERT INTO timeline (key, status) VALUES (?, ?);");
 
         BatchStatement batch = new BatchStatement();
-        usernames.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
+        emails.forEach(e -> batch.add(insertAnnouncementPreparedStatement.bind(e, UUIDs.timeBased())));
         session.executeAsync(batch);
     }
 
@@ -91,10 +91,10 @@ public class TimelineRepository extends AbstractLineRepository {
         return getLineFromTable(TIMELINE_CF,email,size,start,finish);
     }
 
-    public void deleteTimeline(String username) {
+    public void deleteTimeline(String email) {
         Statement statement = QueryBuilder.delete()
                 .from(TIMELINE_CF)
-                .where(eq("key",username));
+                .where(eq("key",email));
         session.execute(statement);
     }
 

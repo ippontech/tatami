@@ -31,7 +31,7 @@ public class RssUidRepository {
 
     private PreparedStatement generateRssUid;
 
-    private PreparedStatement getUsernameByRssUid;
+    private PreparedStatement getUserEmailByRssUid;
 
     private PreparedStatement removeRssUid;
 
@@ -43,7 +43,7 @@ public class RssUidRepository {
             "INSERT INTO rss (rss_uid,email) " +
                 "VALUES (:rss_uid, :email)");
 
-        getUsernameByRssUid = session.prepare(
+        getUserEmailByRssUid = session.prepare(
             "SELECT email FROM rss " +
                 "WHERE rss_uid = :rss_uid");
 
@@ -62,8 +62,8 @@ public class RssUidRepository {
         return key;
     }
 
-    public String getUsernameByRssUid(String rssUid) {
-        BoundStatement stmt = getUsernameByRssUid.bind();
+    public String getUserEmailByRssUid(String rssUid) {
+        BoundStatement stmt = getUserEmailByRssUid.bind();
         stmt.setString("rss_uid", rssUid);
         ResultSet results = session.execute(stmt);
         if (!results.isExhausted()) {

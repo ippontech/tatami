@@ -21,7 +21,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
  * Cassandra implementation of the User Trends repository.
  * <p/>
  * Structure :
- * - Key = username
+ * - Key = email
  * - Name = date
  * - Value = tag
  *
@@ -38,9 +38,9 @@ public class UserTrendRepository {
     private Session session;
 
 
-    public void addTag(String username, String tag) {
+    public void addTag(String email, String tag) {
         Statement statement = QueryBuilder.insertInto("userTrends")
-                .value("username", username)
+                .value("email", email)
                 .value("id", UUIDs.timeBased())
                 .value("tag", tag)
                 .using(ttl(COLUMN_TTL));
@@ -48,11 +48,11 @@ public class UserTrendRepository {
     }
 
 
-    public List<String> getRecentTags(String username) {
+    public List<String> getRecentTags(String email) {
         Statement statement = QueryBuilder.select()
                 .column("tag")
                 .from("userTrends")
-                .where(eq("username", username))
+                .where(eq("email", email))
                 .orderBy(desc("id"))
                 .limit(TRENDS_NUMBER_OF_TAGS);
 
@@ -65,12 +65,12 @@ public class UserTrendRepository {
     }
 
 
-    public Collection<String> getUserRecentTags(String username, Date endDate,
+    public Collection<String> getUserRecentTags(String email, Date endDate,
                                                 int nbRecentTags) {
         Statement statement = QueryBuilder.select()
                 .column("tag")
                 .from("userTrends")
-                .where(eq("username", username))
+                .where(eq("email", email))
                 .and(gt("id", UUIDs.endOf(endDate.getTime())))
                 .orderBy(desc("id"))
                 .limit(nbRecentTags);

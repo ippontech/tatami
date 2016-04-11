@@ -27,8 +27,8 @@ public class UserTagRepository
         super.removeFriend(username, friendTag);
     }
 
-    public Collection<String> findTags(String username) {
-        return super.findFriends(username);
+    public Collection<String> findTags(String email) {
+        return super.findFriends(email);
     }
 
     @Override

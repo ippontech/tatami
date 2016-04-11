@@ -237,8 +237,7 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Collection<Group> suggestions() {
-        String username = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getUsername();
-        return groupService.buildGroupList(suggestionService.suggestGroups(username));
+        return groupService.buildGroupList(suggestionService.suggestGroups(userDetailsService.getUserEmail()));
     }
 
 

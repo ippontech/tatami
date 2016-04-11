@@ -35,10 +35,10 @@ public class SharesRepository {
 
 
     @CacheEvict(value = "shared-cache", key = "#statusId")
-    public void newShareByUsername(String statusId, String sharedByUsername) {
+    public void newShareByEmail(String statusId, String sharedByEmail) {
         Statement statement = QueryBuilder.insertInto(SHARES_CF)
                 .value("status", UUID.fromString(statusId))
-                .value("username",sharedByUsername);
+                .value("email",sharedByEmail);
         session.execute(statement);
     }
 

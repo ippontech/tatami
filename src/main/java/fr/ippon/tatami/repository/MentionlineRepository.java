@@ -22,14 +22,14 @@ import java.util.List;
 @Repository
 public class MentionlineRepository extends AbstractLineRepository {
 
-    private PreparedStatement findByUsernameStmt;
+    private PreparedStatement findByKeyStmt;
 
     private PreparedStatement deleteByIdStmt;
 
 
     @PostConstruct
     public void init() {
-        findByUsernameStmt = session.prepare(
+        findByKeyStmt = session.prepare(
                 "SELECT * " +
                         "FROM mentionline " +
                         "WHERE key = :key");
@@ -45,12 +45,12 @@ public class MentionlineRepository extends AbstractLineRepository {
         addStatus(mentionedEmail, ColumnFamilyKeys.MENTIONLINE, statusId);
     }
 
-    public void removeStatusesFromMentionline(String mentionedUsername, Collection<String> statusIdsToDelete) {
-        removeStatuses(mentionedUsername, ColumnFamilyKeys.MENTIONLINE, statusIdsToDelete);
+    public void removeStatusesFromMentionline(String mentionedEmail, Collection<String> statusIdsToDelete) {
+        removeStatuses(mentionedEmail, ColumnFamilyKeys.MENTIONLINE, statusIdsToDelete);
     }
 
-    public List<String> getMentionline(String username, int size, String start, String finish) {
-        return getLineFromTable("mentionLine", username, size, start, finish);
+    public List<String> getMentionline(String email, int size, String start, String finish) {
+        return getLineFromTable("mentionLine", email, size, start, finish);
     }
 
     @Override

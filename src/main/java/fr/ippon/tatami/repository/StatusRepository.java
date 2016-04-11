@@ -166,11 +166,11 @@ public class StatusRepository {
     }
 
 
-    public Share createShare(String username, String domain, String originalStatusId) {
+    public Share createShare(String username, String email, String domain, String originalStatusId) {
         Share share = new Share();
         share.setUsername(username);
         share.setType(StatusType.SHARE);
-        share.setUsername(username);
+        share.setEmail(email);
         share.setDomain(domain);
 
         Insert inserter = this.createBaseStatus(share);
@@ -199,17 +199,18 @@ public class StatusRepository {
                 .value("statusId",abstractStatus.getStatusId())
                 .value("statusDate",abstractStatus.getStatusDate())
                 .value("username", abstractStatus.getUsername())
-                .value("username",abstractStatus.getUsername())
+                .value("email",abstractStatus.getEmail())
                 .value("domain",abstractStatus.getDomain())
                 .value("type",abstractStatus.getType().name());
     }
 
 
-    public Announcement createAnnouncement(String username, String domain, String originalStatusId) {
+    public Announcement createAnnouncement(String email, String username, String domain, String originalStatusId) {
         Announcement announcement = new Announcement();
         announcement.setUsername(username);
         announcement.setType(StatusType.ANNOUNCEMENT);
         announcement.setDomain(domain);
+        announcement.setEmail(email);
 
         Insert inserter = this.createBaseStatus(announcement);
         announcement.setOriginalStatusId(originalStatusId);

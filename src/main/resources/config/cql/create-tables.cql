@@ -267,12 +267,6 @@ CREATE TABLE IF NOT EXISTS user_by_email (
     PRIMARY KEY(email, id)
 );
 
-CREATE TABLE IF NOT EXISTS user_by_email (
-    email text,
-    id text,
-    PRIMARY KEY(email, id)
-);
-
 CREATE TABLE IF NOT EXISTS user_by_activation_key (
     activation_key text,
     id text,

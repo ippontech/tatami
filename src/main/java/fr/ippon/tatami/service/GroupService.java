@@ -61,9 +61,9 @@ public class GroupService {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
-        groupMembersRepository.addAdmin(groupId, currentUser.getUsername());
+        groupMembersRepository.addAdmin(groupId, currentUser.getEmail());
         groupCounterRepository.incrementGroupCounter(domain, groupId);
-        userGroupRepository.addGroupAsAdmin(currentUser.getUsername(), groupId);
+        userGroupRepository.addGroupAsAdmin(currentUser.getEmail(), groupId);
         Group group = getGroupById(domain, groupId);
         //groupSearchRepository.save(group);
     }
@@ -128,13 +128,13 @@ public class GroupService {
 
     @Cacheable(value = "group-user-cache", key = "#user.username")
     public Collection<Group> getGroupsForUser(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getUsername());
+        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getEmail());
         return buildGroupIdsList(groupIds);
     }
 
     @Cacheable(value = "group-user-cache", key = "#user.username")
     public Collection<Group> getGroupsOfUser(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getUsername());
+        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getEmail());
         return getGroupDetails(user, groupIds);
     }
 
@@ -174,7 +174,7 @@ public class GroupService {
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void addMemberToGroup(User user, Group group) {
         UUID groupId = group.getGroupId();
-        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getUsername());
+        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getEmail());
         boolean userIsAlreadyAMember = false;
         for (UUID testGroupId : userCurrentGroupIds) {
             if (testGroupId.equals(groupId)) {
@@ -182,10 +182,10 @@ public class GroupService {
             }
         }
         if (!userIsAlreadyAMember) {
-            groupMembersRepository.addMember(groupId, user.getUsername());
+            groupMembersRepository.addMember(groupId, user.getEmail());
             log.debug("user=" + user);
             groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
-            userGroupRepository.addGroupAsMember(user.getUsername(), groupId);
+            userGroupRepository.addGroupAsMember(user.getEmail(), groupId);
         } else {
             log.debug("User {} is already a member of group {}", user.getUsername(), group.getName());
         }
@@ -194,7 +194,7 @@ public class GroupService {
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
     public void removeMemberFromGroup(User user, Group group) {
         UUID groupId = group.getGroupId();
-        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getUsername());
+        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getEmail());
         boolean userIsAlreadyAMember = false;
         for (UUID testGroupId : userCurrentGroupIds) {
             if (testGroupId.equals(groupId)) {
@@ -202,9 +202,9 @@ public class GroupService {
             }
         }
         if (userIsAlreadyAMember) {
-            groupMembersRepository.removeMember(groupId, user.getUsername());
+            groupMembersRepository.removeMember(groupId, user.getEmail());
             groupCounterRepository.decrementGroupCounter(user.getDomain(), groupId);
-            userGroupRepository.removeGroup(user.getUsername(), groupId);
+            userGroupRepository.removeGroup(user.getEmail(), groupId);
         } else {
             log.debug("User {} is not a member of group {}", user.getUsername(), group.getName());
         }

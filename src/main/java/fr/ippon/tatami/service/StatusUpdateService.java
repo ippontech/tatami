@@ -266,7 +266,7 @@ public class StatusUpdateService {
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status.getUsername(), status.getStatusId().toString());
+            userlineRepository.addStatusToUserline(status.getEmail(), status.getStatusId().toString());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -375,18 +375,18 @@ public class StatusUpdateService {
     }
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
-        Collection<String> followersForTag =
+        Collection<String> followersEmailForTag =
                 tagFollowerRepository.findFollowers(status.getDomain(), tag);
 
         if (isPublicGroup(group)) { // This is a public status
-            for (String followerUsername : followersForTag) {
-                addStatusToTimelineAndNotify(followerUsername, status);
+            for (String followerEmail : followersEmailForTag) {
+                addStatusToTimelineAndNotify(followerEmail, status);
             }
         } else {  // This is a private status
-            for (String followerUsername : followersForTag) {
-                Collection<UUID> groupIds = userGroupRepository.findGroups(followerUsername);
+            for (String followerEmail : followersEmailForTag) {
+                Collection<UUID> groupIds = userGroupRepository.findGroups(followerEmail);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                    addStatusToTimelineAndNotify(followerUsername, status);
+                    addStatusToTimelineAndNotify(followerEmail, status);
                 }
             }
         }

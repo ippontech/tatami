@@ -45,7 +45,7 @@ public class MailDigestRepository {
 
     private PreparedStatement unsubscribeFromDigest;
 
-    private PreparedStatement getUsernamesRegisteredToDigest;
+    private PreparedStatement getUserEmailsRegisteredToDigest;
 
 
     @PostConstruct
@@ -61,7 +61,7 @@ public class MailDigestRepository {
                 "WHERE digest_id = :digest_id " +
                 "AND email = :email");
 
-        getUsernamesRegisteredToDigest = session.prepare(
+        getUserEmailsRegisteredToDigest = session.prepare(
             "SELECT email FROM mail_digest " +
                 "WHERE digest_id = :digest_id " +
                 "LIMIT :pageLimit");
@@ -84,10 +84,10 @@ public class MailDigestRepository {
         session.execute(stmt);
     }
 
-    public List<String> getUsernamesRegisteredToDigest(DigestType digestType, String domain,
+    public List<String> getUserEmailsRegisteredToDigest(DigestType digestType, String domain,
                                                     String day, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
-        BoundStatement stmt = getUsernamesRegisteredToDigest.bind();
+        BoundStatement stmt = getUserEmailsRegisteredToDigest.bind();
         stmt.setString("digest_id", buildKey(digestType, domain, day));
         stmt.setInt("pageLimit", maxColumns+1);
 

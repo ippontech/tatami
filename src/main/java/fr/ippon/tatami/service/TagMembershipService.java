@@ -42,7 +42,7 @@ public class TagMembershipService {
     public boolean followTag(TagDTO tag) {
         log.debug("Following tag : {}", tag);
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getUsername())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getEmail())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
                 log.debug("User {} already follows tag {}", currentUser.getUsername(), tag);
                 return false;
@@ -50,7 +50,7 @@ public class TagMembershipService {
         }
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         userTagRepository.addTag(currentUser.getUsername(), tag.getName());
-        tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getUsername());
+        tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getEmail());
         log.debug("User " + currentUser.getUsername() +
                 " now follows tag " + tag);
 
@@ -61,7 +61,7 @@ public class TagMembershipService {
         log.debug("Removing followed tag : {}", tag);
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getUsername())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getEmail())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
                 tagAlreadyFollowed = true;
             }
@@ -69,7 +69,7 @@ public class TagMembershipService {
         if (tagAlreadyFollowed) {
             String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
             userTagRepository.removeTag(currentUser.getUsername(), tag.getName());
-            tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getUsername());
+            tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getEmail());
             log.debug("User " + currentUser.getUsername() +
                     " has stopped following tag " + tag);
 

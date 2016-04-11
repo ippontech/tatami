@@ -94,11 +94,11 @@ public class TimelineResource {
     /**
      * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user "jdubois"
      */
-    @RequestMapping(value = "/rest/statuses/{username}/timeline",
+    @RequestMapping(value = "/rest/statuses/{email}/timeline",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<StatusDTO> listStatusForUser(@PathVariable("username") String username,
+    public Collection<StatusDTO> listStatusForUser(@PathVariable("email") String email,
                                                    @RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String start,
                                                    @RequestParam(required = false) String finish) {
@@ -106,12 +106,12 @@ public class TimelineResource {
         if (count == null || count == 0) {
             count = 20; //Default value
         }
-        log.debug("REST request to get someone's status (username={}).", username);
-        if (username == null || username.length() == 0) {
+        log.debug("REST request to get someone's status (email={}).", email);
+        if (email == null || email.length() == 0) {
             return new ArrayList<StatusDTO>();
         }
         try {
-            return timelineService.getUserline(username, count, start, finish);
+            return timelineService.getUserline(email, count, start, finish);
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 e.printStackTrace();
