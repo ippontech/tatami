@@ -48,7 +48,6 @@
 
         function isValidToken() {
             var token = $localStorage.get('token');
-            console.log(token);
             return token && token.expires && token.expires > new Date().getTime()
         }
     }
@@ -84,7 +83,6 @@
                         return scope.$eval(attrs.compile);
                     },
                     function(value) {
-                        console.log(value);
                         element.html(value);
 
                         $compile(element.contents())(scope);
