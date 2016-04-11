@@ -7,6 +7,7 @@ import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.KeyAndPasswordDTO;
 import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
@@ -68,11 +69,10 @@ public class AccountResource {
     @Timed
     public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
         return userRepository.findOneByEmail(userDTO.getEmail())
-            .map(user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(userDTO.getEmail())
-                .map(user -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
+                .map(email -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
-                    User user = userService.createUserInformation(userDTO.getUsername(), userDTO.getPassword(),
+                    String username = DomainUtil.getUsernameFromEmail(userDTO.getEmail());
+                    User user = userService.createUserInformation(username, userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
                     userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getEmail().split("@")[1]);
@@ -85,8 +85,7 @@ public class AccountResource {
 
                     mailService.sendActivationEmail(user, baseUrl);
                     return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-        );
+                });
     }
 
     /**

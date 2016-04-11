@@ -15,7 +15,6 @@ public class UserDTO {
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 100;
 
-    @NotNull
     @Pattern(regexp = "^[a-z0-9]*$")
     @Size(min = 1, max = 50)
     private String username;
@@ -32,6 +31,7 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(min = 5, max = 100)
     private String email;
