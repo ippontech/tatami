@@ -1,6 +1,7 @@
 package fr.ippon.tatami.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import fr.ippon.tatami.config.JHipsterProperties;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
@@ -8,8 +9,10 @@ import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
+import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
@@ -66,6 +69,9 @@ public class UserResource {
 
     @Inject
     private UserSearchRepository userSearchRepository;
+
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private MailService mailService;
@@ -238,9 +244,20 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<User> search(@PathVariable String query) {
-        return StreamSupport
-            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Collection<UserDTO> search(@PathVariable String query) {
+        String prefix = query.toLowerCase();
+
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        Collection<String> emails = searchService.searchUserByPrefix(domain, prefix);
+        Collection<User> users;
+
+        if (query != null && !query.equals("")) {
+            this.log.debug("REST request to find users starting with : {}", prefix);
+            users = userService.getUsersByEmail(emails);
+        } else {
+            users = new ArrayList<User>();
+        }
+        return userService.buildUserDTOList(users);
     }
 }

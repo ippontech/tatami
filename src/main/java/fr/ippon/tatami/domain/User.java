@@ -5,6 +5,8 @@ import com.datastax.driver.mapping.annotations.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,6 +20,8 @@ import java.util.Set;
  */
 @Table(name = "user")
 @Document(indexName = "user")
+@Setting(settingPath = "/config/elasticsearch/shared-settings.json")
+@Mapping(mappingPath = "/config/elasticsearch/user/mappings.json")
 public class User implements Serializable {
 
     @PartitionKey
@@ -42,6 +46,7 @@ public class User implements Serializable {
     @Size(max = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(max = 100)
     private String email;

@@ -43,7 +43,7 @@ public class TrendService {
     public Collection<String> searchTags(String domain, String startWith, int size) {
         Assert.hasLength(startWith);
         Collection<String> allTags = trendRepository.getDomainTags(domain);
-        Collection<String> matchingTags = new ArrayList<String>();
+        Collection<String> matchingTags = new ArrayList<>();
         String startWithLowered = startWith.toLowerCase();
         int counter = 0;
         for (String tag : allTags) {

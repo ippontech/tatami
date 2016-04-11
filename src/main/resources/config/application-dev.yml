@@ -24,6 +24,13 @@ spring:
             protocolVersion: V2
             compression: LZ4
             keyspaceName: TatamiJHipster
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
     mail:
         host: localhost
     messages:

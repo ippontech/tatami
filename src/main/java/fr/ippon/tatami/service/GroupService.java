@@ -49,8 +49,8 @@ public class GroupService {
     @Inject
     private UserDetailsService userDetailsService;
 
-//    @Inject
-//    private SearchService searchService;
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private FriendRepository friendRepository;
@@ -65,7 +65,7 @@ public class GroupService {
         groupCounterRepository.incrementGroupCounter(domain, groupId);
         userGroupRepository.addGroupAsAdmin(currentUser.getEmail(), groupId);
         Group group = getGroupById(domain, groupId);
-        //groupSearchRepository.save(group);
+        searchService.addGroup(group);
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
@@ -75,8 +75,8 @@ public class GroupService {
                 group.getName(),
                 group.getDescription(),
                 group.isArchivedGroup());
-//        searchService.removeGroup(group);
-//        searchService.addGroup(group);
+        searchService.removeGroup(group);
+        searchService.addGroup(group);
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
@@ -87,8 +87,7 @@ public class GroupService {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByEmail(member.getKey()).get();
             dto.setUsername(user.getUsername());
-//            dto.setUsername(user.getUsername());
-//            dto.setAvatar(user.getAvatar());
+            dto.setAvatar(user.getAvatar());
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
             dto.setRole(member.getValue());
@@ -114,8 +113,7 @@ public class GroupService {
             if (user.getUsername() == userWanted.getUsername()) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setUsername(user.getUsername());
-//                dto.setUsername(user.getUsername());
-//                dto.setAvatar(user.getAvatar());
+                dto.setAvatar(user.getAvatar());
                 dto.setFirstName(user.getFirstName());
                 dto.setLastName(user.getLastName());
                 dto.setRole(member.getValue());

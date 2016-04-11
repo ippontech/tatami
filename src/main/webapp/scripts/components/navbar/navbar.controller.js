@@ -12,8 +12,9 @@ tatamiJHipsterApp
         $scope.search = {};
 
         $scope.search = function() {
-            console.log($scope.search.term);
-            return SearchService.searchUsers({ query: $scope.search.term });
+            if($scope.search.term.length > 0) {
+                return SearchService.get({ term: 'all', q: $scope.search.term });
+            }
         };
 
 

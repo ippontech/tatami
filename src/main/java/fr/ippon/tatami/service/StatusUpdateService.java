@@ -86,8 +86,8 @@ public class StatusUpdateService {
     @Inject
     private CounterRepository counterRepository;
 
-//    @Inject
-//    private SearchService searchService;
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private DomainlineRepository domainlineRepository;
@@ -100,6 +100,9 @@ public class StatusUpdateService {
 
     @Inject
     private UserDetailsService userDetailsService;
+
+    @Inject
+    private UserService userService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -281,8 +284,7 @@ public class StatusUpdateService {
             counterRepository.incrementStatusCounter(currentEmail);
 
             // Add to the searchStatus engine
-            // Commenting out for now.
-//            searchService.addStatus(status);
+            searchService.addStatus(status);
 
             // add status to the company wall
             addToCompanyWall(status, group);

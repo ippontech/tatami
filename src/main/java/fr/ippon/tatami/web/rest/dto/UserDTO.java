@@ -59,6 +59,10 @@ public class UserDTO {
 
     private String domain;
 
+    private long attachmentsSize;
+
+    private boolean you;
+
     public UserDTO() {
     }
 
@@ -94,16 +98,20 @@ public class UserDTO {
         this.domain = domain;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAvatar() {
@@ -118,43 +126,121 @@ public class UserDTO {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getJobTitle() {
         return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public boolean isActivated() {
         return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public String getLangKey() {
         return langKey;
     }
 
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
     public Set<String> getAuthorities() {
         return authorities;
     }
 
-    public boolean isMentionEmail() { return mentionEmail; }
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
+    }
 
-    public String getRssUid() { return rssUid; }
+    public boolean isMentionEmail() {
+        return mentionEmail;
+    }
 
-    public boolean isWeeklyDigest() { return weeklyDigest; }
+    public void setMentionEmail(boolean mentionEmail) {
+        this.mentionEmail = mentionEmail;
+    }
 
-    public boolean isDailyDigest() { return dailyDigest; }
+    public String getRssUid() {
+        return rssUid;
+    }
 
-    public String getDomain() { return domain; }
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
+
+    public boolean isWeeklyDigest() {
+        return weeklyDigest;
+    }
+
+    public void setWeeklyDigest(boolean weeklyDigest) {
+        this.weeklyDigest = weeklyDigest;
+    }
+
+    public boolean isDailyDigest() {
+        return dailyDigest;
+    }
+
+    public void setDailyDigest(boolean dailyDigest) {
+        this.dailyDigest = dailyDigest;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public long getAttachmentsSize() {
+        return attachmentsSize;
+    }
+
+    public void setAttachmentsSize(long attachmentsSize) {
+        this.attachmentsSize = attachmentsSize;
+    }
+
+    public boolean isYou() {
+        return you;
+    }
+
+    public void setYou(boolean you) {
+        this.you = you;
+    }
 
     @Override
     public boolean equals(Object o) {
