@@ -67,7 +67,7 @@
                                 <span class="glyphicon glyphicon-bullhorn">
                                     {{ 'status.isAnnounced' | translate }}
                                 </span>
-                                <a ui-sref="home.status({ statusId: status.sharedByEmail })">@{{ status.sharedByEmail }}</a>
+                                <a ui-sref="home.status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
                             </small>
 
                             <small ng-if="status.replyTo && status.type !== 'ANNOUNCEMENT'">
@@ -124,7 +124,7 @@
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="status.favorite"></span>
                                         </button>
-                                        <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
+                                        <button ng-if="$state.isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
                                             <span translate="status.announce"></span>
                                         </button>

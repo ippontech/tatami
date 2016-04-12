@@ -64,8 +64,8 @@ public class DomainRepository {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
         Statement statement = QueryBuilder.select()
                 .column("email")
-                .from("domain")
-                .where(eq(DOMAIN_ID, domain))
+                .from("user")
+                .where(eq("domain", domain))
                 .limit(maxColumns+1);
 
         ResultSet results = session.execute(statement);
@@ -80,8 +80,8 @@ public class DomainRepository {
     public List<String> getEmailsInDomain(String domain) {
         Statement statement = QueryBuilder.select()
             .column("email")
-            .from("domain")
-            .where(eq(DOMAIN_ID, domain));
+            .from("user")
+            .where(eq("domain", domain));
 
         ResultSet results = session.execute(statement);
         return results

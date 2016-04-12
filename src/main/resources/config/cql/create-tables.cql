@@ -338,3 +338,5 @@ VALUES('4','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K', 'user
 
 INSERT INTO user_by_email (email, id)
 VALUES('user@localhost','4');
+
+CREATE INDEX domainID ON user (domain);

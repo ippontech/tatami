@@ -256,7 +256,7 @@ public class TimelineService {
                         AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
                         if (originalStatus != null) { // Find the status that was announced
                             statusDTO.setTimelineId(announcement.getStatusId().toString());
-                            statusDTO.setSharedByUsername(announcement.getUsername());
+                            statusDTO.setSharedByUsername(announcement.getEmail());
                             statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
@@ -618,6 +618,7 @@ public class TimelineService {
 
         // add status to everyone's timeline
         String domain = status.getDomain();
+        log.info("Announcing to domain: "+domain);
         List<String> emails = domainRepository.getEmailsInDomain(domain);
         timelineRepository.announceStatusToTimeline(currentEmail, emails, announcement);
 //        for (String username : usernames) {

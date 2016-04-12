@@ -323,6 +323,7 @@ public class StatusRepository {
     }
 
     private AbstractStatus findAnnouncement(Row result) {
+        log.debug("Getting announcement");
         Announcement announcement = new Announcement();
         announcement.setType(StatusType.ANNOUNCEMENT);
         announcement.setOriginalStatusId(result.getUUID(ORIGINAL_STATUS_ID).toString());
