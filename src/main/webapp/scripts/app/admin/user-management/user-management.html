@@ -15,7 +15,7 @@
             <thead>
             <tr>
                 <th translate="global.field.id">ID</th>
-                <th translate="user-management.username">Username</th>
+
                 <th translate="user-management.email">Email</th>
                 <th></th>
                 <th translate="user-management.langKey">LangKey</th>
@@ -25,8 +25,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in users track by user.id">
-                <td><a ui-sref="user-management-detail({username:user.username})">{{user.id}}</a></td>
-                <td>{{user.username}}</td>
+                <td><a ui-sref="user-management-detail({login:user.email})">{{user.id}}</a></td>
+
                 <td>{{user.email}}</td>
                 <td>
                     <span class="label label-danger" ng-click="setActive(user, true)" ng-show="!user.activated"
@@ -42,17 +42,17 @@
                 </td>
                 <td class="text-right">
                     <button type="submit"
-                            ui-sref="user-management-detail({username:user.username})"
+                            ui-sref="user-management-detail({login:user.email})"
                             class="btn btn-info btn-sm">
                         <span class="glyphicon glyphicon-eye-open"></span>
                     </button>
                     <button type="submit"
-                            ui-sref="user-management.edit({username:user.username})"
+                            ui-sref="user-management.edit({email:user.email})"
                             class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </button>
                     <button type="submit"
-                            ui-sref="user-management.delete({username:user.username})"
+                            ui-sref="user-management.delete({login:user.email})"
                             class="btn btn-danger btn-sm">
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>

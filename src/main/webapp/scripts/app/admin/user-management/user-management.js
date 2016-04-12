@@ -25,7 +25,7 @@ tatamiJHipsterApp
             })
             .state('user-management-detail', {
                 parent: 'admin',
-                url: '/user/:email',
+                url: '/user/:login',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                     pageTitle: 'user-management.detail.title'
@@ -57,7 +57,7 @@ tatamiJHipsterApp
                         resolve: {
                             entity: function () {
                                 return {
-                                    id: null, username: null, firstName: null, lastName: null, email: null,
+                                    id: null, login: null, firstName: null, lastName: null, email: null,
                                     activated: true, langKey: null, createdBy: null, createdDate: null,
                                     lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
                                     resetKey: null, authorities: null
@@ -83,7 +83,7 @@ tatamiJHipsterApp
                         controller: 'UserManagementDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: ['User', function(User) {
+                            entity: ['UserService', function(User) {
                                 return User.get({email : $stateParams.email});
                             }]
                         }
@@ -96,7 +96,7 @@ tatamiJHipsterApp
             })
             .state('user-management.delete', {
                 parent: 'user-management',
-                url: '/{username}/delete',
+                url: '/{login}/delete',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                 },
@@ -106,8 +106,8 @@ tatamiJHipsterApp
                         controller: 'user-managementDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['User', function(User) {
-                                return User.get({email : $stateParams.email});
+                            entity: ['UserService', function(User) {
+                                return User.get({email : $stateParams.login});
                             }]
                         }
                     }).result.then(function(result) {

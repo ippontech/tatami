@@ -15,24 +15,6 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label" translate="user-management.username">Username</label>
-            <input type="text" class="form-control" name="username"
-                   ng-model="user.username" ng-required="user.id == null" ng-maxlength="50">
-
-            <div ng-show="editForm.username.$invalid">
-                <p class="help-block"
-                   ng-show="editForm.username.$error.required" translate="entity.validation.required">
-                    This field is required.
-                </p>
-
-                <p class="help-block"
-                   ng-show="editForm.username.$error.maxlength" translate="entity.validation.maxlength"
-                   translate-value-max="50">
-                    This field cannot be longer than 50 characters.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label" translate="user-management.firstName">FirstName</label>
             <input type="text" class="form-control" name="firstName"
                    ng-model="user.firstName" ng-maxlength="50">

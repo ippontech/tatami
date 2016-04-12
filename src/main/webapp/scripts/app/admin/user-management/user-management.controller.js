@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('UserManagementController', function ($scope, User, ParseLinks, Language) {
+    .controller('UserManagementController', function ($scope, UserService, ParseLinks, Language) {
         $scope.users = [];
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
         Language.getAll().then(function (languages) {
@@ -10,7 +10,7 @@ tatamiJHipsterApp
 
         $scope.page = 1;
         $scope.loadAll = function () {
-            User.query({}, function (result) {
+            UserService.query({}, function (result) {
                 $scope.users = result;
             });
         };
@@ -23,7 +23,7 @@ tatamiJHipsterApp
 
         $scope.setActive = function (user, isActivated) {
             user.activated = isActivated;
-            User.update(user, function () {
+            UserService.update(user, function () {
                 $scope.loadAll();
                 $scope.clear();
             });
@@ -31,12 +31,12 @@ tatamiJHipsterApp
 
         $scope.clear = function () {
             $scope.user = {
-                id: null, username: null, firstName: null, lastName: null, email: null,
+                id: null, login: null, firstName: null, lastName: null, email: null,
                 activated: null, langKey: null, createdBy: null, createdDate: null,
                 lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
                 resetKey: null, authorities: null
             };
-            $scope.editForm.$setPristine();
-            $scope.editForm.$setUntouched();
+            //$scope.editForm.$setPristine();
+            //$scope.editForm.$setUntouched();
         };
     });

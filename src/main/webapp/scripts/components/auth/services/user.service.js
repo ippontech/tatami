@@ -13,7 +13,6 @@ tatamiJHipsterApp
     return $resource('/tatami/rest/users/:email', null,
     {
         'get': {
-            isArray: true,
             method: 'GET', params: { email: '@email' },
             transformResponse: function(user) {
                 user = angular.fromJson(user);
@@ -48,6 +47,9 @@ tatamiJHipsterApp
         },
         'follow': { method: 'PATCH', params: { email: '@email' } },
         'searchUsers': { method: 'GET', isArray: true, url: '/tatami/rest/users/:term', transformResponse: responseTransform },
-        'deactivate': { method: 'PATCH', params: { email: '@email' } }
+        'deactivate': { method: 'PATCH', params: { email: '@email' } },
+        'delete': { method: 'DELETE', params: { email: '@email' } },
+        'update': { method: 'PUT' },
+        'save': {method: 'POST' }
     });
 }]);

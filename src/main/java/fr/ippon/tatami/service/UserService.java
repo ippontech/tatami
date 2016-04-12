@@ -157,6 +157,9 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(new Date());
         user.setActivated(true);
+        user.setDailyDigest(false);
+        user.setWeeklyDigest(false);
+        user.setMentionEmail(false);
         userRepository.save(user);
         searchService.addUser(user);
         log.debug("Created Information for User: {}", user);

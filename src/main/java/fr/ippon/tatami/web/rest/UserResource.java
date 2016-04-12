@@ -194,7 +194,7 @@ public class UserResource {
     /**
      * DELETE  USER :username -> delete User with the corresponding "email".
      */
-    @RequestMapping(value = "/rest/users/{email}",
+    @RequestMapping(value = "/rest/users/{email:[_'.@a-z0-9-]+}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
