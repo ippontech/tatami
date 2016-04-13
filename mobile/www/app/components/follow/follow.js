@@ -1,6 +1,11 @@
-angular.module('tatami')
-    .config(function ($stateProvider, $urlRouterProvider) {
+(function() {
+    'use strict';
 
+    angular.module('tatami')
+        .config(followConfig);
+
+    followConfig.$inject = ['$stateProvider'];
+    function followConfig($stateProvider) {
         $stateProvider
             .state('follow', {
                 url: '/follow',
@@ -8,10 +13,20 @@ angular.module('tatami')
                 abstract: true,
                 templateUrl: 'app/components/follow/follow.html',
                 resolve: {
-                    currentUser: ['ProfileService', function(ProfileService) {
-                        return ProfileService.get().$promise;
-                    }]
+                    currentUser: getCurrentUser,
+                    translatePartialLoader: getTranslatePartialLoader
                 }
             });
+
+        getCurrentUser.$inject = ['ProfileService'];
+        function  getCurrentUser(ProfileService) {
+            return ProfileService.get().$promise;
+        }
+
+        getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+        function getTranslatePartialLoader($translate, $translatePartialLoader) {
+            $translatePartialLoader.addPart('follow');
+            return $translate.refresh();
+        }
     }
-);
+})();
