@@ -1,0 +1,9 @@
+{
+    "user": {
+        "profile": {
+            "title": "Profile"
+        },
+        "follow": "Follow",
+        "unfollow": "Unfollow"
+    }
+}
