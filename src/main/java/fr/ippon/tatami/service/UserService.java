@@ -8,16 +8,21 @@ import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 
 import java.lang.String;
 import java.time.ZonedDateTime;
+
+import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.xml.DomUtils;
 
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
@@ -39,6 +44,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
+    private SearchService searchService;
+
+    @Inject
     private UserSearchRepository userSearchRepository;
 
     @Inject
@@ -46,6 +54,13 @@ public class UserService {
 
     @Inject
     private MailDigestRepository mailDigestRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
+
+    public Optional<User> getCurrentUser() {
+        return userRepository.findOneByEmail(userDetailsService.getUserEmail());
+    }
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -55,7 +70,6 @@ public class UserService {
                 user.setActivated(true);
                 user.setActivationKey(null);
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -75,7 +89,6 @@ public class UserService {
                 user.setResetKey(null);
                 user.setResetDate(null);
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 return user;
            });
     }
@@ -87,20 +100,18 @@ public class UserService {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(new Date());
                 userRepository.save(user);
-                userSearchRepository.save(user);
                 return user;
             });
     }
 
-    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+    public User createUserInformation(String username, String password, String firstName, String lastName, String email,
         String langKey, String jobTitle, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
 
         User newUser = new User();
         newUser.setId(UUID.randomUUID().toString());
         Set<String> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        newUser.setUsername(login);
+        newUser.setUsername(username);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(firstName);
@@ -121,7 +132,7 @@ public class UserService {
         authorities.add(AuthoritiesConstants.USER);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
-        userSearchRepository.save(newUser);
+        searchService.addUser(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -129,7 +140,7 @@ public class UserService {
     public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
-        user.setLogin(managedUserDTO.getLogin());
+        user.setUsername(managedUserDTO.getUsername());
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail());
@@ -146,60 +157,63 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(new Date());
         user.setActivated(true);
+        user.setDailyDigest(false);
+        user.setWeeklyDigest(false);
+        user.setMentionEmail(false);
         userRepository.save(user);
-        userSearchRepository.save(user);
+        searchService.addUser(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
 
     public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle,
                                       String phoneNumber) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
+            u.setDomain(DomainUtil.getDomainFromEmail(email));
             u.setLangKey(langKey);
             u.setJobTitle(jobTitle);
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
-            userSearchRepository.save(u);
+            searchService.removeUser(u);
+            searchService.addUser(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
 
     public void updateUserPreferences(boolean mentionEmail, String rssUid,
                                       boolean weeklyDigest, boolean dailyDigest) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             u.setMentionEmail(mentionEmail);
             u.setRssUid(rssUid);
             u.setWeeklyDigest(weeklyDigest);
             u.setDailyDigest(dailyDigest);
             userRepository.save(u);
-            userSearchRepository.save(u);
             log.debug("Change Preferences for User: {}", u);
         });
     }
 
-    public void deleteUserInformation(String login) {
-        userRepository.findOneByLogin(login).ifPresent(u -> {
+    public void deleteUserInformation(String email) {
+        userRepository.findOneByEmail(email).ifPresent(u -> {
             userRepository.delete(u);
-            userSearchRepository.delete(u);
+            searchService.removeUser(u);
             log.debug("Deleted User: {}", u);
         });
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
+        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
-            userSearchRepository.save(u);
             log.debug("Changed password for User: {}", u);
         });
     }
 
-    public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneByLogin(login).map(u -> {
+    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
+        return userRepository.findOneByEmail(email).map(u -> {
             u.getAuthorities().size();
             return u;
         });
@@ -207,7 +221,7 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
@@ -219,7 +233,7 @@ public class UserService {
      */
     public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String rssUid = currentUser.getRssUid();
         if (booleanPreferencesRssTimeline) {
             // if we already have an rssUid it means it's already activated :
@@ -227,7 +241,7 @@ public class UserService {
 
             if ((rssUid == null) || rssUid.equals("")) {
                 // Activate rss feed publication.
-                rssUid = rssUidRepository.generateRssUid(currentUser.getLogin());
+                rssUid = rssUidRepository.generateRssUid(currentUser.getUsername());
                 currentUser.setRssUid(rssUid);
                 log.debug("Updating rss timeline preferences : rssUid={}", rssUid);
 
@@ -264,23 +278,23 @@ public class UserService {
      * update registration to weekly digest email.
      */
     public void updateWeeklyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setWeeklyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         if (registration) {
-            mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+            mailDigestRepository.subscribeToDigest(DigestType.WEEKLY_DIGEST, currentUser.getUsername(),
                 currentUser.getDomain(), day);
         } else {
-            mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, currentUser.getLogin(),
+            mailDigestRepository.unsubscribeFromDigest(DigestType.WEEKLY_DIGEST, currentUser.getUsername(),
                 currentUser.getDomain(), day);
         }
 
         log.debug("Updating weekly digest preferences : " +
-            "weeklyDigest={} for user {}", registration, currentUser.getLogin());
+            "weeklyDigest={} for user {}", registration, currentUser.getUsername());
         try {
             userRepository.save(currentUser);
-            userSearchRepository.save(currentUser);
+            userSearchRepository.index(currentUser);
 //            userRepository.updateUser(currentUser);
         } catch (ConstraintViolationException cve) {
             log.info("Constraint violated while updating preferences : " + cve);
@@ -292,19 +306,19 @@ public class UserService {
      * Update registration to daily digest email.
      */
     public void updateDailyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         currentUser.setDailyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
         if (registration) {
-            mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+            mailDigestRepository.subscribeToDigest(DigestType.DAILY_DIGEST, currentUser.getUsername(),
                 currentUser.getDomain(), day);
         } else {
-            mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, currentUser.getLogin(),
+            mailDigestRepository.unsubscribeFromDigest(DigestType.DAILY_DIGEST, currentUser.getUsername(),
                 currentUser.getDomain(), day);
         }
 
-        log.debug("Updating daily digest preferences : dailyDigest={} for user {}", registration, currentUser.getLogin());
+        log.debug("Updating daily digest preferences : dailyDigest={} for user {}", registration, currentUser.getUsername());
         try {
             userRepository.save(currentUser);
         } catch (ConstraintViolationException cve) {
@@ -314,20 +328,66 @@ public class UserService {
     }
 
     /**
-     * Return a collection of Users based on their username (ie : uid)
+     * Return a collection of Users based on their email addresses (ie : uid)
      *
-     * @param logins the collection : must not be null
+     * @param emails the collection : must not be null
      * @return a Collection of User
      */
-    public Collection<User> getUsersByLogin(Collection<String> logins) {
+    public Collection<User> getUsersByEmail(Collection<String> emails) {
         final Collection<User> users = new ArrayList<User>();
         User user;
-        for (String login : logins) {
-            user = userRepository.findOneByLogin(login).get();
+        for (String email : emails) {
+            user = userRepository.findOneByEmail(email).get();
             if (user != null) {
                 users.add(user);
             }
         }
         return users;
+    }
+
+    public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+//        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+//        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
+        for (User user : users) {
+            UserDTO userDTO = getUserDTOFromUser(user);
+            userDTO.setYou(user.equals(currentUser));
+//            if (!userDTO.isYou()) {
+//                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+//                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+//            }
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
+    };
+
+    public UserDTO buildUserDTO(User user) {
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        UserDTO userDTO = getUserDTOFromUser(user);
+        userDTO.setYou(user.equals(currentUser));
+//        if (!userDTO.isYou()) {
+//            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+//            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+//            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+//            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+//        }
+        return userDTO;
+    }
+
+    private UserDTO getUserDTOFromUser(User user) {
+        UserDTO friend = new UserDTO();
+        friend.setUsername(user.getUsername());
+        friend.setAvatar(user.getAvatar());
+        friend.setFirstName(user.getFirstName());
+        friend.setLastName(user.getLastName());
+        friend.setJobTitle(user.getJobTitle());
+        friend.setPhoneNumber(user.getPhoneNumber());
+        friend.setAttachmentsSize(user.getAttachmentsSize());
+//        friend.setStatusCount(user.getStatusCount());
+//        friend.setFriendsCount(user.getFriendsCount());
+//        friend.setFollowersCount(user.getFollowersCount());
+        friend.setActivated(user.getActivated());
+        return friend;
     }
 }

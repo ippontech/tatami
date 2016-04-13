@@ -22,18 +22,18 @@ public class AtmosphereService {
     /**
      * Notifies the user with Atmosphere.
      */
-    public void notifyUser(String login, AbstractStatus abstractStatus) {
-        log.debug("Notifying user: {}", login);
+    public void notifyUser(String username, AbstractStatus abstractStatus) {
+        log.debug("Notifying user: {}", username);
         StatusDTO statusDTO = timelineService.getStatus(abstractStatus.getStatusId().toString());
         TatamiNotification notification = new TatamiNotification();
-        notification.setLogin(login);
+        notification.setUsername(username);
         notification.setStatusDTO(statusDTO);
         // Atmosphere is not yet implemented in this project. Commenting this out for now
 //        try {
 //            Broadcaster broadcaster =
 //                    BroadcasterFactory
 //                            .getDefault()
-//                            .lookup("/realtime/statuses/home_timeline/" + login, true);
+//                            .lookup("/realtime/statuses/home_timeline/" + username, true);
 //
 //            if (broadcaster != null) {
 //                broadcaster.broadcast(notification);

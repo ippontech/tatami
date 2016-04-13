@@ -6,6 +6,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -85,8 +86,8 @@ public class StatusUpdateService {
     @Inject
     private CounterRepository counterRepository;
 
-//    @Inject
-//    private SearchService searchService;
+    @Inject
+    private SearchService searchService;
 
     @Inject
     private DomainlineRepository domainlineRepository;
@@ -96,6 +97,12 @@ public class StatusUpdateService {
 
     @Inject
     private AtmosphereService atmosphereService;
+
+    @Inject
+    private UserDetailsService userDetailsService;
+
+    @Inject
+    private UserService userService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -220,18 +227,19 @@ public class StatusUpdateService {
             startTime = Calendar.getInstance().getTimeInMillis();
             log.debug("Creating new status : {}", content);
         }
-        String currentLogin;
+        String currentEmail;
         if (user == null) {
-            currentLogin = SecurityUtils.getCurrentUserLogin();
+            currentEmail = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
         } else {
-            currentLogin = user.getLogin();
+            currentEmail = user.getEmail();
         }
-        String username = userRepository.findOneByLogin(currentLogin).get().getUsername();
-        String domain = DomainUtil.getDomainFromLogin(currentLogin);
+        String username = userRepository.findOneByEmail(currentEmail).get().getUsername();
+        String domain = DomainUtil.getDomainFromEmail(currentEmail);
 
         Status status =
-                statusRepository.createStatus(currentLogin,
-                        username,
+                statusRepository.createStatus(username,
+                        currentEmail,
+                        domain,
                         statusPrivate,
                         group,
                         attachmentIds,
@@ -249,19 +257,19 @@ public class StatusUpdateService {
         }
 
         // add status to the timeline
-        addStatusToTimelineAndNotify(currentLogin, status);
+        addStatusToTimelineAndNotify(currentEmail, status);
 
         if (status.getStatusPrivate()) { // Private status
             // add status to the mentioned users' timeline
-            manageMentions(status, null, currentLogin, new ArrayList<String>());
+            manageMentions(status, null, currentEmail, new ArrayList<String>(), domain);
 
         } else { // Public status
-            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentLogin);
+            Collection<String> followersForUser = followerRepository.findFollowersForUser(currentEmail);
 
             // add status to the dayline, userline
             String day = StatsService.DAYLINE_KEY_FORMAT.format(status.getStatusDate());
             daylineRepository.addStatusToDayline(status, day);
-            userlineRepository.addStatusToUserline(status.getLogin(), status.getStatusId().toString());
+            userlineRepository.addStatusToUserline(status.getEmail(), status.getStatusId().toString());
 
             // add the status to the group line and group followers
             manageGroups(status, group, followersForUser);
@@ -270,14 +278,13 @@ public class StatusUpdateService {
             manageStatusTags(status, group);
 
             // add status to the mentioned users' timeline
-            manageMentions(status, group, currentLogin, followersForUser);
+            manageMentions(status, group, currentEmail, followersForUser, domain);
 
             // Increment status count for the current user
-            counterRepository.incrementStatusCounter(currentLogin);
+            counterRepository.incrementStatusCounter(currentEmail);
 
             // Add to the searchStatus engine
-            // Commenting out for now.
-//            searchService.addStatus(status);
+            searchService.addStatus(status);
 
             // add status to the company wall
             addToCompanyWall(status, group);
@@ -293,21 +300,21 @@ public class StatusUpdateService {
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
             grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId().toString());
-            Collection<String> groupMemberLogins = groupMembersRepository.findMembers(group.getGroupId()).keySet();
+            Collection<String> groupMemberUsernames = groupMembersRepository.findMembers(group.getGroupId()).keySet();
             // For all people following the group
-            for (String groupMemberLogin : groupMemberLogins) {
-                addStatusToTimelineAndNotify(groupMemberLogin, status);
+            for (String groupMemberUsername : groupMemberUsernames) {
+                addStatusToTimelineAndNotify(groupMemberUsername, status);
             }
             if (isPublicGroup(group)) { // for people not following the group but following the user
-                for (String followerLogin : followersForUser) {
-                    if (!groupMemberLogins.contains(followerLogin)) {
-                        addStatusToTimelineAndNotify(followerLogin, status);
+                for (String followerUsername : followersForUser) {
+                    if (!groupMemberUsernames.contains(followerUsername)) {
+                        addStatusToTimelineAndNotify(followerUsername, status);
                     }
                 }
             }
         } else { // only people following the user
-            for (String followerLogin : followersForUser) {
-                addStatusToTimelineAndNotify(followerLogin, status);
+            for (String followerUsername : followersForUser) {
+                addStatusToTimelineAndNotify(followerUsername, status);
             }
         }
     }
@@ -337,7 +344,7 @@ public class StatusUpdateService {
                 if (!status.getUsername().equals(Constants.TATAMIBOT_NAME)) {
                     trendsRepository.addTag(status.getDomain(), tag);
                 }
-                userTrendRepository.addTag(status.getLogin(), tag);
+                userTrendRepository.addTag(status.getUsername(), tag);
 
                 // Add the status to all users following this tag
                 addStatusToTagFollowers(status, group, tag);
@@ -345,42 +352,43 @@ public class StatusUpdateService {
         }
     }
 
-    private void manageMentions(Status status, Group group, String currentLogin, Collection<String> followersForUser) {
+    private void manageMentions(Status status, Group group, String currentUser, Collection<String> followersForUser, String domain) {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
-            String mentionedUsername = extractUsernameWithoutAt(m.group());
-            if (mentionedUsername != null &&
-                    !mentionedUsername.equals(currentLogin) &&
-                    !followersForUser.contains(mentionedUsername)) {
+            String mentionedUser = extractUsernameWithoutAt(m.group());
+            String mentionedUserEmail = (mentionedUser + "@" + domain);
+            if (mentionedUser != null &&
+                    !mentionedUser.equals(currentUser) &&
+                    !followersForUser.contains(mentionedUser)) {
 
-                log.debug("Mentioning : {}", mentionedUsername);
+                log.debug("Mentioning : {}", mentionedUserEmail);
 
                 // If this is a private group, and if the mentioned user is not in the group, he will not see the status
                 if (!isPublicGroup(group)) {
-                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedUsername);
+                    Collection<UUID> groupIds = userGroupRepository.findGroups(mentionedUserEmail);
                     if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                        mentionUser(mentionedUsername, status);
+                        mentionUser(mentionedUserEmail, status);
                     }
                 } else { // This is a public status
-                    mentionUser(mentionedUsername, status);
+                    mentionUser(mentionedUserEmail, status);
                 }
             }
         }
     }
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
-        Collection<String> followersForTag =
+        Collection<String> followersEmailForTag =
                 tagFollowerRepository.findFollowers(status.getDomain(), tag);
 
         if (isPublicGroup(group)) { // This is a public status
-            for (String followerLogin : followersForTag) {
-                addStatusToTimelineAndNotify(followerLogin, status);
+            for (String followerEmail : followersEmailForTag) {
+                addStatusToTimelineAndNotify(followerEmail, status);
             }
         } else {  // This is a private status
-            for (String followerLogin : followersForTag) {
-                Collection<UUID> groupIds = userGroupRepository.findGroups(followerLogin);
+            for (String followerEmail : followersEmailForTag) {
+                Collection<UUID> groupIds = userGroupRepository.findGroups(followerEmail);
                 if (groupIds.contains(group.getGroupId())) { // The user is part of the private group
-                    addStatusToTimelineAndNotify(followerLogin, status);
+                    addStatusToTimelineAndNotify(followerEmail, status);
                 }
             }
         }
@@ -390,9 +398,9 @@ public class StatusUpdateService {
      * A status that mentions a user is put in the user's mentionline and in his timeline.
      * The mentioned user can also be notified by email or iOS push.
      */
-    private void mentionUser(String mentionedLogin, Status status) {
-        addStatusToTimelineAndNotify(mentionedLogin, status);
-        mentionService.mentionUser(mentionedLogin, status);
+    private void mentionUser(String mentionedEmail, Status status) {
+        addStatusToTimelineAndNotify(mentionedEmail, status);
+        mentionService.mentionUser(mentionedEmail, status);
     }
 
     private String extractUsernameWithoutAt(String dest) {
@@ -406,8 +414,8 @@ public class StatusUpdateService {
     /**
      * Adds the status to the timeline and notifies the user with Atmosphere.
      */
-    private void addStatusToTimelineAndNotify(String login, Status status) {
-        timelineRepository.addStatusToTimeline(login, status.getStatusId().toString());
-        atmosphereService.notifyUser(login, status);
+    private void addStatusToTimelineAndNotify(String email, Status status) {
+        timelineRepository.addStatusToTimeline(email, status.getStatusId().toString());
+        atmosphereService.notifyUser(email, status);
     }
 }

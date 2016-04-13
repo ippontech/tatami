@@ -10,6 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 /**
  * A group.
@@ -17,6 +19,8 @@ import org.springframework.data.annotation.Id;
 
 @Table(name = "group")
 @Document(indexName = "group")
+@Setting(settingPath = "/config/elasticsearch/shared-settings.json")
+@Mapping(mappingPath = "/config/elasticsearch/group/mappings.json")
 public class Group implements Comparable<Group>, Serializable, Cloneable {
 
     @Id

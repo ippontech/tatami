@@ -201,7 +201,7 @@ PostModule.controller('PostController', [
         };
 
         $scope.selectUser = function(item) {
-            return '@' + item.username;
+            return '@' + item.email;
         };
 
         $scope.fetchTags = function(term) {

@@ -10,25 +10,13 @@ tatamiJHipsterApp
         return users;
     };
 
-    return $resource('/tatami/rest/search/:query', {},
+    return $resource('/tatami/rest/search/:term', { term: '@term' },
     {
         'query': {
             method: 'GET', isArray: true, transformResponse: responseTransform
         },
         'get': {
             method: 'GET', transformResponse: responseTransform
-        },
-        'searchUsers': {
-            method: 'GET',
-            isArray: true,
-            url: '/tatami/rest/search/users/:query',
-            transformResponse: responseTransform
-        },
-        'searchGroups': {
-            method: 'GET',
-            isArray: true,
-            url: '/tatami/rest/search/groups/:query',
-            transformResponse: responseTransform
         }
     });
 }]);

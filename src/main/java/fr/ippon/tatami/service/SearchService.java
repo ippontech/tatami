@@ -3,6 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.Status;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Service used to search statuses and users.
  */
+@Service
 public interface SearchService {
 
     public static final int DEFAULT_PAGE_SIZE = 20;

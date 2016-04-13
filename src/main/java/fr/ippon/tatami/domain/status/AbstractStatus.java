@@ -13,8 +13,6 @@ public interface AbstractStatus extends Serializable {
 
     StatusType getType();
 
-    String getLogin();
-
     Date getStatusDate();
 
     String getGeoLocalization();
@@ -27,11 +25,13 @@ public interface AbstractStatus extends Serializable {
 
     String getDomain();
 
-    void setLogin(String string);
-
     void setUsername(String string);
 
     void setDomain(String domain);
 
     void setRemoved(boolean removed);
+
+    String getEmail();
+
+    void setEmail(String string);
 }

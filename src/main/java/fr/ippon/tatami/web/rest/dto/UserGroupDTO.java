@@ -7,8 +7,6 @@ import java.io.Serializable;
  */
 public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
-    private String login;
-
     private String avatar;
 
     private String username;
@@ -33,14 +31,6 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getAvatar() {
@@ -109,7 +99,7 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     @Override
     public int compareTo(UserGroupDTO o) {
-        return this.login.compareTo(o.getLogin());
+        return this.username.compareTo(o.getUsername());
     }
 
     @Override
@@ -119,19 +109,19 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
         UserGroupDTO userGroupDTO = (UserGroupDTO) o;
 
-        return login.equals(userGroupDTO.login);
+        return username.equals(userGroupDTO.username);
 
     }
 
     @Override
     public int hashCode() {
-        return login.hashCode();
+        return username.hashCode();
     }
 
     @Override
     public String toString() {
         return "UserGroupDTO{" +
-                "login='" + login + '\'' +
+        "username='" + username + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +

@@ -23,7 +23,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
  * Cassandra implementation of the Userline repository.
  * <p/>
  * Structure :
- * - Key : login
+ * - Key : email
  * - Name : status Id
  * - Value : ""
  *
@@ -46,28 +46,28 @@ public class UserlineRepository extends AbstractLineRepository {
 
     }
 
-    public void addStatusToUserline(String login, String statusId) {
+    public void addStatusToUserline(String email, String statusId) {
         Statement statement = QueryBuilder.insertInto("userline")
-                .value("key", login)
+                .value("key", email)
                 .value("status", UUID.fromString(statusId));
         session.execute(statement);
     }
 
-    public void removeStatusesFromUserline(String login, Collection<String> statusIdsToDelete) {
-        removeStatuses(login,"userline",statusIdsToDelete);
+    public void removeStatusesFromUserline(String email, Collection<String> statusIdsToDelete) {
+        removeStatuses(email,"userline",statusIdsToDelete);
     }
 
-    public void shareStatusToUserline(String currentLogin, Share share) {
-        shareStatus(currentLogin, share, USERLINE_CF, USERLINE_SHARES_CF);
+    public void shareStatusToUserline(String currentEmail, Share share) {
+        shareStatus(currentEmail, share, USERLINE_CF, USERLINE_SHARES_CF);
     }
 
-    public List<String> getUserline(String login, int size, String start, String finish) {
-        return getLineFromTable("userline", login, size, start, finish);
+    public List<String> getUserline(String email, int size, String start, String finish) {
+        return getLineFromTable("userline", email, size, start, finish);
     }
 
-    public void deleteUserline(String login) {
+    public void deleteUserline(String email) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.USERLINE_CF)
-                .where(eq("login", login));
+                .where(eq("email", email));
         session.execute(statement);
     }
 

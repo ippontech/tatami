@@ -21,7 +21,7 @@ public class Share implements AbstractStatus {
 
     @NotNull
     @Column
-    private String login;
+    private String email;
 
     @NotNull
     @Column
@@ -64,12 +64,12 @@ public class Share implements AbstractStatus {
         this.type = type;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {

@@ -42,7 +42,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: responseTransform
         },
         'getUserTimeline': {
-            method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
+            method: 'GET', isArray: true, params: { email: '@email' }, url: '/tatami/rest/statuses/:email/timeline',
             transformResponse: responseTransform
         },
         'getDetails': {
@@ -62,8 +62,8 @@ angular.module('tatamiJHipsterApp')
                     }
                 }
 
-                for(var i = 0; i < details.sharedByLogins.length; i++) {
-                    details.sharedByLogins[i]['avatarURL'] = details.sharedByLogins[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByLogins[i].avatar + '/photo.jpg';
+                for(var i = 0; i < details.sharedByEmails.length; i++) {
+                    details.sharedByEmails[i]['avatarURL'] = details.sharedByEmails[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByEmails[i].avatar + '/photo.jpg';
                 }
 
                 return details;

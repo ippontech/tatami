@@ -25,14 +25,14 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE;
 @Repository
 public class GrouplineRepository extends AbstractLineRepository {
 
-    private PreparedStatement findByLoginStmt;
+    private PreparedStatement findByKeyStmt;
 
     private PreparedStatement deleteByIdStmt;
 
 
     @PostConstruct
     public void init() {
-        findByLoginStmt = session.prepare(
+        findByKeyStmt = session.prepare(
                 "SELECT * " +
                         "FROM " + GROUPLINE+
                         " WHERE key = :key");

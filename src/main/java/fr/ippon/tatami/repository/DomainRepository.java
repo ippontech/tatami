@@ -24,7 +24,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * <p/>
  * Structure :
  * - Key = domain
- * - Name = login
+ * - Name = email
  * - Value = time
  *
  * @author Julien Dubois
@@ -37,35 +37,35 @@ public class DomainRepository {
     private Session session;
 
 
-    public void addUserInDomain(String domain, String login) {
+    public void addEmailInDomain(String domain, String email) {
         Statement statement = QueryBuilder.insertInto("domain")
                 .value(DOMAIN_ID, domain)
-                .value("login", login)
+                .value("email", email)
                 .value("created", UUIDs.timeBased());
         session.execute(statement);
     }
 
 
-    public void updateUserInDomain(String domain, String login) {
-        this.addUserInDomain(domain, login);
+    public void updateEmailInDomain(String domain, String email) {
+        this.addEmailInDomain(domain, email);
     }
 
 
-    public void deleteUserInDomain(String domain, String login) {
+    public void deleteEmailInDomain(String domain, String email) {
         Statement statement = QueryBuilder.delete()
                 .from("domain")
                 .where(eq(DOMAIN_ID,domain))
-                .and(eq("login",login));
+                .and(eq("email",email));
         session.execute(statement);
     }
 
 
-    public List<String> getLoginsInDomain(String domain, int pagination) {
+    public List<String> getEmailnamesInDomain(String domain, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
         Statement statement = QueryBuilder.select()
-                .column("login")
-                .from("domain")
-                .where(eq(DOMAIN_ID, domain))
+                .column("email")
+                .from("user")
+                .where(eq("domain", domain))
                 .limit(maxColumns+1);
 
         ResultSet results = session.execute(statement);
@@ -73,23 +73,22 @@ public class DomainRepository {
                 .all()
                 .stream()
                 .skip(pagination)
-                .map(e -> e.getString("login"))
+                .map(e -> e.getString("email"))
                 .collect(Collectors.toList());
     }
 
-
-    public List<String> getLoginsInDomain(String domain) {
+    public List<String> getEmailsInDomain(String domain) {
         Statement statement = QueryBuilder.select()
-                .column("login")
-                .from("domain")
-                .where(eq(DOMAIN_ID, domain));
+            .column("email")
+            .from("user")
+            .where(eq("domain", domain));
 
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .map(e -> e.getString("login"))
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .map(e -> e.getString("email"))
+            .collect(Collectors.toList());
     }
 
 

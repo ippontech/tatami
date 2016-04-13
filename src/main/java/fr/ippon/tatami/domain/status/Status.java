@@ -6,6 +6,9 @@ import com.datastax.driver.mapping.annotations.Table;
 import com.datastax.driver.mapping.annotations.Transient;
 import fr.ippon.tatami.domain.Attachment;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,6 +22,9 @@ import java.util.UUID;
  * @author Julien Dubois
  */
 @Table(name="status")
+@Document(indexName = "status")
+@Setting(settingPath = "/config/elasticsearch/status/settings.json")
+@Mapping(mappingPath = "/config/elasticsearch/status/mappings.json")
 public class Status implements AbstractStatus {
     @PartitionKey
     private UUID statusId;
@@ -29,7 +35,7 @@ public class Status implements AbstractStatus {
 
     @NotNull
     @Column
-    private String login;
+    private String email;
 
     @NotNull
     @Column
@@ -72,12 +78,12 @@ public class Status implements AbstractStatus {
         this.type = type;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {

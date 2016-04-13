@@ -33,7 +33,7 @@ tatamiJHipsterApp
 
             templateUrl: 'scripts/app/account/profile/profile.html',
             resolve: {
-                userLogin: ['profileInfo', function(profileInfo) {
+                Username: ['profileInfo', function(profileInfo) {
                     return profileInfo.data;
                 }]
             },

@@ -15,21 +15,21 @@ public class DomainUtil {
     private DomainUtil() {
     }
 
-    public static String getDomainFromLogin(String login) {
-        if (login == null) {
+    public static String getDomainFromEmail(String email) {
+        if (email == null) {
             return null;
         }
-        return login.substring(login.indexOf("@") + 1, login.length());
+        return email.substring(email.indexOf("@") + 1, email.length());
     }
 
-    public static String getLoginFromUsernameAndDomain(String username, String domain) {
+    public static String getEmailFromUsernameAndDomain(String username, String domain) {
         return username + "@" + domain;
     }
 
-    public static String getUsernameFromLogin(String login) {
-        if (login == null) {
+    public static String getUsernameFromEmail(String email) {
+        if (email == null) {
             return null;
         }
-        return login.substring(0, login.indexOf("@"));
+        return email.substring(0, email.indexOf("@"));
     }
 }

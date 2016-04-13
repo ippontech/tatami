@@ -15,7 +15,7 @@ tatamiJHipsterApp
         $scope.usersList = usersList;
 
         $scope.deactivate = function(user, index) {
-            UserService.deactivate({ username: user.username }, { activate: true }, function(response) {
+            UserService.deactivate({ email: user.email }, { activate: true }, function(response) {
                 $scope.usersList[index].activated = response.activated;
             });
         };
@@ -37,7 +37,7 @@ tatamiJHipsterApp
         };
 
         $scope.followUser = function(user) {
-            UserService.follow({ username: user.username }, { friend: !user.friend, friendShip: true },
+            UserService.follow({ email: user.email }, { friend: !user.friend, friendShip: true },
                 function() {
                     $scope.$state.reload();
                 }

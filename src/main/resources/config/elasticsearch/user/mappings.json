@@ -1,0 +1,61 @@
+{
+    "user": {
+        "properties": {
+            "login": {
+                "type": "string",
+                "analyzer": "lowercase",
+                "include_in_all": false
+            },
+            "domain": {
+                "type": "string",
+                "analyzer": "lowercase",
+                "include_in_all": false
+            },
+            "username": {
+                "type" : "multi_field",
+                "path" : "just_name",
+                "fields" : {
+                    "username": {
+                        "type" : "string",
+                        "analyzer" : "lowercase"
+                    },
+                    "prefix" : {
+                        "type" : "string",
+                        "index_analyzer" : "prefixIndex",
+                        "search_analyzer" : "prefixSearch"
+                    }
+                }
+            },
+            "firstName": {
+                "type" : "multi_field",
+                "path" : "just_name",
+                "fields" : {
+                    "firstName": {
+                        "type": "string",
+                        "analyzer" : "default"
+                    },
+                    "prefix" : {
+                        "type" : "string",
+                        "index_analyzer" : "prefixIndex",
+                        "search_analyzer" : "prefixSearch"
+                    }
+                }
+            },
+            "lastName": {
+                "type" : "multi_field",
+                "path" : "just_name",
+                "fields" : {
+                    "lastName": {
+                        "type": "string",
+                        "analyzer" : "default"
+                    },
+                    "prefix" : {
+                        "type" : "string",
+                        "index_analyzer" : "prefixIndex",
+                        "search_analyzer" : "prefixSearch"
+                    }
+                }
+            }
+        }
+    }
+}

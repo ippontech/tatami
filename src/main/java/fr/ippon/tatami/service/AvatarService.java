@@ -7,6 +7,7 @@ import fr.ippon.tatami.repository.AvatarRepository;
 import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +38,12 @@ public class AvatarService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     public String createAvatar(Avatar avatar) {
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 
         if (currentUser.getAvatar() != null && !("").equals(currentUser.getAvatar())) {
             deleteAvatar(currentUser.getAvatar());
@@ -67,7 +71,7 @@ public class AvatarService {
     public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         userRepository.save(currentUser);
     }
 
@@ -90,7 +94,7 @@ public class AvatarService {
     }
 
     public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
         if (dbAvatar != null) {
             return dbAvatar;

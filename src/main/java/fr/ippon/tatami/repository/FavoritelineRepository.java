@@ -21,7 +21,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * Cassandra implementation of the favoriteline repository.
  * <p/>
  * Structure :
- * - Key = login
+ * - Key = email
  * - Name = statusId
  * - Value = ""
  *
@@ -34,31 +34,31 @@ public class FavoritelineRepository {
     Session session;
 
 
-    @CacheEvict(value = "favorites-cache", key = "#login")
-    public void addStatusToFavoriteline(String login, String statusId) {
+    @CacheEvict(value = "favorites-cache", key = "#email")
+    public void addStatusToFavoriteline(String email, String statusId) {
         Statement statement = QueryBuilder.insertInto("favline")
-                .value("key", login)
+                .value("key", email)
                 .value("status", UUID.fromString(statusId));
         session.execute(statement);
     }
 
 
-    @CacheEvict(value = "favorites-cache", key = "#login")
-    public void removeStatusFromFavoriteline(String login, String statusId) {
+    @CacheEvict(value = "favorites-cache", key = "#email")
+    public void removeStatusFromFavoriteline(String email, String statusId) {
         Statement statement = QueryBuilder.delete()
                 .from("favline")
-                .where(eq("key",login))
+                .where(eq("key",email))
                 .and(eq("status",UUID.fromString(statusId)));
         session.execute(statement);
     }
 
 
     @Cacheable("favorites-cache")
-    public List<String> getFavoriteline(String login) {
+    public List<String> getFavoriteline(String email) {
         Statement statement = QueryBuilder.select()
                 .column("status")
                 .from("favline")
-                .where(eq("key", login))
+                .where(eq("key", email))
                 .orderBy(desc("status"))
                 .limit(50);
         ResultSet results = session.execute(statement);
@@ -71,10 +71,10 @@ public class FavoritelineRepository {
     }
 
 
-    public void deleteFavoriteline(String login) {
+    public void deleteFavoriteline(String email) {
         Statement statement = QueryBuilder.delete()
                 .from("favline")
-                .where(eq("key",login));
+                .where(eq("key",email));
         session.execute(statement);
     }
 }

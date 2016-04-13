@@ -24,6 +24,9 @@ spring:
             protocolVersion: V2
             compression: LZ4
             keyspaceName: TatamiJHipster
+        elasticsearch:
+            cluster-name: elasticsearch
+            cluster-nodes: localhost:9300
     mail:
         host: localhost
         port: 25

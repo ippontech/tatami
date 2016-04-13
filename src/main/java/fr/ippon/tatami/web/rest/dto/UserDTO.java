@@ -16,16 +16,12 @@ public class UserDTO {
     public static final int PASSWORD_MAX_LENGTH = 100;
 
     @Pattern(regexp = "^[a-z0-9]*$")
-    @NotNull
     @Size(min = 1, max = 50)
-    private String login;
+    private String username;
 
     @NotNull
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
-
-    @Size(max = 50)
-    private String username;
 
     private String avatar;
 
@@ -35,6 +31,7 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(min = 5, max = 100)
     private String email;
@@ -62,26 +59,29 @@ public class UserDTO {
 
     private String domain;
 
+    private long attachmentsSize;
+
+    private boolean you;
+
     public UserDTO() {
     }
 
     public UserDTO(User user) {
-        this(user.getLogin(), null, user.getUsername(), user.getAvatar(), user.getFirstName(), user.getLastName(),
+        this(user.getUsername(), null, user.getAvatar(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities(), user.getJobTitle(), user.getPhoneNumber(), user.getMentionEmail(),
             user.getRssUid(), user.getWeeklyDigest(),
             user.getDailyDigest(), user.getDomain());
     }
 
-    public UserDTO(String login, String password, String username, String avatar, String firstName, String lastName,
+    public UserDTO(String username, String password, String avatar, String firstName, String lastName,
         String email, boolean activated, String langKey, Set<String> authorities,
                    String jobTitle, String phoneNumber,
                    boolean mentionEmail, String rssUid, boolean weeklyDigest,
         boolean dailyDigest, String domain) {
 
-        this.login = login;
-        this.password = password;
         this.username = username;
+        this.password = password;
         this.avatar = avatar;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -98,20 +98,20 @@ public class UserDTO {
         this.domain = domain;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAvatar() {
@@ -126,43 +126,121 @@ public class UserDTO {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getJobTitle() {
         return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public boolean isActivated() {
         return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public String getLangKey() {
         return langKey;
     }
 
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
     public Set<String> getAuthorities() {
         return authorities;
     }
 
-    public boolean isMentionEmail() { return mentionEmail; }
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
+    }
 
-    public String getRssUid() { return rssUid; }
+    public boolean isMentionEmail() {
+        return mentionEmail;
+    }
 
-    public boolean isWeeklyDigest() { return weeklyDigest; }
+    public void setMentionEmail(boolean mentionEmail) {
+        this.mentionEmail = mentionEmail;
+    }
 
-    public boolean isDailyDigest() { return dailyDigest; }
+    public String getRssUid() {
+        return rssUid;
+    }
 
-    public String getDomain() { return domain; }
+    public void setRssUid(String rssUid) {
+        this.rssUid = rssUid;
+    }
+
+    public boolean isWeeklyDigest() {
+        return weeklyDigest;
+    }
+
+    public void setWeeklyDigest(boolean weeklyDigest) {
+        this.weeklyDigest = weeklyDigest;
+    }
+
+    public boolean isDailyDigest() {
+        return dailyDigest;
+    }
+
+    public void setDailyDigest(boolean dailyDigest) {
+        this.dailyDigest = dailyDigest;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public long getAttachmentsSize() {
+        return attachmentsSize;
+    }
+
+    public void setAttachmentsSize(long attachmentsSize) {
+        this.attachmentsSize = attachmentsSize;
+    }
+
+    public boolean isYou() {
+        return you;
+    }
+
+    public void setYou(boolean you) {
+        this.you = you;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -177,7 +255,7 @@ public class UserDTO {
 
     public String toString() {
         return "UserDTO{" +
-            "login='" + login + '\'' +
+            "username='" + username + '\'' +
             ", password='" + password + '\'' +
             ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +

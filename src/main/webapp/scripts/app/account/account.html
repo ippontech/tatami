@@ -18,11 +18,11 @@
 
                                     <br>
                                     <div>
-                                        <a ui-sref="home.profile.statuses({ username: profile.username })">
+                                        <a ui-sref="home.profile.statuses({ email: profile.email })">
                                             <h3 class="user-profile">{{profile.firstName + ' ' + profile.lastName }}</h3>
                                         </a>
-                                        <a ui-sref="home.profile.statuses({ username: profile.username })">
-                                            <p>@{{profile.login}}</p>
+                                        <a ui-sref="home.profile.statuses({ email: profile.email })">
+                                            <p>@{{profile.username}}</p>
                                         </a>
                                     </div>
                                 </div>
