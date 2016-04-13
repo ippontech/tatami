@@ -4,8 +4,8 @@ angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
         .state('trendSearch', {
-            parent: 'account.tags',
-            url: '/trendSearch/:q',
+            parent: 'account',
+            url: '/tags/trendSearch/:q',
             templateUrl: 'scripts/app/account/tags/tags.html',
             resolve: {
                 tagList: ['SearchService', '$stateParams', function(SearchService, $stateParams) {

@@ -3,9 +3,9 @@
 angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
-        .state('following', {
-            parent: 'account.tags',
-            url: '/following',
+        .state('tagsFollowing', {
+            parent: 'account',
+            url: '/tags/following',
             templateUrl: 'scripts/app/account/tags/tags.html',
             resolve: {
                 tagList: ['TagService', function(TagService) {
