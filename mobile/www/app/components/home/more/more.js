@@ -16,14 +16,14 @@
                         controller: 'MoreController',
                         controllerAs: 'vm',
                         resolve: {
-                            translatePartialProvider: getTranslatePartialProvider
+                            translatePartialLoader: getTranslatePartialLoader
                         }
                     }
                 }
             });
 
-        getTranslatePartialProvider.$inject = ['$translate', '$translatePartialLoader'];
-        function getTranslatePartialProvider($translate, $translatePartialLoader) {
+        getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+        function getTranslatePartialLoader($translate, $translatePartialLoader) {
             $translatePartialLoader.addPart('more');
             $translate.refresh();
         }
