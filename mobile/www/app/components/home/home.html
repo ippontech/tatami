@@ -1,20 +1,32 @@
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
     <!-- Dashboard Tab -->
-    <ion-tab title="Timeline" icon-off="ion-ios-list-outline" icon-on="ion-ios-list" ui-sref="timeline">
+    <ion-tab title="{{ 'tab.timeline' | translate }}"
+             icon-off="ion-ios-list-outline"
+             icon-on="ion-ios-list"
+             ui-sref="timeline">
         <ion-nav-view name="timeline"></ion-nav-view>
     </ion-tab>
 
     <!-- Chats Tab -->
-    <ion-tab title="Mentions" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" ui-sref="mentions">
+    <ion-tab title="{{ 'tab.mentions' | translate }}"
+             icon-off="ion-ios-chatbubble-outline"
+             icon-on="ion-ios-chatbubble"
+             ui-sref="mentions">
         <ion-nav-view name="mentions"></ion-nav-view>
     </ion-tab>
 
     <!-- Account Tab -->
-    <ion-tab title="Favorites" icon-off="ion-android-star-outline" icon-on="ion-android-star" ui-sref="favorites">
+    <ion-tab title="{{ 'tab.favorites' | translate }}"
+             icon-off="ion-android-star-outline"
+             icon-on="ion-android-star"
+             ui-sref="favorites">
         <ion-nav-view name="favorites"></ion-nav-view>
     </ion-tab>
 
-    <ion-tab title="More"  icon-off="ion-navicon-round" icon-on="ion-navicon-round" ui-sref="more">
+    <ion-tab title="{{ 'tab.more' | translate }}"
+             icon-off="ion-navicon-round"
+             icon-on="ion-navicon-round"
+             ui-sref="more">
         <ion-nav-view name="more"></ion-nav-view>
     </ion-tab>
 

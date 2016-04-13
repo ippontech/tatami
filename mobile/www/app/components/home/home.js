@@ -13,7 +13,8 @@
                 url: '/home',
                 templateUrl: 'app/components/home/home.html',
                 resolve: {
-                    currentUser: getCurrentUser
+                    currentUser: getCurrentUser,
+                    translatePartialLoader: getTranslatePartialLoader
                 }
             })
     }
@@ -21,5 +22,12 @@
     getCurrentUser.$inject = ['ProfileService'];
     function getCurrentUser(ProfileService) {
         return ProfileService.get().$promise;
+    }
+
+    getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+    function getTranslatePartialLoader($translate, $translatePartialLoader) {
+        $translatePartialLoader.addPart('home');
+        $translatePartialLoader.addPart('status');
+        return $translate.refresh();
     }
 })();

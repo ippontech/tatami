@@ -4,8 +4,8 @@
     angular.module('tatami')
         .controller('TimelineCtrl', timelineCtrl);
 
-    timelineCtrl.$inject = ['statuses', 'currentUser', 'TatamiStatusRefresherService'];
-    function timelineCtrl(statuses, currentUser, TatamiStatusRefresherService) {
+    timelineCtrl.$inject = ['statuses', 'currentUser', 'TatamiStatusRefresherService', '$translatePartialLoader'];
+    function timelineCtrl(statuses, currentUser, TatamiStatusRefresherService, $translatePartialLoader) {
         var vm = this;
 
         vm.statuses = statuses;

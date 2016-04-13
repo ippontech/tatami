@@ -14,9 +14,18 @@
                     'more': {
                         templateUrl: 'app/components/home/more/more.html',
                         controller: 'MoreController',
-                        controllerAs: 'vm'
+                        controllerAs: 'vm',
+                        resolve: {
+                            translatePartialProvider: getTranslatePartialProvider
+                        }
                     }
                 }
             });
+
+        getTranslatePartialProvider.$inject = ['$translate', '$translatePartialLoader'];
+        function getTranslatePartialProvider($translate, $translatePartialLoader) {
+            $translatePartialLoader.addPart('more');
+            $translate.refresh();
+        }
     }
 })();
