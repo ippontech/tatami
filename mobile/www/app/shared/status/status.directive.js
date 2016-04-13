@@ -20,11 +20,12 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', 'StatusService'];
-    function controller($scope, $state, $ionicPopup, StatusService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$filter', '$sce', 'StatusService'];
+    function controller($scope, $state, $ionicPopup, $filter, $sce, StatusService) {
         var vm = this;
 
         vm.status = $scope.status;
+        vm.status.content = $filter('markdown')(vm.status.content);
 
         vm.currentUser = $scope.currentUser;
         vm.remove = remove;
@@ -64,7 +65,7 @@
 
         goToConversation.$inject = ['statusId'];
         function goToConversation(statusId) {
-            var destinationState = $state.current.name.split('.')[0] + '.status';
+            var destinationState = $state.current.name.split('.')[0] + '.conversation';
             $state.go(destinationState, { statusId : statusId });
         }
 

@@ -21,22 +21,26 @@
         return directive;
     }
 
-    controller.$inject = ['$scope'];
-    function controller($scope) {
+    controller.$inject = ['$scope', '$state'];
+    function controller($scope, $state) {
         var vm = this;
         vm.statuses = $scope.statuses;
         vm.currentUser = $scope.currentUser;
+        vm.$state = $state;
         vm.getNewStatuses = getNewStatuses;
         vm.getNewInfiniteScrollStatuses = getNewInfiniteScrollStatuses;
         vm.remove = remove;
-        vm.finishedTimeline = vm.statuses.length < 20 ? false : true;
+        vm.finishedTimeline = vm.statuses && vm.statuses.length < 20 ? false : true;
 
         function getNewStatuses() {
             $scope.tatamiRefresher().then(setStatuses);
         }
 
         function getNewInfiniteScrollStatuses() {
-            $scope.tatamiInfiniteRefresher({ finalStatus: vm.statuses[vm.statuses.length - 1].timelineId }).then(addNewStatuses);
+            if(vm.statuses) {
+                var lastStatus = vm.statuses[vm.statuses.length - 1].timelineId;
+                $scope.tatamiInfiniteRefresher({ finalStatus: lastStatus }).then(addNewStatuses);
+            }
         }
 
         remove.$inject = ['status'];
