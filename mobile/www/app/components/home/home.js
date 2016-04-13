@@ -27,7 +27,6 @@
     getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
     function getTranslatePartialLoader($translate, $translatePartialLoader) {
         $translatePartialLoader.addPart('home');
-        $translatePartialLoader.addPart('status');
         return $translate.refresh();
     }
 })();

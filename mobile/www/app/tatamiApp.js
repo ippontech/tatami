@@ -68,8 +68,19 @@
                 abstract: true,
                 templateUrl: 'app/tatami.html',
                 controller: 'TatamiCtrl',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    translatePartialLoader: getTranslationPartialLoader
+                }
             });
+
+        getTranslationPartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+        function getTranslationPartialLoader($translate, $translatePartialLoader) {
+            $translatePartialLoader.addPart('user');
+            $translatePartialLoader.addPart('status');
+            $translatePartialLoader.addPart('conversation');
+            return $translate.refresh();
+        }
 
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
