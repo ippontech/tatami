@@ -13,7 +13,7 @@
                         </tr>
                         </tbody>
                         <tbody class="items">
-                        <tr ng-repeat="user in topPosters">
+                        <tr ng-repeat="user in topPosters track by user.info.email">
                             <td style="text-align: left">
                                 <div class="pull-left background-image-fffix little-marge-right">
                                     <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.info.avatarURL + ')' }">

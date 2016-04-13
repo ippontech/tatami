@@ -57,7 +57,7 @@ public class DaylineRepository {
         return results
                 .all()
                 .stream()
-                .map(e -> new UserStatusStat(e.getString("username"),e.getLong("statusCount")))
+                .map(e -> new UserStatusStat(e.getString("email"),e.getLong("statusCount")))
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 

@@ -6,7 +6,8 @@ angular.module('tatamiJHipsterApp')
             .state('account.topPosters', {
                 parent: 'account',
                 url: '/topPosters',
-                templateUrl: 'scripts/app/account/topPosters/topPosters.html'
+                templateUrl: 'scripts/app/account/topPosters/topPosters.html',
+                controller: 'TopPostersController'
 
             })
     });
