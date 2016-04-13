@@ -1,30 +1,36 @@
-<ion-view name="login-view" view-title="Login">
+<ion-view name="login-view" view-title="{{ 'login.title' | translate }}">
     <ion-content class="has-header has-subheader">
         <form ng-submit="vm.login()">
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input type="text" placeholder="E-mail" ng-model="vm.user.email">
+                    <input type="text" placeholder="{{ 'login.email' | translate }}" ng-model="vm.user.email">
                 </label>
                 <label class="item item-input">
-                    <input type="password" placeholder="Password" ng-model="vm.user.password">
+                    <input type="password" placeholder="{{ 'login.password' | translate }}" ng-model="vm.user.password">
                 </label>
             </div>
 
             <div class="padding">
-                <button ng-disabled="!vm.user.email && !vm.user.password" class="button button-block button-calm" type="submit">Login
+                <button ng-disabled="!vm.user.email && !vm.user.password"
+                        translate="login.title"
+                        class="button button-block button-calm"
+                        type="submit">Login
                 </button>
             </div>
             <div class="padding">
-                <button ng-click="vm.googleLogin()" class="button button-block button-stable" type="button">
-                    Log into Google
+                <button ng-click="vm.googleLogin()"
+                        translate="login.google"
+                        class="button button-block button-stable"
+                        type="button">
+                    Google Login
                 </button>
             </div>
 
             <div ng-if="vm.shown" class="bar bar-positive">
-                <h1 class="title">Logged In!</h1>
+                <h1 class="title" translate="login.success">Logged In!</h1>
             </div>
             <div ng-if="vm.failed" class="bar bar-assertive">
-                <h1 class="title">Failed to log in!</h1>
+                <h1 class="title" translate="login.failed">Failed to log in!</h1>
             </div>
         </form>
     </ion-content>

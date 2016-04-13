@@ -14,7 +14,8 @@
                 controller: 'LoginCtrl',
                 controllerAs: 'vm',
                 resolve: {
-                    clientId: getClientId
+                    clientId: getClientId,
+                    translatePartialLoader: getTranslatePartialLoader
                 }
             });
 
@@ -25,6 +26,12 @@
                 method: 'GET'
             }).catch(function(error) {
             });
+        }
+
+        getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+        function getTranslatePartialLoader($translate, $translatePartialLoader) {
+            $translatePartialLoader.addPart('login');
+            return $translate.refresh();
         }
     }
 })();

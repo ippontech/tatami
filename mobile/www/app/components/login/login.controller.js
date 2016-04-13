@@ -48,7 +48,7 @@
                 if(event.url.indexOf('http://localhost/callback') === 0) {
                     ref.close();
                     $ionicLoading.show({
-                        template: 'Login in progress...',
+                        template: '<span translate="login.progress">Login in progress...</span>',
                         hideOnStateChange: true
                     });
                     var requestToken = event.url.split("code=")[1];

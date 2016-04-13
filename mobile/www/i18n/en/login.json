@@ -1,0 +1,11 @@
+{
+    "login": {
+        "title": "Login",
+        "email": "E-mail",
+        "password": "Password",
+        "google": "Google Login",
+        "success": "Logged In!",
+        "failed": "Failed to log in!",
+        "progress": "Login in progress..."
+    }
+}
