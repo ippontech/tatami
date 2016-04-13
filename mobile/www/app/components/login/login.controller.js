@@ -7,6 +7,7 @@
     loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'clientId', 'LoginService', 'PathService', '$ionicLoading'];
     function loginCtrl($scope, $state, $http, $localStorage, clientId, LoginService, PathService, $ionicLoading) {
         var vm = this;
+
         vm.clientId = clientId.data.stringList[0];
         vm.user = {
             remember: false

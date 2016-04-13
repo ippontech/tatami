@@ -30,6 +30,7 @@
     function run(TatamiState) {
         TatamiState.addProfileState('mentions', 'home');
         TatamiState.addStatusState('mentions', 'home');
+        TatamiState.addConversationState('mentions', 'home');
     }
 
     mentioned.$inject = ['HomeService'];
