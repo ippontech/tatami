@@ -1,4 +1,4 @@
-<ion-view view-title="Post">
+<ion-view view-title="{{ 'post.title' | translate }}">
     <ion-nav-buttons side="secondary">
         <button class="button button-clear button-small icon ion-close-round" style="opacity:0.4;" ng-click="vm.close()">
         </button>
@@ -12,7 +12,7 @@
                                   name="msg"
                                   ng-model="vm.status.content"
                                   rows="15"
-                                  placeholder="Post Here..."
+                                  placeholder="{{ 'post.message' | translate }}"
                                   ng-required="true"></textarea>
                     </label>
                 </div>
@@ -35,7 +35,10 @@
         </div>
 
         <h1 class="title" style="opacity: 0.5;">{{ vm.charCount - vm.status.content.length }}</h1>
-        <button class="button button-positive" ng-disabled="vm.status.content.length === 0 || !vm.status.content || vm.isPosting" ng-click="vm.post()">
+        <button class="button button-positive"
+                translate="post.title"
+                ng-disabled="vm.status.content.length === 0 || !vm.status.content || vm.isPosting"
+                ng-click="vm.post()">
             Post
         </button>
     </ion-footer-bar>

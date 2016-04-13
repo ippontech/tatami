@@ -15,7 +15,8 @@
                 controllerAs: 'vm',
 
                 resolve: {
-                    repliedToStatus: getRepliedToStatus
+                    repliedToStatus: getRepliedToStatus,
+                    translatePartialProvider: getTranslatePartialLoader
                 }
             })
     }
@@ -25,5 +26,11 @@
         if($stateParams.statusId) {
             return StatusService.get({ statusId: $stateParams.statusId }).$promise;
         }
+    }
+
+    getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
+    function getTranslatePartialLoader($translate, $translatePartialLoader) {
+        $translatePartialLoader.addPart('post');
+        return $translate.refresh();
     }
 })();
