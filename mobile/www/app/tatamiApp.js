@@ -7,7 +7,8 @@
         'tatami.providers',
         'ngResource',
         'ngCordova',
-        'hc.marked'
+        'hc.marked',
+        'pascalprecht.translate'
     ]);
 
     angular.module('tatami')
@@ -50,8 +51,13 @@
         }
     }
 
-    tatamiConfig.$inject = ['$resourceProvider', '$stateProvider', '$urlRouterProvider', '$compileProvider', '$httpProvider'];
-    function tatamiConfig($resourceProvider, $stateProvider, $urlRouterProvider, $compileProvider, $httpProvider) {
+    tatamiConfig.$inject = [
+        '$resourceProvider',
+        '$stateProvider',
+        '$translateProvider',
+        '$compileProvider',
+        '$httpProvider'];
+    function tatamiConfig($resourceProvider, $stateProvider, $translateProvider, $compileProvider, $httpProvider) {
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
         $resourceProvider.defaults.stripTrailingSlashes = false;
 
@@ -67,6 +73,15 @@
 
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
+
+        $translateProvider.useLoader('$translatePartialLoader', {
+            urlTemplate: 'i18n/{lang}/{part}.json'
+        });
+
+        $translateProvider.preferredLanguage('en');
+        $translateProvider.use('en');
+        $translateProvider.useSanitizeValueStrategy('escaped');
+        $translateProvider.addInterpolation('$translateMessageFormatInterpolation');
 
         $compileProvider.directive('compile', compile);
 
