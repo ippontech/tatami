@@ -35,7 +35,6 @@
     run.$inject = ['TatamiState'];
     function run(TatamiState) {
         TatamiState.addProfileState('company', 'home');
-        TatamiState.addStatusState('company', 'home');
         TatamiState.addConversationState('company', 'home');
     }
 

@@ -34,7 +34,6 @@
     run.$inject = ['TatamiState'];
     function run(TatamiState) {
         TatamiState.addProfileState('following', 'follow');
-        TatamiState.addStatusState('following', 'follow');
         TatamiState.addConversationState('following', 'follow');
     }
 })();
