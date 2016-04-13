@@ -9,7 +9,7 @@
         <ion-option-button ng-if="!vm.currentUser || vm.currentUser.username === vm.status.username"
                            class="button-positive"
                            ng-click="vm.followUser(user)">
-            {{ vm.user.friend ? 'Unfollow' : 'Follow' }}
+            {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
         </ion-option-button>
     </div>
 </ion-item>

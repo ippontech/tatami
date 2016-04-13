@@ -1,4 +1,4 @@
-<ion-view view-title="Profile">
+<ion-view view-title="{{ 'user.profile.title' | translate }}">
     <ion-content>
         <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <tatami-user-detail user="vm.user"></tatami-user-detail>
