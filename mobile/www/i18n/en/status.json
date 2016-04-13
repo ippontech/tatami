@@ -1,0 +1,8 @@
+{
+    "status": {
+        "shared": "shared",
+        "reply": "In reply to ",
+        "shared": "Your status has been shared",
+        "follower": "New follower"
+    }
+}

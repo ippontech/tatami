@@ -1,0 +1,13 @@
+{
+    "more": {
+        "title": "More Options",
+        "company": "Company Timeline",
+        "logout": "Logout",
+        "language": {
+            "change": "Change Language",
+            "english": "English",
+            "french": "French"
+        }
+    }
+
+}
