@@ -49,7 +49,7 @@ public class TagMembershipService {
             }
         }
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        userTagRepository.addTag(currentUser.getUsername(), tag.getName());
+        userTagRepository.addTag(currentUser.getEmail(), tag.getName());
         tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getEmail());
         log.debug("User " + currentUser.getUsername() +
                 " now follows tag " + tag);
@@ -68,7 +68,7 @@ public class TagMembershipService {
         }
         if (tagAlreadyFollowed) {
             String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-            userTagRepository.removeTag(currentUser.getUsername(), tag.getName());
+            userTagRepository.removeTag(currentUser.getEmail(), tag.getName());
             tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getEmail());
             log.debug("User " + currentUser.getUsername() +
                     " has stopped following tag " + tag);

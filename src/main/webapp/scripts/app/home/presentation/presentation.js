@@ -4,8 +4,8 @@ angular.module('tatamiJHipsterApp')
             .state('timelinePresentation', {
                 parent: 'timeline',
                 url: '',
-                onEnter: ['$stateParams', '$modal', function ($stateParams, $modal) {
-                    $modal.open({
+                onEnter: ['$stateParams', '$uibModal', function ($stateParams, $uibModal) {
+                    $uibModal.open({
                         templateUrl: 'scripts/app/home/presentation/welcome.html',
                         controller: 'WelcomeController'
                     });
