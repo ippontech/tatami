@@ -120,7 +120,9 @@ h4 {
 
 .navbar {
     background-color: black;
+        margin-bottom: 0px;
 }
+
 .control-group {
     padding-bottom: 10px;
 }
