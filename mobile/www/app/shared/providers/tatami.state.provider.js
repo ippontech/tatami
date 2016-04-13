@@ -42,13 +42,30 @@
             profileViews['favorites@home'] = { 'favorites@home': profileViewConfig };
             profileViews['company@home'] = { 'more@home': profileViewConfig };
 
+            var conversationViewConfig = {
+                templateUrl: 'app/shared/state/conversation/conversation.html',
+                controller: 'ConversationCtrl',
+                controllerAs: 'vm'
+            };
+
+            var conversationViews = [];
+            conversationViews['suggested@follow'] = { 'suggested@follow': conversationViewConfig };
+            conversationViews['following@follow'] = { 'following@follow': conversationViewConfig };
+            conversationViews['follower@follow'] = { 'follower@follow': conversationViewConfig };
+            conversationViews['timeline@home'] = { 'timeline@home': conversationViewConfig };
+            conversationViews['mentions@home'] = { 'mentions@home': conversationViewConfig };
+            conversationViews['favorites@home'] = { 'favorites@home': conversationViewConfig };
+            conversationViews['company@home'] = { 'more@home': conversationViewConfig };
+
             var service = {
                 addStatusState: addStatusState,
-                addProfileState: addProfileState
+                addProfileState: addProfileState,
+                addConversationState: addConversationState
             };
 
             return service;
 
+            addStatusState.$inject = ['prefixName', 'parentName'];
             function addStatusState(prefixName, parentName) {
                 $stateProvider.state(prefixName + '.status', {
                     url: '/status/:statusId',
@@ -64,6 +81,7 @@
                 }
             }
 
+            addProfileState.$inject = ['prefixName', 'parentName'];
             function addProfileState(prefixName, parentName) {
                 $stateProvider.state(prefixName + '.profile', {
                     url: '/profile/:username',
@@ -88,6 +106,28 @@
                 getCurrentUser.$inject = ['currentUser'];
                 function getCurrentUser(currentUser) {
                     return currentUser;
+                }
+            }
+
+            addConversationState.$inject = ['prefixName', 'parentName'];
+            function addConversationState(prefixName, parentName) {
+                $stateProvider.state(prefixName + '.conversation', {
+                    url: '/conversation/:statusId',
+                    views: conversationViews[prefixName + '@' + parentName],
+                    resolve: {
+                        originalStatus: getOriginalStatus,
+                        conversation: getConversation
+                    }
+                });
+
+                getOriginalStatus.$inject = ['StatusService', '$stateParams'];
+                function getOriginalStatus(StatusService, $stateParams) {
+                    return StatusService.get({ statusId : $stateParams.statusId }).$promise;
+                }
+
+                getConversation.$inject = ['StatusService', '$stateParams'];
+                function getConversation(StatusService, $stateParams) {
+                    return StatusService.getDetails({ statusId : $stateParams.statusId }).$promise;
                 }
             }
 
