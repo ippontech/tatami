@@ -1,0 +1,6 @@
+<ion-view view-title="#{{ vm.tag }}">
+    <tatami-status-list statuses="vm.statuses"
+                        current-user="vm.currentUser"
+                        tatami-refresher="vm.getNewStatuses()"
+                        tatami-infinite-refresher="vm.getOldStatuses(finalStatus)"></tatami-status-list>
+</ion-view>
