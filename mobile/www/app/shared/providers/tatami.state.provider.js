@@ -42,9 +42,25 @@
             conversationViews['favorites@home'] = { 'favorites@home': conversationViewConfig };
             conversationViews['company@home'] = { 'more@home': conversationViewConfig };
 
+            var tagViewConfig = {
+                templateUrl: 'app/shared/state/tag/tag.html',
+                controller: 'TagCtrl',
+                controllerAs: 'vm'
+            };
+
+            var tagViews = [];
+            tagViews['suggested@follow'] = { 'suggested@follow': tagViewConfig };
+            tagViews['following@follow'] = { 'following@follow': tagViewConfig };
+            tagViews['follower@follow'] = { 'follower@follow': tagViewConfig };
+            tagViews['timeline@home'] = { 'timeline@home': tagViewConfig };
+            tagViews['mentions@home'] = { 'mentions@home': tagViewConfig };
+            tagViews['favorites@home'] = { 'favorites@home': tagViewConfig };
+            tagViews['company@home'] = { 'more@home': tagViewConfig };
+
             var service = {
                 addProfileState: addProfileState,
-                addConversationState: addConversationState
+                addConversationState: addConversationState,
+                addTagState: addTagState
             };
 
             return service;
@@ -96,6 +112,28 @@
                 getConversation.$inject = ['StatusService', '$stateParams'];
                 function getConversation(StatusService, $stateParams) {
                     return StatusService.getDetails({ statusId : $stateParams.statusId }).$promise;
+                }
+            }
+
+            addTagState.$inject = ['prefixName', 'parentName'];
+            function addTagState(prefixName, parentName) {
+                $stateProvider.state(prefixName + '.tag', {
+                    url: '/tag/:tag',
+                    views: tagViews[prefixName + '@' + parentName],
+                    resolve: {
+                        tag: getTag,
+                        statuses: getStatuses
+                    }
+                });
+
+                getTag.$inject = ['$stateParams'];
+                function getTag($stateParams) {
+                    return $stateParams.tag;
+                }
+
+                getStatuses.$inject = ['TagService', '$stateParams'];
+                function getStatuses(TagService, $stateParams) {
+                    return TagService.getTagTimeline({ tag: $stateParams.tag }).$promise;
                 }
             }
 

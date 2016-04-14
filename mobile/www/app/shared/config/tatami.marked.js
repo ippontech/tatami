@@ -706,7 +706,7 @@
             // tags
             if (cap = inline.tags.exec(src)) {
                 src = src.substring(cap[0].length);
-                out += '<span class="link-span">' + cap[0] + '</span>';
+                out += '<span class="link-span"' + ' ng-click="vm.goToTagTimeline(\'' + cap[1] + '\')">' + cap[0] + '</span>';
                 continue;
             }
 
