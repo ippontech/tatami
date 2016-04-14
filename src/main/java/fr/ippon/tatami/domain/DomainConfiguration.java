@@ -80,8 +80,8 @@ public class DomainConfiguration implements Serializable {
     @Column(name = "storageSize")
     private String storageSize;
 
-    @Column(name = "adminLogin")
-    private String adminLogin;
+    @Column(name = "adminUsername")
+    private String adminUsername;
 
     public String getDomain() {
         return domain;
@@ -115,12 +115,12 @@ public class DomainConfiguration implements Serializable {
         this.storageSize = storageSize;
     }
 
-    public String getAdminLogin() {
-        return adminLogin;
+    public String getAdminUsername() {
+        return adminUsername;
     }
 
-    public void setAdminLogin(String adminLogin) {
-        this.adminLogin = adminLogin;
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class DomainConfiguration implements Serializable {
                 "domain='" + domain + '\'' +
                 ", subscriptionLevel='" + subscriptionLevel + '\'' +
                 ", storageSize='" + storageSize + '\'' +
-                ", adminLogin='" + adminLogin + '\'' +
+                ", adminUsername='" + adminUsername + '\'' +
                 '}';
     }
 }

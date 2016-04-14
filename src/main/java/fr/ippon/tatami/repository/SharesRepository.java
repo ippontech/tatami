@@ -23,7 +23,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.SHARES_CF;
  * Structure :
  * - Key = status Id
  * - Name = time
- * - Value = login who shared this status
+ * - Value = username who shared this status
  *
  * @author Julien Dubois
  */
@@ -35,18 +35,18 @@ public class SharesRepository {
 
 
     @CacheEvict(value = "shared-cache", key = "#statusId")
-    public void newShareByLogin(String statusId, String sharedByLogin) {
+    public void newShareByEmail(String statusId, String sharedByEmail) {
         Statement statement = QueryBuilder.insertInto(SHARES_CF)
                 .value("status", UUID.fromString(statusId))
-                .value("login",sharedByLogin);
+                .value("email",sharedByEmail);
         session.execute(statement);
     }
 
 
    @Cacheable("shared-cache")
-    public Collection<String> findLoginsWhoSharedAStatus(String statusId) {
+    public Collection<String> findUserEmailsWhoSharedAStatus(String statusId) {
        Statement statement = QueryBuilder.select()
-               .column("login")
+               .column("email")
                .from(SHARES_CF)
                .where(eq("status", UUID.fromString(statusId)))
                .limit(100);
@@ -54,14 +54,14 @@ public class SharesRepository {
        return results
                .all()
                .stream()
-               .map(e -> e.getString("login"))
+               .map(e -> e.getString("email"))
                .collect(Collectors.toList());
     }
 
 
     public boolean hasBeenShared(String statusId) {
         Statement statement = QueryBuilder.select()
-                .column("login")
+                .column("username")
                 .from(SHARES_CF)
                 .where(eq("status", UUID.fromString(statusId)))
                 .limit(1);

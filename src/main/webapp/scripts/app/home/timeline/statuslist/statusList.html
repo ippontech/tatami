@@ -13,7 +13,7 @@
 
                     <div ng-class="{ 'favorite': status.favorite, 'share': status.shareByMe, 'both': status.favorite && status.shareByMe }">
                         <div class="pull-left background-image-fffix statusitem-img">
-                            <a ui-sref="home.profile.statuses({ username: status.username })">
+                            <a ui-sref="home.profile.statuses({ email: status.email })">
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
@@ -21,15 +21,15 @@
                             <h5 class="statusitem-name">
                                 <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
-                                    <a ui-sref="home.profile.statuses({ username: status.username })">
-                                        <span class="text-muted">@{{ status.sharedByUsername }}</span>
+                                    <a ui-sref="home.profile.statuses({ email: status.email })">
+                                        <span class="text-muted">@{{ status.sharedByEmail }}</span>
                                     </a>
                                     <span translate="status.shared"></span>
                                     <br>
                                 </small>
                                 <span ng-if="status.type == 'MENTION_SHARE'" class="glyphicon glyphicon-retweet">&nbsp;</span>
                                 <span ng-if="status.type == 'MENTION_FRIEND'" class="glyphicon glyphicon-user">&nbsp;</span>
-                                <a ui-sref="home.profile.statuses({ username: status.username })">
+                                <a ui-sref="home.profile.statuses({ email: status.email })">
                                     <strong>{{ status.firstName + ' ' + status.lastName }}</strong>
                                     <small>@{{ status.username }}</small>
                                 </a>
@@ -100,7 +100,7 @@
                                     <span class="badge">{{ status.shares.length }}</span>
                                     <div>
                                         <span ng-repeat="user in status.shares">
-                                            <a ui-sref="home.profile.statuses({ username: user.username })">
+                                            <a ui-sref="home.profile.statuses({ email: user.email })">
                                                 <div class="img img-rounded img-small share-img-fffix" ng-attr-title="@{{ user.username }}" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                                             </a>
                                         </span>
@@ -124,7 +124,7 @@
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="status.favorite"></span>
                                         </button>
-                                        <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
+                                        <button ng-if="$state.isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
                                             <span translate="status.announce"></span>
                                         </button>

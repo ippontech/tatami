@@ -43,11 +43,11 @@ var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
             var titleKey = 'global.title' ;
 
-            // Remember previous state unless we've been redirected to login or we've just
-            // reset the state memory after logout. If we're redirected to login, our
+            // Remember previous state unless we've been redirected to username or we've just
+            // reset the state memory after logout. If we're redirected to username, our
             // previousState is already set in the authExpiredInterceptor. If we're going
-            // to login directly, we don't want to be sent to some previous state anyway
-            if (toState.name != 'login' && $rootScope.previousStateName) {
+            // to username directly, we don't want to be sent to some previous state anyway
+            if (toState.name != 'username' && $rootScope.previousStateName) {
               $rootScope.previousStateName = fromState.name;
               $rootScope.previousStateParams = fromParams;
             }

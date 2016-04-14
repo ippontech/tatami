@@ -60,19 +60,12 @@ public class DiscussionRepository {
         BoundStatement stmt = findStatusIdsInDiscussionStmt.bind();
         stmt.setString("originalStatusId", originalStatusId);
         ResultSet resultSet = session.execute(stmt);
-        Collection<String> statusIdsInDiscussion = new ArrayList<>();
-        String rowValueToBeAdded = null;
-        while (!resultSet.isExhausted()) {
-            String unedittedRowValue = resultSet.one().toString();
-            if (unedittedRowValue.contains("Row")){
-//                This trims unusable text from the row value:
-                rowValueToBeAdded = unedittedRowValue.substring(4, unedittedRowValue.length() - 1);
-            } else {
-                rowValueToBeAdded = unedittedRowValue;
-            }
-            statusIdsInDiscussion.add(rowValueToBeAdded);
-        }
-        return statusIdsInDiscussion;
+
+        return resultSet
+            .all()
+            .stream()
+            .map(e -> e.getUUID("statusId").toString())
+            .collect(Collectors.toList());
     }
 
     @CacheEvict(value = "status-cache", key = "#originalStatusId")

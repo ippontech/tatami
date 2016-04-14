@@ -41,7 +41,7 @@ public class DaylineRepository {
         Statement query = QueryBuilder.update("dayline")
                 .with(incr("statusCount", 1))
                 // Use incr for counters
-                .where(eq("domainDay", key)).and(eq("username",status.getUsername()));
+                .where(eq("domainDay", key)).and(eq("email",status.getEmail()));
         session.execute(query);
     }
 
@@ -57,7 +57,7 @@ public class DaylineRepository {
         return results
                 .all()
                 .stream()
-                .map(e -> new UserStatusStat(e.getString("username"),e.getLong("statusCount")))
+                .map(e -> new UserStatusStat(e.getString("email"),e.getLong("statusCount")))
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 

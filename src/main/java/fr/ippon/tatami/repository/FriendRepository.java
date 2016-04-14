@@ -12,8 +12,8 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS;
  * Cassandra implementation of the Friend repository.
  * <p/>
  * Structure :
- * - Key = login
- * - Name = friend login
+ * - Key = username
+ * - Name = friend username
  * - Value = time
  *
  * @author Julien Dubois
@@ -22,20 +22,20 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS;
 public class FriendRepository extends AbstractFriendRepository {
 
     @Override
-    @CacheEvict(value = "friends-cache", key = "#login")
-    public void addFriend(String login, String friendLogin) {
-        super.addFriend(login, friendLogin);
+    @CacheEvict(value = "friends-cache", key = "#email")
+    public void addFriend(String email, String friendEmail) {
+        super.addFriend(email, friendEmail);
     }
 
     @Override
-    @CacheEvict(value = "friends-cache", key = "#login")
-    public void removeFriend(String login, String friendLogin) {
-        super.removeFriend(login, friendLogin);
+    @CacheEvict(value = "friends-cache", key = "#email")
+    public void removeFriend(String email, String friendEmail) {
+        super.removeFriend(email, friendEmail);
     }
 
     @Cacheable("friends-cache")
-    public List<String> findFriendsForUser(String login) {
-        return super.findFriends(login);
+    public List<String> findFriendsForUser(String email) {
+        return super.findFriends(email);
     }
 
     @Override

@@ -72,7 +72,7 @@ AccountModule.config(['$stateProvider', '$urlRouterProvider', function($statePro
             url: '/profile',
             templateUrl: 'app/components/account/profile/ProfileView.min.html',
             resolve: {
-                userLogin: ['UserService', 'profileInfo', function(UserService, profileInfo) {
+                Username: ['UserService', 'profileInfo', function(UserService, profileInfo) {
                     return UserService.get({ username: profileInfo.username }).$promise;
                 }]
             },

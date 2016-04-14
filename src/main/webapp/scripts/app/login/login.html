@@ -10,8 +10,8 @@
         <div class="col-md-4 col-md-offset-4">
             <form class="form" role="form" ng-submit="login($event)">
                 <div class="form-group">
-                    <label for="username" translate="global.form.username">Login</label>
-                    <input type="text" class="form-control" id="username" placeholder="{{'global.form.username.placeholder' | translate}}" ng-model="username">
+                    <label for="username" translate="global.form.login">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="{{'global.form.login.placeholder' | translate}}" ng-model="username">
                 </div>
                 <div class="form-group">
                     <label for="password" translate="login.form.password">Password</label>
@@ -80,7 +80,7 @@
             <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
                 <fieldset>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.username' | translate }}" autofocus>
+                        <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.email' | translate }}" autofocus>
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.form.password' | translate }}">

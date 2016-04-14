@@ -9,16 +9,16 @@ import java.io.Serializable;
  */
 public class TatamiNotification implements Serializable {
 
-    private String login;
+    private String username;
 
     private StatusDTO statusDTO;
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public StatusDTO getStatusDTO() {
@@ -36,7 +36,7 @@ public class TatamiNotification implements Serializable {
 
         TatamiNotification that = (TatamiNotification) o;
 
-        if (!login.equals(that.login)) return false;
+        if (!username.equals(that.username)) return false;
         if (!statusDTO.equals(that.statusDTO)) return false;
 
         return true;
@@ -44,7 +44,7 @@ public class TatamiNotification implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = login.hashCode();
+        int result = username.hashCode();
         result = 31 * result + statusDTO.hashCode();
         return result;
     }
@@ -52,7 +52,7 @@ public class TatamiNotification implements Serializable {
     @Override
     public String toString() {
         return "TatamiNotification{" +
-                "login='" + login + '\'' +
+                "username='" + username + '\'' +
                 ", statusDTO=" + statusDTO +
                 "} " + super.toString();
     }

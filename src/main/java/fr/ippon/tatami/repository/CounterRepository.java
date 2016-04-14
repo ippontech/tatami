@@ -18,7 +18,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
  * Cassandra implementation of the Counter repository.
  * <p/>
  * Structure :
- * - Key = login
+ * - Key = email
  * - Name = counterId
  * - Value = count
  *
@@ -28,7 +28,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 public class CounterRepository {
 
     public static final String COUNTER = "counter";
-    public static final String LOGIN = "login";
+    public static final String EMAIL = "email";
     @Inject
     Session session;
 
@@ -40,104 +40,104 @@ public class CounterRepository {
 
 
 
-    @CacheEvict(value = "user-cache", key = "#login")
-    public void incrementFollowersCounter(String login) {
-        incrementCounter(FOLLOWERS_COUNTER, login);
+    @CacheEvict(value = "user-cache", key = "#email")
+    public void incrementFollowersCounter(String email) {
+        incrementCounter(FOLLOWERS_COUNTER, email);
     }
 
 
-    @CacheEvict(value = {"user-cache", "suggest-users-cache"}, key = "#login")
-    public void incrementFriendsCounter(String login) {
-        incrementCounter(FRIENDS_COUNTER, login);
+    @CacheEvict(value = {"user-cache", "suggest-users-cache"}, key = "#email")
+    public void incrementFriendsCounter(String email) {
+        incrementCounter(FRIENDS_COUNTER, email);
     }
 
 
-    @CacheEvict(value = "user-cache", key = "#login")
-    public void incrementStatusCounter(String login) {
-        incrementCounter(STATUS_COUNTER, login);
+    @CacheEvict(value = "user-cache", key = "#email")
+    public void incrementStatusCounter(String email) {
+        incrementCounter(STATUS_COUNTER, email);
     }
 
 
-    @CacheEvict(value = "user-cache", key = "#login")
-    public void decrementFollowersCounter(String login) {
-        decrementCounter(FOLLOWERS_COUNTER, login);
+    @CacheEvict(value = "user-cache", key = "#email")
+    public void decrementFollowersCounter(String email) {
+        decrementCounter(FOLLOWERS_COUNTER, email);
     }
 
 
-    @CacheEvict(value = "user-cache", key = "#login")
-    public void decrementFriendsCounter(String login) {
-        decrementCounter(FRIENDS_COUNTER, login);
+    @CacheEvict(value = "user-cache", key = "#email")
+    public void decrementFriendsCounter(String email) {
+        decrementCounter(FRIENDS_COUNTER, email);
     }
 
 
-    @CacheEvict(value = "user-cache", key = "#login")
-    public void decrementStatusCounter(String login) {
-        decrementCounter(STATUS_COUNTER, login);
+    @CacheEvict(value = "user-cache", key = "#email")
+    public void decrementStatusCounter(String email) {
+        decrementCounter(STATUS_COUNTER, email);
     }
 
 
-    public long getFollowersCounter(String login) {
-        return getCounter(FOLLOWERS_COUNTER, login);
+    public long getFollowersCounter(String email) {
+        return getCounter(FOLLOWERS_COUNTER, email);
     }
 
 
-    public long getFriendsCounter(String login) {
-        return getCounter(FRIENDS_COUNTER, login);
+    public long getFriendsCounter(String email) {
+        return getCounter(FRIENDS_COUNTER, email);
     }
 
 
-    public long getStatusCounter(String login) {
-        return getCounter(STATUS_COUNTER, login);
+    public long getStatusCounter(String email) {
+        return getCounter(STATUS_COUNTER, email);
     }
 
 
-    public void createFollowersCounter(String login) {
-        createCounter(FOLLOWERS_COUNTER, login);
+    public void createFollowersCounter(String email) {
+        createCounter(FOLLOWERS_COUNTER, email);
     }
 
 
-    public void createFriendsCounter(String login) {
-        createCounter(FRIENDS_COUNTER, login);
+    public void createFriendsCounter(String email) {
+        createCounter(FRIENDS_COUNTER, email);
     }
 
 
-    public void createStatusCounter(String login) {
-        createCounter(STATUS_COUNTER, login);
+    public void createStatusCounter(String email) {
+        createCounter(STATUS_COUNTER, email);
     }
 
 
-    public void deleteCounters(String login) {
+    public void deleteCounters(String email) {
         Statement statement = QueryBuilder.delete().from(COUNTER)
-                .where(eq(LOGIN, login));
+                .where(eq(EMAIL, email));
         session.execute(statement);
     }
 
-    private void createCounter(String counterName, String login) {
+    private void createCounter(String counterName, String email) {
         Statement statement = QueryBuilder.update(COUNTER)
                 .with(incr(counterName,0))
-                .where(eq(LOGIN,login));
+                .where(eq(EMAIL,email));
         session.execute(statement);
     }
 
-    private void incrementCounter(String counterName, String login) {
+    private void incrementCounter(String counterName, String email) {
         Statement statement = QueryBuilder.update(COUNTER)
                 .with(incr(counterName,1))
-                .where(eq(LOGIN,login));
+                .where(eq(EMAIL,email));
         session.execute(statement);
     }
 
-    private void decrementCounter(String counterName, String login) {
+    private void decrementCounter(String counterName, String email) {
         Statement statement = QueryBuilder.update(COUNTER)
                 .with(decr(counterName,1))
-                .where(eq(LOGIN,login));
+                .where(eq(EMAIL,email));
         session.execute(statement);
     }
 
-    private long getCounter(String counterName, String login) {
+    private long getCounter(String counterName, String email) {
         Statement statement = QueryBuilder.select()
                 .column(counterName)
                 .from(COUNTER)
-                .where(eq(LOGIN, login));
+                .where(eq(EMAIL, email));
         ResultSet results = session.execute(statement);
         Row row = results.one();
         if (row != null) {

@@ -73,7 +73,7 @@ tatamiJHipsterApp
             })
             .state('user-management.edit', {
                 parent: 'user-management',
-                url: '/{login}/edit',
+                url: '/{email}/edit',
                 data: {
                     authorities: ['ROLE_ADMIN'],
                 },
@@ -83,8 +83,8 @@ tatamiJHipsterApp
                         controller: 'UserManagementDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: ['User', function(User) {
-                                return User.get({login : $stateParams.login});
+                            entity: ['UserService', function(User) {
+                                return User.get({email : $stateParams.email});
                             }]
                         }
                     }).result.then(function(result) {
@@ -106,8 +106,8 @@ tatamiJHipsterApp
                         controller: 'user-managementDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['User', function(User) {
-                                return User.get({login : $stateParams.login});
+                            entity: ['UserService', function(User) {
+                                return User.get({email : $stateParams.login});
                             }]
                         }
                     }).result.then(function(result) {

@@ -52,7 +52,7 @@ public class UserResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testGetExistingUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/rest/users/admin")
+        restUserMockMvc.perform(get("/tatami/rest/users/admin@localhost")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))

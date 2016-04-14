@@ -46,23 +46,23 @@ public class SuggestionService {
      */
 
     @Cacheable("suggest-users-cache")
-    public Collection<User> suggestUsers(String login) {
+    public Collection<User> suggestUsers(String email) {
         Map<String, Integer> userCount = new HashMap<String, Integer>();
-        List<String> friendIds = friendshipService.getFriendIdsForUser(login);
+        List<String> friendIds = friendshipService.getFriendIdsForUser(email);
         List<String> sampleFriendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : sampleFriendIds) {
             List<String> friendsOfFriend = friendshipService.getFriendIdsForUser(friendId);
             friendsOfFriend = AnalysisUtil.reduceCollectionSize(friendsOfFriend, SUB_SAMPLE_SIZE);
             for (String friendOfFriend : friendsOfFriend) {
-                if (!friendIds.contains(friendOfFriend) && !friendOfFriend.equals(login)) {
+                if (!friendIds.contains(friendOfFriend) && !friendOfFriend.equals(email)) {
                     AnalysisUtil.incrementKeyCounterInMap(userCount, friendOfFriend);
                 }
             }
         }
-        List<String> mostFollowedUsers = AnalysisUtil.findMostUsedKeys(userCount);
+        List<String> mostFollowedUsersEmail = AnalysisUtil.findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
-        for (String mostFollowedUser : mostFollowedUsers) {
-            User suggestion = userRepository.findOneByLogin(mostFollowedUser).get();
+        for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
+            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail).get();
             if ( suggestion.getActivated() ){
                 userSuggestions.add(suggestion);
             }
@@ -75,10 +75,11 @@ public class SuggestionService {
     }
 
     @Cacheable("suggest-groups-cache")
-    public Collection<Group> suggestGroups(String login) {
+    public Collection<Group> suggestGroups(String email) {
+        String domain = DomainUtil.getDomainFromEmail(email);
         Map<String, Integer> groupCount = new HashMap<>();
-        List<UUID> groupIds = userGroupRepository.findGroups(login);
-        List<String> friendIds = friendshipService.getFriendIdsForUser(login);
+        List<UUID> groupIds = userGroupRepository.findGroups(email);
+        List<String> friendIds = friendshipService.getFriendIdsForUser(email);
         friendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : friendIds) {
             List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId);
@@ -90,7 +91,6 @@ public class SuggestionService {
         }
         List<String> mostFollowedGroups = AnalysisUtil.findMostUsedKeys(groupCount);
         List<Group> groupSuggestions = new ArrayList<Group>();
-        String domain = DomainUtil.getDomainFromLogin(login);
         for (String mostFollowedGroup : mostFollowedGroups) {
             Group suggestion = groupService.getGroupById(domain, UUID.fromString(mostFollowedGroup));
             if (suggestion.isPublicGroup()) { // Only suggest public groups for the moment

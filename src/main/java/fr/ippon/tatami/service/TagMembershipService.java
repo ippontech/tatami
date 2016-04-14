@@ -5,7 +5,8 @@ import fr.ippon.tatami.repository.TagFollowerRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.web.rest.util.DomainUtil;
+import fr.ippon.tatami.security.UserDetailsService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.TagDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,19 +36,22 @@ public class TagMembershipService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     public boolean followTag(TagDTO tag) {
         log.debug("Following tag : {}", tag);
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getEmail())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
-                log.debug("User {} already follows tag {}", currentUser.getLogin(), tag);
+                log.debug("User {} already follows tag {}", currentUser.getUsername(), tag);
                 return false;
             }
         }
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        userTagRepository.addTag(currentUser.getLogin(), tag.getName());
-        tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getLogin());
-        log.debug("User " + currentUser.getLogin() +
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        userTagRepository.addTag(currentUser.getEmail(), tag.getName());
+        tagFollowerRepository.addFollower(domain, tag.getName(), currentUser.getEmail());
+        log.debug("User " + currentUser.getUsername() +
                 " now follows tag " + tag);
 
         return true;
@@ -55,18 +59,18 @@ public class TagMembershipService {
 
     public boolean unfollowTag(TagDTO tag) {
         log.debug("Removing followed tag : {}", tag);
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         boolean tagAlreadyFollowed = false;
-        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getLogin())) {
+        for (String alreadyFollowingTest : userTagRepository.findTags(currentUser.getEmail())) {
             if (alreadyFollowingTest.equals(tag.getName())) {
                 tagAlreadyFollowed = true;
             }
         }
         if (tagAlreadyFollowed) {
-            String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-            userTagRepository.removeTag(currentUser.getLogin(), tag.getName());
-            tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getLogin());
-            log.debug("User " + currentUser.getLogin() +
+            String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+            userTagRepository.removeTag(currentUser.getEmail(), tag.getName());
+            tagFollowerRepository.removeFollower(domain, tag.getName(), currentUser.getEmail());
+            log.debug("User " + currentUser.getUsername() +
                     " has stopped following tag " + tag);
 
             return true;

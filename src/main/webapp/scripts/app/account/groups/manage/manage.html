@@ -58,13 +58,13 @@
                                 <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + profile.avatarURL + ')' }">
                             </div>
                             <h4>
-                                <a ui-sref="home.profile.statuses({ username: profile.username })">
+                                <a ui-sref="home.profile.statuses({ email: profile.email })">
                                     <strong>
                                         {{ profile.firstName + ' ' + profile.lastName }}
                                     </strong>
                                 </a>
                                 <br>
-                                <a ui-sref="home.profile.statuses({ username: profile.username })">
+                                <a ui-sref="home.profile.statuses({ email: profile.email })">
                                     <small>
                                         @{{ profile.username }}
                                     </small>
@@ -109,13 +109,13 @@
                                             <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
                                         </div>
                                         <h4>
-                                            <a ui-sref="home.profile.statuses({ username: member.username })">
+                                            <a ui-sref="home.profile.statuses({ email: member.email })">
                                                 <strong>
                                                     {{ member.firstName + ' ' + member.lastName }}
                                                 </strong>
                                             </a>
                                             <br>
-                                            <a ui-sref="home.profile.statuses({ username: member.username })">
+                                            <a ui-sref="home.profile.statuses({ email: member.email })">
                                                 <small>
                                                     @{{ member.username }}
                                                 </small>
