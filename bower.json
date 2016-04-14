@@ -49,6 +49,7 @@
   "resolutions": {
     "angular": "1.4.8",
     "angular-cookies": "1.4.8",
-    "jquery": "2.1.4"
+    "jquery": "2.1.4",
+    "ng-file-upload": "~12.0.4"
   }
 }

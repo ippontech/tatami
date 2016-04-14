@@ -69,7 +69,7 @@ public class UserXAuthTokenController {
     @Inject
     private GoogleTokenService googleTokenService;
 
-    /*@RequestMapping(value = "rest/client/id",
+    @RequestMapping(value = "rest/client/id",
             method = RequestMethod.GET,
             produces = "application/json")
 
@@ -79,7 +79,7 @@ public class UserXAuthTokenController {
                 Collection<String> clientList = new ArrayList<String>();
                 clientList.add(clientId);
                 return clientList;
-    }*/
+    }
 
     @RequestMapping(value = "rest/builder",
         method = RequestMethod.GET)
@@ -108,7 +108,7 @@ public class UserXAuthTokenController {
         //Cookie authCookie = new Cookie("googleAuthToken", authToken.getToken());
         try{
             //response.addCookie(authCookie);
-            response.sendRedirect("/#/login?Token="+authToken.getToken());
+            response.sendRedirect("/#/?Token="+authToken.getToken());
         }catch(IOException e){
             log.debug("{}",e);
         }

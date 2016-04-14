@@ -74,7 +74,6 @@ public class JHipsterProperties {
 
     public Google getGoogle(){ return google;}
 
-
     public static class Async {
 
         private int corePoolSize = 2;

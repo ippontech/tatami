@@ -1,37 +1,9 @@
-<!--<div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <h1 translate="login.title">Sign in</h1>
 
-            <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
-                <strong>Failed to sign in!</strong> Please check your credentials and try again.
-            </div>
-        </div>
-        <div class="col-md-4 col-md-offset-4">
-            <form class="form" role="form" ng-submit="login($event)">
-                <div class="form-group">
-                    <label for="username" translate="global.form.login">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="{{'global.form.login.placeholder' | translate}}" ng-model="username">
-                </div>
-                <div class="form-group">
-                    <label for="password" translate="login.form.password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
-                           ng-model="password">
-                </div>
-                <button type="submit" class="btn btn-primary" translate="login.form.button">Sign in</button>
-            </form>
-            <p></p>
-            <div class="alert alert-warning">
-                <a class="alert-link" href="#/reset/request" translate="login.password.forgot">Did you forget your password?</a>
-            </div>
-            <div class="alert alert-warning" translate="global.messages.info.register">
-                You don't have an account yet? <a class="alert-link" href="#/register">Register a new account</a>
-            </div>
-        </div>
-    </div>
-</div>
--->
 <div id="mainPanel" class="container-fluid well well-sm">
+
+   <!-- tried to create a loading spinner, ill get back to this
+   <input type="button" ng-click="startSpin()" value="Start Spin"/>
+    <span us-spinner = "{radius:30, width:8, length: 16}"  spinner-key="spinner-1"></span>-->
     <div class="text-center well well-sm">
         <h1 translate="login.mainTitle"></h1>
         <h3 translate="login.subtitle"></h3>
@@ -76,42 +48,24 @@
                     <strong>Failed to sign in!</strong> Please check your credentials and try again.
                 </div>
             </div>
-        <div class="panel-body">
-            <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
-                <fieldset>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.email' | translate }}" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.form.password' | translate }}">
-                    </div>
-                    <div class="form-group">
-                        <input id="_spring_security_remember_me" ng-model="rememberMe" name="_spring_security_remember_me" type="checkbox">
-                        <span translate="login.remember"></span>
-                    </div>
-                    <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="login.title"></button>
-                </fieldset>
-            </form>
-
-        <!--
-        <form action="/tatami/authentication" method="post" accept-charset="utf-8" id="loginForm">
-            <fieldset>
-                <div class="control-group">
-                    <input id="j_username" name="j_username" type="email" required="required" placeholder="{{ 'tatami.login.email' | translate }}" autofocus>
-                </div>
-                <div class="control-group">
-                    <input id="j_password" name="j_password" type="password" required="required" placeholder="{{ 'tatami.login.password' | translate }}">
-                </div>
-                <div class="control-group">
-                    <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox">
-                    <span translate="tatami.login.remember"></span>
-                </div>
-                <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="tatami.login.title"></button>
-            </fieldset>
-        </form>
-        -->
+            <div class="panel-body">
+                <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
+                    <fieldset>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.email' | translate }}" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.form.password' | translate }}">
+                        </div>
+                        <div class="form-group">
+                            <input id="_spring_security_remember_me" ng-model="rememberMe" name="_spring_security_remember_me" type="checkbox">
+                            <span translate="login.remember"></span>
+                        </div>
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="tatami.login.title"></button>
+                    </fieldset>
+                </form>
+            </div>
         </div>
-    </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title text-center" translate="login.forgotPassword"></h4>
@@ -125,23 +79,24 @@
                     <button type="submit" class="btn btn-primary btn-block text-center" translate="login.resetPassword"></button>
                 </fieldset>
             </form>
-        </div>
-    </div>
-</div>
+            </div>
 
-<div class="col-md-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title text-center" translate="login.register.title"></h4>
         </div>
-        <div class="panel-body">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <p translate="login.register.line1"></p>
-                    <p translate="login.register.line2"></p>
-                    <p translate="login.register.line3"></p>
-                </li>
-            </ul>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center" translate="login.register.title"></h4>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <p translate="login.register.line1"></p>
+                            <p translate="login.register.line2"></p>
+                            <p translate="login.register.line3"></p>
+                        </li>
+                     </ul>
             <form ng-submit="registerUser()" accept-charset="utf-8" id="registrationForm">
                 <fieldset>
                    <!-- <div class="form-group">
@@ -154,8 +109,10 @@
             </form>
             <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.tos"></button>
         </div>
+
             </div>
         </div>
         <div class ="panel-body"></div>
     </div>
 </div>
+
