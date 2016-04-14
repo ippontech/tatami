@@ -14,6 +14,7 @@
         "passwordEmailSent": "An email has been sent to you, with instructions to generate a new password.",
         "unregisteredEmail": "This email address is not registered in Tatami.",
         "registrationFailure": "User registration failed. That email already is in use.",
+
         "register": {
             "title": "Register",
             "line1": "A confirmation email will be sent to the address you provide.",

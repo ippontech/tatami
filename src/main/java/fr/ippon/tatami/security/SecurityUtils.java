@@ -70,7 +70,6 @@ public final class SecurityUtils {
         }
         throw new IllegalStateException("User not found!");
     }
-
     /**
      * If the current user has a specific authority (security role).
      *

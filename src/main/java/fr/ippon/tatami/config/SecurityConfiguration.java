@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth
             .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(new GoogleApiAuthenticationProvider());
     }
 
     @Override
@@ -75,7 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
+            .antMatchers("/tatami/authenticate").permitAll()
             .antMatchers("/api/account/reset_password/init").permitAll()
             .antMatchers("/api/account/reset_password/finish").permitAll()
             .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
@@ -98,7 +99,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/configuration/security").permitAll()
             .antMatchers("/configuration/ui").permitAll()
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/protected/**").authenticated() 
+            .antMatchers("/protected/**").authenticated()
+            .antMatchers("/tatami/rest/client/id").permitAll()
+            .antMatchers("/tatami/rest/oauth/token").permitAll()
         .and()
             .apply(securityConfigurerAdapter());
 
