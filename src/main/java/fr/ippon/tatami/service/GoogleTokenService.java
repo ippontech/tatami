@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.TreeSet;
+import java.util.UUID;
 
 
 /**
@@ -137,15 +138,15 @@ public class GoogleTokenService {
     }
 
     private UserDetails getNewlyCreatedUserDetails(Person user) {
-        String login = user.getEmails().get(0).getValue();
-        String id = user.getId();
+        String login = user.getEmails().get(0).getValue();;
         String firstName = user.getName().getGivenName();
         String lastName = user.getName().getFamilyName();
 
         User createdUser = new User();
 
         createdUser.setLogin(login);
-        createdUser.setId(id);
+        createdUser.setUsername(login);
+        createdUser.setId(UUID.randomUUID().toString());
         createdUser.setEmail(login);
         createdUser.setFirstName(firstName);
         createdUser.setLastName(lastName);
