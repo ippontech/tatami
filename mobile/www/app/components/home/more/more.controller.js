@@ -4,12 +4,32 @@
     angular.module('tatami')
         .controller('MoreController', moreController);
 
-    moreController.$inject = ['$state', '$localStorage', '$ionicHistory'];
-    function moreController($state, $localStorage, $ionicHistory) {
+    moreController.$inject = ['$scope', '$state', '$localStorage', '$ionicHistory', '$translate'];
+    function moreController($scope, $state, $localStorage, $ionicHistory, $translate) {
         var vm = this;
 
         vm.logout = logout;
         vm.goToCompanyTimeline = goToCompanyTimeline;
+
+        vm.language = 'en';
+
+        vm.languages = [
+            {
+                langKey: 'en',
+                translateKey: 'more.language.english'
+            },
+            {
+                langKey: 'fr',
+                translateKey: 'more.language.french'
+            }
+        ];
+
+        $scope.$watch('vm.language', updateLanguage);
+
+        function updateLanguage(language) {
+            $translate.use(language);
+        }
+
 
         function logout() {
             $localStorage.clear();

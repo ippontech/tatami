@@ -19,9 +19,6 @@
             if(isLocalStorageUndefined(key)) {
                 return undefined;
             }
-            if($window.localStorage[key] === 'undefined') {
-                alert('it is undefined');
-            }
             return JSON.parse($window.localStorage[key] || '{}');
         }
 
