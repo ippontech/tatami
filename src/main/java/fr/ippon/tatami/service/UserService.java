@@ -347,12 +347,10 @@ public class UserService {
      */
     public Collection<User> getUsersByEmail(Collection<String> emails) {
         final Collection<User> users = new ArrayList<User>();
-        User user;
+        Optional<User> user;
         for (String email : emails) {
-            user = userRepository.findOneByEmail(email).get();
-            if (user != null) {
-                users.add(user);
-            }
+            user = userRepository.findOneByEmail(email);
+            user.ifPresent(users::add);
         }
         return users;
     }
