@@ -15,8 +15,8 @@
         .run(tatamiRun)
         .config(tatamiConfig);
 
-    tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', 'ProfileService', '$rootScope'];
-    function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, ProfileService, $rootScope) {
+    tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', '$translate'];
+    function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, $translate) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -56,7 +56,8 @@
         '$stateProvider',
         '$translateProvider',
         '$compileProvider',
-        '$httpProvider'];
+        '$httpProvider'
+    ];
     function tatamiConfig($resourceProvider, $stateProvider, $translateProvider, $compileProvider, $httpProvider) {
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
         $resourceProvider.defaults.stripTrailingSlashes = false;
