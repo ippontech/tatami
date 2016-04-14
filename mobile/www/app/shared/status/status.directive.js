@@ -34,6 +34,7 @@
         vm.postReply = postReply;
         vm.goToConversation = goToConversation;
         vm.goToProfile = goToProfile;
+        vm.goToTagTimeline = goToTagTimeline;
         vm.shareStatus = shareStatus;
 
         function remove() {
@@ -73,6 +74,12 @@
         function goToProfile(username) {
             var destinationState = $state.current.name.split('.')[0] + '.profile';
             $state.go(destinationState, { username : username });
+        }
+
+        goToTagTimeline.$inject = ['tag'];
+        function goToTagTimeline(tag) {
+            var destinationState = $state.current.name.split('.')[0] + '.tag';
+            $state.go(destinationState, { tag: tag });
         }
 
         function shareStatus() {

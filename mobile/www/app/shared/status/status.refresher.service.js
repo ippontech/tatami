@@ -4,17 +4,19 @@
     angular.module('tatami')
         .factory('TatamiStatusRefresherService', tatamiStatusRefresherService);
 
-    tatamiStatusRefresherService.$inject = ['$rootScope', 'StatusService', 'HomeService'];
-    function tatamiStatusRefresherService($rootScope, StatusService, HomeService) {
+    tatamiStatusRefresherService.$inject = ['$rootScope', 'StatusService', 'HomeService', 'TagService'];
+    function tatamiStatusRefresherService($rootScope, StatusService, HomeService, TagService) {
         var service = {
             refreshHomeTimeline: refreshHomeTimeline,
             refreshCompanyTimeline: refreshCompanyTimeline,
             refreshMentions: refreshMentions,
             refreshFavorites: refreshFavorites,
             refreshUserTimeline: refreshUserTimeline,
+            refreshTagTimeline: refreshTagTimeline,
             getOldFromHomeTimeline: getOldFromHomeTimeline,
             getOldFromCompanyTimeline: getOldFromCompanyTimeline,
-            getOldMentions: getOldMentions
+            getOldMentions: getOldMentions,
+            getOldTags: getOldTags
         };
 
         return service;
@@ -40,6 +42,11 @@
             return HomeService.getFavorites().$promise.then(updateStatuses);
         }
 
+        refreshTagTimeline.$inject = ['tag'];
+        function refreshTagTimeline(tag) {
+            return TagService.getTagTimeline({ tag: tag }).$promise.then(updateStatuses);
+        }
+
         getOldFromHomeTimeline.$inject = ['finalStatus'];
         function getOldFromHomeTimeline(finalStatus) {
             return StatusService.getHomeTimeline({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
@@ -53,6 +60,11 @@
         getOldMentions.$inject = ['finalStatus'];
         function getOldMentions(finalStatus) {
             return HomeService.getMentions({ finish: finalStatus }).$promise.then(updateInfiniteStatuses);
+        }
+
+        getOldTags.$inject = ['finalStatus', 'tag'];
+        function getOldTags(finalStatus, tag) {
+            return TagService.getTagTimeline({ tag: tag, finish: finalStatus }).$promise.then(updateInfiniteStatuses);
         }
 
         updateStatuses.$inject = ['statuses'];

@@ -19,7 +19,7 @@
 
         getOldStatuses.$inject = ['finalStatus'];
         function getOldStatuses(finalStatus) {
-            return TatamiStatusRefresherService.getOldTags(finalStatus)
+            return TatamiStatusRefresherService.getOldTags(finalStatus, vm.tag)
         }
     }
 })();
