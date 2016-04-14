@@ -42,7 +42,6 @@
                 $state.go('login');
             }
         }
-
         resume();
 
         function isValidToken() {
@@ -90,8 +89,12 @@
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        $translateProvider.preferredLanguage('en');
-        $translateProvider.use('en');
+        var usedLanguage = window.localStorage['language'] || JSON.stringify(navigator.language.split('-')[0] || 'en');
+        window.localStorage['language'] = usedLanguage;
+        usedLanguage = JSON.parse(usedLanguage);
+
+        $translateProvider.preferredLanguage(usedLanguage);
+        $translateProvider.use(usedLanguage);
         $translateProvider.useSanitizeValueStrategy('escaped');
         $translateProvider.addInterpolation('$translateMessageFormatInterpolation');
 
