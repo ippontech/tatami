@@ -41,7 +41,7 @@ public class FriendshipResource {
     @Inject
     private UserDetailsService userDetailsService;
 
-    @RequestMapping(value = "/rest/users/{username}/friends",
+    @RequestMapping(value = "/rest/users/{email}/friends",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
@@ -57,7 +57,7 @@ public class FriendshipResource {
         return userService.buildUserDTOList(friends);
     }
 
-    @RequestMapping(value = "/rest/users/{username}/followers",
+    @RequestMapping(value = "/rest/users/{email}/followers",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
@@ -76,11 +76,11 @@ public class FriendshipResource {
     /**
      * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
      */
-    @RequestMapping(value = "/rest/users/{username}",
+    @RequestMapping(value = "/rest/users/{email}",
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriend(@PathVariable("username") String email) {
+    public UserDTO updateFriend(@PathVariable("email") String email) {
         UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
         if(!toReturn.isFriend()) {
             friendshipService.followUser(toReturn.getUsername());
