@@ -9,6 +9,7 @@ import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import fr.ippon.tatami.repository.UserRepository;
@@ -37,18 +38,21 @@ public class FriendshipResource {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     @RequestMapping(value = "/rest/users/{username}/friends",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFriends(@PathVariable String username, HttpServletResponse response) {
-        User user = userRepository.findOneByLogin(username).get();
+    public Collection<UserDTO> getFriends(@PathVariable String email, HttpServletResponse response) {
+        User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        Collection<User> friends = friendshipService.getFriendsForUser(username);
+        Collection<User> friends = friendshipService.getFriendsForUser(user.getUsername());
 
         return userService.buildUserDTOList(friends);
     }
@@ -58,13 +62,13 @@ public class FriendshipResource {
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFollowers(@PathVariable String username, HttpServletResponse response) {
-        User user = userRepository.findOneByLogin(username).get();
+    public Collection<UserDTO> getFollowers(@PathVariable String email, HttpServletResponse response) {
+        User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        Collection<User> friends = friendshipService.getFollowersForUser(username);
+        Collection<User> friends = friendshipService.getFollowersForUser(user.getUsername());
 
         return userService.buildUserDTOList(friends);
     }
@@ -76,14 +80,14 @@ public class FriendshipResource {
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriend(@PathVariable("username") String username) {
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByLogin(username).get());
+    public UserDTO updateFriend(@PathVariable("username") String email) {
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
         if(!toReturn.isFriend()) {
-            friendshipService.followUser(username);
+            friendshipService.followUser(toReturn.getUsername());
             System.out.println("Following user");
         }
         else {
-            friendshipService.unfollowUser(username);
+            friendshipService.unfollowUser(toReturn.getUsername());
             System.out.println("Unfollowing user");
         }
         return toReturn;
