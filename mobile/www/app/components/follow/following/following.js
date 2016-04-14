@@ -35,5 +35,6 @@
     function run(TatamiState) {
         TatamiState.addProfileState('following', 'follow');
         TatamiState.addConversationState('following', 'follow');
+        TatamiState.addTagState('following', 'follow');
     }
 })();

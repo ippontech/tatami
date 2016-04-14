@@ -35,5 +35,6 @@
     function run(TatamiState) {
         TatamiState.addProfileState('favorites', 'home');
         TatamiState.addConversationState('favorites', 'home');
+        TatamiState.addTagState('favorites', 'home');
     }
 })();

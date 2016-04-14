@@ -36,6 +36,7 @@
     function run(TatamiState) {
         TatamiState.addProfileState('company', 'home');
         TatamiState.addConversationState('company', 'home');
+        TatamiState.addTagState('company', 'home');
     }
 
 })();

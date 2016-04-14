@@ -35,5 +35,6 @@
     function run(TatamiState) {
         TatamiState.addProfileState('suggested', 'follow');
         TatamiState.addConversationState('suggested', 'follow');
+        TatamiState.addTagState('suggested', 'follow');
     }
 })();

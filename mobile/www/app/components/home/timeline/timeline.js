@@ -36,6 +36,7 @@
     function run(TatamiState) {
         TatamiState.addProfileState('timeline', 'home');
         TatamiState.addConversationState('timeline', 'home');
+        TatamiState.addTagState('timeline', 'home');
     }
 
 })();
