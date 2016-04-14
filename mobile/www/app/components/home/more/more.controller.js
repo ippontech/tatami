@@ -11,7 +11,7 @@
         vm.logout = logout;
         vm.goToCompanyTimeline = goToCompanyTimeline;
 
-        vm.language = 'en';
+        vm.language = $localStorage.get('language');
 
         vm.languages = [
             {
@@ -28,11 +28,13 @@
 
         function updateLanguage(language) {
             $translate.use(language);
+            $localStorage.set('language', language);
         }
 
 
         function logout() {
             $localStorage.clear();
+            $localStorage.set('language', vm.language);
             $ionicHistory.clearCache();
             $state.go('login');
         }
