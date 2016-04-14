@@ -44,10 +44,10 @@
                     <h4 class="panel-title text-center" translate="login.google.title"></h4>
                 </div>
                 <div class="panel-body">
-                    <form form="submit" action="/tatami/j_spring_pac4j_security_check" method="post" accept-charset="utf-8">
+                    <form class="form" ng-submit="googleLogin()" method="POST" accept-charset="utf-8">
                         <fieldset>
                             <div class="form-group">
-                                <button type="submit" id="proceed_google" class="btn btn-primary btn-block" translate="login.google.login"></button>
+                                <button type="submit" id="proceed_google" class="btn btn-primary btn-block" formmethod="POST" translate="login.google.login"></button>
                             </div>
                         </fieldset>
                     </form>

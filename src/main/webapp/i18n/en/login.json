@@ -6,7 +6,7 @@
         "title": "Login",
         "google": {
             "title": "Google Apps Login",
-            "login": "Login usin Google Apps",
+            "login": "Login using Google Apps",
             "tos": "Terms of Service",
             "line1": "This feature is for Google Apps for Work users, who have their work domain name managed by Google Apps.",
             "line2": "Whether or not you already have a Tatami account, you can sign in with your Google Apps account.",

@@ -6,7 +6,7 @@ tatamiJHipsterApp
             login: function(credentials) {
                 var data = "username=" +  encodeURIComponent(credentials.username) + "&password="
                     + encodeURIComponent(credentials.password);
-                return $http.post('api/authenticate', data, {
+                return $http.post('tatami/authenticate', data, {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         "Accept": "application/json"
