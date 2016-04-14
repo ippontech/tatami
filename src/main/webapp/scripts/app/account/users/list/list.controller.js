@@ -1,11 +1,14 @@
 tatamiJHipsterApp
-    .controller('UsersListController', ['$scope','usersList' function($scope, usersList) {
-    $scope.usersList = usersList;
+    .controller('UsersListController', ['$scope','UserService', function($scope, UserService) {
     $scope.followUser = function(user) {
-        UserService.follow({ username: user.username }, { friend: !user.friend, friendShip: true },
-            function() {
-                $scope.$state.reload();
-            }
-        );
+
+        $scope.user = user;
+        console.log(user);
+        $scope.user.friend = UserService.follow(
+            { username: user.username },
+            { friend: !$scope.user.friend, friendShip: $scope.user.friend }
+        ).friend;
+
     };
+
 }]);

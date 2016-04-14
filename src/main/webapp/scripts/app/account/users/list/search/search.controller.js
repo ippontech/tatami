@@ -1,6 +1,5 @@
 tatamiJHipsterApp
     .controller('UsersSearchController', ['$scope', 'SearchService', function($scope, SearchService) {
-
     $scope.search = {};
     $scope.search = function() {
         if($scope.search.term.length > 0) {
