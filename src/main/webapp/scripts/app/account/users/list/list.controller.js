@@ -5,7 +5,7 @@ tatamiJHipsterApp
         $scope.user = user;
         console.log(user);
         $scope.user.friend = UserService.follow(
-            { username: user.username },
+            { email: user.email },
             { friend: !$scope.user.friend, friendShip: $scope.user.friend }
         ).friend;
 
