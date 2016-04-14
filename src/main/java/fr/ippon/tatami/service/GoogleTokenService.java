@@ -143,7 +143,7 @@ public class GoogleTokenService {
         String lastName = user.getName().getFamilyName();
 
         User createdUser = new User();
-
+        
         createdUser.setUsername(email.split("@")[0]);
         createdUser.setId(UUID.randomUUID().toString());
         createdUser.setEmail(email);
