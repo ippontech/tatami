@@ -3,6 +3,8 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.MailDigestRepository;
+import fr.ippon.tatami.repository.FriendRepository;
+import fr.ippon.tatami.repository.FollowerRepository;
 import fr.ippon.tatami.repository.RssUidRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
@@ -38,6 +40,12 @@ public class UserService {
 
     @Inject
     private PasswordEncoder passwordEncoder;
+
+    @Inject
+    private FriendRepository friendRepository;
+
+    @Inject
+    private FollowerRepository followerRepository;
 
     @Inject
     private UserRepository userRepository;
@@ -341,16 +349,16 @@ public class UserService {
 
     public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-//        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-//        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
         for (User user : users) {
             UserDTO userDTO = getUserDTOFromUser(user);
             userDTO.setYou(user.equals(currentUser));
-//            if (!userDTO.isYou()) {
-//                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
-//                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
-//            }
+            if (!userDTO.isYou()) {
+                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+            }
             userDTOs.add(userDTO);
         }
         return userDTOs;
@@ -360,12 +368,12 @@ public class UserService {
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         UserDTO userDTO = getUserDTOFromUser(user);
         userDTO.setYou(user.equals(currentUser));
-//        if (!userDTO.isYou()) {
-//            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-//            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
-//            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
-//            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
-//        }
+        if (!userDTO.isYou()) {
+            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
+            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
+            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+        }
         return userDTO;
     }
 

@@ -1,16 +1,14 @@
 <div>
-    <form class="row-fluid littleMargeBot">
-        <input ng-show="$state.current.name === 'account.users.search'" ng-model="current.searchString" ng-trim="false" ng-change="search()" id="block_filter" type="text" class="search-query col-span-12" name="result_filter" autocomplete="off" placeholder="{{ 'account.users.search' | translate }}">
-    </form>
     <div ng-repeat="user in usersList">
         <div class="useritem">
             <div class="pull-left background-image-fffix">
                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
             </div>
             <h4>
-        <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
-            <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-        </span>
+        <!--<span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">-->
+            <span ng-if="!user.you" ng-click="followUser(user, $index)">
+                <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+            </span>
         <span ng-show="!user.activated">
             <span ng-class="!user.activated ? 'badge hidden-phone progress-bar-danger' : ''" class="glyphicon glyphicon-off">
                 {{ 'account.users.deactivated' | translate }}

@@ -66,6 +66,10 @@ public class UserDTO {
 
     private boolean you;
 
+    private boolean isFriend = false;
+
+    private boolean isFollower = false;
+
     public UserDTO() {
     }
 
@@ -252,6 +256,22 @@ public class UserDTO {
 
     public void setYou(boolean you) {
         this.you = you;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
+    }
+
+    public boolean isFollower() {
+        return isFollower;
+    }
+
+    public void setFollower(boolean follower) {
+        isFollower = follower;
     }
 
     @Override
