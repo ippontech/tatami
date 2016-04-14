@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.config.JHipsterProperties;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
@@ -66,6 +67,9 @@ public class UserResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private DomainRepository domainRepository;
 
     @Inject
     private UserSearchRepository userSearchRepository;
@@ -170,7 +174,14 @@ public class UserResource {
     @Timed
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers()
         throws URISyntaxException {
-        List<User> users = userRepository.findAll();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String domain = currentUser.getDomain();
+        List<String> userList = domainRepository.getEmailsInDomain(domain);
+        List<User> users = new ArrayList<User>();
+        for(String userItem : userList) {
+            users.add(userRepository.findOneByEmail(userItem).get());
+        }
+        //List<User> users = userRepository.findAll();
         List<ManagedUserDTO> managedUserDTOs = users.stream()
             .map(ManagedUserDTO::new)
             .collect(Collectors.toList());
