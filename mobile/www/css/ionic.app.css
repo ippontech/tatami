@@ -10320,3 +10320,12 @@ a.button .icon:before, a.button.icon:before, a.button.icon-left:before, a.button
 .link-span {
   cursor: pointer;
   color: #387ef5; }
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  display: block; }
+
+p ul {
+  list-style-type: disc !important;
+  list-style-position: inside !important; }
