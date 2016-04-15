@@ -13,5 +13,9 @@
     "angular-translate-interpolation-messageformat": "~2.11.0",
     "angular-translate-loader-partial": "~2.11.0",
     "messageformat": "~0.3.1"
+  },
+  "resolutions": {
+    "angular-sanitize": "~1.5.3",
+    "angular-animate": "~1.5.3"
   }
 }
