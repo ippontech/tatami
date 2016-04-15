@@ -3,21 +3,19 @@
         <button class="button button-clear button-small icon ion-close-round" style="opacity:0.4;" ng-click="vm.close()">
         </button>
     </ion-nav-buttons>
-    <ion-content padding="true" class="has-subfooter">
-        <div>
-            <form name="newPost" novalidate="">
-                <div class="list">
-                    <label class="item item-input">
-                        <textarea type="text"
-                                  name="msg"
-                                  ng-model="vm.status.content"
-                                  rows="15"
-                                  placeholder="{{ 'post.message' | translate }}"
-                                  ng-required="true"></textarea>
-                    </label>
-                </div>
-            </form>
-        </div>
+    <ion-content class="has-subfooter">
+        <form name="newPost" novalidate="">
+            <div class="list">
+                <label class="item item-input">
+                    <textarea type="text"
+                              name="msg"
+                              ng-model="vm.status.content"
+                              rows="15"
+                              placeholder="{{ 'post.message' | translate }}"
+                              ng-required="true"></textarea>
+                </label>
+            </div>
+        </form>
         <span ng-repeat="image in vm.images track by $index">
             <div class="list card">
                 <div class="item item-image">
