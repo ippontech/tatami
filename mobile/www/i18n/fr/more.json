@@ -1,12 +1,12 @@
 {
     "more": {
-        "title": "More Options",
-        "company": "Company Timeline",
+        "title": "Plus d'options",
+        "company": "Timeline Entreprise",
         "logout": "Déconnexion",
         "language": {
-            "change": "Language",
+            "change": "Langue",
             "english": "English",
-            "french": "French"
+            "french": "Français"
         }
     }
 

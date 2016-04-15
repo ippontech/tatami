@@ -1,9 +1,9 @@
 {
     "user": {
         "profile": {
-            "title": "Profile"
+            "title": "Profil"
         },
-        "follow": "Follow",
-        "unfollow": "Unfollow"
+        "follow": "S'abonner",
+        "unfollow": "Se désabonner"
     }
 }

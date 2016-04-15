@@ -1,10 +1,10 @@
 {
     "tab": {
-        "follower": "Followers",
-        "following": "Following",
+        "follower": "Abonnés",
+        "following": "Abonnement",
         "suggested": {
-            "title": "Suggested",
-            "who": "Who to Follow"
+            "title": "Recommandé",
+            "who": "Qui Suivre"
         }
     }
 }
