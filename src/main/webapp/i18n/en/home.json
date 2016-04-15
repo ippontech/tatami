@@ -4,6 +4,22 @@
         "timeline": "Timeline",
         "mentions": "Mentions",
         "favorites": "Favorites",
+            "profile": {
+                "statuses": "Statuses",
+                "following": "Following",
+                "followers": "Followers",
+                "follow": "Follow",
+                "unfollow": "Unfollow",
+                "sidebar": {
+                    "information": "Information",
+                    "firstName": "First Name",
+                    "lastName": "Last Name",
+                    "jobTitle": "Job Title",
+                    "email": "Email",
+                    "phoneNumber": "Phone Number",
+                    "trends": "Trends"
+                }
+            },
             "form": {
                 "cancel": "Cancel",
                 "presentation": "Launch presentation"

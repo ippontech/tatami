@@ -10,6 +10,7 @@ import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
@@ -102,6 +103,17 @@ public class TimelineResource {
                                                    @RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String start,
                                                    @RequestParam(required = false) String finish) {
+        /*
+        In cases of posts where users are mentioned, we pass in a username instead of an email address when
+        a user clicks the link. In these cases, we should append the current user's domain to the username
+        before we proceed.
+
+        See marked.js
+        */
+        if (!DomainUtil.isValidEmailAddress(email)){
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            email += "@" + currentUser.getDomain();
+        }
 
         if (count == null || count == 0) {
             count = 20; //Default value

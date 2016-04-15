@@ -2,10 +2,10 @@
 'use strict';
 
     angular.module('tatamiJHipsterApp')
-        .config(favoritesConfig);
+        .config(statusConfig);
 
-    favoritesConfig.$inject = ['$stateProvider'];
-    function favoritesConfig($stateProvider) {
+    statusConfig.$inject = ['$stateProvider'];
+    function statusConfig($stateProvider) {
         $stateProvider
         .state('status', {
             parent: 'sidebarHome',

@@ -3,6 +3,9 @@ package fr.ippon.tatami.service.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 /**
  * Utility class for managing the user domain.
  *
@@ -31,5 +34,16 @@ public class DomainUtil {
             return null;
         }
         return email.substring(0, email.indexOf("@"));
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
 }

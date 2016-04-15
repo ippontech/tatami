@@ -187,7 +187,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public Collection<TagDTO> getTags(@RequestParam(required = false, value = "popular") String popular,
-                                   @RequestParam(required = false, value = "user") String username,
+                                   @RequestParam(required = false, value = "user") String email,
                                    @RequestParam(required = false, value = "search") String search) {
         Collection<TagDTO> tags = new ArrayList<TagDTO>();
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
@@ -198,7 +198,19 @@ public class TagResource {
         if (popular != null) {
             List<TrendDTO> trends;
             User user = null;
-            if (username != null) user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            if (email != null) {
+                /*
+                In cases of posts where users are mentioned, we pass in a username instead of an email address when
+                a user clicks the link. In these cases, we should append the current user's domain to the username
+                before we proceed.
+
+                See marked.js
+                */
+                if (!DomainUtil.isValidEmailAddress(email)){
+                    email += "@" + currentUser.getDomain();
+                }
+                user = userRepository.findOneByEmail(email).get();
+            }
 
             userRepository
                 .findOneByEmail(userDetailsService.getUserEmail());

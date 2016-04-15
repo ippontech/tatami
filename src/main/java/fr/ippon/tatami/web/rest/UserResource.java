@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -191,11 +193,22 @@ public class UserResource {
     /**
      * GET  /users/:username -> get User with the corresponding "email"
      */
-    @RequestMapping(value = "/rest/users/{email:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/rest/users/{email}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String email) {
+        /*
+        In cases of posts where users are mentioned, we pass in a username instead of an email address when
+        a user clicks the link. In these cases, we should append the current user's domain to the username
+        before we proceed.
+
+        See marked.js
+        */
+        if (!DomainUtil.isValidEmailAddress(email)){
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            email += "@" + currentUser.getDomain();
+        }
         log.debug("rest request to get User : {}", email);
         return userService.getUserWithAuthoritiesByEmail(email)
                 .map(ManagedUserDTO::new)
