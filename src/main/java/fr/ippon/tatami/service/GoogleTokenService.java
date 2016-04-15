@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
 
@@ -114,24 +115,24 @@ public class GoogleTokenService {
     }
 
     private UserDetails getUserDetails(Person user) throws UsernameNotFoundException {
-        String login = user.getEmails().get(0).getValue();
+        String email = user.getEmails().get(0).getValue();
 
-        if(login == null) {
+        if(email == null) {
             String msg = "OAuth response did not contain the user email";
             log.error(msg);
             throw new UsernameNotFoundException(msg);
         }
 
-        if(!login.contains("@")) {
-            log.debug("User login {} from OAuth response is incorrect.", login);
+        if(!email.contains("@")) {
+            log.debug("User email {} from OAuth response is incorrect.", email);
             throw new UsernameNotFoundException("OAuth response did not contains a valid user email");
         }
 
         UserDetails userDetails;
         try {
-            userDetails = DetailsService.loadUserByUsername(login);
+            userDetails = DetailsService.loadUserByUsername(email);
         } catch (UsernameNotFoundException e) {
-            log.info("User with login : \"{}\" doesn't exist yet in Tatami database - creating it...", login);
+            log.info("User with email : \"{}\" doesn't exist yet in Tatami database - creating it...", email);
             userDetails = getNewlyCreatedUserDetails(user);
         }
         return userDetails;
@@ -143,7 +144,7 @@ public class GoogleTokenService {
         String lastName = user.getName().getFamilyName();
 
         User createdUser = new User();
-        
+
         createdUser.setUsername(email.split("@")[0]);
         createdUser.setId(UUID.randomUUID().toString());
         createdUser.setEmail(email);

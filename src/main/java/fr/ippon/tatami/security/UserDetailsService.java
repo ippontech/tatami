@@ -39,6 +39,12 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", username);
         String lowercaseUsername = username.toLowerCase();
         Optional<User> userFromDatabase = userRepository.findOneByEmail(lowercaseUsername);
+
+        if( userFromDatabase.equals(Optional.empty()))
+        {
+            throw new UsernameNotFoundException("User "+username+" not in the database.");
+        }
+
         return userFromDatabase.map(user -> {
             if (!user.getActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseUsername + " was not activated");
