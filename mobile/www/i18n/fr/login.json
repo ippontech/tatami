@@ -2,10 +2,10 @@
     "login": {
         "title": "Login",
         "email": "E-mail",
-        "password": "Password",
+        "password": "Mot de passe",
         "google": "Google Login",
-        "success": "Logged In!",
-        "failed": "Failed to log in!",
-        "progress": "Login in progress..."
+        "success": "Connexion effectuée !",
+        "failed": "Echec de connexion",
+        "progress": "Connexion en cours..."
     }
 }
