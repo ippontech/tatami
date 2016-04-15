@@ -7,13 +7,13 @@
         </div>
         <div class="well well-sm little-padding">
             <div>
-                <a class="h3" ui-sref="home.profile.statuses({ username: profile.username })">
+                <a class="h3" ui-sref="home.profile.statuses({ email: profile.email })">
                     <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
                 </a>
             </div>
             <div>
-                <a class="h5 text-muted" ui-sref="home.profile.statuses({ username: profile.username })">
-                    @{{ profile.login }}
+                <a class="h5 text-muted" ui-sref="home.profile.statuses({ email: profile.email })">
+                    @{{ profile.username }}
                 </a>
             </div>
         </div>
@@ -95,16 +95,16 @@
                     <span ng-click="followUser(suggestion, $index)" class="pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
                         <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="home.profile.statuses({ email: suggestion.email })">
                         <span class='pull-left background-image-fffix'>
                             <img class="img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }">
                         </span>
                     </a>&nbsp;
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="home.profile.statuses({ email: suggestion.email })">
                         <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
                     </a>
                     <br>&nbsp;
-                    <a ui-sref="home.profile.statuses({ username: suggestion.username })">
+                    <a ui-sref="home.profile.statuses({ email: suggestion.email })">
                         <small>@{{ suggestion.username }}</small>
                     </a>
                 </h6>

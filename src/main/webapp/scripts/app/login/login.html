@@ -40,13 +40,14 @@
         </div>
 
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h1 class="panel-title text-center" translate="login.title"></h1>
-                    <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
-                        <strong>Failed to sign in!</strong> Please check your credentials and try again.
-                    </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title text-center" translate="login.title"></h1>
+                <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
+                    <strong>Failed to sign in!</strong> Please check your credentials and try again.
                 </div>
+            </div>
                 <div class="panel-body">
                     <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
                         <fieldset>

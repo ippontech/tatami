@@ -143,7 +143,7 @@
                     </a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-if="$state.includes('sidebarHome')">
+            <ul class="nav navbar-nav navbar-right" ng-if="$state.includes('sidebarHome') || $state.includes('admin')">
 
                 <li tour-step
                     order="0"
@@ -205,14 +205,14 @@
                                 <span class="glyphicon glyphicon-th-large"></span>
                                 <span translate="global.account.groups.title"></span>
                             </a>
-                            <a ui-sref="account.tags">
+                            <a ui-sref="tagsFollowing">
                                 <span class="glyphicon glyphicon-tags"></span>
                                 <span translate="global.account.tags.title"></span>
                             </a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a ui-sref="global.account.topPosters">
+                            <a ui-sref="account.topPosters">
                                 <span class="glyphicon glyphicon-signal"></span>
                                 <span translate="global.account.topPosters.title"></span>
                             </a>
@@ -226,6 +226,59 @@
                             <a ng-click="logout()">
                                 <span class="glyphicon glyphicon-off"></span>
                                 <span translate="global.topMenu.account.logout"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li ng-if="$state.isAdmin" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                    <span>
+                        <span class="glyphicon glyphicon-tower"></span>
+                        <span translate="global.menu.admin.main" class="hidden-tablet"></span>
+                        <b class="caret"></b>
+                    </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a ui-sref="user-management">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span translate="global.menu.admin.user-management">User management</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="metrics">
+                                <span class="glyphicon glyphicon-dashboard"></span>
+                                <span translate="global.menu.admin.metrics">Metrics</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="health">
+                                <span class="glyphicon glyphicon-heart"></span>
+                                <span translate="global.menu.admin.health">Health</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="configuration">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                                <span translate="global.menu.admin.configuration">Configuration</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="audits">
+                                <span class="glyphicon glyphicon-bell"></span>
+                                <span translate="global.menu.admin.audits">Audits</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="logs">
+                                <span class="glyphicon glyphicon-tasks"></span>
+                                <span translate="global.menu.admin.logs">Logs</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="docs">
+                                <span class="glyphicon glyphicon-book"></span>
+                                <span translate="global.menu.admin.apidocs">API</span>
                             </a>
                         </li>
                     </ul>

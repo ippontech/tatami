@@ -27,17 +27,14 @@ public class User implements Serializable {
     @PartitionKey
     private String id;
 
-    @NotNull
-    @Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
-    @Size(min = 1, max = 50)
-    private String login;
-
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
     private String password;
 
-    @Size(max=50)
+    @NotNull
+    @Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
+    @Size(min = 1, max=50)
     private String username;
 
     @Column(name = "avatar")
@@ -49,6 +46,7 @@ public class User implements Serializable {
     @Size(max = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(max = 100)
     private String email;
@@ -109,14 +107,6 @@ public class User implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -291,7 +281,7 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) {
+        if (!username.equals(user.username)) {
             return false;
         }
 
@@ -300,14 +290,13 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return login.hashCode();
+        return username.hashCode();
     }
 
     @Override
     public String toString() {
         return "User{" +
-            "login='" + login + '\'' +
-            ", username='" + username + '\'' +
+            "username='" + username + '\'' +
             ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +

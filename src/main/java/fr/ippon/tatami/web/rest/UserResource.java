@@ -3,17 +3,19 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.config.JHipsterProperties;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
-import fr.ippon.tatami.web.rest.util.DomainUtil;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +69,9 @@ public class UserResource {
     private UserRepository userRepository;
 
     @Inject
+    private DomainRepository domainRepository;
+
+    @Inject
     private UserSearchRepository userSearchRepository;
 
     @Inject
@@ -81,10 +86,13 @@ public class UserResource {
     @Inject
     private UserService userService;
 
+    @Inject
+    private UserDetailsService userDetailsService;
+
     /**
      * POST  /users -> Creates a new user.
      * <p>
-     * Creates a new user if the login and email are not already used, and sends an
+     * Creates a new user if the username and email are not already used, and sends an
      * mail with an activation link.
      * The user needs to be activated on creation.
      * </p>
@@ -96,7 +104,7 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("rest request to save User : {}", managedUserDTO);
-        if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
+        if (userRepository.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
                 .body(null);
@@ -113,8 +121,8 @@ public class UserResource {
             request.getServerPort() +              // "80"
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
-            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getLogin()))
+            return ResponseEntity.created(new URI("/api/users/" + newUser.getUsername()))
+                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getUsername()))
                 .body(newUser);
         }
     }
@@ -133,14 +141,14 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin());
+        existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
-                user.setLogin(managedUserDTO.getLogin());
+                user.setUsername(managedUserDTO.getEmail());
                 user.setFirstName(managedUserDTO.getFirstName());
                 user.setLastName(managedUserDTO.getLastName());
                 user.setEmail(managedUserDTO.getEmail());
@@ -149,7 +157,7 @@ public class UserResource {
                 user.setAuthorities(managedUserDTO.getAuthorities());
                 userRepository.save(user);
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getLogin()))
+                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getEmail()))
                     .body(new ManagedUserDTO(userRepository
                         .findOne(managedUserDTO.getId())));
             })
@@ -166,7 +174,14 @@ public class UserResource {
     @Timed
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers()
         throws URISyntaxException {
-        List<User> users = userRepository.findAll();
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String domain = currentUser.getDomain();
+        List<String> userList = domainRepository.getEmailsInDomain(domain);
+        List<User> users = new ArrayList<User>();
+        for(String userItem : userList) {
+            users.add(userRepository.findOneByEmail(userItem).get());
+        }
+        //List<User> users = userRepository.findAll();
         List<ManagedUserDTO> managedUserDTOs = users.stream()
             .map(ManagedUserDTO::new)
             .collect(Collectors.toList());
@@ -174,31 +189,31 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/:login -> get the "login" user.
+     * GET  /users/:username -> get User with the corresponding "email"
      */
-    @RequestMapping(value = "/rest/users/{login:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/rest/users/{email:[_'.@a-z0-9-]+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
-        log.debug("rest request to get User : {}", login);
-        return userService.getUserWithAuthoritiesByLogin(login)
+    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String email) {
+        log.debug("rest request to get User : {}", email);
+        return userService.getUserWithAuthoritiesByEmail(email)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**
-     * DELETE  USER :login -> delete the "login" User.
+     * DELETE  USER :username -> delete User with the corresponding "email".
      */
-    @RequestMapping(value = "/rest/users/{login}",
+    @RequestMapping(value = "/rest/users/{email:[_'.@a-z0-9-]+}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        log.debug("rest request to delete User: {}", login);
-        userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        log.debug("rest request to delete User: {}", email);
+        userService.deleteUserInformation(email);
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", email)).build();
     }
 
     /**
@@ -212,7 +227,7 @@ public class UserResource {
 //    public UserDTO getUser(@PathVariable("username") String username) {
 //        this.log.debug("rest request to get Profile : {}", username);
 ////        User user = userService.getUserByUsername(username);
-//        User user = userRepository.findOneByLogin(username).get();
+//        User user = userRepository.findOneByUsername(username).get();
 //
 //        return new UserDTO(user);
 //
@@ -228,8 +243,8 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        String login = SecurityUtils.getCurrentUserLogin();
-        return suggestionService.suggestUsers(login);
+        String email = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
+        return suggestionService.suggestUsers(email);
     }
 
     /**
@@ -243,14 +258,14 @@ public class UserResource {
     public Collection<UserDTO> search(@PathVariable String query) {
         String prefix = query.toLowerCase();
 
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
-        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        Collection<String> emails = searchService.searchUserByPrefix(domain, prefix);
         Collection<User> users;
 
         if (query != null && !query.equals("")) {
             this.log.debug("REST request to find users starting with : {}", prefix);
-            users = userService.getUsersByLogin(logins);
+            users = userService.getUsersByEmail(emails);
         } else {
             users = new ArrayList<User>();
         }

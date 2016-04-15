@@ -7,7 +7,7 @@ tatamiJHipsterApp
                 parent: 'site',
                 data: {
                     authorities: [],
-                    pageTitle: 'login.title'
+                    pageTitle: 'username.title'
                 },
 
                 resolve: {

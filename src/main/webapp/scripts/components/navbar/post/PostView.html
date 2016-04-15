@@ -54,13 +54,13 @@
             <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
                 <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
-                        <a ui-sref="profile.statuses({ username: currentStatus.username })">
+                        <a ui-sref="profile.statuses({ email: currentStatus.email })">
                             <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
                         </a>
                     </div>
                     <div class="status-content-container">
                         <h5 class="statusitem-name">
-                            <a ui-sref="profile.statuses({ username: currentStatus.username })">
+                            <a ui-sref="profile.statuses({ email: currentStatus.email })">
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
                                 <small>@{{ currentStatus.username }}</small>
                             </a>
@@ -126,7 +126,7 @@
             </div>
                 <div ng-if="current.geoLoc">
                     <!-- Was width:250px, changed it to 500 -->
-                    <div id="simpleMap" style="height:250px; width:500px"></div>
+                    <div id="simpleMap" style="height:250px; width:100%;"></div>
                     <div class="geolocMap">
                     </div>
                 </div>

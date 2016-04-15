@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <p th:text="#{email.activation.greeting(${user.login})}">
+        <p th:text="#{email.activation.greeting(${user.username})}">
             Dear
         </p>
         <p th:text="#{email.activation.text1}">
@@ -13,7 +13,7 @@
         </p>
         <p>
             <a th:href="@{|${baseUrl}/#/login/activate?key=${user.activationKey}|}"
-               th:text="|${user.login}|">Activation Link</a>
+               th:text="|${user.username}|">Activation Link</a>
         </p>
         <p>
             <span th:text="#{email.activation.text2}">Regards, </span>

@@ -1,0 +1,25 @@
+# Start a Cassandra cluster with replication factor = 3 for all tables
+# *use for production*
+version: '2'
+services:
+    tatami-cassandra:
+        container_name: tatami-cassandra
+        build:
+            context: .
+            dockerfile: cassandra/Cassandra-Cluster.Dockerfile
+        environment:
+            - CASSANDRA_CONTACT_POINT=tatami-cassandra
+        # volumes:
+        #     - ~/volumes/jhipster/tatami/cassandra/:/var/lib/cassandra/data
+        ports:
+            - 7000:7000
+            - 7001:7001
+            - 7199:7199
+            - 9042:9042
+            - 9160:9160
+    tatami-cassandra-node:
+        image: cassandra:2.2.3
+        links:
+            - tatami-cassandra:seed
+        environment:
+            - CASSANDRA_SEEDS=seed

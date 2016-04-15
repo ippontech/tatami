@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.UserStatusStat;
 import fr.ippon.tatami.repository.DaylineRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class StatsService {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private UserDetailsService userDetailsService;
 
     static final SimpleDateFormat DAYLINE_KEY_FORMAT = new SimpleDateFormat("ddMMyyyy");
 
@@ -44,8 +48,8 @@ public class StatsService {
         if (date == null) {
             date = new Date();
         }
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         String day = DAYLINE_KEY_FORMAT.format(date);
         return daylineRepository.getDayline(domain, day);
     }

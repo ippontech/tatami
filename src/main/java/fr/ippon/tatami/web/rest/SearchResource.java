@@ -82,7 +82,7 @@ public class SearchResource {
 
         log.debug("REST request to search status containing these words ({}).", query);
         final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         List<String> line;
         if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
@@ -106,8 +106,8 @@ public class SearchResource {
     public Collection<Tag> searchRecentTags(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getLogin());
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
         Collection<String> trends = trendService.searchTags(domain, prefix, 5);
         Collection<Tag> tags = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public class SearchResource {
     public Collection<Group> searchGroups(@RequestParam("q") String query) {
         String prefix = query.toLowerCase();
         final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         Collection<Group> groups;
         if (query != null && !query.equals("")) {
             this.log.debug("REST request to find groups starting with : {}", prefix);
@@ -168,13 +168,13 @@ public class SearchResource {
         String prefix = query.toLowerCase();
 
         final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getEmail());
-        Collection<String> logins = searchService.searchUserByPrefix(domain, prefix);
+        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        Collection<String> emails = searchService.searchUserByPrefix(domain, prefix);
         Collection<User> users;
 
         if (query != null && !query.equals("")) {
             this.log.debug("REST request to find users starting with : {}", prefix);
-            users = userService.getUsersByLogin(logins);
+            users = userService.getUsersByEmail(emails);
         } else {
             users = new ArrayList<>();
         }

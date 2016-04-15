@@ -1,10 +1,12 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('UserManagementDetailController', function ($scope, $stateParams, User) {
+    .controller('UserManagementDetailController', function ($scope, $stateParams, UserService) {
         $scope.user = {};
         $scope.load = function (login) {
-            User.get({login: login}, function(result) {
+
+            UserService.get({email: login}, function(result) {
+
                 $scope.user = result;
             });
         };

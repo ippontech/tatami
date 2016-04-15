@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('tatamiJHipsterApp')
-    .controller('LoginController', function ($rootScope, $window, $scope, $state, $http, $timeout, $location, Auth, localStorageService, usSpinnerService) {
+tatamiJHipsterApp
+    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, $location, $window, Auth, Principal, localStorageService) {
         $scope.user = {};
         $scope.errors = {};
 
@@ -38,6 +38,7 @@ angular.module('tatamiJHipsterApp')
                 if ($rootScope.previousStateName === 'register') {
                     $state.go('home');
                 } else {
+                    $state.isAdmin = Principal.hasAnyAuthority(["ROLE_ADMIN"]);
                     $state.go('timeline');
                 }
             }).catch(function () {
@@ -59,8 +60,8 @@ angular.module('tatamiJHipsterApp')
                 };
             }
 
-    })
-    .directive('myLoadingSpinner', function() {
+    });
+    /*.directive('myLoadingSpinner', function() {
         return {
             restrict: 'A',
             replace: true,
@@ -97,4 +98,4 @@ angular.module('tatamiJHipsterApp')
                 target.appendChild(spinner.el);
             }
         };
-    });
+    });*/

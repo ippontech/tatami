@@ -4,7 +4,7 @@ angular.module('tatamiJHipsterApp')
         statuses = angular.fromJson(statuses);
 
         for(var i = 0; i < statuses.length; i++) {
-            statuses[i]['avatarURL'] = statuses[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+            statuses[i]['avatarURL'] = !statuses[i].avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
             if(statuses[i].geoLocalization) {
                 var latitude = statuses[i].geoLocalization.split(',')[0].trim();
                 var longitude = statuses[i].geoLocalization.split(',')[1].trim();
@@ -24,7 +24,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: function(status) {
                 status = angular.fromJson(status);
 
-                status.avatarURL = status.avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
+                status.avatarURL = !status.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
 
                 if(status.geoLocalization) {
                     var latitude = status.geoLocalization.split(',')[0].trim();
@@ -42,7 +42,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: responseTransform
         },
         'getUserTimeline': {
-            method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
+            method: 'GET', isArray: true, params: { email: '@email' }, url: '/tatami/rest/statuses/:email/timeline',
             transformResponse: responseTransform
         },
         'getDetails': {
@@ -51,7 +51,7 @@ angular.module('tatamiJHipsterApp')
                 details = angular.fromJson(details);
 
                 for(var i = 0; i < details.discussionStatuses.length; i++) {
-                    details.discussionStatuses[i]['avatarURL'] = details.discussionStatuses[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
+                    details.discussionStatuses[i]['avatarURL'] = !details.discussionStatuses[i].avatar.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
 
                     if(details.discussionStatuses[i].geoLocalization) {
                         var latitude = details.discussionStatuses[i].geoLocalization.split(',')[0].trim();
@@ -62,8 +62,8 @@ angular.module('tatamiJHipsterApp')
                     }
                 }
 
-                for(var i = 0; i < details.sharedByLogins.length; i++) {
-                    details.sharedByLogins[i]['avatarURL'] = details.sharedByLogins[i].avatar==='' ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByLogins[i].avatar + '/photo.jpg';
+                for(var i = 0; i < details.sharedByEmails.length; i++) {
+                    details.sharedByEmails[i]['avatarURL'] = !details.sharedByEmails[i].avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByEmails[i].avatar + '/photo.jpg';
                 }
 
                 return details;

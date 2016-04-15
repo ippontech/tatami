@@ -44,12 +44,6 @@ public class UserRepository {
 
     private PreparedStatement deleteByResetKeyStmt;
 
-    private PreparedStatement findOneByLoginStmt;
-
-    private PreparedStatement insertByLoginStmt;
-
-    private PreparedStatement deleteByLoginStmt;
-
     private PreparedStatement findOneByEmailStmt;
 
     private PreparedStatement insertByEmailStmt;
@@ -87,19 +81,6 @@ public class UserRepository {
         deleteByResetKeyStmt = session.prepare(
             "DELETE FROM user_by_reset_key " +
             "WHERE reset_key = :reset_key");
-
-        findOneByLoginStmt = session.prepare(
-            "SELECT id " +
-            "FROM user_by_login " +
-            "WHERE login = :login");
-
-        insertByLoginStmt = session.prepare(
-            "INSERT INTO user_by_login (login, id) " +
-                "VALUES (:login, :id)");
-
-        deleteByLoginStmt = session.prepare(
-            "DELETE FROM user_by_login " +
-                "WHERE login = :login");
 
         findOneByEmailStmt = session.prepare(
             "SELECT id " +
@@ -141,12 +122,6 @@ public class UserRepository {
         return findOneFromIndex(stmt);
     }
 
-    public Optional<User> findOneByLogin(String login) {
-        BoundStatement stmt = findOneByLoginStmt.bind();
-        stmt.setString("login", login);
-        return findOneFromIndex(stmt);
-    }
-
     public List<User> findAll() {
         return mapper.map(session.execute(findAllStmt.bind())).all();
     }
@@ -159,9 +134,6 @@ public class UserRepository {
             }
             if (!StringUtils.isEmpty(oldUser.getResetKey()) && !oldUser.getResetKey().equals(user.getResetKey())) {
                 session.execute(deleteByResetKeyStmt.bind().setString("reset_key", oldUser.getResetKey()));
-            }
-            if (!StringUtils.isEmpty(oldUser.getLogin()) && !oldUser.getLogin().equals(user.getLogin())) {
-                session.execute(deleteByLoginStmt.bind().setString("login", oldUser.getLogin()));
             }
             if (!StringUtils.isEmpty(oldUser.getEmail()) && !oldUser.getEmail().equals(user.getEmail())) {
                 session.execute(deleteByEmailStmt.bind().setString("email", oldUser.getEmail()));
@@ -179,9 +151,6 @@ public class UserRepository {
               .setString("reset_key", user.getResetKey())
               .setString("id", user.getId()));
         }
-        batch.add(insertByLoginStmt.bind()
-            .setString("login", user.getLogin())
-            .setString("id", user.getId()));
         batch.add(insertByEmailStmt.bind()
             .setString("email", user.getEmail())
             .setString("id", user.getId()));
@@ -198,7 +167,6 @@ public class UserRepository {
         if (!StringUtils.isEmpty(user.getResetKey())) {
             batch.add(deleteByResetKeyStmt.bind().setString("reset_key", user.getResetKey()));
         }
-        batch.add(deleteByLoginStmt.bind().setString("login", user.getLogin()));
         batch.add(deleteByEmailStmt.bind().setString("email", user.getEmail()));
         session.execute(batch);
     }

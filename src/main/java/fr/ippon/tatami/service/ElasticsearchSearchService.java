@@ -255,7 +255,7 @@ public class ElasticsearchSearchService implements SearchService {
     private final ElasticsearchMapper<User> userMapper = new ElasticsearchMapper<User>() {
         @Override
         public String id(User user) {
-            return user.getLogin();
+            return user.getEmail();
         }
 
         @Override
@@ -265,14 +265,14 @@ public class ElasticsearchSearchService implements SearchService {
 
         @Override
         public String prefixSearchSortField() {
-            return "username";
+            return "email";
         }
 
         @Override
         public XContentBuilder toJson(User user) throws IOException {
             return XContentFactory.jsonBuilder()
                 .startObject()
-                .field("login", user.getLogin())
+                .field("email", user.getEmail())
                 .field("domain", user.getDomain())
                 .field("username", user.getUsername())
                 .field("firstName", user.getFirstName())
