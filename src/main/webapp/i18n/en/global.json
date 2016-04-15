@@ -311,6 +311,8 @@
         "Size": "Field {{fieldName}} does not meet min/max size requirements!",
         "userexists": "Login name already used!",
         "emailexists": "E-mail is already in use!",
+        "domainbad": "The chosen domain does not match the current user.",
+        "deleteself": "You cannot delete your own account",
         "idexists": "A new {{entityName}} cannot already have an ID"
     },
     "footer": "This is your footer"
