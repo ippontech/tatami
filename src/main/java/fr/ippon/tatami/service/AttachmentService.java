@@ -71,7 +71,7 @@ public class AttachmentService {
         attachment.setThumbnail(computeThumbnail(attachment));
 
         attachmentRepository.createAttachment(attachment);
-        userAttachmentRepository.addAttachmentId(SecurityUtils.getCurrentUser().getUsername(),
+        userAttachmentRepository.addAttachmentId(userDetailsService.getUserEmail(),
                 attachment.getAttachmentId());
 
         // Refresh user data, to reduce the risk of errors
@@ -93,7 +93,7 @@ public class AttachmentService {
     public Collection<String> getAttachmentIdsForCurrentUser(int pagination, String finish) {
         Collection<String> attachmentIds =
                 userAttachmentRepository.
-                        findAttachmentIds(SecurityUtils.getCurrentUser().getUsername(), pagination,finish);
+                        findAttachmentIds(userDetailsService.getUserEmail(), pagination,finish);
 
         log.debug("Collection of attachments : {}", attachmentIds.size());
 
@@ -104,9 +104,9 @@ public class AttachmentService {
         log.debug("Removing attachment : {}", attachment);
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
 
-        for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getUsername())) {
+        for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getEmail())) {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
-                userAttachmentRepository.removeAttachmentId(currentUser.getUsername(), attachment.getAttachmentId());
+                userAttachmentRepository.removeAttachmentId(currentUser.getEmail(), attachment.getAttachmentId());
                 attachmentRepository.deleteAttachment(attachment);
                 // Refresh user data, to reduce the risk of errors
                 long newAttachmentsSize = currentUser.getAttachmentsSize() - attachment.getSize();

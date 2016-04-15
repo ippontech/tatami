@@ -19,7 +19,8 @@
 
     "form": {
         "save": "Save",
-        "fail": "Fail"
+        "fail": "Fail",
+        "deleted": "Your file has been deleted"
     },
 
     "preferences": {
