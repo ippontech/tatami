@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 angular.module('tatamiJHipsterApp')
     .controller('LoginController', function ($rootScope, $window, $scope, $state, $http, $timeout, $location, Auth, localStorageService, usSpinnerService) {
         $scope.user = {};
