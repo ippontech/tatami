@@ -30,6 +30,22 @@
                 "bulletPoint1": "All messages are public by default. They will be delivered to all users who follow you.",
                 "bulletPoint2": "When writing a message you should use #hashtags. This simply means adding a # at the beginning of important words that can be used to find your message.",
                 "bulletPoint3": "When mentioning or replying to other users you should add a @ at the beginning of their name. They will be notified that you are talking to them."
+            },
+            "timeline": {
+                "title": "Timeline",
+                "line1": "This is your timeline. It displays all messages",
+                "bulletPoint1": "mentioning you or sent privately to you",
+                "bulletPoint2": "sent by users you follow",
+                "bulletPoint3": "sent by yourself",
+                "bulletPoint4": "sent to group you are subscribed to",
+                "afterBP1": "If it's empty, don't worry, it will get updated as soon as you start following other users!",
+                "afterBP2": "When viewing a message, you can reply to it and mark it as favorite to find it easily later.",
+                "afterBP3": "If a message had already got some replies, you can see them all by clicking on details: this makes it easier to follow conversation on Tatami."
+            },
+            "whoToFollow": {
+                "line1": "This is a list of users who share common interests with you and who you could follow.",
+                "line2": "If you are a new user, this list is probably empty. Tatami needs some time to learn who you are in order to suggest relevant users.",
+                "line3": "And don't forget to use #hashtags in your messages. It makes everything easier!"
             }
 
         },
