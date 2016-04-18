@@ -89,7 +89,10 @@
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        var usedLanguage = window.localStorage['language'] || JSON.stringify(navigator.language.split('-')[0] || 'en');
+        var usedLanguage = window.localStorage['language'];
+        if(angular.equals({}, JSON.parse(usedLanguage))) {
+            usedLanguage = JSON.stringify(navigator.language.split('-')[0]) || 'en';
+        }
         window.localStorage['language'] = usedLanguage;
         usedLanguage = JSON.parse(usedLanguage);
 
