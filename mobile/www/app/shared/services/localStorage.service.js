@@ -9,7 +9,7 @@
         var service = {
             get: getFromLocalStorage,
             set: setFromLocalStorage,
-            clear: clearLocalStorage
+            signOut: clearToken
         };
 
         return service;
@@ -27,8 +27,8 @@
             $window.localStorage[key] = JSON.stringify(value);
         }
 
-        function clearLocalStorage() {
-            $window.localStorage.clear();
+        function clearToken() {
+            $window.localStorage.removeItem('token');
         }
 
         isLocalStorageUndefined.$inject = ['key'];
