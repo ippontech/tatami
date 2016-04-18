@@ -28,7 +28,7 @@
         vm.isDefaultEndpoint = isDefaultEndpoint;
         vm.useDefaultEndpoint = useDefaultEndpoint;
 
-        vm.language = $localStorage.get('language');
+        vm.language = window.localStorage.getItem('language');
 
         vm.languages = [
             {
@@ -45,13 +45,12 @@
 
         function updateLanguage(language) {
             $translate.use(language);
-            $localStorage.set('language', language);
+            window.localStorage.setItem('language', language);
         }
 
 
         function logout() {
-            $localStorage.clear();
-            $localStorage.set('language', vm.language);
+            $localStorage.signOut();
             $ionicHistory.clearCache();
             vm.attempted = false;
             $state.go('login');
