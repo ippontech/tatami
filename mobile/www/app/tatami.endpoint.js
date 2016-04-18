@@ -1,6 +1,7 @@
 (function() {
     'use strict';
 
+    var defaultEndpoint = { url: 'http://app.tatamisoft.com' };
     var endpoint = { url: 'http://app.tatamisoft.com' };
 
     angular.module('tatami')
@@ -9,7 +10,9 @@
     function tatamiEndpoint() {
         var service = {
             getEndpoint: getEndpoint,
-            setEndpoint: setEndpoint
+            setEndpoint: setEndpoint,
+            getDefault: getDefaultEndpoint,
+            reset: reset
         };
 
         return service;
@@ -21,6 +24,14 @@
         setEndpoint.$inject = ['updated'];
         function setEndpoint(updated) {
             endpoint.url = updated;
+        }
+
+        function getDefaultEndpoint() {
+            return defaultEndpoint;
+        }
+
+        function reset() {
+            endpoint = defaultEndpoint;
         }
     }
 })();
