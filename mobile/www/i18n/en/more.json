@@ -7,6 +7,16 @@
             "change": "Language",
             "english": "English",
             "french": "French"
+        },
+        "endpoint": {
+            "title": "Server",
+            "change": "Change Server",
+            "error": "Cannot reach server.",
+            "authenticate": {
+                "title": "Successfully changed endpoint",
+                "body": "Please reauthenticate with the new server."
+            },
+            "default": "Use default server"
         }
     }
 
