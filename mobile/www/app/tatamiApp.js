@@ -37,7 +37,7 @@
             if(isValidToken()) {
                 $state.go('timeline');
             } else {
-                $localStorage.clear();
+                $localStorage.signOut();
                 $ionicHistory.clearCache();
                 $state.go('login');
             }
@@ -89,12 +89,8 @@
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        var usedLanguage = window.localStorage['language'];
-        if(angular.equals({}, JSON.parse(usedLanguage))) {
-            usedLanguage = JSON.stringify(navigator.language.split('-')[0]) || 'en';
-        }
-        window.localStorage['language'] = usedLanguage;
-        usedLanguage = JSON.parse(usedLanguage);
+        var usedLanguage = window.localStorage.getItem('language') || navigator.language.split('-')[0] || 'en';
+        window.localStorage.setItem('language', usedLanguage);
 
         $translateProvider.preferredLanguage(usedLanguage);
         $translateProvider.use(usedLanguage);
