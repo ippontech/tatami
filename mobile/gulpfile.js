@@ -63,7 +63,7 @@ gulp.task('git-check', function(done) {
   done();
 });
 
-var replaceFiles = ['./www/app/tatamiApp.constants.js'];
+var replaceFiles = ['./www/app/tatami.endpoint.js'];
 
 gulp.task('dev', function() {
     return replace({
