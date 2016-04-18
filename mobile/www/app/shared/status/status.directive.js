@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$filter', '$sce', 'StatusService'];
-    function controller($scope, $state, $ionicPopup, $filter, $sce, StatusService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$filter', '$sce', 'StatusService', 'PathService'];
+    function controller($scope, $state, $ionicPopup, $filter, $sce, StatusService, PathService) {
         var vm = this;
 
         vm.status = $scope.status;
@@ -36,6 +36,7 @@
         vm.goToProfile = goToProfile;
         vm.goToTagTimeline = goToTagTimeline;
         vm.shareStatus = shareStatus;
+        vm.buildAttachmentUrl = buildAttachmentUrl;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -89,6 +90,11 @@
         setStatus.$inject = ['status'];
         function setStatus(status) {
             vm.status = status;
+        }
+
+        buildAttachmentUrl.$inject = ['attachment'];
+        function buildAttachmentUrl(attachment) {
+            return PathService.buildPath('/tatami/file/' + attachment.attachmentId + '/' + attachment.filename);
         }
 
         document.onclick = function (e) {
