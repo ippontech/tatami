@@ -9,14 +9,14 @@
             "french": "Français"
         },
         "endpoint": {
-            "title": "Server",
-            "change": "Change Server",
-            "error": "Cannot reach server.",
+            "title": "Serveur",
+            "change": "Changer de serveur",
+            "error": "Serveur inaccessible",
             "authenticate": {
-                "title": "Successfully changed endpoint",
-                "body": "Please reauthenticate with the new server."
+                "title": "Le changement de serveur a réussis",
+                "body": "Veuillez-vous identifier avec le nouveaux serveur."
             },
-            "default": "Use default server"
+            "default": "Utilizez le serveur de default"
         }
     }
 
