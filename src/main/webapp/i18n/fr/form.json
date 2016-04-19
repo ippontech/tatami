@@ -5,5 +5,5 @@
         "success": "Le formulaire a été enregistré avec succès.",
         "fail": "Impossible de sauvegarder le formulaire.",
         "deleted": "Votre fichier a été supprimé."
-    },
+    }
 }

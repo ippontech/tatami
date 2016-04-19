@@ -1,6 +1,5 @@
 {
     "account": {
-        // Profile Tab
         "profile": {
             "title": "Profile",
             "dropPhoto": "Drop your photo here to update it",
@@ -15,7 +14,6 @@
             "save": "Your profile has been saved"
         },
 
-        // Preferences Tab
         "preferences": {
             "title": "Preferences",
             "notifications": "Notifications",
@@ -33,7 +31,6 @@
             "save": "Your preferences have been saved"
         },
 
-        // Password Tab
         "password": {
             "title": "Password",
             "update": "Update your password",
@@ -43,7 +40,6 @@
             "save": "Your password has been changed"
         },
 
-        // Files Tab
         "files": {
             "title": "Files",
             "filename": "Filename",
@@ -52,7 +48,6 @@
             "delete": "Delete"
         },
 
-        // Users Tab
         "users": {
             "title": "Users",
             "following": "Following",
@@ -61,7 +56,6 @@
             "deactivated": "This user is deactivated"
         },
 
-        // Groups Tab
         "groups": {
             "title": "Groups",
             "createNewGroup": "Create a new group",
@@ -97,7 +91,6 @@
             "save": "Your group has been created"
         },
 
-        // Tags Tab
         "tags": {
             "title": "Tags",
             "trends": "Trends",
@@ -108,7 +101,6 @@
             "unfollow": "Unfollow"
         },
 
-        // Top Posters Tab
         "topPosters": {
             "title": "Top Posters",
             "username": "Username",

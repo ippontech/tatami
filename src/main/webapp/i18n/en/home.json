@@ -1,5 +1,4 @@
 {
-    // Home View
     "home": {
         "timeline": "Timeline",
         "mentions": "Mentions",
@@ -9,7 +8,6 @@
         "newMessage": "New Message",
         "newMessages": "New Messages",
 
-        //Top Menu
         "menu": {
             "logo": "Ippon Technologies Logo",
             "title": "Tatami",
@@ -43,7 +41,6 @@
             }
         },
 
-        // Post Modal
         "post": {
             "mandatory": "Comment is mandatory",
             "content": {
@@ -68,7 +65,6 @@
             "button": "Post"
         },
 
-        // Home Sidebar View
         "sidebar": {
             "myGroups": "My Groups",
             "whoToFollow": "Who To Follow",
@@ -83,7 +79,6 @@
             "administratorToolTip": "You administer this group."
         },
 
-        // Status List item or User List item
         "status": {
             "replyTo": "In reply to",
             "private": "Private Message",
@@ -102,7 +97,6 @@
             "shares": "Shares"
         },
 
-        // Tag View
         "tag": {
             "title": "Tag",
             "follow": "Follow",
@@ -110,7 +104,6 @@
             "unfollow": "Unfollow"
         },
 
-        // Group View
         "group": {
             "join": "Join",
             "joined": "Joined",
@@ -122,7 +115,6 @@
             "membersPlural": "{{ amount }} Members"
         },
 
-        // Profile View
         "profile": {
             "statuses": "Statuses",
             "following": "Following",
@@ -147,7 +139,6 @@
 
             "deactivatedUser": "Deactivated User",
 
-            // Profile Sidebar View
             "sidebar": {
                 "information": "Information",
                 "statistics": "Statistics",

@@ -1,10 +1,10 @@
 {
     "admin": {
-        "title": "Dashboard d\'administration",
+        "title": "Dashboard d'administration",
         "registered": "Entreprises enregistrées",
         "domain": "Domaine",
-        "count": "# d\'utilisateur(s)",
-        "environment": "Variables d\'environnement (de tatami.properties)",
+        "count": "# d'utilisateur(s)",
+        "environment": "Variables d'environnement (de tatami.properties)",
         "propery": "Property",
         "value": "Valeur",
         "reindex": "Ré-indexation du moteur de recherche",

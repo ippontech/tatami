@@ -17,15 +17,15 @@
         "register": {
             "title": "Register",
             "line1": "A confirmation email will be sent to the address you provide.",
-            "line2": "Your email"s domain will determine the company space you join. For example, users with an email@ippon.fr address will join Ippon"s private space.",
-            "line3": "If you are the first employee of your company to join Tatami, your company"s private space will be automatically created."
+            "line2": "Your email's domain will determine the company space you join. For example, users with an email@ippon.fr address will join Ippon's private space.",
+            "line3": "If you are the first employee of your company to join Tatami, your company's private space will be automatically created."
         },
         "googleApps": {
             "title": "Google Apps Login",
             "line1": "This feature is for Google Apps for Work users, who have their work domain name managed by Google Apps.",
             "link": "For more information on Google Apps for Work click here.",
             "line2": "Whether or not you already have a Tatami account, you can sign in with your Google Apps account.",
-            "line3": "Your email will be provided by Google and your email"s domain name will be used to allow you to join your company"s private space.",
+            "line3": "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
             "login": "Login using Google Apps"
         },
         "validation": "E-mail validation",

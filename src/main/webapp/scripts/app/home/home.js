@@ -49,7 +49,6 @@
         getMainTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
         function getMainTranslatePartialLoader($translate, $translatePartialLoader) {
             $translatePartialLoader.addPart('home');
-            $translatePartialLoader.addPart('status');
             return $translate.refresh();
         }
         getGroups.$inject = ['GroupService'];

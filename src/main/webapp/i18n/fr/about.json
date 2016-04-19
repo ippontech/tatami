@@ -1,46 +1,46 @@
 {
     "about": {
         "presentation": {
-            "title": "Qu\'est-ce que Tatami ?",
+            "title": "Qu'est-ce que Tatami ?",
             "devices": "Appareils",
             "openSource": "Open Source",
             "row1": {
-                "title": "Un réseau social d\'entreprise privée",
-                "line1": "Mettre à jour votre statut afin d\'informer vos collègues",
-                "line2": "S"abonner aux timelines des autres employés",
+                "title": "Un réseau social d'entreprise privée",
+                "line1": "Mettre à jour votre statut afin d'informer vos collègues",
+                "line2": "S'abonner aux timelines des autres employés",
                 "line3": "Partager des informations importantes au personnes qui vous suivent",
                 "line4": "Discuter et répondre à vos collègues",
                 "line5": "Ajouter des informations importantes dans vos favoris",
                 "line6": "Chercher des informations utiles avec notre moteur de recherche intégré",
                 "line7": "Utiliser les #hashtags lors de votre recherche",
                 "line8": "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
-                "line9": "Tatami est disponible en français et en anglais. Il est facile d\'ajouter d\'autres langues"
+                "line9": "Tatami est disponible en français et en anglais. Il est facile d'ajouter d'autres langues"
             },
             "row2": {
                 "title": "Fonctionne partout !",
                 "line1": "Application web dynamique (HTML5): rien à installer, un navigateur moderne suffit !",
-                "line2": "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l"application s"adapte automatiquement à l"écran de votre appareil",
+                "line2": "Fonctionne sur les appareils mobiles, des tablettes ou des ordinateurs: l'application s'adapte automatiquement à l'écran de votre appareil",
                 "line3": "Restez connecté avec votre entreprise où que vous soyez"
             },
             "row3": {
-                "title": "Installation et intégration facile avec l"infrastructure informatique de votre entreprise",
+                "title": "Installation et intégration facile avec l'infrastructure informatique de votre entreprise",
                 "line1": "Application standard Java",
                 "line2": "Vos données vous appartiennent et ne sont pas à votre fournisseur SaaS !",
                 "line3": "Intégration avec votre dossier LDAP",
                 "line4": "Intégration avec Google Apps",
                 "line5": "Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises",
                 "line6": "Facile à étendre ou modifier selon vos besoins",
-                "line7": "Haute performance (basé sur Cassandra d\'Apache), même sur les petites configurations",
+                "line7": "Haute performance (basé sur Cassandra d'Apache), même sur les petites configurations",
                 "line8": "Rejoignez le projet et proposer des patches sur notre page Github:"
             },
             "row4": {
                 "title": "Egalement disponible en mode SaaS, entièrement géré par Ippon Technologies",
-                "line1": "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l"utiliser directement",
+                "line1": "Si vous ne souhaitez pas installer Tatami dans votre entreprise, il est facile de l'utiliser directement",
                 "line2": "Mode multi-entreprise sécurisé : chaque entreprise dispose de son propre espace privé",
                 "line3": "Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé"
             },
             "row5": {
-                "title": "Besoin de plus d\'informations sur notre produit ?",
+                "title": "Besoin de plus d'informations sur notre produit ?",
                 "line1": "Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 1 46 12 48 48 ou par email à"
             }
         },
@@ -105,7 +105,7 @@
         },
         "license": {
             "title": "Licence du code source",
-            "copyright": "Droits d\'auteur"
+            "copyright": "Droits d'auteur"
         }
     }
 }

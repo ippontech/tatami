@@ -1,6 +1,5 @@
 {
     "account": {
-        // Profile Tab
         "profile": {
             "title": "Profil",
             "dropPhoto": "Déposez votre photo ici pour la mettre à jour",
@@ -15,7 +14,6 @@
             "save": "Votre profil a été sauvé"
         },
 
-        // Preferences Tab
         "preferences": {
             "title": "Préférences",
             "notifications": "Notifications",
@@ -26,14 +24,13 @@
                     "weeklyDigest": "Obtenez un sommaire hebdomadaire email"
                 },
                 "rss": {
-                    "timeline": "Autoriser la publication RSS de votre fil d\'actualité",
-                    "link": "Lien de votre RSS fils d\'actualité"
+                    "timeline": "Autoriser la publication RSS de votre fil d'actualité",
+                    "link": "Lien de votre RSS fils d'actualité"
                 }
             },
             "save": "Vos préférences ont été enregistrées"
         },
 
-        // Password Tab
         "password": {
             "title": "Mot de passe",
             "update": "Changez votre mot de passe",
@@ -43,7 +40,6 @@
             "save": "Votre mot de passe a été changé"
         },
 
-        // Files Tab
         "files": {
             "title": "Fichier",
             "filename": "Nom de fichier",
@@ -52,7 +48,6 @@
             "delete": "Supprimer"
         },
 
-        // Users Tab
         "users": {
             "title": "Utilisateur",
             "following": "Abonné",
@@ -61,7 +56,6 @@
             "deactivated": "Cet utilisateur est désactivé"
         },
 
-        // Groups Tab
         "groups": {
             "title": "Groupes",
             "createNewGroup": "Créer un nouveau groupe",
@@ -97,7 +91,6 @@
             "save": "Votre groupe a été créé"
         },
 
-        // Tags Tab
         "tags": {
             "title": "Tags",
             "trends": "Tendances",
@@ -108,7 +101,6 @@
             "unfollow": "Se désabonner"
         },
 
-        // Top Posters Tab
         "topPosters": {
             "title": "Top Posters",
             "username": "Username",
