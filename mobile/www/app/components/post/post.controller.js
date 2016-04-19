@@ -55,6 +55,7 @@
 
         function getPicture() {
             var options = {
+                quality: 50,
                 correctOrientation : true
             };
 
@@ -63,6 +64,7 @@
 
         function getPictureFromLibrary() {
             var options = {
+                quality: 50,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                 correctOrientation: true
             };
@@ -95,13 +97,12 @@
             }
 
             function onFail(failure) {
-                console.log(failure);
                 deferred.resolve(failure);
             }
 
             return $q.all(promises);
         }
-        
+
         function remove(index) {
             vm.images.splice(index, 1);
         }
