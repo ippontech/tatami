@@ -1,6 +1,10 @@
 {
     "post": {
         "title": "Post",
-        "message": "Post Here..."
+        "message": "Post Here...",
+        "progress": "Post in progress...",
+        "error": {
+            "message": "Something went wrong. Returning to Timeline"
+        }
     }
 }

@@ -5,6 +5,7 @@
             "mention": "Votre status a été partagé"
         },
         "reply": "En réponse à ",
-        "follower": "Nouvel abonné"
+        "follower": "Nouvel abonné",
+        "delete": "Êtes-vous sûr de vouloir supprimer ce statut?"
     }
 }
