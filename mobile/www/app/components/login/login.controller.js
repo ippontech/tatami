@@ -4,8 +4,19 @@
     angular.module('tatami')
         .controller('LoginCtrl', loginCtrl);
 
-    loginCtrl.$inject = ['$scope', '$state', '$http', '$localStorage', 'clientId', 'LoginService', 'PathService', '$ionicLoading'];
-    function loginCtrl($scope, $state, $http, $localStorage, clientId, LoginService, PathService, $ionicLoading) {
+    loginCtrl.$inject = [
+        '$scope',
+        '$state',
+        '$http',
+        '$localStorage',
+        '$ionicLoading',
+        '$ionicNavBarDelegate',
+        'clientId',
+        'LoginService',
+        'PathService'];
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, $ionicNavBarDelegate, clientId, LoginService, PathService) {
+        $ionicNavBarDelegate.showBackButton(false);
+
         var vm = this;
 
         vm.clientId = clientId.data.stringList[0];
@@ -23,6 +34,9 @@
                 j_password: vm.user.password,
                 _spring_security_remember_me: vm.user.remember
             }, function(success) {
+                if(success && success.data && success.data.token) {
+                    $localStorage.set('token', success.data.token);
+                }
                 vm.user = { remember: false };
                 $state.go('timeline');
             }, function(failed) {

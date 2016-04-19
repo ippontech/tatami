@@ -4,8 +4,20 @@
     angular.module('tatami')
         .controller('PostCtrl', postCtrl);
 
-    postCtrl.$inject = ['StatusService', 'PathService', '$ionicHistory', '$state', '$cordovaCamera', '$q', 'repliedToStatus'];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, repliedToStatus) {
+    postCtrl.$inject = [
+        'StatusService',
+        'PathService',
+        '$ionicHistory',
+        '$state',
+        '$cordovaCamera',
+        '$q',
+        '$ionicLoading',
+        '$ionicPopup',
+        '$ionicNavBarDelegate',
+        'repliedToStatus'
+    ];
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, repliedToStatus) {
+        $ionicNavBarDelegate.showBackButton(false);
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -55,7 +67,7 @@
 
         function getPicture() {
             var options = {
-                quality: 50,
+                quality: 1,
                 correctOrientation : true
             };
 
@@ -64,7 +76,7 @@
 
         function getPictureFromLibrary() {
             var options = {
-                quality: 50,
+                quality: 1,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                 correctOrientation: true
             };
@@ -87,6 +99,11 @@
                 options.fileKey = 'uploadFile';
                 options.fileName = image.substr(image.lastIndexOf('/') + 1);
 
+                $ionicLoading.show({
+                    template: '<span translate="post.progress">Post in progress...</span>',
+                    hideOnStateChange: true
+                });
+
                 fileTransfer.upload(image, PathService.buildPath('/tatami/rest/fileupload'), onSuccess, onFail, options);
                 promises.push(deferred.promise);
             });
@@ -97,6 +114,18 @@
             }
 
             function onFail(failure) {
+
+                var popupError = $ionicPopup.alert({
+                    title: '<span translate="post.error.title"></span>',
+                    template: '<span translate="post.error.message"></span>'
+                });
+
+                popupError.then(goToTimeline);
+
+                function goToTimeline() {
+                    $state.go('timeline');
+                }
+
                 deferred.resolve(failure);
             }
 
