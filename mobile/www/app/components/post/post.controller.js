@@ -67,7 +67,7 @@
 
         function getPicture() {
             var options = {
-                quality: 1,
+                quality: 10,
                 correctOrientation : true
             };
 
@@ -76,7 +76,7 @@
 
         function getPictureFromLibrary() {
             var options = {
-                quality: 1,
+                quality: 10,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                 correctOrientation: true
             };
@@ -90,12 +90,12 @@
 
         function upload() {
             var promises = [];
-            var deferred = $q.defer();
             vm.isPosting = true;
 
             var options = new FileUploadOptions();
             var fileTransfer = new FileTransfer();
             angular.forEach(vm.images, function(image) {
+                var deferred = $q.defer();
                 options.fileKey = 'uploadFile';
                 options.fileName = image.substr(image.lastIndexOf('/') + 1);
 
@@ -106,28 +106,29 @@
 
                 fileTransfer.upload(image, PathService.buildPath('/tatami/rest/fileupload'), onSuccess, onFail, options);
                 promises.push(deferred.promise);
-            });
+                console.log(promises);
 
-            function onSuccess(result) {
-                var jsonResult = JSON.parse(result.response)[0];
-                deferred.resolve(jsonResult.attachmentId);
-            }
-
-            function onFail(failure) {
-
-                var popupError = $ionicPopup.alert({
-                    title: '<span translate="post.error.title"></span>',
-                    template: '<span translate="post.error.message"></span>'
-                });
-
-                popupError.then(goToTimeline);
-
-                function goToTimeline() {
-                    $state.go('timeline');
+                function onSuccess(result) {
+                    var jsonResult = JSON.parse(result.response)[0];
+                    deferred.resolve(jsonResult.attachmentId);
                 }
 
-                deferred.resolve(failure);
-            }
+                function onFail(failure) {
+
+                    var popupError = $ionicPopup.alert({
+                        title: '<span translate="post.error.title"></span>',
+                        template: '<span translate="post.error.message"></span>'
+                    });
+
+                    popupError.then(goToTimeline);
+
+                    function goToTimeline() {
+                        $state.go('timeline');
+                    }
+
+                    deferred.resolve(failure);
+                }
+            });
 
             return $q.all(promises);
         }
