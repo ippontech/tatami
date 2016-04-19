@@ -41,7 +41,7 @@
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete',
-                template: 'Are you sure you want to delete the status?'
+                template: '<span translate="status.delete"></span>'
             });
 
             confirmPopup.then(checkDelete);

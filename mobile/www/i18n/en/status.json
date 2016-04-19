@@ -5,6 +5,7 @@
             "mention": "Your status has been shared"
         },
         "reply": "In reply to ",
-        "follower": "New follower"
+        "follower": "New follower",
+        "delete": "Are you sure you want to delete the status?"
     }
 }

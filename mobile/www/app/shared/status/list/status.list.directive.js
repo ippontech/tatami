@@ -30,14 +30,14 @@
         vm.getNewStatuses = getNewStatuses;
         vm.getNewInfiniteScrollStatuses = getNewInfiniteScrollStatuses;
         vm.remove = remove;
-        vm.finishedTimeline = vm.statuses && vm.statuses.length < 20 ? false : true;
+        vm.finishedTimeline = vm.statuses && vm.statuses.length < 20;
 
         function getNewStatuses() {
             $scope.tatamiRefresher().then(setStatuses);
         }
 
         function getNewInfiniteScrollStatuses() {
-            if(vm.statuses) {
+            if(vm.statuses && vm.statuses.length > 0) {
                 var lastStatus = vm.statuses[vm.statuses.length - 1].timelineId;
                 $scope.tatamiInfiniteRefresher({ finalStatus: lastStatus }).then(addNewStatuses);
             }
@@ -55,8 +55,8 @@
 
         addNewStatuses.$inject = ['oldStatuses'];
         function addNewStatuses(oldStatuses) {
-            if(oldStatuses.length == 0) {
-                vm.finishedTimeline = false;
+            if(oldStatuses.length < 20) {
+                vm.finishedTimeline = true;
             }
 
             vm.statuses.push.apply(vm.statuses, oldStatuses);
