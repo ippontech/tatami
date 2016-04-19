@@ -1,5 +1,69 @@
 {
     "global": {
+        "timeline": "Timeline",
+        "error": "Il y a une erreur",
+        "pageNotFound": "Page non trouvée.",
+        "post": {
+            "button": "Post"
+        },
+        "account": {
+            "profile": {
+                "title": "Profil"
+            },
+            "preferences": {
+                "title": "Préférences"
+            },
+            "password": {
+                "title": "Mot de passe"
+            },
+            "files": {
+                "title": "Fichier"
+            },
+            "users": {
+                "title": "Utilisateur"
+            },
+            "groups": {
+                "title": "Groupes"
+            },
+            "tags": {
+                "title": "Tags"
+            },
+            "topPosters": {
+                "title": "Top Posters"
+            }
+        },
+        "topMenu": {
+            "logo": "Ippon Technologies Logo",
+            "title": "Tatami",
+            "about": {
+                "title": "Information",
+                "version" : "Version",
+                "presentation": "Présentation",
+                "tos": "Conditions générales d'utilisation",
+                "language": {
+                    "language": "Language",
+                    "en": "English",
+                    "fr": "Français"
+                },
+                "license": "Licence du source code",
+                "github": {
+                    "issues": "Envoyer un rapport de bug",
+                    "fork": "Fork Tatami sur Github"
+                },
+                "ippon": {
+                    "website": "Site d'Ippon Technologies",
+                    "blog": "Blog d'Ippon Technologies",
+                    "twitter": "Suivez @ippontech sur Twitter"
+                }
+            },
+            "search": "Recherchez",
+            "help": "Aide",
+            "account": {
+                "title": "Compte",
+                "companyTimeline": "Timeline de votre enterprise",
+                "logout": "Déconnexion"
+            }
+        },
         "title": "TatamiJHipster",
         "timeline": "Timeline",
         "mentions": "Mentions",

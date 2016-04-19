@@ -1,21 +1,20 @@
 {
     "about": {
-
         "presentation": {
-            "title": "Quest-ce que Tatami ?",
+            "title": "Qu'est-ce que Tatami ?",
             "devices": "Appareils",
             "openSource": "Open Source",
             "row1": {
-                "title": "Un réseau social dentreprise privée",
-                "line1": "Mettre à jour votre statut afin dinformer vos collègues",
-                "line2": "S'abonner aux timelines des autres employés,",
+                "title": "Un réseau social d'entreprise privée",
+                "line1": "Mettre à jour votre statut afin d'informer vos collègues",
+                "line2": "S'abonner aux timelines des autres employés",
                 "line3": "Partager des informations importantes au personnes qui vous suivent",
                 "line4": "Discuter et répondre à vos collègues",
                 "line5": "Ajouter des informations importantes dans vos favoris",
                 "line6": "Chercher des informations utiles avec notre moteur de recherche intégré",
                 "line7": "Utiliser les #hashtags lors de votre recherche",
                 "line8": "Aller voir le profil de vos collègues et découvrez ce sur quoi ils travaillent",
-                "line9": "Tatami est disponible en français et en anglais. Il est facile dajouter dautres langues"
+                "line9": "Tatami est disponible en français et en anglais. Il est facile d'ajouter d'autres langues"
             },
             "row2": {
                 "title": "Fonctionne partout !",
@@ -31,7 +30,7 @@
                 "line4": "Intégration avec Google Apps",
                 "line5": "Entièrement Open Source, avec une licence Apache 2.0, facile à utiliser pour les entreprises",
                 "line6": "Facile à étendre ou modifier selon vos besoins",
-                "line7": "Haute performance (basé sur Cassandra dApache), même sur les petites configurations",
+                "line7": "Haute performance (basé sur Cassandra d'Apache), même sur les petites configurations",
                 "line8": "Rejoignez le projet et proposer des patches sur notre page Github:"
             },
             "row4": {
@@ -41,14 +40,13 @@
                 "line3": "Cryptage SSL 256 bits : tous les transferts de données sont entièrement sécurisé"
             },
             "row5": {
-                "title": "Besoin de plus dinformations sur notre produit ?",
+                "title": "Besoin de plus d'informations sur notre produit ?",
                 "line1": "Notre équipe de vente est impatiente de vous entendre! Appelez-nous au +33 1 46 12 48 48 ou par email à"
             }
         },
 
-
         "tos": {
-            "title": "Terms of Service",
+            "title": "Conditions de service",
             "row1": {
                 "title": "1 -General",
                 "line1": "By using any of the Ippon Technologies products, software, or services available at *.ippon.fr (collectively referred to as Services) provided by Ippon Techonologies (Ippon), you agree to be bound by the following terms and conditions (Terms of Service)",
@@ -104,14 +102,10 @@
             "row6": {
                 "title": "Effective: August 7th, 2012"
             }
-
-
         },
-
-
         "license": {
             "title": "Licence du code source",
-            "copyright": "Droits dauteur"
+            "copyright": "Droits d'auteur"
         }
     }
 }

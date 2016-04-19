@@ -56,9 +56,8 @@
                             </small>
 
                             <small ng-if="status.type === 'ANNOUNCEMENT'">
-                                <span class="glyphicon glyphicon-bullhorn">
+                                <span class="glyphicon glyphicon-bullhorn"></span>
                                     {{ 'home.status.isAnnounced' | translate }}
-                                </span>
                                 <a ui-sref="tatami.home.status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
                             </small>
 
