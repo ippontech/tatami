@@ -121,6 +121,7 @@
                     popupError.then(goToTimeline);
 
                     function goToTimeline() {
+                        reset();
                         $state.go('timeline');
                     }
 
