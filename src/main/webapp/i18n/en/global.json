@@ -6,27 +6,7 @@
         "post": {
             "button": "Post"
         },
-
-        "welcome": {
-            "title": "Welcome to Tatami",
-            "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.",
-            "presentation": "Launch presentation",
-            "help": {
-                "title": "Help",
-                "line1": "Welcome to the online help!",
-                "line2": "Follow the next steps for a tour of the main Tatami features."
-            },
-            "post": {
-                "title": "Posting Messages",
-                "line1": "Here is where you write messages you want to share.",
-                "bulletPoint1": "All messages are public by default. They will be delivered to all users who follow you.",
-                "bulletPoint2": "When writing a message you should use #hashtags. This simply means adding a # at the beginning of important words that can be used to find your message.",
-                "bulletPoint3": "When mentioning or replying to other users you should add a @ at the beginning of their name. They will be notified that you are talking to them."
-            }
-
-        },
-
-        "account":{
+        "account": {
             "profile": {
                 "title": "Profile"
             },
