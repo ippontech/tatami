@@ -13,7 +13,6 @@
             "confirmDelete": "You are about to delete your account. Are you sure?",
             "save": "Your profile has been saved"
         },
-
         "preferences": {
             "title": "Preferences",
             "notifications": "Notifications",

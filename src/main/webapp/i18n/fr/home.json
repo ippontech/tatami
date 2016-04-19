@@ -8,39 +8,6 @@
         "newMessage": "Nouveau Message",
         "newMessages": "Nouveaux Messages",
 
-        "menu": {
-            "logo": "Ippon Technologies Logo",
-            "title": "Tatami",
-            "about": {
-                "title": "Information",
-                "version" : "Version",
-                "presentation": "Présentation",
-                "tos": "Conditions générales d'utilisation",
-                "language": {
-                    "language": "Language",
-                    "en": "English",
-                    "fr": "Français"
-                },
-                "license": "Licence du source code",
-                "github": {
-                    "issues": "Envoyer un rapport de bug",
-                    "fork": "Fork Tatami sur Github"
-                },
-                "ippon": {
-                    "website": "Site d'Ippon Technologies",
-                    "blog": "Blog d'Ippon Technologies",
-                    "twitter": "Suivez @ippontech sur Twitter"
-                }
-            },
-            "search": "Recherchez",
-            "help": "Aide",
-            "account": {
-                "title": "Compte",
-                "companyTimeline": "Timeline de votre enterprise",
-                "logout": "Déconnexion"
-            }
-        },
-
         "post": {
             "mandatory": "Commentaire obligatoire",
             "content": {
@@ -61,7 +28,7 @@
             "drop": {
                 "file": "Déposez vos fichiers ici"
             },
-            "markdown": "Markdown Supported",
+            "markdown": "Markdown pris en charge",
             "button": "Post"
         },
 
@@ -77,24 +44,6 @@
             "privateToolTip": "Groupe privé",
             "archivedToolTip": "Groupe archivé",
             "administratorToolTip": "Vous administrez ce groupe."
-        },
-
-        "status": {
-            "replyTo": "En réponse à",
-            "private": "Message privé",
-            "reply": "Répondre",
-            "share": "Partager",
-            "favorite": "Favoris",
-            "delete": "Supprimer",
-            "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce statut ?",
-            "sharedYour": "a partagé votre statut",
-            "followed": "vous suit",
-            "shared": "partagé",
-            "groupAdmin": "Administrateur du groupe",
-            "announce": "Annoncer",
-            "isAnnounced": "Annoncé par",
-            "viewConversation": "Voir La Conversation",
-            "shares": "Partages"
         },
 
         "tag": {

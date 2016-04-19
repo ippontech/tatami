@@ -1,7 +1,69 @@
 {
     "global": {
+        "timeline": "Timeline",
         "pageNotFound": "Page not found.",
         "error": "An error has occurred.",
+        "post": {
+            "button": "Post"
+        },
+        "account": {
+            "profile": {
+                "title": "Profile"
+            },
+            "preferences": {
+                "title": "Preferences"
+            },
+            "password": {
+                "title": "Password"
+            },
+            "files": {
+                "title": "Files"
+            },
+            "users": {
+                "title": "Users"
+            },
+            "groups": {
+                "title": "Groups"
+            },
+            "tags": {
+                "title": "Tags"
+            },
+            "topPosters": {
+                "title": "Top Posters"
+            }
+        },
+        "topMenu": {
+            "logo": "Ippon Technologies Logo",
+            "title": "Tatami",
+            "about": {
+                "title": "About",
+                "version" : "Version",
+                "presentation": "Presentation",
+                "tos": "Terms of Service",
+                "language": {
+                    "language": "Language",
+                    "en": "English",
+                    "fr": "Français"
+                },
+                "license": "Source Code License",
+                "github": {
+                    "issues": "Submit a Bug Report",
+                    "fork": "Fork Tatami on Github"
+                },
+                "ippon": {
+                    "website": "Ippon Technologies Website",
+                    "blog": "Ippon Technologies Blog",
+                    "twitter": "Follow @ippontech on Twitter"
+                }
+            },
+            "search": "Search",
+            "help": "Help",
+            "account": {
+                "title": "Account",
+                "companyTimeline": "Company Timeline",
+                "logout": "Logout"
+            }
+        },
         "title": "TatamiJHipster",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {

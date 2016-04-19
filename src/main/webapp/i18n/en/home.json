@@ -8,39 +8,6 @@
         "newMessage": "New Message",
         "newMessages": "New Messages",
 
-        "menu": {
-            "logo": "Ippon Technologies Logo",
-            "title": "Tatami",
-            "about": {
-                "title": "About",
-                "version" : "Version",
-                "presentation": "Presentation",
-                "tos": "Terms of Service",
-                "language": {
-                    "language": "Language",
-                    "en": "English",
-                    "fr": "Français"
-                },
-                "license": "Source Code License",
-                "github": {
-                    "issues": "Submit a Bug Report",
-                    "fork": "Fork Tatami on Github"
-                },
-                "ippon": {
-                    "website": "Ippon Technologies Website",
-                    "blog": "Ippon Technologies Blog",
-                    "twitter": "Follow @ippontech on Twitter"
-                }
-            },
-            "search": "Search",
-            "help": "Help",
-            "account": {
-                "title": "Account",
-                "companyTimeline": "Company Timeline",
-                "logout": "Logout"
-            }
-        },
-
         "post": {
             "mandatory": "Comment is mandatory",
             "content": {
@@ -77,24 +44,6 @@
             "privateToolTip": "Private Group",
             "archivedToolTip": "Archived Group",
             "administratorToolTip": "You administer this group."
-        },
-
-        "status": {
-            "replyTo": "In reply to",
-            "private": "Private Message",
-            "reply": "Reply",
-            "share": "Share",
-            "favorite": "Favorite",
-            "delete": "Delete",
-            "confirmDelete": "Are you sure you want to delete this status?",
-            "sharedYour": "shared your status",
-            "followed": "followed you",
-            "shared": "shared",
-            "groupAdmin": "Group Administrator",
-            "announce": "Announce",
-            "isAnnounced": "Announced by",
-            "viewConversation": "View Conversation",
-            "shares": "Shares"
         },
 
         "tag": {

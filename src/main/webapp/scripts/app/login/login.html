@@ -41,27 +41,27 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title text-center" translate="login.google.title"></h4>
+                    <h4 class="panel-title text-center" translate="login.googleApps.title"></h4>
                 </div>
                 <div class="panel-body">
                     <form form="submit" action="/tatami/j_spring_pac4j_security_check" method="post" accept-charset="utf-8">
                         <fieldset>
                             <div class="form-group">
-                                <button type="submit" id="proceed_google" class="btn btn-primary btn-block" translate="login.google.login"></button>
+                                <button type="submit" id="proceed_google" class="btn btn-primary btn-block" translate="login.googleApps.login"></button>
                             </div>
                         </fieldset>
                     </form>
                     <div class="form-group">
-                        <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.google.tos"></button>
+                        <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.tos"></button>
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <p translate="login.google.line1"></p>
+                            <p translate="login.googleApps.line1"></p>
                             <a href="https://www.google.com/work/apps/business/">
-                                <p translate="login.google.link"></p>
+                                <p translate="login.googleApps.link"></p>
                             </a>
-                            <p translate="login.google.line2"></p>
-                            <p translate="login.google.line3"></p>
+                            <p translate="login.googleApps.line2"></p>
+                            <p translate="login.googleApps.line3"></p>
                         </li>
                     </ul>
                 </div>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="form-group">
                         <input id="_spring_security_remember_me" ng-model="rememberMe" name="_spring_security_remember_me" type="checkbox">
-                        <span translate="login.form.rememberme"></span>
+                        <span translate="login.remember"></span>
                     </div>
                     <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="login.title"></button>
                 </fieldset>
@@ -114,15 +114,15 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 class="panel-title text-center" translate="login.password.forgot"></h4>
+            <h4 class="panel-title text-center" translate="login.forgotPassword"></h4>
         </div>
         <div class="panel-body">
             <form ng-submit="resetPassword()" accept-charset="utf-8">
                 <fieldset>
                     <div class="form-group">
-                        <input class="form-control" ng-model="user.email" name="email" type="email" required="required" placeholder="{{ 'login.form.email' | translate }}">
+                        <input class="form-control" ng-model="user.email" name="email" type="email" required="required" placeholder="{{ 'login.email' | translate }}">
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block text-center" translate="login.password.reset"></button>
+                    <button type="submit" class="btn btn-primary btn-block text-center" translate="login.resetPassword"></button>
                 </fieldset>
             </form>
         </div>
@@ -152,7 +152,7 @@
                     </div>
                 </fieldset>
             </form>
-            <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.google.tos"></button>
+            <button type="button" class="btn btn-info btn-block little-padding text-center" ui-sref="tos" translate="login.tos"></button>
         </div>
             </div>
         </div>

@@ -49,7 +49,7 @@ tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 
             });
         }, function() {
             ngToast.create({
-                content: $translate.instant('tatami.form.fail'),
+                content: $translate.instant('form.fail'),
                 class: 'danger'
             });
         });
