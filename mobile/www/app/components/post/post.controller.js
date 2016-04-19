@@ -13,11 +13,9 @@
         '$q',
         '$ionicLoading',
         '$ionicPopup',
-        '$ionicNavBarDelegate',
         'repliedToStatus'
     ];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, repliedToStatus) {
-        $ionicNavBarDelegate.showBackButton(false);
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {

@@ -10,12 +10,10 @@
         '$http',
         '$localStorage',
         '$ionicLoading',
-        '$ionicNavBarDelegate',
         'clientId',
         'LoginService',
         'PathService'];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, $ionicNavBarDelegate, clientId, LoginService, PathService) {
-        $ionicNavBarDelegate.showBackButton(false);
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, LoginService, PathService) {
 
         var vm = this;
 
