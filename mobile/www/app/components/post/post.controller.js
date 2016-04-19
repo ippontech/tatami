@@ -106,7 +106,6 @@
 
                 fileTransfer.upload(image, PathService.buildPath('/tatami/rest/fileupload'), onSuccess, onFail, options);
                 promises.push(deferred.promise);
-                console.log(promises);
 
                 function onSuccess(result) {
                     var jsonResult = JSON.parse(result.response)[0];
@@ -114,9 +113,10 @@
                 }
 
                 function onFail(failure) {
+                    $ionicLoading.hide();
 
                     var popupError = $ionicPopup.alert({
-                        title: '<span translate="post.error.title"></span>',
+                        title: 'Error',
                         template: '<span translate="post.error.message"></span>'
                     });
 

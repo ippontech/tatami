@@ -55,7 +55,7 @@
             var element = e.target || e.srcElement;
 
             if (element.tagName == 'A' && absolutePathChecker.test(element.href)) {
-                window.open(element.href, "_blank", "location=yes");
+                window.open(element.href, "_blank", "location=yes,presentationstyle=pagesheet,EnableViewPortScale=yes");
                 return false;
             }
         };
