@@ -1,0 +1,118 @@
+{
+    "account": {
+        // Profile Tab
+        "profile": {
+            "title": "Profil",
+            "dropPhoto": "Déposez votre photo ici pour la mettre à jour",
+            "update": "Mettez à jour votre profil",
+            "email": "Email",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "jobTitle": "Titre de travail",
+            "phoneNumber": "Numéro de téléphone",
+            "delete": "Supprimer votre compte",
+            "confirmDelete": "Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?",
+            "save": "Votre profil a été sauvé"
+        },
+
+        // Preferences Tab
+        "preferences": {
+            "title": "Préférences",
+            "notifications": "Notifications",
+            "notification": {
+                "email": {
+                    "mention": "Recevez une notification par email lorsque vous êtes mentionné",
+                    "dailyDigest": "Obtenez un résumé quotidien email",
+                    "weeklyDigest": "Obtenez un sommaire hebdomadaire email"
+                },
+                "rss": {
+                    "timeline": "Autoriser la publication RSS de votre fil d\'actualité",
+                    "link": "Lien de votre RSS fils d\'actualité"
+                }
+            },
+            "save": "Vos préférences ont été enregistrées"
+        },
+
+        // Password Tab
+        "password": {
+            "title": "Mot de passe",
+            "update": "Changez votre mot de passe",
+            "old": "Ancien mot de passe",
+            "new": "Nouveau mot de passe",
+            "confirm": "Confirmer votre nouveau mot de passe",
+            "save": "Votre mot de passe a été changé"
+        },
+
+        // Files Tab
+        "files": {
+            "title": "Fichier",
+            "filename": "Nom de fichier",
+            "size": "Taille",
+            "date": "Date",
+            "delete": "Supprimer"
+        },
+
+        // Users Tab
+        "users": {
+            "title": "Utilisateur",
+            "following": "Abonné",
+            "recommended": "Recommandé",
+            "search": "Rechercher",
+            "deactivated": "Cet utilisateur est désactivé"
+        },
+
+        // Groups Tab
+        "groups": {
+            "title": "Groupes",
+            "createNewGroup": "Créer un nouveau groupe",
+            "name": "Nom",
+            "description": "Description",
+            "public": "Public",
+            "private": "Privé",
+            "publicWarning": "Attention: Si ce groupe est public, tout le monde peut y accéder",
+            "create": "Créer",
+            "myGroups": "Mes Groupes",
+            "recommended": "Recommandé",
+            "search": "Rechercher",
+            "group": "Groupe",
+            "access": "Accès",
+            "members": "Membres",
+            "manage": "Gérer",
+            "update": "Mettre à jour les détails de votre groupe",
+            "archive": "Voulez-vous archiver ce groupe?",
+            "allowArchive": "Oui, ce groupe devrait être archivé",
+            "denyArchive": "Non, ce groupe est encore utilisé",
+            "archiveWarning": "Attention : les groupe archivés sont en lecture seule",
+            "addMember": "Ajouter un membre",
+            "username": "Username",
+            "role": "Rôle",
+            "admin": "Administrator",
+            "member": "Membre",
+            "join": "Joindre",
+            "joined": "Rejoint",
+            "leave": "Quitter",
+            "archived": "Archivé",
+            "add": "Ajouter",
+            "remove": "Supprimer",
+            "save": "Votre groupe a été créé"
+        },
+
+        // Tags Tab
+        "tags": {
+            "title": "Tags",
+            "trends": "Tendances",
+            "search": "Rechercher",
+            "tag": "Tag",
+            "follow": "Abonné",
+            "following": "Abonnement",
+            "unfollow": "Se désabonner"
+        },
+
+        // Top Posters Tab
+        "topPosters": {
+            "title": "Top Posters",
+            "username": "Username",
+            "count": "Combien de Statuts"
+        }
+    }
+}

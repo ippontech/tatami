@@ -1,5 +1,7 @@
 {
     "global": {
+        "error": "Il y a une erreur",
+        "pageNotFound": "Page non trouvée.",
         "title": "TatamiJHipster",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {

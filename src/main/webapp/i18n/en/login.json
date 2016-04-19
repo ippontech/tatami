@@ -1,41 +1,36 @@
 {
     "login": {
+        "title": "Login",
         "mainTitle": "Welcome to Tatami",
         "subtitle": "An open source enterprise social network",
         "moreInfo": "More Info",
-        "title": "Login",
-        "google": {
-            "title": "Google Apps Login",
-            "login": "Login usin Google Apps",
-            "tos": "Terms of Service",
-            "line1": "This feature is for Google Apps for Work users, who have their work domain name managed by Google Apps.",
-            "line2": "Whether or not you already have a Tatami account, you can sign in with your Google Apps account.",
-            "line3": "Your email will be provided by Google and your email's domain name will be used to allow you to join your company's private space.",
-            "link": "For more information on Google Apps for Work click here."
-        },
-        "form": {
-            "email": "Email",
-            "username": "Username",
-            "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Remember me",
-            "button": "Sign in"
-
-        },
+        "email": "Email",
+        "password": "Password",
+        "remember": "Remember me",
+        "forgotPassword": "Forgot your password?",
+        "resetPassword": "Reset password",
+        "tos": "Terms of Service",
+        "fail": "Your authentication has failed! Are you sure you used the correct password?",
+        "passwordEmailSent": "An email has been sent to you, with instructions to generate a new password.",
+        "unregisteredEmail": "This email address is not registered in Tatami.",
+        "registrationFailure": "User registration failed. That email already is in use.",
         "register": {
             "title": "Register",
             "line1": "A confirmation email will be sent to the address you provide.",
-            "line2": "Your email's domain will determine the company space you join. For example, users with an email@ippon.fr address will join Ippon's private space.",
-            "line3": "If you are the first employee of your company to join Tatami, your company's private space will be automatically created."
+            "line2": "Your email"s domain will determine the company space you join. For example, users with an email@ippon.fr address will join Ippon"s private space.",
+            "line3": "If you are the first employee of your company to join Tatami, your company"s private space will be automatically created."
         },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Failed to sign in!</strong> Please check your credentials and try again."
-            }
+        "googleApps": {
+            "title": "Google Apps Login",
+            "line1": "This feature is for Google Apps for Work users, who have their work domain name managed by Google Apps.",
+            "link": "For more information on Google Apps for Work click here.",
+            "line2": "Whether or not you already have a Tatami account, you can sign in with your Google Apps account.",
+            "line3": "Your email will be provided by Google and your email"s domain name will be used to allow you to join your company"s private space.",
+            "login": "Login using Google Apps"
         },
-        "password" : {
-            "forgot": "Forget your password?",
-            "reset": "Reset Password"
-        }
+        "validation": "E-mail validation",
+        "passwordSuccess": "Your email has been validated. Your password will be emailed to you.",
+        "returnHome": "Go to the home page",
+        "registrationEmail": "Thank you! A registration email has been sent to you."
     }
 }
