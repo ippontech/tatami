@@ -96,15 +96,5 @@
         function buildAttachmentUrl(attachment) {
             return PathService.buildPath('/tatami/file/' + attachment.attachmentId + '/' + attachment.filename);
         }
-
-        document.onclick = function (e) {
-            e = e ||  window.event;
-            var element = e.target || e.srcElement;
-
-            if (element.tagName == 'A') {
-                window.open(element.href, "_blank", "location=yes");
-                return false;
-            }
-        };
     }
 })();

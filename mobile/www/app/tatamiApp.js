@@ -48,6 +48,17 @@
             var token = $localStorage.get('token');
             return token && token.expires && token.expires > new Date().getTime()
         }
+
+        var absolutePathChecker = new RegExp('^(?:[a-z]+:)?//', 'i');
+        document.onclick = function (e) {
+            e = e ||  window.event;
+            var element = e.target || e.srcElement;
+
+            if (element.tagName == 'A' && absolutePathChecker.test(element.href)) {
+                window.open(element.href, "_blank", "location=yes");
+                return false;
+            }
+        };
     }
 
     tatamiConfig.$inject = [
