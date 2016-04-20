@@ -23,13 +23,12 @@
             <div tour-step
                  tour-step-order="3"
                  tour-step-title="{{ 'home.sidebar.myGroups' | translate }}"
-                 tour-step-content="{{ 'global.account.groups.line1' | translate }}
-                         <p style='min-width: 200px;'>{{ 'global.account.groups.line2' | translate }}</p>
-                         <p style='min-width: 200px;'>{{ 'global.account.groups.line3' | translate }}</p>
+                 tour-step-content="{{ 'global.welcome.groups.line1' | translate }}
+                         <p style='min-width: 200px;'>{{ 'global.welcome.groups.line2' | translate }}</p>
+                         <p style='min-width: 200px;'>{{ 'global.welcome.groups.line3' | translate }}</p>
                          <br>"
-                 tour-step-placement="right-top"
-                 tour-step-skip="false"
-                 tour-step-on-end="onTourEnd(tour)"
+                 tour-step-placement="right"
+                 tour-step-append-to-body="true"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-th-large"></span>
                 <span translate="home.sidebar.myGroups"></span>
@@ -54,10 +53,8 @@
             <div tour-step
                  tour-step-order="4"
                  tour-step-title="{{ 'home.sidebar.trends' | translate }}"
-                 tour-step-content="<p style='min-width: 200px;'>{{ 'global.account.trends.line1' | translate }}<p>"
-                 tour-step-placement="right-top"
-                 tour-step-skip="false"
-                 tour-step-on-end="onTourEnd(tour)"
+                 tour-step-content="<p style='min-width: 200px;'>{{ 'global.welcome.trends.line1' | translate }}<p>"
+                 tour-step-placement="right"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-fire"></span>
                 <span translate="home.sidebar.trends"></span>
@@ -84,8 +81,6 @@
                          <p style='min-width: 200px;'>{{ 'global.welcome.whoToFollow.line3' | translate }}</p>
                          <br>"
                  tour-step-placement="right"
-                 tour-step-skip="false"
-                 tour-step-on-end="onTourEnd(tour)"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-user"></span>
                 <span translate="home.sidebar.whoToFollow"></span>

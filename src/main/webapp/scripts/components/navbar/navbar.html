@@ -147,16 +147,14 @@
 
                 <li tour-step
                     tour-step-order="0"
-                    tour-step-title="{{ 'global.welcome.help.title' | translate }}"
+                    tour-step-title="Help"
                     tour-step-content="{{ 'global.welcome.help.line1' | translate }}
                     <br>
                     <p>{{ 'global.welcome.help.line2' | translate }}</p>
                     <br>"
-                    navigation=""
                     tour-step-placement="bottom"
-                    ng-click="tour.start()"
-                    tour-step-skip="false"
-                    tour-step-on-end="onTourEnd(tour)">
+                    tour-step-append-to-body="true"
+                    ng-click="tour.start()">
                     <a id="help-tour">
                         <span>
                             <span class="glyphicon glyphicon-question-sign"></span>
@@ -297,9 +295,6 @@
                             </ul>
                             <br>"
                             tour-step-placement="left-top"
-                            tour-step-skip="false"
-                            tour-step-on-end="onTourEnd(tour)"
-                            tour-step-append-to-body="true"
                             class="btn btn-primary navbar-btn"
                             ng-click="openPostModal()">
                         <i class="glyphicon glyphicon-pencil"></i>

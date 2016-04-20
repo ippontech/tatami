@@ -36,8 +36,7 @@
                 <p>{{ 'global.welcome.timeline.afterBP3' | translate }}</p>
                 <br>"
                 tour-step-placement="left-top"
-                tour-step-skip="false"
-                tour-step-on-end="onTourEnd(tour)">
+                tour-step-append-to-body="true">
                 <strong ng-if="currentState == 'timeline'" translate="home.timeline"></strong>
                 <strong ng-if="currentState == 'mentions'" translate="home.mentions"></strong>
                 <strong ng-if="currentState == 'favorites'" translate="home.favorites"></strong>
