@@ -537,8 +537,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 },
                 'googleApps': {
                     'title': 'Google Apps Login',
-                    'line1': 'Cette fonction est pour les utilisateurs de Google Apps pour de travail, qui ont leur nom de domaine de travail géré par Google Apps.',
-                    'link': 'Pour plus d\'informations sur Google Apps pour le travail, cliquez ici.',
+                    'line1': 'Cette fonction est pour les utilisateurs de Google Apps for Work, qui ont leur nom de domaine de travail géré par Google Apps.',
+                    'link': 'Pour plus d\'informations sur Google Apps for Work, cliquez ici.',
                     'line2': 'Que vous ayez déjà ou pas un compte, vous pouvez vous connecter avec votre compte Google Apps.',
                     'line3': "Votre email sera fourni par Google et le nom du domaine de votre email sera utilisé pour vous permettre de rejoindre l'espace privé de votre entreprise.",
                     'login': 'Login avec Google Apps'
@@ -547,7 +547,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 'validation': 'Validation email',
                 'passwordSuccess': 'Votre email a été validé. Votre mot de passe vous sera envoyé par email.',
                 'returnHome': 'Allez à la page d\'accueil',
-                'registrationEmail': 'Merci ! Un e-amil de confirmation vous a été envoyé.'
+                'registrationEmail': 'Merci ! Un e-mail de confirmation vous a été envoyé.'
             },
 
             'about': {
@@ -557,10 +557,10 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'devices': 'Appareils',
                     'openSource': 'Open Source',
                     'row1': {
-                        'title': 'Un réseau social d\'entreprise privée',
+                        'title': 'Un réseau social d\'entreprise privé',
                         'line1': 'Mettre à jour votre statut afin d\'informer vos collègues',
                         'line2': "S'abonner aux timelines des autres employés",
-                        'line3': 'Partager des informations importantes au personnes qui vous suivent',
+                        'line3': 'Partager des informations importantes aux personnes qui vous suivent',
                         'line4': 'Discuter et répondre à vos collègues',
                         'line5': 'Ajouter des informations importantes dans vos favoris',
                         'line6': 'Chercher des informations utiles avec notre moteur de recherche intégré',
@@ -739,14 +739,14 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'followers': 'Abonnés',
                     'follow': 'Suivre',
                     'unfollow': 'Se désabonner',
-                    'followsYou': 'Vous suivre',
+                    'followsYou': 'Vous suit',
 
-                    'youStatusesSingular': 'Votre 1 statut',
+                    'youStatusesSingular': 'Votre statut',
                     'youStatusesPlural': 'Vos {{ amount }} statuts',
                     'youFollowingSingular': 'Vous êtes abonné(e) à 1 personne',
                     'youFollowingPlural': 'Vous êtes abonné(e) à {{ amount }} personnes',
-                    'youFollowersSingular': '1 personne vous suivre',
-                    'youFollowersPlural': '{{ amount }} personnes vous suivre',
+                    'youFollowersSingular': '1 personne vous suit',
+                    'youFollowersPlural': '{{ amount }} personnes vous suivent',
 
                     'userStatusesSingular': '@{{ username }} a partagé un statut',
                     'userStatusesPlural': '@{{ username }} a partagé {{ amount }} statuts',
@@ -789,7 +789,7 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                     'email': 'Email',
                     'firstName': 'Prénom',
                     'lastName': 'Nom',
-                    'jobTitle': 'Titre de travail',
+                    'jobTitle': 'Intitulé de poste',
                     'phoneNumber': 'Numéro de téléphone',
                     'delete': 'Supprimer votre compte',
                     'confirmDelete': 'Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?',
@@ -892,8 +892,8 @@ TatamiApp.config(['$translateProvider', function($translateProvider) {
                 // Top Posters Tab
                 'topPosters': {
                     'title': 'Top Posters',
-                    'username': 'Username',
-                    'count': 'Combien de Statuts'
+                    'username': 'Nom',
+                    'count': 'Nombre de Statuts'
                 }
             },
 
