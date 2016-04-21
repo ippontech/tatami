@@ -85,7 +85,9 @@ public class FriendshipResource {
     @Timed
     @ResponseBody
     public UserDTO updateFriend(@PathVariable("email") String email) {
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email+".com").get());
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email.split("@")[0]+"@"+currentUser.getDomain()).get());
         if(!toReturn.isFriend()) {
             friendshipService.followUser(toReturn.getEmail());
         }
