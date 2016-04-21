@@ -5,14 +5,15 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.UserDetailsService;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,7 @@ public class FriendshipResource {
 
     @Inject
     private UserDetailsService userDetailsService;
+
 
     @RequestMapping(value = "/rest/users/{email}/friends",
         method = RequestMethod.GET,
@@ -76,19 +78,18 @@ public class FriendshipResource {
     /**
      * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
      */
+
     @RequestMapping(value = "/rest/users/{email}",
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
     public UserDTO updateFriend(@PathVariable("email") String email) {
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email+".com").get());
         if(!toReturn.isFriend()) {
-            friendshipService.followUser(toReturn.getUsername());
-            System.out.println("Following user");
+            friendshipService.followUser(toReturn.getEmail());
         }
         else {
-            friendshipService.unfollowUser(toReturn.getUsername());
-            System.out.println("Unfollowing user");
+            friendshipService.unfollowUser(toReturn.getEmail());
         }
         return toReturn;
     }

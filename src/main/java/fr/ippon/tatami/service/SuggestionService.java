@@ -41,12 +41,16 @@ public class SuggestionService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private UserService userService;
+
     /**
      * Size of the sample data used to find the suggestions.
      */
 
     @Cacheable("suggest-users-cache")
     public Collection<User> suggestUsers(String email) {
+        User currentUser = userService.getCurrentUser().get();
         Map<String, Integer> userCount = new HashMap<String, Integer>();
         List<String> friendIds = friendshipService.getFriendIdsForUser(email);
         List<String> sampleFriendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
@@ -62,7 +66,7 @@ public class SuggestionService {
         List<String> mostFollowedUsersEmail = AnalysisUtil.findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
-            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail).get();
+            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail+"@"+currentUser.getDomain()).get();
             if ( suggestion.getActivated() ){
                 userSuggestions.add(suggestion);
             }

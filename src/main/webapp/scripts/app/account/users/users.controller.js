@@ -1,8 +1,9 @@
 'use strict';
 
 tatamiJHipsterApp
-    .controller('UsersController', ['$scope','$state', function($scope, $state) {
-        $scope.$state = $state;
+    .controller('UsersController', ['$scope','$state', 'domain', function($scope, $state, domain) {
+        $scope.domain = domain;
+        console.log($scope.domain.data.domain);
         //console.log($scope.$state.current);
         //$scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
         /**

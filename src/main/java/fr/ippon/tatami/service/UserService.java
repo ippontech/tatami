@@ -383,6 +383,7 @@ public class UserService {
 
     private UserDTO getUserDTOFromUser(User user) {
         UserDTO friend = new UserDTO();
+        friend.setEmail(user.getEmail());
         friend.setUsername(user.getUsername());
         friend.setAvatar(user.getAvatar());
         friend.setFirstName(user.getFirstName());

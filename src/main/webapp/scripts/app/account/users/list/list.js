@@ -5,7 +5,6 @@ tatamiJHipsterApp
         $stateProvider
             .state('listusers', {
                 templateUrl: 'scripts/app/account/users/users.html',
-
                 parent: 'users',
                 url: '/list',
 
@@ -14,6 +13,5 @@ tatamiJHipsterApp
                     pageTitle: 'global.menu.account.groups'
                 }
             })
-
 
     });

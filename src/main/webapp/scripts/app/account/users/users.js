@@ -12,7 +12,14 @@ tatamiJHipsterApp
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'global.menu.account.users'
+                },
+                resolve: {
+                    domain : getDomain
                 }
             })
+            getDomain.$inject = ['AccountService'];
+            function getDomain(AccountService) {
+                return AccountService.get().$promise;
+            }
 
     });
