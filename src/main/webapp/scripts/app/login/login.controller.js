@@ -11,8 +11,7 @@ angular.module('tatamiJHipsterApp')
         };*/
 
         var googleToken = $location.absUrl();
-        console.log(googleToken);
-        if(googleToken.contains('Token'))
+        if(googleToken.indexOf('Token') > -1)
         {
             googleToken = googleToken.split('=')[1];
             console.log(googleToken);
