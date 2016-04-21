@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.UserDetailsService;
+import fr.ippon.tatami.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;

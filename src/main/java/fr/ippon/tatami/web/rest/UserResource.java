@@ -113,6 +113,13 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
                 .body(null);
         } else {
+            String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            if(!domain.equals(currentUser.getDomain())){
+                return ResponseEntity.badRequest()
+                    .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
+                    .body(null);
+            }
             User newUser = userService.createUser(managedUserDTO);
             String baseUrl = request.getScheme() + // "http"
             "://" +                                // "://"
@@ -145,6 +152,13 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
+        String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
+        String userDomain = userDetailsService.getUserEmail().substring(userDetailsService.getUserEmail().indexOf("@")+1);
+        if(!domain.equals(userDomain)){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
+                .body(null);
+        }
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
@@ -176,6 +190,7 @@ public class UserResource {
         throws URISyntaxException {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = currentUser.getDomain();
+        log.debug("attempting to list all users in domain: {}",domain);
         List<String> userList = domainRepository.getEmailsInDomain(domain);
         List<User> users = new ArrayList<User>();
         for(String userItem : userList) {
@@ -212,6 +227,19 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         log.debug("rest request to delete User: {}", email);
+
+        if(email.equals(userDetailsService.getUserEmail())){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("user-management", "deleteself", "You cannot delete yourself."))
+                .body(null);
+        }
+        String targetDomain = email.substring(email.indexOf("@")+1);
+        String userDomain = userDetailsService.getUserEmail().substring(userDetailsService.getUserEmail().indexOf("@")+1);
+        if( !targetDomain.equals(userDomain)){
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
+                .body(null);
+        }
         userService.deleteUserInformation(email);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", email)).build();
     }

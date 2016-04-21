@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast.css" />
+        <link rel="stylesheet" href="bower_components/angular-hotkeys/build/hotkeys.css" />
         <!-- endbower -->
         <!--link rel="stylesheet" href= "assets/styles/bootstrap.css" />
 
@@ -20,6 +21,11 @@
         <!-- build:css assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
         <link rel="stylesheet" href="assets/styles/tatami.css">
+
+        <!-- spinner stuff
+        <script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>
+        <script type="text/javascript" src="angular-spinner.js"></script>
+        <script src="script.js"></script>-->
 
         <!-- endbuild -->
 
@@ -30,7 +36,7 @@
         </style>
 
     </head>
-    <body ng-app="tatamiJHipsterApp">
+    <body ng-app="tatamiJHipsterApp" ui-tour>
         <toast></toast>
         <!--[if lt IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -59,6 +65,8 @@
         <!-- bower:js -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
+        <script src="/bower_components/angular-spinner/angular-spinner.js"></script>
+        <script src="/bower_components/spin.js/spin.js"></script>
         <script src="bower_components/angular-aria/angular-aria.js"></script>
         <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
@@ -85,6 +93,12 @@
         <!-- endbower -->
         <!-- endbuild -->
         <script src="bower_components/openlayers/lib/OpenLayers.js"></script>
+
+
+        <script src="bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
+        <script src="bower_components/ez-ng/dist/ez-ng.js"></script>
+        <script src="bower_components/angular-hotkeys/build/hotkeys.js"></script>
+        <script src="bower_components/angular-ui-tour/dist/angular-ui-tour.js"></script>
 
 
     <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
@@ -173,7 +187,6 @@
     <script src="scripts/app/about/about.js"></script>
     <script src="scripts/app/account/profile/profile.js"></script>
     <script src="scripts/app/account/account.controller.js"></script>
-    <script src="scripts/app/account/tags/tags.js"></script>
     <script src="scripts/app/account/tags/tags.controller.js"></script>
     <script src="scripts/app/account/files/files.js"></script>
     <script src="scripts/app/account/files/files.controller.js"></script>
@@ -247,6 +260,7 @@
     <script src="scripts/app/account/tags/following/following.js"></script>
     <script src="scripts/app/account/tags/search/search.js"></script>
     <script src="scripts/app/account/tags/trends/trends.js"></script>
+    <script src="scripts/components/auth/services/files.service.js"></script>
 
 
 </body>

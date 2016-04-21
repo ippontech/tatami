@@ -1,43 +1,120 @@
 {
     "home": {
-        "title": "Title",
         "timeline": "Timeline",
         "mentions": "Mentions",
         "favorites": "Favorites",
-            "form": {
-                "cancel": "Cancel",
-                "presentation": "Launch presentation"
+        "companyTimeline": "Company Timeline",
+
+        "newMessage": "New Message",
+        "newMessages": "New Messages",
+
+        "post": {
+            "mandatory": "Comment is mandatory",
+            "content": {
+                "mandatory": "Please fill out this field."
             },
-            "tag": {
-                "title": "Tag",
-                "follow": "Follow",
-                "following": "Following",
-                "unfollow": "Unfollow"
+            "update": "Update your status",
+            "replyTo": "Reply",
+            "preview": "Preview",
+            "edit": "Edit",
+            "characters": {
+                "left": "Characters Left:"
             },
-            "welcome": {
-                "title": "Welcome to Tatami",
-                "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.",
-                "timeline": {
-                    "title": "Timeline",
-                    "line1": "Test line1"
-                }
+            "options": "Options",
+            "shareLocation": "Share Location",
+            "group": "Group",
+            "reply": "Reply to this status",
+            "files": "Files",
+            "drop": {
+                "file": "Drop your files here"
             },
+            "button": "Post"
+        },
+
+        "sidebar": {
+            "myGroups": "My Groups",
+            "whoToFollow": "Who To Follow",
+            "trends": "Trends",
+            "public": "PUB",
+            "private": "PVT",
+            "archived": "ARC",
+            "administrator": "A",
+            "publicToolTip": "Public Group",
+            "privateToolTip": "Private Group",
+            "archivedToolTip": "Archived Group",
+            "administratorToolTip": "You administer this group."
+        },
+
+        "tag": {
+            "title": "Tag",
+            "follow": "Follow",
+            "following": "Following",
+            "unfollow": "Unfollow"
+        },
+
+        "group": {
+            "join": "Join",
+            "joined": "Joined",
+            "leave": "Leave",
+            "manage": "Manage",
+            "statuses": "Statuses",
+            "members": "Members",
+            "membersSingular": "1 Member",
+            "membersPlural": "{{ amount }} Members"
+        },
+
+        "profile": {
+            "statuses": "Statuses",
+            "following": "Following",
+            "followers": "Followers",
+            "follow": "Follow",
+            "unfollow": "Unfollow",
+            "followsYou": "Follows You",
+
+            "youStatusesSingular": "Your 1 status",
+            "youStatusesPlural": "Your {{ amount }} statuses",
+            "youFollowingSingular": "You follow 1 person",
+            "youFollowingPlural": "You follow {{ amount }} people",
+            "youFollowersSingular": "Your 1 follower",
+            "youFollowersPlural": "Your {{ amount }} followers",
+
+            "userStatusesSingular": "@{{ username }} posted 1 status",
+            "userStatusesPlural": "@{{ username }} posted {{ amount }} statuses",
+            "userFollowingSingular": "@{{ username }} follows 1 person",
+            "userFollowingPlural": "@{{ username }} follows {{ amount }} people",
+            "userFollowersSingular": "@{{ username }} has 1 follower",
+            "userFollowersPlural": "@{{ username }} has {{ amount }} followers",
+
+            "deactivatedUser": "Deactivated User",
+
             "sidebar": {
-                "myGroups": "My Groups",
-                "trends": "Trends",
-                "whoToFollow": "Who to Follow",
-                "private": "PVT",
-                "public": "PUB",
-                "administrator": "A"
-            },
-            "status": {
-                "reply": "Reply",
-                "share": "Share",
-                "favorite": "Favorite",
-                "announce": "Announce",
-                "delete": "Delete",
-                "replyTo": "In reply to ",
-                "viewConversation": "View Conversation"
+                "information": "Information",
+                "statistics": "Statistics",
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "email": "Email",
+                "jobTitle": "Job Title",
+                "phoneNumber": "Phone Number",
+                "statuses": "Statuses",
+                "following": "Following",
+                "followers": "Followers",
+                "trends": "Trends"
             }
+        },
+
+        "searchPage": {
+            "title": "Search",
+            "statusesWith": "Statuses with"
+        },
+
+        "welcome": {
+            "title": "Welcome to Tatami",
+            "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation."
+        },
+
+        "form": {
+            "cancel": "Cancel",
+            "presentation": "Launch presentation"
+        }
     }
 }

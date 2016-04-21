@@ -23,6 +23,7 @@ tatamiJHipsterApp
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('account');
+                        $translatePartialLoader.addPart('form');
                         return $translate.refresh();
                     }],
                     profileInfo: ['AccountService', function(AccountService) {

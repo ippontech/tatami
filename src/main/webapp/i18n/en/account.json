@@ -1,126 +1,109 @@
 {
-  "account": {
-
-    "logout": "Logout",
-
-    "profile": {
-      "title": "Profile",
-      "dropPhoto": "Drop your photo here to update it",
-      "update": "Update your profile",
-      "email": "Email",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "jobTitle": "Job Title",
-      "phoneNumber": "Phone Number",
-      "delete": "Delete your account",
-      "confirmDelete": "You are about to delete your account. Are you sure?",
-      "save": "Your profile has been saved"
-    },
-
-    "form": {
-        "save": "Save",
-        "fail": "Fail"
-    },
-
-    "preferences": {
-      "title": "Preferences",
-      "notifications": "Notifications",
-      "notification": {
-        "email": {
-          "mention": "Get notified by email when you are mentioned",
-          "dailyDigest": "Get a daily digest email",
-          "weeklyDigest": "Get a weekly digest email"
+    "account": {
+        "profile": {
+            "title": "Profile",
+            "dropPhoto": "Drop your photo here to update it",
+            "update": "Update your profile",
+            "email": "Email",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "jobTitle": "Job Title",
+            "phoneNumber": "Phone Number",
+            "delete": "Delete your account",
+            "confirmDelete": "You are about to delete your account. Are you sure?",
+            "save": "Your profile has been saved"
         },
-        "rss": {
-          "timeline": "Allow RSS feed publication of your timeline",
-          "link": "Link to your timeline RSS stream"
+        "preferences": {
+            "title": "Preferences",
+            "notifications": "Notifications",
+            "notification": {
+                "email": {
+                    "mention": "Get notified by email when you are mentioned",
+                    "dailyDigest": "Get a daily digest email",
+                    "weeklyDigest": "Get a weekly digest email"
+                },
+                "rss": {
+                    "timeline": "Allow RSS feed publication of your timeline",
+                    "link": "Link to your timeline RSS stream"
+                }
+            },
+            "save": "Your preferences have been saved"
+        },
+
+        "password": {
+            "title": "Password",
+            "update": "Update your password",
+            "old": "Old Password",
+            "new": "New Password",
+            "confirm": "Confirm New Password",
+            "save": "Your password has been changed"
+        },
+
+        "files": {
+            "title": "Files",
+            "filename": "Filename",
+            "size": "Size",
+            "date": "Date",
+            "delete": "Delete"
+        },
+
+        "users": {
+            "title": "Users",
+            "following": "Following",
+            "recommended": "Recommended",
+            "search": "Search",
+            "deactivated": "This user is deactivated"
+        },
+
+        "groups": {
+            "title": "Groups",
+            "createNewGroup": "Create a new group",
+            "name": "Name",
+            "description": "Description",
+            "public": "Public",
+            "private": "Private",
+            "publicWarning": "Warning: If this group is public, everybody can access it",
+            "create": "Create",
+            "myGroups": "My Groups",
+            "recommended": "Recommended",
+            "search": "Search",
+            "group": "Group",
+            "access": "Access",
+            "members": "Members",
+            "manage": "Manage",
+            "update": "Update group details",
+            "archive": "Do you want to archive this group?",
+            "allowArchive": "Yes, this group should be archived",
+            "denyArchive": "No, this group is still in use",
+            "archiveWarning": "Warning: Archived groups are read-only",
+            "addMember": "Add a member",
+            "username": "Username",
+            "role": "Role",
+            "admin": "Administrator",
+            "member": "Member",
+            "join": "Join",
+            "joined": "Joined",
+            "leave": "Leave",
+            "archived": "Archived",
+            "add": "Add",
+            "remove": "Remove",
+            "save": "Your group has been created"
+        },
+
+        "tags": {
+            "title": "Tags",
+            "trends": "Trends",
+            "search": "Search",
+            "tag": "Tag",
+            "follow": "Follow",
+            "following": "Following",
+            "unfollow": "Unfollow"
+        },
+
+        "topPosters": {
+            "title": "Top Posters",
+            "username": "Username",
+            "count": "Status Count"
         }
-      },
-      "save": "Your preferences have been saved"
-    },
-
-
-    "password": {
-      "title": "Password",
-      "update": "Update your password",
-      "old": "Old Password",
-      "new": "New Password",
-      "confirm": "Confirm New Password",
-      "save": "Your password has been changed",
-      "warning": "After saving your password you will be logged out and required to log back in."
-    },
-
-
-    "files": {
-      "title": "Files",
-      "filename": "Filename",
-      "size": "Size",
-      "date": "Date",
-      "delete": "Delete"
-    },
-
-
-    "users": {
-      "title": "Users",
-      "following": "Following",
-      "recommended": "Recommended",
-      "search": "Search",
-      "deactivated": "This user is deactivated"
-    },
-
-
-    "groups": {
-      "title": "Groups",
-      "createNewGroup": "Create a new group",
-      "name": "Name",
-      "description": "Description",
-      "public": "Public",
-      "private": "Private",
-      "publicWarning": "Warning: If this group is public, everybody can access it",
-      "create": "Create",
-      "myGroups": "My Groups",
-      "recommended": "Recommended",
-      "search": "Search",
-      "group": "Group",
-      "access": "Access",
-      "members": "Members",
-      "manage": "Manage",
-      "update": "Update group details",
-      "archive": "Do you want to archive this group?",
-      "allowArchive": "Yes, this group should be archived",
-      "denyArchive": "No, this group is still in use",
-      "archiveWarning": "Warning: Archived groups are read-only",
-      "addMember": "Add a member",
-      "username": "Username",
-      "role": "Role",
-      "admin": "Administrator",
-      "member": "Member",
-      "join": "Join",
-      "joined": "Joined",
-      "leave": "Leave",
-      "archived": "Archived",
-      "add": "Add",
-      "remove": "Remove",
-      "save": "Your group has been created",
-      "cancel": "Cancel"
-    },
-
-
-    "tags": {
-      "title": "Tags",
-      "trends": "Trends",
-      "search": "Search",
-      "tag": "Tag",
-      "follow": "Follow",
-      "following": "Following",
-      "unfollow": "Unfollow"
-    },
-
-
-    "topPosters": {
-      "title": "Top Posters",
-      "username": "Username",
-      "count": "Status Count"
     }
-  }
 }

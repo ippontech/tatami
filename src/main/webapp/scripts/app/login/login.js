@@ -1,10 +1,11 @@
 'use strict';
 
-tatamiJHipsterApp
+
+angular.module('tatamiJHipsterApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('login', {
-             //   abstract: true,
+                //   abstract: true,
                 parent: 'site',
                 url: '/login',
                 data: {
@@ -22,6 +23,16 @@ tatamiJHipsterApp
                         $translatePartialLoader.addPart('login');
                         return $translate.refresh();
                     }]
+                    //clientId: getClientId
                 }
             });
-    });
+
+        /*getClientId.$inject = ['$http'];
+        function getClientId($http) {
+            return $http({
+                url:'/tatami/rest/client/id',
+                method: 'GET'
+            })
+        }*/
+
+})();

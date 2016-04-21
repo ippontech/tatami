@@ -23,7 +23,7 @@ tatamiJHipsterApp
                     function() {
                         $scope.fileList.splice(removalIndex, 1);
                         $scope.$state.reload();
-                        ngToast.create($translate.instant('tatami.form.deleted'));
+                        ngToast.create($translate.instant('form.deleted'));
                     });
             };
 

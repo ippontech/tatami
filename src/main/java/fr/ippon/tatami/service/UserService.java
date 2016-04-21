@@ -148,7 +148,9 @@ public class UserService {
     public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
-        user.setUsername(managedUserDTO.getUsername());
+        String username = managedUserDTO.getEmail().substring(0,managedUserDTO.getEmail().indexOf("@"));
+
+        user.setUsername(username);
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail());
@@ -159,6 +161,8 @@ public class UserService {
         } else {
             user.setLangKey(managedUserDTO.getLangKey());
         }
+        String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
+        user.setDomain(domain);
         user.setAuthorities(managedUserDTO.getAuthorities());
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);

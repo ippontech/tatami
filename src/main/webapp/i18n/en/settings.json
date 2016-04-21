@@ -12,7 +12,8 @@
         "messages": {
             "error": {
                 "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one.",
+                "domainbad": "<strong>The chosen domain does not match the current user.</strong>"
             },
             "success": "<strong>Settings saved!</strong>",
             "validate": {

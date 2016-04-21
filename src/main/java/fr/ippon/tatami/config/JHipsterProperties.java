@@ -33,6 +33,7 @@ public class JHipsterProperties {
 
     private final CorsConfiguration cors = new CorsConfiguration();
 
+    private final Google google = new Google();
 
 
     public Async getAsync() {
@@ -71,6 +72,7 @@ public class JHipsterProperties {
         return cors;
     }
 
+    public Google getGoogle(){ return google;}
 
     public static class Async {
 
@@ -327,6 +329,21 @@ public class JHipsterProperties {
         public void setLicenseUrl(String licenseUrl) {
             this.licenseUrl = licenseUrl;
         }
+    }
+
+    public static class Google{
+
+        private String clientId = "80711898729-i0g8s21vok281jq6rnrvvk95796cfgji.apps.googleusercontent.com";
+
+        private String clientSecret = "Yhbo5nYdX8iYz_8ieJ3xb3bx";
+
+        public String getClientId(){ return clientId;}
+
+        public void setClientId(String clientId){ this.clientId = clientId;}
+
+        public String getClientSecret(){ return clientSecret;}
+
+        public void setClientSecret(String clientSecret){ this.clientSecret = clientSecret;}
     }
 
     public static class Metrics {
