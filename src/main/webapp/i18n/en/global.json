@@ -1,20 +1,8 @@
 {
     "global": {
-        "title": "TatamiJHipster",
         "timeline": "Timeline",
-        "mentions": "Mentions",
-        "favorites": "Favorites",
-        "companyTimeline": "Company Timeline",
-
-        "newMessage": "New Message",
-        "newMessages": "New Messages",
-
-        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
-
-        "post": {
-            "button": "Post"
-        },
-
+        "pageNotFound": "Page not found.",
+        "error": "An error has occurred.",
         "welcome": {
             "title": "Welcome to Tatami",
             "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation.",
@@ -22,145 +10,81 @@
             "help": {
                 "title": "Help",
                 "line1": "Welcome to the online help!",
-                "line2": "Follow the next steps for a tour of the main Tatami features."
+                "line2": " Follow the next steps for a tour of the main Tatami features."
+            },
+            "timeline": {
+                "title": "Timeline",
+                "line1": "This is your timeline. It displays all messages",
+                "bulletPoint1": "mentioning you or sent privately to you",
+                "bulletPoint2": "sent by users you follow",
+                "bulletPoint3": "sent by yourself",
+                "bulletPoint4": "sent to group you are subscribed to",
+                "afterBP1": "If it's empty, don't worry, it will get updated as soon as you start following other users!",
+                "afterBP2": "When viewing a message, you can reply to it and mark it as a favorite to find it easily later.",
+                "afterBP3": "If a message already has some replies, you can see them all by clicking on the timestamp or clicking 'View Conversation'."
             },
             "post": {
                 "title": "Posting Messages",
-                "line1": "Here is where you write messages you want to share.",
+                "line1": "Here is where you write messages you want to share",
                 "bulletPoint1": "All messages are public by default. They will be delivered to all users who follow you.",
-                "bulletPoint2": "When writing a message you should use #hashtags. This simply means adding a # at the beginning of important words that can be used to find your message.",
+                "bulletPoint2": "When writing a message you should use <i>#hashtags</i>. This simply means adding a # at the beginning of important words that can be used to find your message.",
                 "bulletPoint3": "When mentioning or replying to other users you should add a @ at the beginning of their name. They will be notified that you are talking to them."
-            }
-
-        },
-
-        "account":{
-            "profile": {
-                "title": "Profile",
-                "dropPhoto": "Drop your photo here to update it",
-                "update": "Update your profile",
-                "email": "Email",
-                "firstName": "First Name",
-                "lastName": "Last Name",
-                "jobTitle": "Job Title",
-                "phoneNumber": "Phone Number",
-                "delete": "Delete your account",
-                "confirmDelete": "You are about to delete your account. Are you sure?",
-                "save": "Your profile has been saved"
             },
-
-            "preferences": {
-                "title": "Preferences",
-                "notifications": "Notifications",
-                "notification": {
-                    "email": {
-                        "mention": "Get notified by email when you are mentioned",
-                        "dailyDigest": "Get a daily digest email",
-                        "weeklyDigest": "Get a weekly digest email"
-                    },
-                    "rss": {
-                        "timeline": "Allow RSS feed publication of your timeline",
-                        "link": "Link to your timeline RSS stream"
-                    }
-                },
-                "save": "Your preferences have been saved"
+            "groups": {
+                "title": "Groups",
+                "line1": "This is the list of groups you are a member of.",
+                "line2": "You can find and subscribe to public groups in the Account/Groups page (top-right menu).",
+                "line3": "There are also private groups. You cannot subscribe to these. The owner of the group must add you as a member."
             },
-
-
-            "password": {
-                "title": "Password",
-                "update": "Update your password",
-                "old": "Old Password",
-                "new": "New Password",
-                "confirm": "Confirm New Password",
-                "save": "Your password has been changed"
-            },
-
-
-            "files": {
-                "title": "Files",
-                "filename": "Filename",
-                "size": "Size",
-                "date": "Date",
-                "delete": "Delete"
-            },
-
-
-            "users": {
-                "title": "Users",
-                "following": "Following",
-                "recommended": "Recommended",
-                "search": "Search",
-                "deactivated": "This user is deactivated"
-            },
-
             "trends": {
                 "title": "Trends",
                 "line1": "This list represents the #hashtags that are currently the most often used on Tatami. Use this to discover what's going on and what are the hottest topics on Tatami!"
             },
+            "whoToFollow": {
+                "title": "Who To Follow",
+                "line1": "This is a list of users who share common interests with you and who you could follow.",
+                "line2": "If you are a new user, this list is probably empty. Tatami needs some time to learn who you are in order to suggest relevant users.",
+                "line3": "And don't forget to use #hashtags in your messages. It makes everything easier!"
+            },
+            "next": "Next",
+            "previous": "Prev",
+            "end": "End"
+        },
+        "post": {
+            "button": "Post"
+        },
+        "account": {
+            "profile": {
+                "title": "Profile"
+            },
+            "preferences": {
+                "title": "Preferences"
+            },
+            "password": {
+                "title": "Password"
+            },
+            "files": {
+                "title": "Files"
+            },
+            "users": {
+                "title": "Users"
+            },
             "groups": {
-                "line1": "This is the list of groups you are a member of.",
-                "line2": "You can find and subscribe to public groups in the Account/Groups page (top-right menu).",
-                "line3": "There are also private groups. You cannot subscribe to these. The owner of the group must add you as a member.",
-                "title": "Groups",
-                "createNewGroup": "Create a new group",
-                "name": "Name",
-                "description": "Description",
-                "public": "Public",
-                "private": "Private",
-                "publicWarning": "Warning: If this group is public, everybody can access it",
-                "create": "Create",
-                "myGroups": "My Groups",
-                "recommended": "Recommended",
-                "search": "Search",
-                "group": "Group",
-                "access": "Access",
-                "members": "Members",
-                "manage": "Manage",
-                "update": "Update group details",
-                "archive": "Do you want to archive this group?",
-                "allowArchive": "Yes, this group should be archived",
-                "denyArchive": "No, this group is still in use",
-                "archiveWarning": "Warning: Archived groups are read-only",
-                "addMember": "Add a member",
-                "username": "Username",
-                "role": "Role",
-                "admin": "Administrator",
-                "member": "Member",
-                "join": "Join",
-                "joined": "Joined",
-                "leave": "Leave",
-                "archived": "Archived",
-                "add": "Add",
-                "remove": "Remove",
-                "save": "Your group has been created"
+                "title": "Groups"
             },
-
-
             "tags": {
-                "title": "Tags",
-                "trends": "Trends",
-                "search": "Search",
-                "tag": "Tag",
-                "follow": "Follow",
-                "following": "Following",
-                "unfollow": "Unfollow"
+                "title": "Tags"
             },
-
-
             "topPosters": {
-                "title": "Top Posters",
-                "username": "Username",
-                "count": "Status Count"
+                "title": "Top Posters"
             }
         },
-
         "topMenu": {
-            "title": "Tatami",
             "logo": "Ippon Technologies Logo",
+            "title": "Tatami",
             "about": {
                 "title": "About",
-                "version": "Version",
+                "version" : "Version",
                 "presentation": "Presentation",
                 "tos": "Terms of Service",
                 "language": {
@@ -178,7 +102,6 @@
                     "blog": "Ippon Technologies Blog",
                     "twitter": "Follow @ippontech on Twitter"
                 }
-
             },
             "search": "Search",
             "help": "Help",
@@ -188,12 +111,10 @@
                 "logout": "Logout"
             }
         },
-
-
+        "title": "TatamiJHipster",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
-            "timeline": "Timeline",
-            "about": "About",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
@@ -221,16 +142,6 @@
                 "database": "Database"
             },
             "language": "Language"
-        },
-        "about": {
-            "presentation": "Presentation",
-            "tos": "Terms of Service",
-            "license": "Souce Code License",
-            "submitBug": "Submit a Bug Report",
-            "fork": "Fork Tatami on Github",
-            "website": "Ippon Technologies Website",
-            "blog": "Ippon Technologies Blog",
-            "twitter": "Follow @ippoontech on Twitter"
         },
         "form": {
             "username": "Username",

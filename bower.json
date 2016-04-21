@@ -29,7 +29,8 @@
     "ngInfiniteScroll": "1.2.1",
     "swagger-ui": "2.1.3",
     "ngToast": "ngtoast#~1.5.6",
-    "openlayers": "release-2.13.1"
+    "openlayers": "release-2.13.1",
+    "angular-ui-tour": "^0.5.3"
   },
   "devDependencies": {
     "angular-mocks": "1.4.8",

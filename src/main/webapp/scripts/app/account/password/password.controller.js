@@ -40,7 +40,7 @@ tatamiJHipsterApp
                     $scope.logout();
                 }, function() {
                     ngToast.create({
-                        content: $translate.instant('account.form.fail'),
+                        content: $translate.instant('form.fail'),
                         class: 'danger'
                     });
                 });

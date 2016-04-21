@@ -21,15 +21,14 @@
     <section class="hidden-phone groups">
         <div class="panel panel-default">
             <div tour-step
-                 order="3"
-                 title="{{ 'home.sidebar.myGroups' | translate }}"
-                 content="{{ 'global.account.groups.line1' | translate }}
-                         <p>{{ 'welcome.groups.line2' | translate }}</p>
-                         <p>{{ 'welcome.groups.line3' | translate }}</p>
+                 tour-step-order="3"
+                 tour-step-title="{{ 'home.sidebar.myGroups' | translate }}"
+                 tour-step-content="{{ 'global.welcome.groups.line1' | translate }}
+                         <p style='min-width: 200px;'>{{ 'global.welcome.groups.line2' | translate }}</p>
+                         <p style='min-width: 200px;'>{{ 'global.welcome.groups.line3' | translate }}</p>
                          <br>"
-                 placement="right"
-                 skip="false"
-                 on-end="onTourEnd(tour)"
+                 tour-step-placement="right"
+                 tour-step-append-to-body="true"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-th-large"></span>
                 <span translate="home.sidebar.myGroups"></span>
@@ -52,12 +51,10 @@
     <section class="hidden-phone tag-trends">
         <div class="panel panel-default">
             <div tour-step
-                 order="4"
-                 title="{{ 'home.sidebar.trends' | translate }}"
-                 content="{{ 'global.account.trends.line1' | translate }}"
-                 placement="right"
-                 skip="false"
-                 on-end="onTourEnd(tour)"
+                 tour-step-order="4"
+                 tour-step-title="{{ 'home.sidebar.trends' | translate }}"
+                 tour-step-content="<p style='min-width: 200px;'>{{ 'global.welcome.trends.line1' | translate }}<p>"
+                 tour-step-placement="right"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-fire"></span>
                 <span translate="home.sidebar.trends"></span>
@@ -77,15 +74,13 @@
     <section class="hidden-phone who-to-follow">
         <div class="panel panel-default">
             <div tour-step
-                 order="5"
-                 title="{{ 'home.sidebar.whoToFollow' | translate }}"
-                 content="{{ 'welcome.whoToFollow.line1' | translate }}
-                         <p>{{ 'welcome.whoToFollow.line2' | translate }}</p>
-                         <p>{{ 'welcome.whoToFollow.line3' | translate }}</p>
+                 tour-step-order=5
+                 tour-step-title="{{ 'home.sidebar.whoToFollow' | translate }}"
+                 tour-step-content="{{ 'global.welcome.whoToFollow.line1' | translate }}
+                         <p style='min-width: 200px;'>{{ 'global.welcome.whoToFollow.line2' | translate }}</p>
+                         <p style='min-width: 200px;'>{{ 'global.welcome.whoToFollow.line3' | translate }}</p>
                          <br>"
-                 placement="right"
-                 skip="false"
-                 on-end="onTourEnd(tour)"
+                 tour-step-placement="right"
                  class="panel-heading">
                 <span class="glyphicon glyphicon-user"></span>
                 <span translate="home.sidebar.whoToFollow"></span>
