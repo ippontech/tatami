@@ -52,16 +52,16 @@
                 <form class="form" role="form" ng-submit="login($event)" accept-charset="utf-8" id="loginForm">
                     <fieldset>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.form.email' | translate }}" autofocus>
+                            <input type="text" class="form-control" id="username" ng-model="username" required="required" placeholder="{{ 'login.email' | translate }}" autofocus>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.form.password' | translate }}">
+                            <input type="password" class="form-control" id="password" ng-model="password" required="required" placeholder="{{ 'login.password' | translate }}">
                         </div>
                         <div class="form-group">
                             <input id="_spring_security_remember_me" ng-model="rememberMe" name="_spring_security_remember_me" type="checkbox">
                             <span translate="login.remember"></span>
                         </div>
-                    <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="tatami.login.title"></button>
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-block text-center" translate="login.title"></button>
                     </fieldset>
                 </form>
             </div>

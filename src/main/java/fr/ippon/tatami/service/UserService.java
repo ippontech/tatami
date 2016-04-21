@@ -141,6 +141,7 @@ public class UserService {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         String username = managedUserDTO.getEmail().substring(0,managedUserDTO.getEmail().indexOf("@"));
+
         user.setUsername(username);
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());

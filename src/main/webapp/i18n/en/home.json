@@ -105,6 +105,16 @@
         "searchPage": {
             "title": "Search",
             "statusesWith": "Statuses with"
+        },
+
+        "welcome": {
+            "title": "Welcome to Tatami",
+            "message": "Your timeline is empty! Do you need help to learn how to use Tatami? Please click on the button below to launch a presentation."
+        },
+
+        "form": {
+            "cancel": "Cancel",
+            "presentation": "Launch presentation"
         }
     }
 }
