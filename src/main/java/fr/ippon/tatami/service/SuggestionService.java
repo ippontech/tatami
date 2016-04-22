@@ -86,7 +86,7 @@ public class SuggestionService {
         List<String> friendIds = friendshipService.getFriendIdsForUser(email);
         friendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : friendIds) {
-            List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId);
+            List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId+"@"+domain);
             for (UUID groupOfFriend : groupsOfFriend) {
                 if (!groupIds.contains(groupOfFriend)) {
                     AnalysisUtil.incrementKeyCounterInMap(groupCount, groupOfFriend.toString());
