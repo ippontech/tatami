@@ -143,7 +143,7 @@ public class GroupService {
     }
 
     public Collection<Group> getGroupsWhereUserIsAdmin(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getUsername());
+        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getEmail());
         return getGroupDetails(user, groupIds);
     }
 
@@ -240,6 +240,7 @@ public class GroupService {
 
     private boolean isGroupManagedByCurrentUser(Group group) {
         Collection<Group> groups = getGroupsWhereCurrentUserIsAdmin();
+        log.debug(groups.size()+"");
         boolean isGroupManagedByCurrentUser = false;
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(group.getGroupId())) {
@@ -255,6 +256,7 @@ public class GroupService {
             if (isGroupManagedByCurrentUser(group)) {
                 group.setAdministrator(true);
                 group.setMember(true);
+                log.debug("User is Admin");
             }
             else if(group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());
