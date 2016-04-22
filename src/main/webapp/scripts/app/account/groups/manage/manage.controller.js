@@ -2,7 +2,7 @@ tatamiJHipsterApp
     .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'SearchService', 'members', function($scope, group, GroupService, SearchService, members) {
     $scope.group = group;
     $scope.members = members;
-        console.log($scope.members);
+    console.log($scope.members);
     $scope.searchedMembers = {};
     $scope.current = { searchString: '' };
 
@@ -12,7 +12,7 @@ tatamiJHipsterApp
 
     $scope.removeUser = function(member) {
         GroupService.leave(
-            { groupId: $scope.group.groupId, email: member.email },
+            { groupId: $scope.group.groupId, email: member.username },
             null,
             function() {
                 $scope.$state.reload();
@@ -39,11 +39,12 @@ tatamiJHipsterApp
         else{
             $scope.searchedMembers = {};
         }
+        console.log($scope.searchedMembers);
     };
 
     $scope.addUser = function(member) {
         GroupService.join(
-            { groupId: $scope.group.groupId, email: member.email },
+            { groupId: $scope.group.groupId, email: member.username },
             null,
             function() {
                 $scope.$state.reload();

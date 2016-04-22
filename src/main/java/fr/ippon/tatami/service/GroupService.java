@@ -80,9 +80,11 @@ public class GroupService {
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
+        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email.split("@")[0]);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
+        email += "@"+currentUser.getDomain();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByEmail(member.getKey()).get();
@@ -240,7 +242,6 @@ public class GroupService {
 
     private boolean isGroupManagedByCurrentUser(Group group) {
         Collection<Group> groups = getGroupsWhereCurrentUserIsAdmin();
-        log.debug(groups.size()+"");
         boolean isGroupManagedByCurrentUser = false;
         for (Group testGroup : groups) {
             if (testGroup.getGroupId().equals(group.getGroupId())) {
@@ -256,7 +257,6 @@ public class GroupService {
             if (isGroupManagedByCurrentUser(group)) {
                 group.setAdministrator(true);
                 group.setMember(true);
-                log.debug("User is Admin");
             }
             else if(group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());

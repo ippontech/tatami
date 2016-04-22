@@ -262,7 +262,6 @@ public class GroupResource {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
             users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getUsername());
-            log.debug("Number of Members for Group: "+users.size());
         }
         return users;
     }
@@ -319,7 +318,7 @@ public class GroupResource {
 
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToAdd = userRepository.findOneByEmail(email).get();
+        User userToAdd = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 
@@ -353,7 +352,7 @@ public class GroupResource {
 
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToremove = userRepository.findOneByEmail(email).get();
+        User userToremove = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 
