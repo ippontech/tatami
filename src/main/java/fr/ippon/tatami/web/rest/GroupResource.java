@@ -244,7 +244,7 @@ public class GroupResource {
     /**
      * GET  /groups/{groupId}/members/ -> members of the group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/",
+    @RequestMapping(value = "/rest/groups/{groupId}/members",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -262,6 +262,7 @@ public class GroupResource {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
             users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getUsername());
+            log.debug("Number of Members for Group: "+users.size());
         }
         return users;
     }

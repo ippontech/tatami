@@ -1,5 +1,5 @@
 tatamiJHipsterApp
-    .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'UserService', 'members', function($scope, group, GroupService, UserService, members) {
+    .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'SearchService', 'members', function($scope, group, GroupService, SearchService, members) {
     $scope.group = group;
     $scope.members = members;
         console.log($scope.members);
@@ -19,14 +19,24 @@ tatamiJHipsterApp
             }
         );
     };
+//
+//    $scope.search = function() {
+//        if($scope.current.searchString) {
+//            UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
+//                $scope.searchedMembers = result;
+//            });
+//        }
+//        else {
+//            $scope.searchedMembers = {};
+//        }
+//    };
 
     $scope.search = function() {
+        console.log($scope.current.searchString);
         if($scope.current.searchString) {
-            UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
-                $scope.searchedMembers = result;
-            });
+            $scope.searchedMembers = SearchService.query({ term: 'users', q: $scope.current.searchString });
         }
-        else {
+        else{
             $scope.searchedMembers = {};
         }
     };
