@@ -15,7 +15,7 @@
                 <td>
                     <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="account.groups.public"></span>
                     <span ng-show="!group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-info" translate="account.groups.private"></span>
-                    <span ng-show="group.archivedGroup" class="label labelSizeNormal" translate="account.groups.archived"></span>
+                    <span ng-show="group.archivedGroup" class="label labelSizeNormal label-default" translate="account.groups.archived"></span>
                 </td>
                 <td>
                     {{ group.counter }}
