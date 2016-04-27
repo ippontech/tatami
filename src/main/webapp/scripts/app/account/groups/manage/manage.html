@@ -74,7 +74,7 @@
                         <td>
                             {{ member.role | lowercase | translate }}
                         </td>
-                        <td ng-show="member.role === 'MEMBER'">
+                        <td ng-show="member.role === 'MEMBER' && !member.you">
                             <button ng-click="removeUser(member)" class="pull-right btn btn-danger hidden-phone" type="button">
                                 <span translate="account.groups.remove"></span>
                             </button>

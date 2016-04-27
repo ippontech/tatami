@@ -2,7 +2,6 @@ tatamiJHipsterApp
     .controller('GroupsManageController', ['$scope', 'group', 'GroupService', 'SearchService', 'members', function($scope, group, GroupService, SearchService, members) {
     $scope.group = group;
     $scope.members = members;
-    console.log($scope.members);
     $scope.searchedMembers = {};
     $scope.current = { searchString: '' };
 
@@ -19,17 +18,6 @@ tatamiJHipsterApp
             }
         );
     };
-//
-//    $scope.search = function() {
-//        if($scope.current.searchString) {
-//            UserService.searchUsers({ term: 'search', q: $scope.current.searchString }, function(result) {
-//                $scope.searchedMembers = result;
-//            });
-//        }
-//        else {
-//            $scope.searchedMembers = {};
-//        }
-//    };
 
     $scope.search = function() {
         console.log($scope.current.searchString);
@@ -39,7 +27,6 @@ tatamiJHipsterApp
         else{
             $scope.searchedMembers = {};
         }
-        console.log($scope.searchedMembers);
     };
 
     $scope.addUser = function(member) {

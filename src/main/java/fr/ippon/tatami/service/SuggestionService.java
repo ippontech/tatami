@@ -67,7 +67,7 @@ public class SuggestionService {
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
             User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail+"@"+currentUser.getDomain()).get();
-            if ( suggestion.getActivated() ){
+            if ( suggestion.getActivated() && !suggestion.getEmail().equals(currentUser.getEmail())){
                 userSuggestions.add(suggestion);
             }
         }

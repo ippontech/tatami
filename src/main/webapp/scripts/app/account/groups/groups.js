@@ -14,7 +14,14 @@ tatamiJHipsterApp
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'global.menu.account.groups'
+                },
+                resolve: {
+                    username: getUsername
                 }
             })
+            getUsername.$inject = ['AccountService'];
+                        function getUsername(AccountService) {
+                            return AccountService.get().$promise;
+                        }
 
     });

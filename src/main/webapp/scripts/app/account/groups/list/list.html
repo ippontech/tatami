@@ -27,6 +27,12 @@
                                 <span translate="account.groups.manage"></span>
                             </button>
                         </span>
+                    <button type="button" ng-if="!group.administrator" ng-click="joinLeaveGroup(group)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-sm pull-right" ng-class="{ 'btn-danger': group.member && hover, 'btn-info': group.member && !hover }">
+                            <span class="glyphicon" ng-class="group.member ? 'glyphicon-minus' : 'glyphicon-plus'">
+                                <span ng-if="!group.member" class="hidden-phone" translate="account.groups.join"></span>
+                                <span ng-if="group.member && !hover" class="hidden-phone" translate="account.groups.joined"></span>
+                                <span ng-if="group.member && hover" class="hidden-phone" translate="account.groups.leave"></span>
+                            </span>
                     </button>
                 </td>
             </tr>
