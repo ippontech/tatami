@@ -10,15 +10,25 @@
                 </label>
             </div>
 
+            <label class="toggle">
+                <input type="checkbox" ng-model="vm.tos">
+                <div class="track">
+                    <div class="handle"></div>
+                </div>
+            </label>
+            <a href="http://app.tatamisoft.com/#/about/tos" translate="login.tos">Accept Terms of Service</a>
+
             <div class="padding">
-                <button ng-disabled="!vm.user.email && !vm.user.password"
+                <button ng-disabled="!vm.user.email && !vm.user.password || !vm.tos"
                         translate="login.title"
                         class="button button-block button-calm"
-                        type="submit">Login
+                        type="submit">
+                    Login
                 </button>
             </div>
             <div class="padding">
-                <button ng-click="vm.googleLogin()"
+                <button ng-disabled="!vm.tos"
+                        ng-click="vm.googleLogin()"
                         translate="login.google"
                         class="button button-block button-stable"
                         type="button">
