@@ -6,6 +6,7 @@
         "google": "Google Login",
         "success": "Logged In!",
         "failed": "Failed to log in!",
-        "progress": "Login in progress..."
+        "progress": "Login in progress...",
+        "tos": "Accept Terms of Service"
     }
 }
