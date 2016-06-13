@@ -271,8 +271,7 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        String email = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
-        return suggestionService.suggestUsers(email);
+        return suggestionService.suggestUsers(SecurityUtils.getCurrentUserUsername());
     }
 
     /**
