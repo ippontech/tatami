@@ -2,11 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.MailDigestRepository;
-import fr.ippon.tatami.repository.FriendRepository;
-import fr.ippon.tatami.repository.FollowerRepository;
-import fr.ippon.tatami.repository.RssUidRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
@@ -14,21 +10,15 @@ import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
-
-import java.lang.String;
-import java.time.ZonedDateTime;
-
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.xml.DomUtils;
 
-import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -233,9 +223,13 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        user.getAuthorities().size(); // eagerly load the association
-        return user;
+        Optional<User> userOptional = userRepository.findOneByEmail(SecurityUtils.getCurrentUserUsername());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getAuthorities().size(); // eagerly load the association
+            return user;
+        }
+        return null;
     }
 
     /**
