@@ -1,3 +1,5 @@
+USE TatamiJHipster;
+
 CREATE TABLE IF NOT EXISTS status (
     statusId timeuuid,
     type varchar,
