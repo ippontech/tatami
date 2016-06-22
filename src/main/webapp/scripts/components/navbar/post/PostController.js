@@ -52,11 +52,18 @@ tatamiJHipsterApp.controller('PostController', [
         $scope.status = {   // This is the current user status information
             content: "",    // The content contained in this status
             groupId: "",    // The groupId that this status is being broadcast to
+
+            // Here I should add a method that sets groupId =
+            //     - '' if I wasnt on a groupitimeline
+            //     - groupIdOfTheCurrentGroup if I was on a group Timeline
+
             replyTo: "",     // The user we are replying to
             attachmentIds: [], // An array of all the attachments contained in the status
             geoLocalization: "", // The geographical location of the user when posting the status
             statusPrivate: false // Determines whether the status is private
         };
+
+
 
         $scope.charCount = 750;
 
