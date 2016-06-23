@@ -70,13 +70,24 @@ PostModule.controller('PostController', [
 
         $scope.charCount = 750;
 
+        $scope.calculateRemainingLength = function() {
+            // Returns maxLength - statusLength - (number of newlines entered in status)
+            // This is necessary because newline is input as "\n" (two characters), so characters left counts incorrectly without this
+            if ($scope.status.content != null) {
+                return $scope.charCount - $scope.status.content.length - ($scope.status.content.match(/\n/g) || []).length;
+            }
+            else {
+                return $scope.charCount;
+            }
+        }
+
         $scope.uploadStatus = {
             isUploading: false,
             progress: 0
         };
 
         /**
-         * Watches the current.files ng-model and handles uploads
+         * Watches the current.filestats ng-model and handles uploads
 
         $scope.$watch('current.files', function() {
             if($scope.current.files !== null) {

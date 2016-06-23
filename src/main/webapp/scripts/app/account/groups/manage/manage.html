@@ -60,21 +60,21 @@
                             <h4>
                                 <a ui-sref="home.profile.statuses({ email: profile.email })">
                                     <strong>
-                                        {{ profile.firstName + ' ' + profile.lastName }}
+                                        {{ member.firstName + ' ' + member.lastName }}
                                     </strong>
                                 </a>
                                 <br>
                                 <a ui-sref="home.profile.statuses({ email: profile.email })">
                                     <small>
-                                        @{{ profile.username }}
+                                        @{{ member.username }}
                                     </small>
                                 </a>
                             </h4>
                         </td>
                         <td>
-                            {{ 'Administrator' + member.role | lowercase | translate }}
+                            {{ member.role | lowercase | translate }}
                         </td>
-                        <td ng-show="member.role === 'MEMBER'">
+                        <td ng-show="member.role === 'MEMBER' && !member.you">
                             <button ng-click="removeUser(member)" class="pull-right btn btn-danger hidden-phone" type="button">
                                 <span translate="account.groups.remove"></span>
                             </button>
@@ -101,9 +101,10 @@
                                 </li>
                             </ul>
                             -->
+                        </div>
                             <table class="table">
                                 <tbody>
-                                <tr ng-repeat="member in searchedMembers">
+                                <tr ng-repeat="member in searchedMembers"  ng-show="!member.you">
                                     <td style="text-align: left">
                                         <div class="pull-left background-image-fffix little-marge-right">
                                             <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + member.avatarURL + ')' }">
@@ -131,7 +132,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+
                     </div>
                     <br>
                     <div class="return"></div>

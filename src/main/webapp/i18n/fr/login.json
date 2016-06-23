@@ -1,19 +1,36 @@
 {
     "login": {
-        "title": "Authentification",
-        "form": {
-            "password": "Mot de passe",
-            "password.placeholder": "Votre mot de passe",
-            "rememberme": "Garder la session ouverte",
-            "button": "Connexion"
+        "title": "Login",
+        "mainTitle": "Bienvenue sur Tatami",
+        "subtitle": "Un réseau social d'entreprise open source",
+        "moreInfo": "Plus d'info",
+        "email": "Email",
+        "password": "Mot de passe",
+        "remember": "Se souvenir de moi",
+        "forgotPassword": "Mot de passe oublié ?",
+        "resetPassword": "Nouveau mot de passe",
+        "tos": "Conditions de service",
+        "fail": "Votre authentification a échoué ! Etes-vous sûr que vous avez utilisé un mot de passe correct ?",
+        "passwordEmailSent": "Un email vous a été envoyé, avec des instructions pour créer un nouveau mot de passe.",
+        "unregisteredEmail": "Cette adresse email n'est pas enregistrée dans Tatami.",
+        "register": {
+            "title": "Enregistré",
+            "line1": "Un email de confirmation sera envoyé à l'adresse fournie.",
+            "line2": "Le domaine de votre email détermine l'espace de l'entreprise que vous allez rejoindre. Par exemple, les utilisateurs ayant une adresse email@ippon.fr vont joindre l'espace privé Ippon.",
+            "line3": "Si vous êtes le premier employé de votre entreprise à se joindre à Tatami, l'espace privé de votre entreprise sera automatiquement créé."
         },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
-            }
+        "googleApps": {
+            "title": "Google Apps Login",
+            "line1": "Cette fonction est pour les utilisateurs de Google Apps pour de travail, qui ont leur nom de domaine de travail géré par Google Apps.",
+            "link": "Pour plus d'informations sur Google Apps pour le travail, cliquez ici.",
+            "line2": "Que vous ayez déjà ou pas un compte, vous pouvez vous connecter avec votre compte Google Apps.",
+            "line3": "Votre email sera fourni par Google et le nom du domaine de votre email sera utilisé pour vous permettre de rejoindre l'espace privé de votre entreprise.",
+            "login": "Login avec Google Apps"
         },
-        "password" : {
-            "forgot": "Avez-vous oublié votre mot de passe?"
-        }
+
+        "validation": "Validation email",
+        "passwordSuccess": "Votre email a été validé. Votre mot de passe vous sera envoyé par email.",
+        "returnHome": "Allez à la page d'accueil",
+        "registrationEmail": "Merci ! Un e-amil de confirmation vous a été envoyé."
     }
 }

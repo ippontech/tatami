@@ -55,8 +55,8 @@
                                                 <span translate="account.files.title"></span>
                                             </a>
                                         </li>
-                                        <li ui-sref-active="active">
-                                            <a ui-sref="account.users">
+                                        <li ng-class="{ 'active': $state.includes('users') }">
+                                            <a ui-sref="following">
                                                 <span class="glyphicon glyphicon-globe"></span>
                                                 <span translate="account.users.title"></span>
                                             </a>

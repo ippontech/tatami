@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class XAuthTokenFilter extends GenericFilterBean {
 
-    private final static String XAUTH_TOKEN_HEADER_NAME = "x-auth-token";
+    public final static String XAUTH_TOKEN_HEADER_NAME = "x-auth-token";
 
     private UserDetailsService detailsService;
 

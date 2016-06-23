@@ -244,7 +244,7 @@ public class GroupResource {
     /**
      * GET  /groups/{groupId}/members/ -> members of the group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/",
+    @RequestMapping(value = "/rest/groups/{groupId}/members",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
@@ -318,7 +318,7 @@ public class GroupResource {
 
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToAdd = userRepository.findOneByEmail(email).get();
+        User userToAdd = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 
@@ -352,7 +352,7 @@ public class GroupResource {
 
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToremove = userRepository.findOneByEmail(email).get();
+        User userToremove = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 

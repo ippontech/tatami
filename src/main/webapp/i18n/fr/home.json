@@ -1,0 +1,110 @@
+{
+    "home": {
+        "timeline": "Timeline",
+        "mentions": "Mentions",
+        "favorites": "Favoris",
+        "companyTimeline": "Timeline de votre entreprise",
+
+        "newMessage": "Nouveau Message",
+        "newMessages": "Nouveaux Messages",
+
+        "post": {
+            "mandatory": "Commentaire obligatoire",
+            "content": {
+                "mandatory": "Veuillez remplir ce champ.."
+            },
+            "update": "Mettre à jour votre statut",
+            "replyTo": "Répondre",
+            "preview": "Prévisualisation",
+            "edit": "Éditer",
+            "characters": {
+                "left": "Caractères restants :"
+            },
+            "options": "Options",
+            "shareLocation": "Partager votre localisation",
+            "group": "Groupe",
+            "reply": "Répondre à ce statut",
+            "files": "Fichiers",
+            "drop": {
+                "file": "Déposez vos fichiers ici"
+            },
+            "button": "Post"
+        },
+
+        "sidebar": {
+            "myGroups": "Mes Groupes",
+            "whoToFollow": "Qui Suivre",
+            "trends": "Tendances",
+            "public": "PUB",
+            "private": "PVT",
+            "archived": "ARC",
+            "administrator": "A",
+            "publicToolTip": "Groupe public",
+            "privateToolTip": "Groupe privé",
+            "archivedToolTip": "Groupe archivé",
+            "administratorToolTip": "Vous administrez ce groupe."
+        },
+
+        "tag": {
+            "title": "Tag",
+            "follow": "Abonnés",
+            "following": "Abonnements",
+            "unfollow": "Se désabonner"
+        },
+
+        "group": {
+            "join": "Joindre",
+            "joined": "a rejoins",
+            "leave": "Quitter",
+            "manage": "Gérer",
+            "statuses": "Statuts",
+            "members": "Membres",
+            "membersSingular": "1 Membre",
+            "membersPlural": "{{ amount }} Membres"
+        },
+
+        "profile": {
+            "statuses": "Statuts",
+            "following": "Abonnement",
+            "followers": "Abonnés",
+            "follow": "Suivre",
+            "unfollow": "Se désabonner",
+            "followsYou": "Vous suivre",
+
+            "youStatusesSingular": "Votre 1 statut",
+            "youStatusesPlural": "Vos {{ amount }} statuts",
+            "youFollowingSingular": "Vous êtes abonné(e) à 1 personne",
+            "youFollowingPlural": "Vous êtes abonné(e) à {{ amount }} personnes",
+            "youFollowersSingular": "1 personne vous suivre",
+            "youFollowersPlural": "{{ amount }} personnes vous suivre",
+
+            "userStatusesSingular": "@{{ username }} a partagé un statut",
+            "userStatusesPlural": "@{{ username }} a partagé {{ amount }} statuts",
+            "userFollowingSingular": "@{{ username }} suit 1 personne",
+            "userFollowingPlural": "@{{ username }} suit {{ amount }} personnes",
+            "userFollowersSingular": "@{{ username }} a 1 abonnement",
+            "userFollowersPlural": "@{{ username }} a {{ amount }} abonnements",
+
+            "deactivatedUser": "Utilisateur désactivé",
+
+            "sidebar": {
+                "information": "Information",
+                "statistics": "Statistiques",
+                "firstName": "Prénom",
+                "lastName": "Nom",
+                "email": "Email",
+                "jobTitle": "Titre",
+                "phoneNumber": "Numéro de téléphone",
+                "statuses": "Statuts",
+                "following": "Abonnement",
+                "followers": "Abonné",
+                "trends": "Tendances"
+            }
+        },
+
+        "searchPage": {
+            "title": "Recherchez",
+            "statusesWith": "Statuts avec"
+        }
+    }
+}

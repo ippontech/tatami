@@ -2,8 +2,8 @@
     <div class="alert alert-status">
         <div class = well>
             <form class="form-horizontal row-fluid">
-                <h2 translate="global.account.preferences.title"></h2>
-                <legend translate="global.account.preferences.notifications"></legend>
+                <h2 translate="account.preferences.title"></h2>
+                <legend translate="account.preferences.notifications"></legend>
 
                 <div class="control-group">
 
@@ -14,19 +14,19 @@
                     </div>
                     <div class="controls">
                         <label class="checkbox" style="left: 50px">
-                        <input name="dailyDigest" type="checkbox" ng-model="userPreferences.dailyDigest" ng-checked="userPreferences.dailyDigest"> {{ 'global.account.preferences.notification.email.dailyDigest' | translate }}
+                        <input name="dailyDigest" type="checkbox" ng-model="userPreferences.dailyDigest" ng-checked="userPreferences.dailyDigest"> {{ 'account.preferences.notification.email.dailyDigest' | translate }}
                         </label>
                     </div>
                     <div class="controls">
                         <label class="checkbox" style="left: 50px">
-                        <input name="weeklyDigest" type="checkbox" ng-model="userPreferences.weeklyDigest" ng-checked="userPreferences.weeklyDigest"> {{ 'global.account.preferences.notification.email.weeklyDigest' | translate }}
+                        <input name="weeklyDigest" type="checkbox" ng-model="userPreferences.weeklyDigest" ng-checked="userPreferences.weeklyDigest"> {{ 'account.preferences.notification.email.weeklyDigest' | translate }}
                         </label>
                     </div>
                     <div class="controls">
                         <label class="checkbox" style="left: 50px">
-                        <input name="rssUidActive" type="checkbox" ng-model="userPreferences.rssUidActive" ng-checked="userPreferences.rssUidActive"> {{ 'global.account.preferences.notification.rss.timeline' | translate }}
+                        <input name="rssUidActive" type="checkbox" ng-model="userPreferences.rssUidActive" ng-checked="userPreferences.rssUidActive"> {{ 'account.preferences.notification.rss.timeline' | translate }}
                         </label>
-                        <a ng-if="userPreferences.rssUidActive" href="/tatami/syndic/{{ userPreferences.rssUid }}">{{ 'global.account.preferences.notification.rss.link' | translate }}</a>
+                        <a ng-if="userPreferences.rssUidActive" href="/tatami/syndic/{{ userPreferences.rssUid }}">{{ 'account.preferences.notification.rss.link' | translate }}</a>
                     </div>
                     </div>
                 <fieldset>

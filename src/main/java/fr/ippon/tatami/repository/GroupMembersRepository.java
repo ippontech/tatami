@@ -49,7 +49,7 @@ public class GroupMembersRepository {
         Statement statement = QueryBuilder.insertInto(GROUP_MEMBER)
                 .value(GROUP_ID, groupId)
                 .value(EMAIL, email)
-                .value(ROLE, GroupRoles.MEMBER);
+                .value(ROLE, GroupRoles.ADMIN);
         session.execute(statement);
     }
 

@@ -228,6 +228,7 @@ public class StatusRepository {
         mentionFriend.setType(StatusType.MENTION_FRIEND);
         mentionFriend.setUsername(username);
         mentionFriend.setDomain(domain);
+        mentionFriend.setEmail(username+"@"+domain);
 
         Insert inserter = this.createBaseStatus(mentionFriend);
         mentionFriend.setfollowerUsername(followerUsername);

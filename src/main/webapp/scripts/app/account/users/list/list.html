@@ -1,0 +1,37 @@
+<div>
+    <div ng-repeat="user in usersList">
+        <div class="useritem">
+            <div class="pull-left background-image-fffix">
+                <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
+            </div>
+            <h4>
+        <!--<span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">-->
+            <span ng-if="!user.you" ng-click="followUser(user, $index)">
+                <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+            </span>
+        <span ng-show="!user.activated">
+            <span ng-class="!user.activated ? 'badge hidden-phone progress-bar-danger' : ''" class="glyphicon glyphicon-off">
+                {{ 'account.users.deactivated' | translate }}
+            </span>
+        </span>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <strong>
+                        {{ user.firstName + ' ' + user.lastName }}
+                    </strong>
+                </a>
+                <br>
+                <a ui-sref="home.profile.statuses({ username: user.username })">
+                    <small>
+                        @{{ user.username }}
+                    </small>
+                </a>
+        <span ng-click="deactivate(user, $index)" ng-show="isAdmin && user.activated && !user.you" class="pointer pull-right label label-danger">
+            <span class="glyphicon glyphicon-minus" translate="admin.deactivate"></span>
+        </span>
+        <span ng-click="deactivate(user, $index)" ng-show="isAdmin && !user.activated && !user.you" class="pointer pull-right label label-info">
+            <span class="glyphicon glyphicon-plus" translate="admin.activate"></span>
+        </span>
+            </h4>
+        </div>
+    </div>
+</div>

@@ -29,6 +29,9 @@ public class FriendshipService {
     private final Logger log = LoggerFactory.getLogger(FriendshipService.class);
 
     @Inject
+    private UserService userService;
+
+    @Inject
     private UserRepository userRepository;
 
     @Inject
@@ -103,16 +106,18 @@ public class FriendshipService {
         if (userToUnfollow != null) {
             String userEmailToUnfollow = userToUnfollow.getEmail();
             boolean userAlreadyFollowed = false;
-            for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getEmail())) {
-                if (alreadyFollowingTest.equals(userEmailToUnfollow)) {
+
+            for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getUsername())) {
+                if (alreadyFollowingTest.equals(userToUnfollow.getUsername())) {
                     userAlreadyFollowed = true;
                 }
             }
+            log.debug("userAlreadyFollowed :"+userAlreadyFollowed+":"+userEmailToUnfollow);
             if (userAlreadyFollowed) {
-                friendRepository.removeFriend(currentUser.getEmail(), userEmailToUnfollow);
-                counterRepository.decrementFriendsCounter(currentUser.getEmail());
-                followerRepository.removeFollower(userEmailToUnfollow, currentUser.getEmail());
-                counterRepository.decrementFollowersCounter(userEmailToUnfollow);
+                friendRepository.removeFriend(currentUser.getUsername(), userToUnfollow.getUsername());
+                counterRepository.decrementFriendsCounter(currentUser.getUsername());
+                followerRepository.removeFollower(userToUnfollow.getUsername(), currentUser.getUsername());
+                counterRepository.decrementFollowersCounter(userToUnfollow.getUsername());
                 log.debug("User {} has stopped following user {}", currentUser.getEmail(), userEmailToUnfollow);
                 return true;
             } else {
@@ -126,7 +131,7 @@ public class FriendshipService {
 
     public List<String> getFriendIdsForUser(String email) {
         log.debug("Retrieving friends for user with email : {}", email);
-        return friendRepository.findFriendsForUser(email);
+        return friendRepository.findFriendsForUser(email.split("@")[0]);
     }
 
     public Collection<String> getFollowerIdsForUser(String userEmail) {
@@ -135,10 +140,12 @@ public class FriendshipService {
     }
 
     public Collection<User> getFriendsForUser(String userEmail) {
+
+        User currentUser = userService.getCurrentUser().get();
         Collection<String> friendEmails = friendRepository.findFriendsForUser(userEmail);
         Collection<User> friends = new ArrayList<User>();
         for (String friendEmail : friendEmails) {
-            User friend = userRepository.findOneByEmail(friendEmail).get();
+            User friend = userRepository.findOneByEmail(friendEmail+"@"+currentUser.getDomain()).get();
             friends.add(friend);
         }
         return friends;

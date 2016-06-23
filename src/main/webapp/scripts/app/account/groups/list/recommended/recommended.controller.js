@@ -1,5 +1,4 @@
 tatamiJHipsterApp
-    .controller('GroupsListRecommendedController', ['$scope', function($scope) {
+    .controller('GroupsListRecommendedController', ['$scope', 'userGroups', function($scope, userGroups) {
     $scope.userGroups = userGroups;
-
 }]);

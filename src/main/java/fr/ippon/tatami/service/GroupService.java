@@ -80,9 +80,11 @@ public class GroupService {
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
+        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
+        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email.split("@")[0]);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
+        email += "@"+currentUser.getDomain();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByEmail(member.getKey()).get();
@@ -143,7 +145,7 @@ public class GroupService {
     }
 
     public Collection<Group> getGroupsWhereUserIsAdmin(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getUsername());
+        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getEmail());
         return getGroupDetails(user, groupIds);
     }
 

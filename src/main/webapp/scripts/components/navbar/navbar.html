@@ -139,24 +139,22 @@
                 <li>
                     <a id="logout" ng-click="logout()">
                         <span class="glyphicon glyphicon-off"></span>
-                        <span translate="account.logout"></span>
+                        <span translate="global.topMenu.account.logout"></span>
                     </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-if="$state.includes('sidebarHome') || $state.includes('admin')">
 
                 <li tour-step
-                    order="0"
-                    title="{{ 'global.welcome.help.title' | translate }}"
-                    content="{{ 'global.welcome.help.line1' | translate }}
+                    tour-step-order="0"
+                    tour-step-title="Help"
+                    tour-step-content="{{ 'global.welcome.help.line1' | translate }}
                     <br>
                     <p>{{ 'global.welcome.help.line2' | translate }}</p>
                     <br>"
-                    navigation=""
-                    placement="bottom"
-                    ng-click="tour.restart(true)"
-                    skip="false"
-                    on-end="onTourEnd(tour)">
+                    tour-step-placement="bottom"
+                    tour-step-append-to-body="true"
+                    ng-click="tour.start()">
                     <a id="help-tour">
                         <span>
                             <span class="glyphicon glyphicon-question-sign"></span>
@@ -197,7 +195,7 @@
                                 <span class="glyphicon glyphicon-file"></span>
                                 <span translate="global.account.files.title"></span>
                             </a>
-                            <a ui-sref="account.users">
+                            <a ui-sref="following">
                                 <span class="glyphicon glyphicon-globe"></span>
                                 <span translate="global.account.users.title"></span>
                             </a>
@@ -286,9 +284,9 @@
                 <li>
                     <button
                             tour-step
-                            order="2"
-                            title="{{ 'global.welcome.post.title' | translate }}"
-                            content="
+                            tour-step-order="2"
+                            tour-step-title="{{ 'global.welcome.post.title' | translate }}"
+                            tour-step-content="
                             {{ 'global.welcome.post.line1' | translate }}
                             <ul>
                                 <li>{{ 'global.welcome.post.bulletPoint1' | translate }}</li>
@@ -296,9 +294,7 @@
                                 <li>{{ 'global.welcome.post.bulletPoint3' | translate }}</li>
                             </ul>
                             <br>"
-                            placement="left"
-                            skip="false"
-                            on-end="onTourEnd(tour)"
+                            tour-step-placement="left-top"
                             class="btn btn-primary navbar-btn"
                             ng-click="openPostModal()">
                         <i class="glyphicon glyphicon-pencil"></i>

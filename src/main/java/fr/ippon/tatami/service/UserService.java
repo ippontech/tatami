@@ -2,9 +2,7 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.DigestType;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.MailDigestRepository;
-import fr.ippon.tatami.repository.RssUidRepository;
-import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
@@ -12,21 +10,15 @@ import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
-
-import java.lang.String;
-import java.time.ZonedDateTime;
-
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.xml.DomUtils;
 
-import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -39,6 +31,12 @@ public class UserService {
 
     @Inject
     private PasswordEncoder passwordEncoder;
+
+    @Inject
+    private FriendRepository friendRepository;
+
+    @Inject
+    private FollowerRepository followerRepository;
 
     @Inject
     private UserRepository userRepository;
@@ -140,7 +138,9 @@ public class UserService {
     public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
-        user.setUsername(managedUserDTO.getUsername());
+        String username = managedUserDTO.getEmail().substring(0,managedUserDTO.getEmail().indexOf("@"));
+
+        user.setUsername(username);
         user.setFirstName(managedUserDTO.getFirstName());
         user.setLastName(managedUserDTO.getLastName());
         user.setEmail(managedUserDTO.getEmail());
@@ -151,6 +151,8 @@ public class UserService {
         } else {
             user.setLangKey(managedUserDTO.getLangKey());
         }
+        String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
+        user.setDomain(domain);
         user.setAuthorities(managedUserDTO.getAuthorities());
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
@@ -221,9 +223,13 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        user.getAuthorities().size(); // eagerly load the association
-        return user;
+        Optional<User> userOptional = userRepository.findOneByEmail(SecurityUtils.getCurrentUserUsername());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getAuthorities().size(); // eagerly load the association
+            return user;
+        }
+        return null;
     }
 
     /**
@@ -335,28 +341,26 @@ public class UserService {
      */
     public Collection<User> getUsersByEmail(Collection<String> emails) {
         final Collection<User> users = new ArrayList<User>();
-        User user;
+        Optional<User> user;
         for (String email : emails) {
-            user = userRepository.findOneByEmail(email).get();
-            if (user != null) {
-                users.add(user);
-            }
+            user = userRepository.findOneByEmail(email);
+            user.ifPresent(users::add);
         }
         return users;
     }
 
     public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-//        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-//        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
+        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
         for (User user : users) {
             UserDTO userDTO = getUserDTOFromUser(user);
             userDTO.setYou(user.equals(currentUser));
-//            if (!userDTO.isYou()) {
-//                userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
-//                userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
-//            }
+            if (!userDTO.isYou()) {
+                userDTO.setFriend(currentFriendLogins.contains(user.getUsername()));
+                userDTO.setFollower(currentFollowersLogins.contains(user.getUsername()));
+            }
             userDTOs.add(userDTO);
         }
         return userDTOs;
@@ -366,17 +370,18 @@ public class UserService {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         UserDTO userDTO = getUserDTOFromUser(user);
         userDTO.setYou(user.equals(currentUser));
-//        if (!userDTO.isYou()) {
-//            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
-//            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
-//            userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
-//            userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
-//        }
+        if (!userDTO.isYou()) {
+            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
+            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());
+            userDTO.setFriend(currentFriendLogins.contains(user.getUsername()));
+            userDTO.setFollower(currentFollowersLogins.contains(user.getUsername()));
+        }
         return userDTO;
     }
 
     private UserDTO getUserDTOFromUser(User user) {
         UserDTO friend = new UserDTO();
+        friend.setEmail(user.getEmail());
         friend.setUsername(user.getUsername());
         friend.setAvatar(user.getAvatar());
         friend.setFirstName(user.getFirstName());

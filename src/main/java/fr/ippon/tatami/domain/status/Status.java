@@ -133,7 +133,7 @@ public class Status implements AbstractStatus {
 
     @NotNull
     @NotEmpty(message = "Content field is mandatory.")
-    @Size(min = 1, max = 2048)
+    @Size(min = 1, max = 750)
     @Column
     private String content;
 
