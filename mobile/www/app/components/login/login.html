@@ -10,14 +10,16 @@
                 </label>
             </div>
 
-            <label class="toggle">
-                <input type="checkbox" ng-model="vm.tos">
-                <div class="track">
-                    <div class="handle"></div>
-                </div>
-            </label>
-            <a href="http://app.tatamisoft.com/#/about/tos" translate="login.tos">Accept Terms of Service</a>
-
+            <div align="center">
+                <label class="toggle v-align">
+                    <input type="checkbox" ng-model="vm.tos">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+                <span translate="login.accept"></span>
+                <a href="http://app.tatamisoft.com/#/about/tos" translate="login.tos"></a>
+            </div>
             <div class="padding">
                 <button ng-disabled="!vm.user.email && !vm.user.password || !vm.tos"
                         translate="login.title"

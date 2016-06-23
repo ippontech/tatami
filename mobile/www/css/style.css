@@ -62,4 +62,7 @@ div .tatami-avatar {
     bottom: 44px;
 }
 
+.v-align {
+    vertical-align: middle !important;
+}
 
