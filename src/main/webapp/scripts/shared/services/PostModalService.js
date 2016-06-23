@@ -22,6 +22,9 @@ tatamiJHipsterApp
                }],
                groups: ['GroupService', function(GroupService) {
                    return GroupService.getGroups().$promise;
+               }],
+               groupId: ['$stateParams', function($stateParams){
+                 return $stateParams.groupId;
                }]
            }
        });

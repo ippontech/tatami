@@ -15,8 +15,9 @@ tatamiJHipsterApp.controller('PostController', [
     'SearchService',
     '$stateParams',
     '$state',
+    'groupId',
     function($scope, $uibModalInstance, $translate, Upload, StatusService, GeolocalisationService, groups, curStatus,
-    SearchService, $stateParams, $state) {
+    SearchService, $stateParams, $state, groupId) {
 
         $scope.$state = $state;
         $scope.isOneDayOrMore = function(date) {
@@ -51,7 +52,7 @@ tatamiJHipsterApp.controller('PostController', [
 
         $scope.status = {   // This is the current user status information
             content: "",    // The content contained in this status
-            groupId: "",    // The groupId that this status is being broadcast to
+            groupId: groupId,    // The groupId that this status is being broadcast to
             replyTo: "",     // The user we are replying to
             attachmentIds: [], // An array of all the attachments contained in the status
             geoLocalization: "", // The geographical location of the user when posting the status
