@@ -11,9 +11,8 @@
         '$localStorage',
         '$ionicLoading',
         'clientId',
-        'LoginService',
         'PathService'];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, LoginService, PathService) {
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService) {
 
         var vm = this;
 
@@ -32,19 +31,20 @@
         vm.googleLogin = googleLogin;
 
         function login() {
-            LoginService.login({
-                j_username: vm.user.email,
-                j_password: vm.user.password,
-                _spring_security_remember_me: vm.user.remember
-            }, function(success) {
-                if(success && success.data && success.data.token) {
-                    $localStorage.set('token', success.data.token);
+            var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
+                + encodeURIComponent(vm.user.password);
+            return $http.post(PathService.buildPath('/tatami/authentication'), data, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
                 }
-                vm.user = { remember: false };
+            }).success(function (token) {
+                $localStorage.set('token', token);
+                vm.user = {remember: false};
                 $state.go('timeline');
-            }, function(failed) {
+            }).error(function () {
                 vm.failed = true;
-            })
+            });
         }
 
         function googleLogin() {

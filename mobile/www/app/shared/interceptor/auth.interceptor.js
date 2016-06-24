@@ -37,7 +37,7 @@
         responseError.$inject = ['response'];
         function responseError(response) {
             if(response.status === 401 && (response.data.error == 'invalid_token' || response.data.error == 'Unauthorized')) {
-                $localStorage.clear();
+                $localStorage.signOut();
                 var $state = $injector.get('$state');
                 $state.go('login');
             }
