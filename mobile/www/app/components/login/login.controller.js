@@ -20,8 +20,8 @@
         if (clientId.data && clientId.data.stringList) {
             // Old tatami return the clientId in the stringList property
             vm.clientId = clientId.data.stringList[0];
-        } else if (clientId.data && angular.isArray(clientId.data)) {
-            vm.clientId = clientId.data[0];
+        } else if (clientId.data && clientId.data.clientId) {
+            vm.clientId = clientId.data.clientId;
         }
         vm.user = {
             remember: false
