@@ -7,6 +7,7 @@
         "success": "Logged In!",
         "failed": "Failed to log in!",
         "progress": "Login in progress...",
-        "tos": "Accept Terms of Service"
+        "tos": "Accept Terms of Service",
+        "googleUnavaible": "Google Login is not available on this server"
     }
 }

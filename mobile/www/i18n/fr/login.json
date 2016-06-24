@@ -6,6 +6,7 @@
         "google": "Google Login",
         "success": "Connexion effectuée !",
         "failed": "Echec de connexion",
-        "progress": "Connexion en cours..."
+        "progress": "Connexion en cours...",
+        "googleUnavaible": "Google Login n'est pas disponible sur ce serveur"
     }
 }

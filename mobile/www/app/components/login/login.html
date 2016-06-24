@@ -27,7 +27,7 @@
                 </button>
             </div>
             <div class="padding">
-                <button ng-disabled="!vm.tos"
+                <button ng-disabled="!vm.tos || !vm.clientId"
                         ng-click="vm.googleLogin()"
                         translate="login.google"
                         class="button button-block button-stable"
@@ -41,6 +41,9 @@
             </div>
             <div ng-if="vm.failed" class="bar bar-assertive">
                 <h1 class="title" translate="login.failed">Failed to log in!</h1>
+            </div>
+            <div ng-if="!vm.clientId" class="bar bar-assertive">
+                <h1 class="title" translate="login.googleUnavaible"></h1>
             </div>
         </form>
     </ion-content>
