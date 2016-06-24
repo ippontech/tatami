@@ -253,7 +253,8 @@ tatamiJHipsterApp.controller('PostController', [
                 StatusService.save($scope.status, function() {
                     $uibModalInstance.close();
                     $uibModalInstance.result.then(function() {
-                        $scope.$state.transitionTo('timeline', $stateParams, { reload: true });
+                        $scope.$state.reload();
+                        //$scope.$state.transitionTo('timeline', $stateParams, { reload: true });
                     });
                     $scope.reset();
                 })

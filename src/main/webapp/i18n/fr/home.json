@@ -8,12 +8,6 @@
         "newMessage": "Nouveau Message",
         "newMessages": "Nouveaux Messages",
 
-        "group":{
-            "statuses": "statuts",
-            "membersSingular": "Membre",
-            "membersPlural": "Membres"
-        },
-
         "post": {
             "mandatory": "Commentaire obligatoire",
             "content": {

@@ -10,7 +10,7 @@
         <tbody class="items">
             <tr ng-repeat="group in userGroups">
                 <td>
-                    <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                    <a ui-sref="groupStatus({ groupId: group.groupId })">{{ group.name }}</a>
                 </td>
                 <td>
                     <span ng-show="group.publicGroup && !group.archivedGroup" class="label labelSizeNormal label-warning" translate="account.groups.public"></span>

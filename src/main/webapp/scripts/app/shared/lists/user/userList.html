@@ -7,7 +7,7 @@
                 </a>
             </div>
             <h4>
-                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right label" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
+                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right btn-sm" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
                     <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                 </span>
 
@@ -27,7 +27,7 @@
                     {{ user.jobTitle }}
                 </div>
 
-                <div ng-if="user.role == 'ADMIN'" class="text-muted" translate="tatami.home.status.groupAdmin"></div>
+                <div ng-if="user.role == 'ADMIN'" class="text-muted" translate="status.groupAdmin"></div>
             </h4>
         </div>
     </section>

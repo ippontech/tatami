@@ -35,16 +35,16 @@
                         controller: 'GroupStatusesController'
                     },
                     'homeBodyContent@timelineHome': {
-                        templateUrl: 'scripts/app/home/timeline/statuslist/statusList.html',
-                        controller: 'StatusListController'
+                        templateUrl: 'scripts/app/shared/lists/user/userList.html',
+                        controller: 'UserListController'
                     }
                 },
                 resolve: {
-                    statuses: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
+                    users: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
                         return GroupService.getMembers({groupId: $stateParams.groupId}).$promise
                     }],
-                    showModal: ['statuses', function (statuses) {
-                        return statuses.length === 0;
+                    showModal: ['users', function (users) {
+                        return users.length === 0;
                     }]
 
                 }
