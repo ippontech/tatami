@@ -59,6 +59,8 @@ tatamiJHipsterApp.controller('PostController', [
             statusPrivate: false // Determines whether the status is private
         };
 
+
+
         $scope.charCount = 750;
 
         $scope.calculateRemainingLength = function() {

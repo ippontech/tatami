@@ -26,18 +26,4 @@ tatamiJHipsterApp
                 }]
             }
         })
-
-        .state('profile', {
-            parent: 'account',
-            url: '/profile',
-
-            templateUrl: 'scripts/app/account/profile/profile.html',
-            resolve: {
-                Username: ['profileInfo', function(profileInfo) {
-                    return profileInfo.data;
-                }]
-            },
-            controller: 'ProfileController'
-
-        })
     });
