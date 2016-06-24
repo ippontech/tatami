@@ -30,19 +30,24 @@
             }
         });
 
-        $ionicPlatform.on('resume', resume);
-
-        function resume() {
-
-            if(isValidToken()) {
+        $ionicPlatform.ready(function () {
+            if (isValidToken()) {
                 $state.go('timeline');
             } else {
-                $localStorage.signOut();
-                $ionicHistory.clearCache();
-                $state.go('login');
+                logout();
             }
+        });
+        $ionicPlatform.on('resume', function resume() {
+            if (!isValidToken()) {
+                logout();
+            }
+        });
+
+        function logout() {
+            $localStorage.signOut();
+            $ionicHistory.clearCache();
+            $state.go('login');
         }
-        resume();
 
         function isValidToken() {
             var token = $localStorage.get('token');
