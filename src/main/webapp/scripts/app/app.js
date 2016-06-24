@@ -1,6 +1,6 @@
 'use strict';
 
-var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule', 'PostModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
+var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     // jhipster-needle-angularjs-add-module JHipster will add new module
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ngToast', 'angularMoment','bm.uiTour'])

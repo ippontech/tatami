@@ -19,6 +19,12 @@ tatamiJHipsterApp
                    $translatePartialLoader.addPart('form');
                    $translatePartialLoader.addPart('status');
                    return $translate.refresh();
+               }],
+               groups: ['GroupService', function(GroupService) {
+                   return GroupService.getGroups().$promise;
+               }],
+               groupId: ['$stateParams', function($stateParams){
+                 return $stateParams.groupId;
                }]
            }
        });

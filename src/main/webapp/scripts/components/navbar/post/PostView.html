@@ -1,12 +1,14 @@
 <div>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()"><span class="glyphicon glyphicon-remove"></span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()"><span
+            class="glyphicon glyphicon-remove"></span></button>
         <h4 class="modal-title">{{ determineTitle() | translate }}</h4>
     </div>
     <div class="modal-body">
         <a ng-click="current.preview = !current.preview" class="edit-tatam-float-right">
             <i ng-if="current.preview" class="glyphicon glyphicon-edit close" title="{{ 'post.edit' | translate }}"></i>
-            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close" title="{{ 'post.preview' | translate }}"></i>
+            <i ng-if="!current.preview" class="glyphicon glyphicon-eye-open close"
+               title="{{ 'post.preview' | translate }}"></i>
         </a>
         <fieldset ng-if="!current.preview" class="edit-tatam row-fluid">
 
@@ -41,7 +43,8 @@
             <div>
                 {{ 'post.characters.left' | translate }}
                 <span class="countstatus badge">{{ calculateRemainingLength() }}</span>
-                <a class="pull-right" target="_blank" href="https://help.github.com/articles/markdown-basics/" translate="post.markdown"></a>
+                <a class="pull-right" target="_blank" href="https://help.github.com/articles/markdown-basics/"
+                   translate="post.markdown"></a>
             </div>
         </fieldset>
         <fieldset ng-if="current.preview" class="preview-tatam row-fluid">
@@ -51,11 +54,14 @@
             <legend translate="post.reply">
             </legend>
             <!-- Start of reply section -->
-            <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover" style="display: block;">
-                <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false" ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
+            <div ng-show="current.reply" class="tatam pointer discussion tatam-border-lr tatam-hover"
+                 style="display: block;">
+                <div id="current" ng-mouseenter="showButtonRow = true" ng-mouseleave="showButtonRow = false"
+                     ng-class="{ 'favorite': currentStatus.favorite, 'share': currentStatus.shareByMe, 'both': currentStatus.favorite && currentStatus.shareByMe }">
                     <div class="pull-left background-image-fffix statusitem-img">
                         <a ui-sref="profile.statuses({ email: currentStatus.email })">
-                            <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
+                            <div class="img img-rounded img-medium"
+                                 ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
                         </a>
                     </div>
                     <div class="status-content-container">
@@ -64,24 +70,37 @@
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>
                                 <small>@{{ currentStatus.username }}</small>
                             </a>
-                            <small> · </small>
+                            <small> ·</small>
                             <!-- Replace hover title with hover bubble -->
                             <a ui-sref="status({ status: currentStatus.statusId })">
                                 <!--English-->
-                                <small ng-if="!isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'en'" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}" am-time-ago="currentStatus.statusDate"></small>
-                                <small ng-if="isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'en'" title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}">{{ currentStatus.statusDate | amDateFormat:'MMM D' }}</small>
+                                <small ng-if="!isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'en'"
+                                       title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}"
+                                       am-time-ago="currentStatus.statusDate"></small>
+                                <small ng-if="isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'en'"
+                                       title="{{ currentStatus.statusDate | amDateFormat:'h:mm A - D MMM YYYY' }}">{{
+                                    currentStatus.statusDate | amDateFormat:'MMM D' }}
+                                </small>
                                 <!--French-->
-                                <small ng-if="!isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'fr'" title="{{ currentStatus.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}" am-time-ago="currentStatus.statusDate"></small>
-                                <small ng-if="isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'fr'" title="{{ currentStatus.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}">{{ currentStatus.statusDate | amDateFormat:'D MMMM' }}</small>
+                                <small ng-if="!isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'fr'"
+                                       title="{{ currentStatus.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}"
+                                       am-time-ago="currentStatus.statusDate"></small>
+                                <small ng-if="isOneDayOrMore(currentStatus.statusDate) && getLanguageKey() == 'fr'"
+                                       title="{{ currentStatus.statusDate | amDateFormat:'HH:mm - D MMMM YYYY' }}">{{
+                                    currentStatus.statusDate | amDateFormat:'D MMMM' }}
+                                </small>
                             </a>
-                            <a ng-if="currentStatus.locationURL" class="glyphicon glyphicon-map-marker" ng-href="{{ currentStatus.locationURL }}" target="_blank"></a>
+                            <a ng-if="currentStatus.locationURL" class="glyphicon glyphicon-map-marker"
+                               ng-href="{{ currentStatus.locationURL }}" target="_blank"></a>
                         </h5>
 
                         <div class="markdown" ng-bind-html="currentStatus.content | emoticon | markdown"></div>
 
                         <small ng-if="currentStatus.groupId">
-                            <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="home.group.statuses({ groupId: currentStatus.groupId })">
-                            {{ currentStatus.groupName }}
+                            <a class="label"
+                               ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }"
+                               ui-sref="home.group.statuses({ groupId: currentStatus.groupId })">
+                                {{ currentStatus.groupName }}
                             </a>
                             <br>
                         </small>
@@ -95,7 +114,8 @@
                         <small ng-if="currentStatus.replyTo">
                             <span class="glyphicon glyphicon-share-alt"></span>
                             <span translate="status.replyTo"></span>
-                            <a ui-sref="status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername }}</a>
+                            <a ui-sref="status({ status: currentStatus.replyTo })">@{{ currentStatus.replyToUsername
+                                }}</a>
                             <br>
                         </small>
 
@@ -103,7 +123,8 @@
                             <div class="attachments">
                                 <div>
                                     <span ng-repeat="attachment in currentStatus.attachments">
-                                    <a href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" class="btn-link status-action" target="_blank">
+                                    <a href="/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}"
+                                       class="btn-link status-action" target="_blank">
                                     <i class="glyphicon glyphicon-file"></i> {{ attachment.filename }}
                                     </a>
                                     </span>
@@ -117,13 +138,12 @@
         <fieldset class="row-fluid">
             <legend translate="post.options"></legend>
             <div ng-show="!current.reply">
-
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
-                    <span class="glyphicon glyphicon-map-marker"></span> {{ 'post.shareLocation' | translate }}
-                </label>
-            </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="current.geoLoc" ng-change="updateLocation()">
+                        <span class="glyphicon glyphicon-map-marker"></span> {{ 'post.shareLocation' | translate }}
+                    </label>
+                </div>
                 <div ng-if="current.geoLoc">
                     <!-- Was width:250px, changed it to 500 -->
                     <div id="simpleMap" style="height:250px; width:100%;"></div>
@@ -131,41 +151,18 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="!current.reply && current.groups.length > 0">
+            <div ng-show="!current.reply && current.groups.length">
                 <label class="control-label" translate="post.group"></label>
-
-                <select ng-model="status.groupId" ng-options="group.groupId as group.name for group in current.groups | filter: { archivedGroup: false }">
+                <select ng-model="status.groupId"
+                        ng-options="group.groupId as group.name for group in current.groups | filter: { archivedGroup: false }">
                     <option></option>
                 </select>
             </div>
-            <!--
-            <div class="controls groups">
-                <div id="GeolocImpossible"></div> <p></p>
-                <div data-toggle="collapse" >
-                    <div class="controls geoLocalization" >
-                        <label class="checkbox">
-                            <input type="checkbox"> <span class="glyphicon glyphicon-map-marker"></span> <fmt:message key="tatami.post.geoLocalization"/>
-                        </label>
-                    </div>
-                    <div id="geolocalisationCheckbox" ng-if="current.geoLoc">
-                        <div id="basicMap" style="height:250px; width:250px"></div>
-                        <div class="geolocMap">
-                        </div>
-                    </div>
-                </div>
-                <label class="control-label"><fmt:message key="tatami.group.name"/></label>
-                <select name="groupId">
-                    <option value=""></option>
-                    <option value="<@= groups[index].groupId @>">
-                    </option>
-                </select>
-            </div>-->
             <div class="controls status-files" ng-model="current.files" ng-multiple="true">
                 <label translate="post.files">
-
                 </label>
                 <div ng-show="uploadStatus.isUploading" class="attachmentBar progress progress-striped active">
-                    <div class="bar progress-bar progress-bar-info" style="width: {{uploadStatus.progress}}%;"></div>
+                    <div class="bar progress-bar progress-bar-info" style="width:{{uploadStatus.progress}}%;"></div>
                 </div>
                 <div ngf-drop="uploadFiles($files)" ngf-select="uploadFiles($files)" ngf-multiple="true"
                      class="drop-box dropzone well" translate="post.drop.file">
@@ -175,32 +172,12 @@
                         {{ attachment.name }} ({{ fileSize(attachment) }})
                     </p>
                 </div>
-                <!--
-                <input style="display: none;" class="updateStatusFileupload" type="file" name="uploadFile" data-url="/tatami/rest/fileupload" multiple/>
-                -->
-                <!--
-                <div class="fileUploadResults wrap">
-
-                </div>
-                -->
             </div>
-            <!--
-            <label class="control-label"></label>
-            <div class="controlsIE">
-                <span class="hidden-label choose-label"><fmt:message key="tatami.user.upload.choose" /></span>
-                <p><fmt:message key="tatami.user.upload.buttonIE-ok" /></p>
-                <input id="tatamFile" type="file" name="uploadFile" data-url="/tatami/rest/fileuploadIE" class="filestyle" data-classButton="btn btn-primary" data-input="false" data-buttonText="" data-icon="false"/>
-                <span class="glyphicon glyphicon-search ok-ko"></span>
-                <div class="fileUploadResults wrap">
-                    <span class="upload-ko">
-                        <fmt:message key="tatami.user.upload.buttonIE-ko" />
-                    </span>
-                </div>
-                -->
             <div ng-show="!current.reply" class="controls status-private">
                 <div class="checkbox">
                     <label>
-                        <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox" value="true">
+                        <input ng-model="status.statusPrivate" id="statusPrivate" name="statusPrivate" type="checkbox"
+                               value="true">
                         <span class="glyphicon glyphicon-lock"></span> {{ 'status.private' | translate }}
                     </label>
                 </div>
@@ -211,6 +188,7 @@
         <a class="btn" aria-hidden="true" ng-click="closeModal()" translate="form.cancel"></a>
         <span class="hidden-label submit-label" translate="global.post.button"></span>
         <span class="hidden-label tatam-mandatory" translate="post.mandatory"></span>
-        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit" value="{{ 'global.post.button' | translate }}">
+        <input ng-click="newStatus()" type="submit" class="btn btn-primary submit"
+               value="{{ 'global.post.button' | translate }}">
     </div>
 </div>

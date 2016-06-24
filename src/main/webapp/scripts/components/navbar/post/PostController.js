@@ -3,20 +3,21 @@
  * creation window.
  */
 
-PostModule.controller('PostController', [
+tatamiJHipsterApp.controller('PostController', [
     '$scope',
     '$uibModalInstance',
     '$translate',
     'Upload',
     'StatusService',
     'GeolocalisationService',
-    //'groups', removing until groups section is finished.
+    'groups', //removing until groups section is finished.
     'curStatus',
     'SearchService',
     '$stateParams',
     '$state',
-    function($scope, $uibModalInstance, $translate, Upload, StatusService, GeolocalisationService, curStatus,
-    SearchService, $stateParams, $state) {
+    'groupId',
+    function($scope, $uibModalInstance, $translate, Upload, StatusService, GeolocalisationService, groups, curStatus,
+    SearchService, $stateParams, $state, groupId) {
 
         $scope.$state = $state;
         $scope.isOneDayOrMore = function(date) {
@@ -36,20 +37,10 @@ PostModule.controller('PostController', [
             }
         };
 
-        $scope.notArchived = function(groups) {
-            var filteredGroups = [];
-            for(var group in groups) {
-                if(!group.archivedGroup) {
-                    filteredGroups.push(group);
-                }
-            }
-            return filteredGroups;
-        };
-
         $scope.current = {  // This is the current instance of the status window
             preview: false, // Determines if the status is being previewed by the user
             geoLoc: false,  // Determine if the geolocalization checkbox is checked
-            //groups: groups, // The groups the user belongs to
+            groups: groups, // The groups the user belongs to
             reply: false,   // Determine if this status is a reply to another user
             uploadDone: true,// If the file upload is done, we should not show the progess bar
             uploadProgress: 0,// The progress of the file currently being uploaded
@@ -61,12 +52,14 @@ PostModule.controller('PostController', [
 
         $scope.status = {   // This is the current user status information
             content: "",    // The content contained in this status
-            groupId: "",    // The groupId that this status is being broadcast to
+            groupId: groupId,    // The groupId that this status is being broadcast to
             replyTo: "",     // The user we are replying to
             attachmentIds: [], // An array of all the attachments contained in the status
             geoLocalization: "", // The geographical location of the user when posting the status
             statusPrivate: false // Determines whether the status is private
         };
+
+
 
         $scope.charCount = 750;
 

@@ -36,7 +36,8 @@
             <table class="table table-condensed nomargin">
                 <tr ng-repeat="group in groups">
                     <td>
-                        <a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>
+                        <!--<a ui-sref="home.home.group.statuses({ groupId: group.groupId })">{{ group.name }}</a>-->
+                        <a ui-sref="groupStatus({groupId: group.groupId })">{{ group.name }}</a>
                     </td>
                     <td class="text-right" nowrap>
                         <span ng-if="group.publicGroup" class="label label-warning" title="{{ 'home.sidebar.publicToolTip' | translate }}"><small translate="home.sidebar.public"></small></span>
