@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    var defaultEndpoint = { url: 'http://app.tatamisoft.com' };
-    var endpoint = { url: 'http://app.tatamisoft.com' };
+    var defaultEndpoint = {url: 'http://app.tatamisoft.com'};
+    var endpoint = {url: defaultEndpoint.url};
 
     angular.module('tatami')
         .factory('TatamiEndpoint', tatamiEndpoint);
