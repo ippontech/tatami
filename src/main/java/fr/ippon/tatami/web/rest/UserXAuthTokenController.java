@@ -114,6 +114,7 @@ public class UserXAuthTokenController {
         }
         return;
     }
+
     @RequestMapping(value = "/authenticate",
         method = RequestMethod.POST)
 
