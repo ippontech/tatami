@@ -51,7 +51,7 @@
                             <div class="markdown" ng-class="{ 'mention-share': status.type == 'MENTION_SHARE' }" ng-bind-html="status.content | emoticon | markdown"></div>
 
                             <small ng-if="status.groupId">
-                                <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="home.home.group.statuses({ groupId: status.groupId })">
+                                <a class="label" ng-class="{ 'label-info': !status.publicGroup, 'label-warning': status.publicGroup }" ui-sref="groupStatus({groupId: status.groupId })">
                                 {{ status.groupName }}
                                 </a>
                                 <br>

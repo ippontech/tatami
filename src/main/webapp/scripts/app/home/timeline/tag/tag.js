@@ -20,8 +20,8 @@
                     controller: 'TagHeaderController'
                 },
                 'homeBodyContent@timelineHome': {
-                    templateUrl: 'scripts/app/home/timeline/statuslist/statusList.html',
-                    controller: 'StatusListController'
+                    templateUrl: 'scripts/app/home/timeline/timeline/content.html',
+                    controller: 'TimelineController'
                 }
             },
             resolve: {
