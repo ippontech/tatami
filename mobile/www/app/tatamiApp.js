@@ -26,7 +26,9 @@
             }
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
-                StatusBar.backgroundColorByName('white');
+                if (!$ionicPlatform.is('android')) {
+                    StatusBar.backgroundColorByName('white');
+                }
             }
         });
 
