@@ -1,5 +1,5 @@
 <ion-view name="login-view" view-title="{{ 'login.title' | translate }}" hide-back-button="true">
-    <ion-content class="has-header has-subheader">
+    <ion-content class="has-header has-subheader" scroll="false">
         <form ng-submit="vm.login()">
             <div class="list list-inset">
                 <label class="item item-input">
@@ -38,13 +38,10 @@
                 </button>
             </div>
 
-            <div ng-if="vm.shown" class="bar bar-positive">
-                <h1 class="title" translate="login.success">Logged In!</h1>
-            </div>
-            <div ng-if="vm.failed" class="bar bar-assertive">
+            <div ng-show="vm.failed" class="bar bar-assertive">
                 <h1 class="title" translate="login.failed">Failed to log in!</h1>
             </div>
-            <div ng-if="!vm.clientId" class="bar bar-assertive">
+            <div ng-show="!vm.clientId" class="bar bar-assertive">
                 <h1 class="title" translate="login.googleUnavaible"></h1>
             </div>
         </form>

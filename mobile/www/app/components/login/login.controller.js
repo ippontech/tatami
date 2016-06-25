@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('tatami')
@@ -16,16 +16,15 @@
 
         var vm = this;
 
-        if (clientId.data && clientId.data.stringList) {
+        if (clientId && clientId.data && clientId.data.stringList) {
             // Old tatami return the clientId in the stringList property
             vm.clientId = clientId.data.stringList[0];
-        } else if (clientId.data && clientId.data.clientId) {
+        } else if (clientId && clientId.data && clientId.data.clientId) {
             vm.clientId = clientId.data.clientId;
         }
         vm.user = {
             remember: false
         };
-        vm.shown = false;
         vm.failed = false;
         vm.login = login;
         vm.googleLogin = googleLogin;
@@ -51,10 +50,10 @@
             var emailScope = 'https://www.googleapis.com/auth/plus.profile.emails.read';
             var profileScope = 'https://www.googleapis.com/auth/plus.me';
             var googleUrl = 'https://accounts.google.com/o/oauth2/auth?' +
-                            'client_id=' + vm.clientId + '&' +
-                            'redirect_uri=http://localhost/callback&' +
-                            'scope=' + emailScope + ' ' + profileScope + '&' +
-                            'approval_prompt=force&response_type=code&access_type=offline';
+                'client_id=' + vm.clientId + '&' +
+                'redirect_uri=http://localhost/callback&' +
+                'scope=' + emailScope + ' ' + profileScope + '&' +
+                'approval_prompt=force&response_type=code&access_type=offline';
 
             var ref = window.open(googleUrl, '_blank', 'location=no');
 
@@ -62,7 +61,7 @@
 
             onStart.$inject = ['event'];
             function onStart(event) {
-                if(event.url.indexOf('http://localhost/callback') === 0) {
+                if (event.url.indexOf('http://localhost/callback') === 0) {
                     ref.close();
                     $ionicLoading.show({
                         template: '<span translate="login.progress">Login in progress...</span>',
@@ -86,7 +85,7 @@
             }
 
             onFail.$inject = ['failure'];
-            function onFail(failure) {
+            function onFail() {
                 vm.failed = true;
             }
         }
