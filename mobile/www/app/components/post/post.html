@@ -5,16 +5,18 @@
     </ion-nav-buttons>
     <ion-content class="has-subfooter">
         <form name="newPost" novalidate="">
-            <div class="list">
-                <label class="item item-input">
-                    <textarea type="text"
-                              name="msg"
-                              ng-model="vm.status.content"
-                              rows="15"
-                              placeholder="{{ 'post.message' | translate }}"
-                              ng-required="true"></textarea>
-                </label>
-            </div>
+            <ion-item>
+                <ion-textarea>
+                        <textarea ng-model="vm.status.content"
+                                  rows="15"
+                                  placeholder="{{ 'post.message' | translate }}"
+                                  ng-required="true"
+                                  ng-trim="false"
+                                  ng-paste="vm.paste()"
+                                  style="width: 100%; height: 100%;">
+                            </textarea>
+                </ion-textarea>
+            </ion-item>
         </form>
         <span ng-repeat="image in vm.images track by $index">
             <div class="list card">
@@ -31,7 +33,7 @@
             <button style="opacity: 0.5;" class="col-33 button button-clear icon ion-images" ng-click="vm.getPictureFromLibrary()"></button>
         </div>
 
-        <h1 class="title" style="opacity: 0.5;">{{ vm.charCount - vm.status.content.length }}</h1>
+        <h1 class="title">{{vm.remainingLength}}</h1>
         <button class="button button-positive"
                 translate="post.title"
                 ng-disabled="vm.status.content.length === 0 || !vm.status.content || vm.isPosting"

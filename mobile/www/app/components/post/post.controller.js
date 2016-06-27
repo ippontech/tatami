@@ -13,9 +13,10 @@
         '$q',
         '$ionicLoading',
         '$ionicPopup',
-        'repliedToStatus'
+        'repliedToStatus',
+        '$scope'
     ];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus) {
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus, $scope) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -27,6 +28,9 @@
         };
         vm.images = [];
         vm.isPosting = false;
+        vm.remainingLength = vm.charCount;
+        vm.newLineCount = 0; //This field takes into consideration the '\n' character that counts for 2 chars in the database.
+        vm.pasteFlag = false;
 
         vm.post = post;
         vm.reset = reset;
@@ -34,6 +38,8 @@
         vm.getPicture = getPicture;
         vm.getPictureFromLibrary = getPictureFromLibrary;
         vm.remove = remove;
+        vm.paste = paste;
+
 
         function post() {
             upload().then(createPost);
@@ -134,6 +140,40 @@
 
         function remove(index) {
             vm.images.splice(index, 1);
+        }
+
+        function updateRemainingLength(statusContent) {
+            vm.remainingLength = vm.charCount - statusContent.length - vm.newLineCount;
+        }
+
+        function updateNewLineCount(statusContent) {
+            vm.newLineCount = (statusContent.match(/\n/g) || []).length;
+        }
+
+        $scope.$watch('vm.status.content', function (newValue) {
+            if (newValue) {
+                updateNewLineCount(newValue);
+                updateRemainingLength(newValue);
+                if(vm.remainingLength < 0){
+                    if(vm.pasteFlag){
+                        $ionicLoading.show({
+                            template: '<span translate="post.error.truncated"></span>',
+                            duration: 2500
+                        });
+                        vm.pasteFlag = false;
+                    }
+                    vm.status.content = newValue.slice(0, vm.charCount - vm.newLineCount);
+                    updateNewLineCount(vm.status.content);
+                    updateRemainingLength(vm.status.content);
+                }
+            } else {
+                vm.remainingLength = vm.charCount;
+                vm.newLineCount = 0;
+            }
+        });
+
+        function paste(){
+            vm.pasteFlag = true;
         }
     }
 })();
