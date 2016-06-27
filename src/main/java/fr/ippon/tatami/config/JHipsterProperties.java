@@ -337,6 +337,8 @@ public class JHipsterProperties {
 
         private String clientSecret = "Yhbo5nYdX8iYz_8ieJ3xb3bx";
 
+        private String callbackURI = "http://localhost:8080/tatami/callback?client_name=Google2Client";
+
         public String getClientId(){ return clientId;}
 
         public void setClientId(String clientId){ this.clientId = clientId;}
@@ -344,6 +346,14 @@ public class JHipsterProperties {
         public String getClientSecret(){ return clientSecret;}
 
         public void setClientSecret(String clientSecret){ this.clientSecret = clientSecret;}
+
+        public String getCallbackURI() {
+            return callbackURI;
+        }
+
+        public void setCallbackURI(String callbackURI) {
+            this.callbackURI = callbackURI;
+        }
     }
 
     public static class Metrics {

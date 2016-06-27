@@ -67,3 +67,4 @@ jhipster:
     google:
         clientId: 80711898729-i0g8s21vok281jq6rnrvvk95796cfgji.apps.googleusercontent.com
         clientSecret: Yhbo5nYdX8iYz_8ieJ3xb3bx
+        callbackURI: http://localhost:8080/tatami/callback?client_name=Google2Client
