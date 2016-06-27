@@ -35,6 +35,7 @@ public class JHipsterProperties {
 
     private final Google google = new Google();
 
+    private final Tatami tatami = new Tatami();
 
     public Async getAsync() {
         return async;
@@ -73,6 +74,8 @@ public class JHipsterProperties {
     }
 
     public Google getGoogle(){ return google;}
+
+    public Tatami getTatami(){ return tatami;}
 
     public static class Async {
 
@@ -463,6 +466,19 @@ public class JHipsterProperties {
             public void setPrefix(String prefix) {
                 this.prefix = prefix;
             }
+        }
+    }
+
+    public static class Tatami {
+
+        private String admins = "";
+
+        public String getAdmins() {
+            return admins;
+        }
+
+        public void setAdmins(String admins) {
+            this.admins = admins;
         }
     }
 }

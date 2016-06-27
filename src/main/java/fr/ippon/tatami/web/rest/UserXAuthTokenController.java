@@ -61,7 +61,26 @@ public class UserXAuthTokenController {
     @Inject
     private JHipsterProperties jHipsterProperties;
 
+    private List<String> adminUsers;
 
+    private Set<String> userGrantedAuthorities = new HashSet<>();
+    private Set<String> adminGrantedAuthorities = new HashSet<>();
+
+    @PostConstruct
+    private void init() {
+        // Roles for "normal" users
+        userGrantedAuthorities.add(AuthoritiesConstants.USER);
+
+        // Roles for "admin" users, configured in application.yml
+        adminGrantedAuthorities.add(AuthoritiesConstants.USER);
+        adminGrantedAuthorities.add(AuthoritiesConstants.ADMIN);
+
+        String[] adminUsersArray = StringUtils.split(jHipsterProperties.getTatami().getAdmins(), ",");
+        adminUsers = new ArrayList<>(Arrays.asList(adminUsersArray));
+        for (String admin : adminUsers) {
+            log.debug("Initialization : user \"{}\" is an administrator", admin);
+        }
+    }
 
     @RequestMapping(value = "callback",
         method = RequestMethod.GET)
@@ -175,6 +194,7 @@ public class UserXAuthTokenController {
         createdUser.setFirstName(firstName);
         createdUser.setLastName(lastName);
         createdUser.setEmail(login);
+        createdUser.setAuthorities(adminUsers.contains(login) ? adminGrantedAuthorities : userGrantedAuthorities);
         userService.createUser(createdUser);
 
         return userDetailsService.loadUserByUsername(createdUser.getUsername());
