@@ -6,7 +6,7 @@ tatamiJHipsterApp
                     GroupService.join(
                         { groupId: group.groupId, email: $scope.username },
                         null,
-                        function(response) {
+                        function() {
 
                                 $state.reload();
 
@@ -18,10 +18,8 @@ tatamiJHipsterApp
                     GroupService.leave(
                         { groupId: group.groupId, email: $scope.username },
                         null,
-                        function(response) {
-
-                                $state.reload();
-
+                        function() {
+                            $state.reload();
                         }
                     );
                 }

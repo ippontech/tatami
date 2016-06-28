@@ -1,5 +1,5 @@
 <div>
-    <ul class="homebody-nav nav nav-justified">
+    <ul class="homebody-nav nav nav-justified" ng-if = "group.publicGroup || (!group.publicGroup && group.member)">
         <li ui-sref-active="active">
             <a ui-sref="groupStatus">
                 <span class="glyphicon glyphicon-th-list"></span>
@@ -13,7 +13,21 @@
             </a>
         </li>
     </ul>
-    <section class="tatams-content tatams-margin">
+    <ul class="homebody-nav nav nav-justified" ng-if="!group.publicGroup && !group.member">
+        <li >
+            <a>
+                <span class="glyphicon glyphicon-th-list"></span>
+                <span translate="home.group.statuses"></span>
+            </a>
+        </li>
+        <li >
+            <a>
+                <span class="glyphicon glyphicon-user"></span>
+                <span translate="home.group.members"></span>
+            </a>
+        </li>
+    </ul>
+    <section class="tatams-content tatams-margin" ng-if = "group.publicGroup || (!group.publicGroup && group.member)">
         <div class="tatams-content-title">
             <h3>
             <strong>{{ group.name }}: </strong>

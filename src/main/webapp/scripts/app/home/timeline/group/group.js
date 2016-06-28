@@ -75,6 +75,32 @@
                     }]
                 }
             })
+            .state('privateGroup', {
+                parent: 'group',
+                url: '/restricted',
+                views: {
+                    'homeSide@timelineHome': {
+                        templateUrl: 'scripts/app/home/timeline/sidebar/homeSidebar.html',
+                        controller: 'HomeSidebarController'
+                    },
+                    'homeBodyHeader@timelineHome': {
+                        templateUrl: 'scripts/app/home/timeline/group/groupHeader.html',
+                        controller: 'GroupStatusesController'
+                    },
+                    'homeBodyContent@timelineHome': {
+                        templateUrl: 'scripts/app/home/timeline/group/privateGroupWarning.html',
+                        controller: 'TimelineController'
+                    }
+                },
+                resolve: {
+                    statuses: ['GroupService', '$stateParams', function (GroupService, $stateParams) {
+                        return GroupService.getStatuses({groupId: $stateParams.groupId}).$promise
+                    }],
+                    showModal: ['statuses', function (statuses) {
+                        return statuses.length === 0;
+                    }]
+                }
+            })
     }
 
     getGroup.$inject = ['$stateParams', 'GroupService'];
