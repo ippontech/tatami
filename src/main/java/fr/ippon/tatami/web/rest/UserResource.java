@@ -1,7 +1,6 @@
 package fr.ippon.tatami.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import fr.ippon.tatami.config.JHipsterProperties;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.UserRepository;
@@ -26,16 +25,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.
@@ -115,7 +112,7 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
+            String domain = DomainUtil.getDomainFromEmail(managedUserDTO.getEmail());
             User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             if(!domain.equals(currentUser.getDomain())){
                 return ResponseEntity.badRequest()
@@ -154,8 +151,8 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
-        String domain = managedUserDTO.getEmail().substring(managedUserDTO.getEmail().indexOf("@")+1);
-        String userDomain = userDetailsService.getUserEmail().substring(userDetailsService.getUserEmail().indexOf("@")+1);
+        String domain = DomainUtil.getDomainFromEmail(managedUserDTO.getEmail());
+        String userDomain = DomainUtil.getDomainFromEmail(userDetailsService.getUserEmail());
         if(!domain.equals(userDomain)){
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
@@ -246,8 +243,8 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert("user-management", "deleteself", "You cannot delete yourself."))
                 .body(null);
         }
-        String targetDomain = email.substring(email.indexOf("@")+1);
-        String userDomain = userDetailsService.getUserEmail().substring(userDetailsService.getUserEmail().indexOf("@")+1);
+        String targetDomain = DomainUtil.getDomainFromEmail(email);
+        String userDomain = DomainUtil.getDomainFromEmail(userDetailsService.getUserEmail());
         if( !targetDomain.equals(userDomain)){
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
