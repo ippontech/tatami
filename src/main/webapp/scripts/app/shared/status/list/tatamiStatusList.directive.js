@@ -22,12 +22,10 @@ angular.module('tatamiJHipsterApp')
                     'TagService',
                     function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, showModal) {
 
-                        console.log($stateParams);
-
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
-                        
+
                         $scope.busy = false;
 
                         if($scope.statuses.length === 0) {
@@ -52,19 +50,19 @@ angular.module('tatamiJHipsterApp')
 
                                 if($scope.statuses.length > 0) {
                                     if($state.$current.name == 'tag') {
-                                        args = { tag: $scope.$stateParams.tag, start: statuses[0].timelineId };
+                                        args = { tag: $scope.$stateParams.tag, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else if($state.$current.name == 'timelineHome.sidebarHome.group.statuses') {
-                                        args = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
+                                        args = { groupId: $scope.$stateParams.groupId, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else if($state.$current.name == 'home.profile.statuses') {
-                                        args = { email: $scope.$stateParams.email, start: statuses[0].timelineId };
+                                        args = { email: $scope.$stateParams.email, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else {
-                                        args = { start: statuses[0].timelineId };
+                                        args = { start: $scope.statuses[0].timelineId };
                                     }
                                 }
                                 else {
@@ -106,7 +104,7 @@ angular.module('tatamiJHipsterApp')
                                 }
 
                                 else if($state.$current.name == 'company') {
-                                    HomeService.getCompanyTimeline(args, success, error);
+                                    StatusService.getCompanyTimeline(args, success, error);
                                 }
 
                                 else if($state.$current.name == 'tag') {
@@ -158,7 +156,7 @@ angular.module('tatamiJHipsterApp')
                             }
 
                             else if($state.$current.name == 'company') {
-                                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadOldStatuses);
+                                StatusService.getCompanyTimeline({ finish: $scope.finish }, loadOldStatuses);
                             }
 
                             else if($state.$current.name == 'mentions') {

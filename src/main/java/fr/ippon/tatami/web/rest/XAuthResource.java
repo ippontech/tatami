@@ -40,9 +40,9 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/tatami")
-public class UserXAuthTokenController {
+public class XAuthResource {
 
-    private static final Logger log = LoggerFactory.getLogger(UserXAuthTokenController.class);
+    private static final Logger log = LoggerFactory.getLogger(XAuthResource.class);
 
     private static final String GOOGLE_AUTH_CODE_HEADER_NAME = "x-auth-code-header";
 

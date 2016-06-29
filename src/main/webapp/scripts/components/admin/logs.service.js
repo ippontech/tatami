@@ -2,7 +2,7 @@
 
 tatamiJHipsterApp
     .factory('LogsService', function ($resource) {
-        return $resource('api/logs', {}, {
+        return $resource('tatami/logs', {}, {
             'findAll': { method: 'GET', isArray: true},
             'changeLevel': { method: 'PUT'}
         });

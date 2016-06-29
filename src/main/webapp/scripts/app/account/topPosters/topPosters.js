@@ -1,15 +1,24 @@
-'use strict';
+(function() {
+    'use strict';
 
-angular.module('tatamiJHipsterApp')
-    .config(function ($stateProvider) {
+
+    angular.module('tatamiJHipsterApp')
+        .config(topPostersConfig);
+
+
+    topPostersConfig.$inject = ['$stateProvider'];
+    function topPostersConfig($stateProvider) {
         $stateProvider
             .state('account.topPosters', {
                 parent: 'account',
                 url: '/topPosters',
                 templateUrl: 'scripts/app/account/topPosters/topPosters.html',
-                controller: 'TopPostersController'
-
+                controller: 'TopPostersController',
+                controllerAs: 'vm'
             })
-    });
+    }
+
+})();
+
 
 
