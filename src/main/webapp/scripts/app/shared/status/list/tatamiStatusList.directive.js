@@ -22,8 +22,6 @@ angular.module('tatamiJHipsterApp')
                     'TagService',
                     function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, showModal) {
 
-                        console.log($stateParams);
-
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }

@@ -85,6 +85,12 @@ CREATE TABLE IF NOT EXISTS userline (
     PRIMARY KEY(key, status)
 );
 
+CREATE TABLE IF NOT EXISTS userlineShares (
+    key varchar,
+    status timeuuid,
+    PRIMARY KEY(key, status)
+);
+
 CREATE TABLE IF NOT EXISTS shares (
     status timeuuid,
     email varchar,
