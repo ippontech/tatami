@@ -70,8 +70,8 @@ public class TimelineResource {
      * GET  /statuses/home_timeline -> get the latest statuses from the current user
      */
     @RequestMapping(value = "/rest/statuses/home_timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
@@ -83,6 +83,32 @@ public class TimelineResource {
         }
         try {
             return timelineService.getTimeline(count, start, finish);
+        } catch (Exception e) {
+            StringWriter stack = new StringWriter();
+            PrintWriter pw = new PrintWriter(stack);
+            e.printStackTrace(pw);
+            log.error("{}", stack.toString());
+            return null;
+        }
+    }
+
+    /**
+     * GET  /statuses/home_timeline -> get the latest statuses from the current user
+     */
+    @RequestMapping(value = "/rest/statuses/domain_timeline",
+        method = RequestMethod.GET,
+        produces = "application/json")
+    @ResponseBody
+    @Timed
+    public Collection<StatusDTO> listDomainStatus(@RequestParam(required = false) Integer count,
+                                            @RequestParam(required = false) String start,
+                                            @RequestParam(required = false) String finish) {
+
+        if (count == null || count == 0) {
+            count = 20; //Default value
+        }
+        try {
+            return timelineService.getDomainline(count, start, finish);
         } catch (Exception e) {
             StringWriter stack = new StringWriter();
             PrintWriter pw = new PrintWriter(stack);

@@ -27,10 +27,6 @@ angular.module('tatamiJHipsterApp')
         'getFavorites': {
             method: 'GET', isArray: true, url: '/tatami/rest/favorites',
             transformResponse: responseTransform
-        },
-        'getCompanyTimeline': {
-            method: 'GET', isArray: true, url: '/tatami/rest/company',
-            transformResponse: responseTransform
         }
      });
 }]);

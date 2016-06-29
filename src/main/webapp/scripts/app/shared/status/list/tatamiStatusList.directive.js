@@ -25,7 +25,7 @@ angular.module('tatamiJHipsterApp')
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
-                        
+
                         $scope.busy = false;
 
                         if($scope.statuses.length === 0) {
@@ -104,7 +104,7 @@ angular.module('tatamiJHipsterApp')
                                 }
 
                                 else if($state.$current.name == 'company') {
-                                    HomeService.getCompanyTimeline(args, success, error);
+                                    StatusService.getCompanyTimeline(args, success, error);
                                 }
 
                                 else if($state.$current.name == 'tag') {
@@ -156,7 +156,7 @@ angular.module('tatamiJHipsterApp')
                             }
 
                             else if($state.$current.name == 'company') {
-                                HomeService.getCompanyTimeline({ finish: $scope.finish }, loadOldStatuses);
+                                StatusService.getCompanyTimeline({ finish: $scope.finish }, loadOldStatuses);
                             }
 
                             else if($state.$current.name == 'mentions') {
