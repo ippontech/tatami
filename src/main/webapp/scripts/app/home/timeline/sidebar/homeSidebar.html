@@ -86,28 +86,25 @@
                 <span class="glyphicon glyphicon-user"></span>
                 <span translate="home.sidebar.whoToFollow"></span>
             </div>
-            <div class="panel-body items useritemmini" ng-repeat="suggestion in suggestions">
+            <div class="panel-body items" ng-repeat="suggestion in suggestions">
                 <h6>
-                    <span ng-click="followUser(suggestion, $index)" class="pointer pull-right label" ng-class="{ 'label-info': suggestion.followingUser }">
+                    <span ng-click="followUser(suggestion, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': suggestion.followingUser && hover,'label-info': suggestion.followingUser, 'label-glyphicon-plus': !suggestion.followingUser}">
                         <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                    <a ui-sref="profileStatuses({ email: profile.username })">
+                    <a ui-sref="profileStatuses({ email: suggestion.username })">
                         <span class='pull-left background-image-fffix'>
                             <img class="img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }">
                         </span>
                     </a>&nbsp;
-                    <a ui-sref="profileStatuses({ email: profile.username })">
+                    <a ui-sref="profileStatuses({ email: suggestion.username })">
                         <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
                     </a>
                     <br>&nbsp;
-                    <a ui-sref="profileStatuses({ email: profile.username })">
+                    <a ui-sref="profileStatuses({ email: suggestion.username })">
                         <small>@{{ suggestion.username }}</small>
                     </a>
                 </h6>
             </div>
-        </div>
-        <div style="opacity: 0.5; text-align:center;">
-            Version: <pom>version</pom>, Build: <pom>build</pom>
         </div>
     </section>
 </div>
