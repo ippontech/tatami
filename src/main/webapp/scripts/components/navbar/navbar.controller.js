@@ -35,11 +35,13 @@ tatamiJHipsterApp
         };
 
         $scope.goToPage = function($item) {
+            console.log($item);
+            $scope.search.term = '';
             if($item.groupId) {
                 $scope.$state.go('groupStatus', { groupId: $item.groupId });
             }
             else if($item.username) {
-                $scope.$state.go('home.profile.statuses', { username: $item.username });
+                $scope.$state.go('profileStatuses', { email: $item.username });
             }
             else if(!$item.groupId) {
                 $scope.$state.go('tag', { tag: $item.name })
