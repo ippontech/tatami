@@ -50,19 +50,19 @@ angular.module('tatamiJHipsterApp')
 
                                 if($scope.statuses.length > 0) {
                                     if($state.$current.name == 'tag') {
-                                        args = { tag: $scope.$stateParams.tag, start: statuses[0].timelineId };
+                                        args = { tag: $scope.$stateParams.tag, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else if($state.$current.name == 'timelineHome.sidebarHome.group.statuses') {
-                                        args = { groupId: $scope.$stateParams.groupId, start: statuses[0].timelineId };
+                                        args = { groupId: $scope.$stateParams.groupId, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else if($state.$current.name == 'home.profile.statuses') {
-                                        args = { email: $scope.$stateParams.email, start: statuses[0].timelineId };
+                                        args = { email: $scope.$stateParams.email, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else {
-                                        args = { start: statuses[0].timelineId };
+                                        args = { start: $scope.statuses[0].timelineId };
                                     }
                                 }
                                 else {
