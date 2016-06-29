@@ -308,14 +308,16 @@
                            ng-model="search.term"
                            ng-change="search()"
                            typeahead-focus-first="false"
-                           typeahead="(val.name === undefined ? '@' + val.username : val.groupId === undefined ? '#' + val.name : val.name) for val in getResults($viewValue)"
-                           typeahead-on-select="goToPage($item, $model, $label)"
+                           uib-typeahead="state for state in allSearch | filter:$viewValue | limitTo:10"
+                           typeahead-on-select="goToPage($item)"
                            typeahead-template-url="/scripts/components/navbar/SearchView.html"
-                           class="form-control"
-                           autocomplete="off"
-                           placeholder="{{ 'global.topMenu.search' | translate }}">
+                           type="text" class="col-span-12"
+                           autocomplete="off" placeholder="{{ 'global.topMenu.search' | translate }}"
+                           typeahead-min-length="1"
+                           class="form-control">
                 </div>
             </form>
+
         </div>
     </div>
 </nav>

@@ -15,11 +15,36 @@ tatamiJHipsterApp
         $scope.search = {};
 
         $scope.search = function() {
-            if($scope.search.term.length > 0) {
-                return SearchService.get({ term: 'all', q: $scope.search.term });
-            }
+
+            return SearchService.get({ term: 'all', q: $scope.search.term }).$promise.then(function(result) {
+                if(angular.isDefined(result.groups[0])) {
+                    console.log("groups is true");
+                    result.groups[0].firstGroup = true;
+                }
+                if(angular.isDefined(result.tags[0])) {
+                    console.log("tags is true");
+                    result.tags[0].firstTag = true;
+                }
+                if(angular.isDefined(result.users[0])) {
+                    console.log("users is true");
+                    result.users[0].firstUser = true;
+                }
+                $scope.allSearch = result.groups.concat(result.users.concat(result.tags));
+            })
+
         };
 
+        $scope.goToPage = function($item) {
+            if($item.groupId) {
+                $scope.$state.go('groupStatus', { groupId: $item.groupId });
+            }
+            else if($item.username) {
+                $scope.$state.go('home.profile.statuses', { username: $item.username });
+            }
+            else if(!$item.groupId) {
+                $scope.$state.go('tag', { tag: $item.name })
+            }
+        };
 
         $scope.changeLanguage = function () {
         };
