@@ -4,7 +4,7 @@ tatamiJHipsterApp
     .factory('AuditsService', function ($http) {
         return {
             findAll: function () {
-                return $http.get('api/audits/').then(function (response) {
+                return $http.get('tatami/audits/').then(function (response) {
                     return response.data;
                 });
             },
@@ -17,7 +17,7 @@ tatamiJHipsterApp
                     return dateToFormat;
                 };
 
-                return $http.get('api/audits/', {params: {fromDate: formatDate(fromDate), toDate: formatDate(toDate)}}).then(function (response) {
+                return $http.get('tatami/audits/', {params: {fromDate: formatDate(fromDate), toDate: formatDate(toDate)}}).then(function (response) {
                     return response.data;
                 });
             }

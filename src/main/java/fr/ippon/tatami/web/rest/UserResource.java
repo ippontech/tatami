@@ -127,7 +127,7 @@ public class UserResource {
             request.getServerPort() +              // "80"
             request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
-            return ResponseEntity.created(new URI("/api/users/" + newUser.getUsername()))
+            return ResponseEntity.created(new URI("/tatami/users/" + newUser.getUsername()))
                 .headers(HeaderUtil.createAlert( "user-management.created", newUser.getUsername()))
                 .body(newUser);
         }

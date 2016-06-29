@@ -1,6 +1,6 @@
 function mockApiAccountCall() {
     inject(function($httpBackend) {
-        $httpBackend.whenGET(/api\/account.*/).respond({});
+        $httpBackend.whenGET(/tatami\/account.*/).respond({});
     });
 }
 
