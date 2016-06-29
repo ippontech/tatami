@@ -66,13 +66,13 @@
                             <small ng-if="status.type === 'ANNOUNCEMENT'">
                                 <span class="glyphicon glyphicon-bullhorn"></span>
                                 <span translate="status.isAnnounced"></span>
-                                <a ui-sref="home.status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
+                                <a ui-sref="status({ statusId: status.sharedByUsername })">@{{ status.sharedByUsername }}</a>
                             </small>
 
                             <small ng-if="status.replyTo && status.type !== 'ANNOUNCEMENT'">
                                 <span class="glyphicon glyphicon-share-alt"></span>
                                 <span translate="status.replyTo"></span>
-                                <a ui-sref="status({ statusId: status.statusId })">@{{ status.replyToUsername }}</a>
+                                <a ui-sref="status({ statusId: status.replyTo })">@{{ status.replyToUsername }}</a>
                                 <br>
                             </small>
 
