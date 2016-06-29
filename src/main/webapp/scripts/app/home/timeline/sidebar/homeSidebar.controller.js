@@ -9,8 +9,8 @@ angular.module('tatamiJHipsterApp')
 
         $scope.followUser = function(suggestion, index) {
             UserService.follow({ email: suggestion.email }, { friend: !suggestion.followingUser, friendShip: true },
-                function(response) {
-                    $scope.suggestions[index].followingUser = response.friend;
+                function() {
+                    $scope.suggestions[index].followingUser = !$scope.suggestions[index].followingUser;
             });
         };
 
