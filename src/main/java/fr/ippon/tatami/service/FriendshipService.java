@@ -155,6 +155,17 @@ public class FriendshipService {
         Collection<String> followersEmails = followerRepository.findFollowersForUser(userEmail);
         Collection<User> followers = new ArrayList<User>();
         for (String followerEmail : followersEmails) {
+            /*
+                In cases of posts where users are mentioned, we pass in a username instead of an email address when
+                a user clicks the link. In these cases, we should append the current user's domain to the username
+                before we proceed.
+
+                See marked.js
+        */
+            if (!DomainUtil.isValidEmailAddress(followerEmail)){
+                User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+                followerEmail += "@" + currentUser.getDomain();
+            }
             User follower = userRepository.findOneByEmail(followerEmail).get();
             followers.add(follower);
         }

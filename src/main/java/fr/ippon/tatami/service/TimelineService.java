@@ -566,7 +566,7 @@ public class TimelineService {
         // update the status details to add this share
         sharesRepository.newShareByEmail(status.getStatusId().toString(), currentEmail);
         // mention the status' author that the user has shared his status
-        MentionShare mentionShare = statusRepository.createMentionShare(currentEmail, status.getDomain(), status.getStatusId().toString());
+        MentionShare mentionShare = statusRepository.createMentionShare(currentEmail, status.getStatusId().toString());
         mentionlineRepository.addStatusToMentionline(status.getEmail(), mentionShare.getStatusId().toString());
     }
 

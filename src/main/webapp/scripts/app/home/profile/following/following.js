@@ -8,6 +8,7 @@
     function profileStatusesConfig($stateProvider) {
         $stateProvider
         .state('profileFollowing', {
+            parent: 'otherUserProfile',
             url: '/following',
             views: {
                 'homeSide@timelineHome': {
@@ -18,7 +19,7 @@
                     templateUrl: 'scripts/app/home/profile/profileHeader.html',
                     controller: 'ProfileHeaderController'
                 },
-                'homeBodyContent@tatami.home': {
+                'homeBodyContent@timelineHome': {
                     templateUrl: 'scripts/app/shared/lists/user/userList.html',
                     controller: 'UserListController'
                 }

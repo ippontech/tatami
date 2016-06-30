@@ -10,6 +10,7 @@ import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import fr.ippon.tatami.repository.UserRepository;
@@ -50,6 +51,17 @@ public class FriendshipResource {
     @Timed
     @ResponseBody
     public Collection<UserDTO> getFriends(@PathVariable String email, HttpServletResponse response) {
+        /*
+                In cases of posts where users are mentioned, we pass in a username instead of an email address when
+                a user clicks the link. In these cases, we should append the current user's domain to the username
+                before we proceed.
+
+                See marked.js
+        */
+        if (!DomainUtil.isValidEmailAddress(email)){
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            email += "@" + currentUser.getDomain();
+        }
         User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -66,6 +78,17 @@ public class FriendshipResource {
     @Timed
     @ResponseBody
     public Collection<UserDTO> getFollowers(@PathVariable String email, HttpServletResponse response) {
+        /*
+                In cases of posts where users are mentioned, we pass in a username instead of an email address when
+                a user clicks the link. In these cases, we should append the current user's domain to the username
+                before we proceed.
+
+                See marked.js
+        */
+        if (!DomainUtil.isValidEmailAddress(email)){
+            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            email += "@" + currentUser.getDomain();
+        }
         User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

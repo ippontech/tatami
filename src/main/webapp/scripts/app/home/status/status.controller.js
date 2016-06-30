@@ -5,9 +5,10 @@ angular.module('tatamiJHipsterApp')
     '$scope',
     '$translate',
     'StatusService',
+    'PostModalService',
     'status',
     'context',
-    function($scope, $translate, StatusService, status, context) {
+    function($scope, $translate, StatusService, PostModalService, status, context) {
 //        $scope.isAdmin = userRoles.roles.indexOf('ROLE_ADMIN') !== -1;
 
         if(context.discussionStatuses.length === 0) {
@@ -34,8 +35,8 @@ angular.module('tatamiJHipsterApp')
             return $translate.use();
         };
 
-        $scope.openReplyModal = function(status) {
-            $scope.$state.go($scope.$state.current.name + '.post', { statusIdReply: status.statusId });
+        $scope.openReplyModal = function(statusId) {
+            PostModalService.openPostModal(statusId);
         };
 
         $scope.favoriteStatus = function(status, index) {
