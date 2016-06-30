@@ -9,7 +9,7 @@
         $stateProvider
         //state for all views that use profile sidebar
         .state('otherUserProfile', {
-            parent: 'timelineHome',
+            parent: 'sidebarHome',
             url: '/profile/:email',
             abstract: true,
             resolve: {
