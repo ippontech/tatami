@@ -239,12 +239,12 @@ public class StatusRepository {
     }
 
 
-    public MentionShare createMentionShare(String username, String domain, String originalStatusId) {
+    public MentionShare createMentionShare(String email, String originalStatusId) {
         MentionShare mentionShare = new MentionShare();
-        mentionShare.setUsername(username);
+        mentionShare.setUsername(DomainUtil.getUsernameFromEmail(email));
         mentionShare.setType(StatusType.MENTION_SHARE);
-        mentionShare.setDomain(domain);
-        mentionShare.setEmail(DomainUtil.getEmailFromUsernameAndDomain(username, domain));
+        mentionShare.setDomain(DomainUtil.getDomainFromEmail(email));
+        mentionShare.setEmail(email);
 
         Insert inserter = this.createBaseStatus(mentionShare);
         mentionShare.setOriginalStatusId(originalStatusId);
