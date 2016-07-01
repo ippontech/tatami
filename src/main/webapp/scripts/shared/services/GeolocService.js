@@ -3,7 +3,7 @@
  */
 
 tatamiJHipsterApp
-.factory('GeolocalisationService', function() {
+.factory('GeolocalisationService', ['$http', '$q', function($http, $q) {
     return {
         
         /**
@@ -27,9 +27,28 @@ tatamiJHipsterApp
          * @returns {string} The URL to openstreetmaps
          */
         getGeolocUrl: function(position) {
-            var latitude = position.split(',')[0].trim();
-            var longitude = position.split(',')[1].trim();
-            return 'https://www.openstreetmap.org/?mlon=' + longitude + '&mlat=' + latitude;
+            return 'https://www.openstreetmap.org/?mlon=' + this.getLongitude(position)
+                + '&mlat=' + this.getLatitude(position);
+        },
+
+        getLatitude: function(position) {
+            return position.split(',')[0].trim();
+        },
+
+        getLongitude: function(position) {
+            return position.split(',')[1].trim();
+        },
+        
+        getGeoLocDetails: function (status) {
+            var url = " http://nominatim.openstreetmap.org/reverse?format=json&json_callback=JSON_CALLBACK&" +
+                "lat=" + this.getLatitude(status.geoLocalization) + "&lon=" + this.getLongitude(status.geoLocalization);
+
+            var deferred = $q.defer();
+            $http.jsonp(url)
+                .success(function (details) {
+                    deferred.resolve(details.address);
+                });
+            return deferred.promise;
         }
     }
-});
+}]);

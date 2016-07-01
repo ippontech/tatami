@@ -1,20 +1,20 @@
 angular.module('tatamiJHipsterApp')
-.factory('StatusService', ['$resource', function($resource) {
+.factory('StatusService', ['$resource', 'GeolocalisationService', function($resource, GeolocalisationService) {
     var responseTransform = function(statuses) {
         statuses = angular.fromJson(statuses);
 
         for(var i = 0; i < statuses.length; i++) {
             statuses[i]['avatarURL'] = !statuses[i].avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
-            if(statuses[i].geoLocalization) {
-                var latitude = statuses[i].geoLocalization.split(',')[0].trim();
-                var longitude = statuses[i].geoLocalization.split(',')[1].trim();
-                statuses[i]['locationURL'] =
-                    'https://www.openstreetmap.org/?mlon='
-                    + longitude + '&mlat=' + latitude;
-            }
+            updateGeoLocInfo(statuses[i]);
         }
 
         return statuses;
+    };
+
+    var updateGeoLocInfo = function (status) {
+        if (status.geoLocalization) {
+            status.locationURL = GeolocalisationService.getGeolocUrl(status.geoLocalization);
+        }
     };
 
     return $resource('/tatami/rest/statuses/:statusId', null,
@@ -26,13 +26,7 @@ angular.module('tatamiJHipsterApp')
 
                 status.avatarURL = !status.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
 
-                if(status.geoLocalization) {
-                    var latitude = status.geoLocalization.split(',')[0].trim();
-                    var longitude = status.geoLocalization.split(',')[1].trim();
-                    status['locationURL'] =
-                        'https://www.openstreetmap.org/?mlon='
-                        + longitude + '&mlat=' + latitude;
-                }
+                updateGeoLocInfo(status);
 
                 return status;
              }
@@ -56,14 +50,7 @@ angular.module('tatamiJHipsterApp')
 
                 for(var i = 0; i < details.discussionStatuses.length; i++) {
                     details.discussionStatuses[i]['avatarURL'] = !details.discussionStatuses[i].avatar.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
-
-                    if(details.discussionStatuses[i].geoLocalization) {
-                        var latitude = details.discussionStatuses[i].geoLocalization.split(',')[0].trim();
-                        var longitude = details.discussionStatuses[i].geoLocalization.split(',')[1].trim();
-                        details.discussionStatuses[i]['locationURL'] =
-                            'https://www.openstreetmap.org/?mlon='
-                            + longitude + '&mlat=' + latitude;
-                    }
+                    updateGeoLocInfo(details.discussionStatuses[i])
                 }
 
                 for(var i = 0; i < details.sharedByEmails.length; i++) {
