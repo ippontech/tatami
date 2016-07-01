@@ -15,7 +15,7 @@ import fr.ippon.tatami.security.GoogleAuthenticationToken;
 import fr.ippon.tatami.security.xauth.Token;
 import fr.ippon.tatami.security.xauth.TokenProvider;
 import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
+import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -189,7 +189,7 @@ public class XAuthResource {
         String firstName = user.getName().getGivenName();
         String lastName = user.getName().getFamilyName();
 
-        ManagedUserDTO createdUser = new ManagedUserDTO();
+        UserDTO createdUser = new UserDTO();
         createdUser.setUsername(login);
         createdUser.setFirstName(firstName);
         createdUser.setLastName(lastName);

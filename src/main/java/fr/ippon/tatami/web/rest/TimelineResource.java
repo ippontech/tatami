@@ -1,32 +1,32 @@
 package fr.ippon.tatami.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import fr.ippon.tatami.domain.ActionStatus;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
-import fr.ippon.tatami.domain.ActionStatus;
+import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,6 +37,8 @@ import java.util.UUID;
 public class TimelineResource {
 
     private final Logger log = LoggerFactory.getLogger(TimelineResource.class);
+
+    private final int defaultCount = 20;
 
     @Inject
     private TimelineService timelineService;
@@ -53,13 +55,12 @@ public class TimelineResource {
     @Inject
     private UserDetailsService userDetailsService;
 
-
     /**
-     * GET  /statuses/details/:id -> returns the details for a status, specified by the id parameter
+     * GET  /rest/statuses/details/{statusId} -> returns the details for a status, specified by the statusId parameter
      */
     @RequestMapping(value = "/rest/statuses/details/{statusId}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     public StatusDetails getStatusDetails(@PathVariable("statusId") String statusId) {
         log.debug("REST request to get status details Id : {}", statusId);
@@ -67,7 +68,7 @@ public class TimelineResource {
     }
 
     /**
-     * GET  /statuses/home_timeline -> get the latest statuses from the current user
+     * GET  /rest/statuses/home_timeline -> get the latest statuses from the current user
      */
     @RequestMapping(value = "/rest/statuses/home_timeline",
         method = RequestMethod.GET,
@@ -77,23 +78,14 @@ public class TimelineResource {
     public Collection<StatusDTO> listStatus(@RequestParam(required = false) Integer count,
                                             @RequestParam(required = false) String start,
                                             @RequestParam(required = false) String finish) {
-
         if (count == null || count == 0) {
-            count = 20; //Default value
+            count = defaultCount;
         }
-        try {
-            return timelineService.getTimeline(count, start, finish);
-        } catch (Exception e) {
-            StringWriter stack = new StringWriter();
-            PrintWriter pw = new PrintWriter(stack);
-            e.printStackTrace(pw);
-            log.error("{}", stack.toString());
-            return null;
-        }
+        return timelineService.getTimeline(count, start, finish);
     }
 
     /**
-     * GET  /statuses/home_timeline -> get the latest statuses from the current user
+     * GET  /rest/statuses/domain_timeline -> get the latest statuses from the domain
      */
     @RequestMapping(value = "/rest/statuses/domain_timeline",
         method = RequestMethod.GET,
@@ -101,29 +93,20 @@ public class TimelineResource {
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listDomainStatus(@RequestParam(required = false) Integer count,
-                                            @RequestParam(required = false) String start,
-                                            @RequestParam(required = false) String finish) {
-
+                                                  @RequestParam(required = false) String start,
+                                                  @RequestParam(required = false) String finish) {
         if (count == null || count == 0) {
-            count = 20; //Default value
+            count = defaultCount;
         }
-        try {
-            return timelineService.getDomainline(count, start, finish);
-        } catch (Exception e) {
-            StringWriter stack = new StringWriter();
-            PrintWriter pw = new PrintWriter(stack);
-            e.printStackTrace(pw);
-            log.error("{}", stack.toString());
-            return null;
-        }
+        return timelineService.getDomainline(count, start, finish);
     }
 
     /**
-     * GET  /statuses/user_timeline?screen_name=jdubois -> get the latest statuses from user "jdubois"
+     * GET  /rest/statuses/jdubois/timeline -> get the latest statuses from user "jdubois"
      */
     @RequestMapping(value = "/rest/statuses/{email}/timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> listStatusForUser(@PathVariable("email") String email,
                                                    @RequestParam(required = false) Integer count,
@@ -136,31 +119,24 @@ public class TimelineResource {
 
         See marked.js
         */
-        if (!DomainUtil.isValidEmailAddress(email)){
+        if (!DomainUtil.isValidEmailAddress(email)) {
             User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             email += "@" + currentUser.getDomain();
         }
 
         if (count == null || count == 0) {
-            count = 20; //Default value
+            count = defaultCount;
         }
         log.debug("REST request to get someone's status (email={}).", email);
-        if (email == null || email.length() == 0) {
-            return new ArrayList<StatusDTO>();
+        if (StringUtils.isBlank(email)) {
+            return new ArrayList<>();
         }
-        try {
-            return timelineService.getUserline(email, count, start, finish);
-        } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                e.printStackTrace();
-            }
-            return new ArrayList<StatusDTO>();
-        }
+        return timelineService.getUserline(email, count, start, finish);
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     public StatusDTO getStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to get status Id : {}", statusId);
@@ -168,84 +144,71 @@ public class TimelineResource {
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
-            method = RequestMethod.DELETE)
+        method = RequestMethod.DELETE)
     public void deleteStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to get status Id : {}", statusId);
         timelineService.removeStatus(statusId);
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",
-            method = RequestMethod.PATCH)
+        method = RequestMethod.PATCH)
     @ResponseBody
     public StatusDTO updateStatus(@RequestBody ActionStatus action, @PathVariable("statusId") String statusId) {
-        try {
-            StatusDTO status = timelineService.getStatus(statusId);
-            if (action.isFavorite() != null && status.isFavorite() != action.isFavorite()) {
-                if (action.isFavorite()) {
-                    timelineService.addFavoriteStatus(statusId);
-                } else {
-                    timelineService.removeFavoriteStatus(statusId);
-                }
-                status.setFavorite(action.isFavorite());
+        StatusDTO status = timelineService.getStatus(statusId);
+        if (action.isFavorite() != null && status.isFavorite() != action.isFavorite()) {
+            if (action.isFavorite()) {
+                timelineService.addFavoriteStatus(statusId);
+            } else {
+                timelineService.removeFavoriteStatus(statusId);
             }
-            if (action.isShared() != null && action.isShared()) {
-                timelineService.shareStatus(statusId);
-                status.setShareByMe(action.isShared());
-            }
-            if (action.isAnnounced() != null && action.isAnnounced()) {
-                timelineService.announceStatus(statusId);
-            }
-            return status;
-        } catch (Exception e) {
-            StringWriter stack = new StringWriter();
-            PrintWriter pw = new PrintWriter(stack);
-            e.printStackTrace(pw);
-            log.debug("{}", stack.toString());
-            return null;
+            status.setFavorite(action.isFavorite());
         }
+        if (BooleanUtils.isTrue(action.isShared())) {
+            timelineService.shareStatus(statusId);
+            status.setShareByMe(action.isShared());
+        }
+        if (BooleanUtils.isTrue(action.isAnnounced())) {
+            timelineService.announceStatus(statusId);
+        }
+        return status;
     }
 
     /**
-     * POST /statuses/ -> create a new Status
+     * POST /rest/statuses/ -> create a new Status
      */
     @RequestMapping(value = "/rest/statuses",
-            method = RequestMethod.POST,
-            produces = "application/json")
+        method = RequestMethod.POST,
+        produces = "application/json")
     @Timed
-    public String postStatus(@RequestBody StatusDTO status, HttpServletResponse response) throws ArchivedGroupException, ReplyStatusException {
+    public ResponseEntity<StatusDTO> postStatus(@RequestBody StatusDTO status) throws ArchivedGroupException, ReplyStatusException {
         log.debug("REST request to add status : {}", status.getContent());
         String escapedContent = StringEscapeUtils.escapeHtml(status.getContent());
         Collection<String> attachmentIds = status.getAttachmentIds();
 
-        if (status.getReplyTo() != null && !status.getReplyTo().isEmpty()) {
+        if (StringUtils.isNotBlank(status.getReplyTo())) {
             log.debug("Creating a reply to : {}", status.getReplyTo());
             statusUpdateService.replyToStatus(escapedContent, status.getReplyTo(), attachmentIds);
-        } else if (status.isStatusPrivate() || status.getGroupId() == null || status.getGroupId().equals("")) {
+        } else if (status.isStatusPrivate() || StringUtils.isEmpty(status.getGroupId())) {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds, status.getGeoLocalization());
         } else {
             User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
-            Group group = null;
             UUID statusGroupId = UUID.fromString(status.getGroupId());
-            for (Group testGroup : groups) {
-                if (testGroup.getGroupId().equals(statusGroupId)) {
-                    group = testGroup;
-                    break;
-                }
-            }
-            if (group == null) {
+            Optional<Group> groupOptional = groups.stream().filter(group -> group.getGroupId().equals(statusGroupId)).findFirst();
+
+            if (!groupOptional.isPresent()) {
                 log.info("Permission denied! User {} tried to access " +
-                        "group ID = {}", currentUser.getUsername(), status.getGroupId());
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            } else if (group.isArchivedGroup()) {
+                    "group ID = {}", currentUser.getUsername(), status.getGroupId());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            } else if (groupOptional.isPresent() && groupOptional.get().isArchivedGroup()) {
                 log.info("Archived group! User {} tried to post a message to archived " +
-                        "group ID = {}", currentUser.getUsername(), status.getGroupId());
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    "group ID = {}", currentUser.getUsername(), status.getGroupId());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             } else {
-                statusUpdateService.postStatusToGroup(escapedContent, group, attachmentIds, status.getGeoLocalization());
+                statusUpdateService.postStatusToGroup(escapedContent, groupOptional.get(), attachmentIds, status.getGeoLocalization());
             }
         }
-        return "{}";
+        return ResponseEntity.ok().body(status);
     }
 }
