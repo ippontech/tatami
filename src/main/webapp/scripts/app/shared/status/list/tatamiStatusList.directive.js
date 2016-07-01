@@ -20,8 +20,8 @@ angular.module('tatamiJHipsterApp')
                     'StatusService',
                     'PostModalService',
                     'TagService',
-                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, statuses, showModal) {
-
+                    'GeolocalisationService',
+                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, GeolocalisationService, statuses, showModal) {
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
@@ -250,6 +250,14 @@ angular.module('tatamiJHipsterApp')
                                     function(response) {
                                         $scope.statuses[index].shares = response.sharedByEmails;
                                     });
+                            }
+                        };
+
+                        $scope.displayGeoLocInfo = function (status, index) {
+                            if (status.locationURL) {
+                                GeolocalisationService.getGeoLocDetails($scope.statuses[index]).then(function (address) {
+                                    $scope.statuses[index].locationDetails = address.city + ", " + address.state;
+                                });
                             }
                         };
                     }
