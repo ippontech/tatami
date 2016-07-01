@@ -8,7 +8,7 @@ tatamiJHipsterApp
                 abstract: true,
                 parent: 'site',
                 data: {
-                    authorities: [],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'account.title'
                 },
                 url: '/account',
