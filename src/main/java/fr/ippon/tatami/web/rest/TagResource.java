@@ -4,26 +4,25 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
-import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.TrendService;
-import fr.ippon.tatami.service.UserService;
-//import fr.ippon.tatami.service.dto.StatusDTO;
-//import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.TagDTO;
 import fr.ippon.tatami.web.rest.dto.TrendDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import fr.ippon.tatami.web.rest.dto.StatusDTO;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing the current user's account.
@@ -52,25 +51,18 @@ public class TagResource {
     @Inject
     private UserDetailsService userDetailsService;
 
-//    @Inject
-//    private Authentication authenticationService;
-
-    @Inject
-    private UserService userService;
-
     /**
      * GET  /rest/tags/{tagName}/tag_timeline -> get the latest status for a given tag
      */
     @RequestMapping(value = "/rest/tags/{tagName}/tag_timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listStatusForTag(@PathVariable String tagName,
                                                   @RequestParam(required = false) Integer count,
                                                   @RequestParam(required = false) String start,
                                                   @RequestParam(required = false) String finish) {
-
         log.debug("REST request to get statuses for tag : {}", tagName);
         if (count == null) {
             count = 20;
@@ -84,179 +76,84 @@ public class TagResource {
     }
 
     /**
-     * WARNING! This is the old API, only used by the admin console
-     * <p/>
-     * POST /tagmemberships/create -> follow tag
-     */
-    @RequestMapping(value = "/rest/tagmemberships/create",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    @Timed
-    @Deprecated
-    public boolean followTag(@RequestBody TagDTO tag) {
-        log.debug("REST request to follow tag : {}", tag);
-        return tagMembershipService.followTag(tag);
-    }
-
-    /**
-     * WARNING! This is the old API, only used by the admin console
-     * <p/>
-     * POST /tagmemberships/destroy -> unfollow tag
-     */
-    @RequestMapping(value = "/rest/tagmemberships/destroy",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody
-    @Timed
-    @Deprecated
-    public boolean unfollowTag(@RequestBody TagDTO tag) {
-        log.debug("REST request to unfollow tag  : {}", tag);
-        return tagMembershipService.unfollowTag(tag);
-    }
-
-    /**
-     * POST /tagmemberships/lookup -> looks up the tag for the user
-     */
-    @RequestMapping(value = "/rest/tagmemberships/lookup",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public TagDTO lookupTag(@RequestParam("tag_name") String tagname) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
-        TagDTO tag = new TagDTO();
-        tag.setName(tagname);
-        if (followedTags.contains(tagname)) {
-            tag.setFollowed(true);
-        }
-        return tag;
-    }
-
-    /**
-     * GET  /tagmemberships/list -> get the tags followed by the current user
-     */
-    @RequestMapping(value = "/rest/tagmemberships/list",
-            method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    @Timed
-    public Collection<TagDTO> getFollowedTags() {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
-        Collection<TagDTO> tags = new ArrayList<TagDTO>();
-        for (String followedTag : followedTags) {
-            TagDTO tag = new TagDTO();
-            tag.setName(followedTag);
-            tag.setFollowed(true);
-            tags.add(tag);
-        }
-        return tags;
-    }
-
-    /**
      * GET  /tags/popular -> get the list of popular tags
      */
     @RequestMapping(value = "/rest/tags/popular",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<TagDTO> getPopularTags() {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        String userEmail = userDetailsService.getUserEmail();
+        String domain = DomainUtil.getDomainFromEmail(userEmail);
         List<TrendDTO> trends = trendService.getCurrentTrends(domain);
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
-        Collection<TagDTO> tags = new ArrayList<TagDTO>();
-        for (TrendDTO trend : trends) {
-            TagDTO tag = new TagDTO();
-            tag.setName(trend.getTag());
-            if (followedTags.contains(trend.getTag())) {
-                tag.setFollowed(true);
-            }
-            tags.add(tag);
-        }
-        return tags;
+        Collection<String> followedTags = userTagRepository.findTags(userEmail);
+        return trends.stream().map(trend -> {
+            TagDTO tagDTO = new TagDTO();
+            tagDTO.setName(trend.getTag());
+            tagDTO.setFollowed(followedTags.contains(trend.getTag()));
+            return tagDTO;
+        }).collect(Collectors.toList());
     }
 
-
     @RequestMapping(value = "/rest/tags",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<TagDTO> getTags(@RequestParam(required = false, value = "popular") String popular,
-                                   @RequestParam(required = false, value = "user") String email,
-                                   @RequestParam(required = false, value = "search") String search) {
-        Collection<TagDTO> tags = new ArrayList<TagDTO>();
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
-        Collection<String> tagNames;
+                                      @RequestParam(required = false, value = "user") String email,
+                                      @RequestParam(required = false, value = "search") String search) {
+        Collection<TagDTO> tags = new ArrayList<>();
+        String userEmail = userDetailsService.getUserEmail();
+        String domain = DomainUtil.getDomainFromEmail(userEmail);
+        Collection<String> followedTags = userTagRepository.findTags(userEmail);
 
         if (popular != null) {
             List<TrendDTO> trends;
-            User user = null;
-            if (email != null) {
-                /*
-                In cases of posts where users are mentioned, we pass in a username instead of an email address when
-                a user clicks the link. In these cases, we should append the current user's domain to the username
-                before we proceed.
+            Optional<User> userOptional = userRepository.findOneByEmail(email);
 
-                See marked.js
-                */
-                if (!DomainUtil.isValidEmailAddress(email)){
-                    email += "@" + currentUser.getDomain();
-                }
-                user = userRepository.findOneByEmail(email).get();
-            }
-
-            userRepository
-                .findOneByEmail(userDetailsService.getUserEmail());
-            if (user != null) {
-                trendService.getTrendsForUser(user.getUsername());
-                trends = trendService.getTrendsForUser(user.getUsername());
+            if (userOptional.isPresent()) {
+                trends = trendService.getTrendsForUser(userOptional.get().getEmail());
             } else {
                 trends = trendService.getCurrentTrends(domain);
             }
 
-            for (TrendDTO trend : trends) {
+            // Add tags build from user's or domain's trends
+            trends.forEach(trend -> {
                 TagDTO tag = new TagDTO();
                 tag.setName(trend.getTag());
                 tag.setTrendingUp(trend.isTrendingUp());
+                tag.setFollowed(followedTags.contains(tag.getName()));
                 tags.add(tag);
-            }
-        } else if (search != null && !search.isEmpty()) {
+            });
+        } else if (StringUtils.isNotBlank(search)) {
             String prefix = search.toLowerCase();
-            tagNames = trendService.searchTags(domain, prefix, 5);
-            for (String tagName : tagNames) {
-                TagDTO tag = new TagDTO();
-                tag.setName(tagName);
-                tags.add(tag);
-            }
-        } else {
-            tagNames = userTagRepository.findTags(currentUser.getEmail());
-            for (String tagName : tagNames) {
-                TagDTO tag = new TagDTO();
-                tag.setName(tagName);
-                tags.add(tag);
-            }
-        }
+            Collection<String> searchTags = trendService.searchTags(domain, prefix, 5);
 
-        for (TagDTO tag : tags) {
-            if (followedTags.contains(tag.getName())) {
+            // Add tags from search
+            searchTags.forEach(tagName -> {
+                TagDTO tag = new TagDTO();
+                tag.setName(tagName);
+                tag.setFollowed(followedTags.contains(tag.getName()));
+                tags.add(tag);
+            });
+        } else {
+            // Add tags from current user
+            followedTags.forEach(tagName -> {
+                TagDTO tag = new TagDTO();
+                tag.setName(tagName);
                 tag.setFollowed(true);
-            }
+                tags.add(tag);
+            });
         }
 
         return tags;
     }
 
-
-    @RequestMapping(value = "/rest/tags/{tag}",
-            method = RequestMethod.PUT,
-            produces = "application/json")
+    @RequestMapping(value = "/rest/tags",
+        method = RequestMethod.PUT,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public TagDTO updateTag(@RequestBody TagDTO tag) {
@@ -268,20 +165,16 @@ public class TagResource {
         return tag;
     }
 
-
     @RequestMapping(value = "/rest/tags/{tag}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public TagDTO getTag(@PathVariable("tag") String tagName) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
+        Collection<String> followedTags = userTagRepository.findTags(userDetailsService.getUserEmail());
         TagDTO tag = new TagDTO();
         tag.setName(tagName);
-        if (followedTags.contains(tagName)) {
-            tag.setFollowed(true);
-        }
+        tag.setFollowed(followedTags.contains(tagName));
         return tag;
     }
 }

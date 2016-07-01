@@ -23,7 +23,7 @@ angular.module('tatamiJHipsterApp')
                 return statuses;
             }
         },
-        'follow': { method:'PUT', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },
+        'follow': { method:'PUT' },
         'getPopular': { method: 'GET', isArray: true, url: '/tatami/rest/tags/popular' }
     });
 }]);

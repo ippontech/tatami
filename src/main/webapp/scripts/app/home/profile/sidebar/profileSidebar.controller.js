@@ -7,7 +7,7 @@ angular.module('tatamiJHipsterApp')
         $scope.tags = tags;
 
         $scope.followTag = function(tag, index) {
-            TagService.follow({ tag: tag.name }, { name: tag.name, followed: !tag.followed, trendingUp: tag.trendingUp },
+            TagService.follow({ name: tag.name, followed: !tag.followed, trendingUp: tag.trendingUp },
                 function(response) {
                     $scope.tags[index].followed = response.followed;
             });
