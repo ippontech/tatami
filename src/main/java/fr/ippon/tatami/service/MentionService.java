@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * Notifies a user when he is mentionned.
@@ -32,11 +33,12 @@ public class MentionService {
      * The mentioned user can also be notified by email.
      */
     public void mentionUser(String mentionedEmail, Status status) {
+        Optional<User> userOptional = userRepository.findOneByEmail(mentionedEmail);
+        if(userOptional.isPresent()){
         mentionlineRepository.addStatusToMentionline(mentionedEmail, status.getStatusId().toString());
+        User mentionnedUser = userOptional.get();
 
-        User mentionnedUser = userRepository.findOneByEmail(mentionedEmail).get();
-
-//        Derek Zuk 2/21/2016: I am commenting this out for now.
+//        Send a push notification to the person mentionned.
 //        if (mentionnedUser != null && (mentionnedUser.getMentionEmail() == null
 //            || mentionnedUser.getMentionEmail().equals(true))) {
 //            if (status.getStatusPrivate()) { // Private status
@@ -51,5 +53,8 @@ public class MentionService {
 //                }
 //            }
 //        }
+        }
+
+
     }
 }
