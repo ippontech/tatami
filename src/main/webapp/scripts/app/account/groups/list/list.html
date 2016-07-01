@@ -39,10 +39,10 @@
                             class="btn btn-sm pull-right"
                             ng-class="{ 'btn-danger': group.member && hover, 'btn-info': group.member && !hover }">
                             <span class="glyphicon" ng-class="group.member ? 'glyphicon-minus' : 'glyphicon-plus'">
-                                <span ng-if="!group.member" class="hidden-phone" translate="account.groups.join"></span>
-                                <span ng-if="group.member && !hover" class="hidden-phone" translate="account.groups.joined"></span>
-                                <span ng-if="group.member && hover" class="hidden-phone" translate="account.groups.leave"></span>
                             </span>
+                        <span ng-if="!group.member" class="hidden-phone" translate="account.groups.join"></span>
+                        <span ng-if="group.member && !hover" class="hidden-phone" translate="account.groups.joined"></span>
+                        <span ng-if="group.member && hover" class="hidden-phone" translate="account.groups.leave"></span>
                     </button>
                 </td>
             </tr>

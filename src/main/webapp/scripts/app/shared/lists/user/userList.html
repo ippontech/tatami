@@ -2,22 +2,23 @@
     <section class="timeline">
         <div class="useritem" ng-repeat="user in users">
             <div class='pull-left background-image-fffix'>
-                <a ui-sref="tatami.home.profile.statuses({ email: user.email })">
+                <a ui-sref="profileStatuses({ email: user.email })">
                     <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                 </a>
             </div>
-            <h4>
-                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="pointer pull-right btn-sm" ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover }">
-                    <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                </span>
-
-                <a ui-sref="tatami.home.profile.statuses({ email: user.email })">
+            <h4 >
+                <span ng-if="!user.you" ng-click="followUser(user, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
+                      class="label little-padding pointer pull-right"
+                      ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover, 'label-glyphicon-plus': !user.friend }">
+                        <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+                    </span>
+                <a ui-sref="profileStatuses({ email: user.email })">
                     <strong>
                         {{ user.firstName + ' ' + user.lastName }}
                     </strong>
                 </a>
 
-                <a ui-sref="tatami.home.profile.statuses({ email: user.email })">
+                <a ui-sref="profileStatuses({ email: user.email })">
                     <small>
                         @{{ user.username }}
                     </small>
