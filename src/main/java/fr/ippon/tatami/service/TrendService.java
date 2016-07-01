@@ -59,8 +59,8 @@ public class TrendService {
     }
 
     @Cacheable("user-trends-cache")
-    public List<TrendDTO> getTrendsForUser(String username) {
-        List<String> tags = userTrendRepository.getRecentTags(username);
+    public List<TrendDTO> getTrendsForUser(String email) {
+        List<String> tags = userTrendRepository.getRecentTags(email);
         return calculateTrends(tags);
     }
 

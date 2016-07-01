@@ -4,18 +4,11 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.domain.User;
-
-import java.time.ZonedDateTime;
-
-import java.util.List;
-import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,18 +98,27 @@ public class UserRepository {
     }
 
     public Optional<User> findOneByActivationKey(String activationKey) {
+        if(StringUtils.isBlank(activationKey)) {
+            return Optional.empty();
+        }
         BoundStatement stmt = findOneByActivationKeyStmt.bind();
         stmt.setString("activation_key", activationKey);
         return findOneFromIndex(stmt);
     }
 
     public Optional<User> findOneByResetKey(String resetKey) {
+        if(StringUtils.isBlank(resetKey)) {
+            return Optional.empty();
+        }
         BoundStatement stmt = findOneByResetKeyStmt.bind();
         stmt.setString("reset_key", resetKey);
         return findOneFromIndex(stmt);
     }
 
     public Optional<User> findOneByEmail(String email) {
+        if(StringUtils.isBlank(email)) {
+            return Optional.empty();
+        }
         BoundStatement stmt = findOneByEmailStmt.bind();
         stmt.setString("email", email);
         return findOneFromIndex(stmt);
