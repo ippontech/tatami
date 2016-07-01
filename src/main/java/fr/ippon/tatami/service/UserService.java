@@ -9,7 +9,6 @@ import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
-import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,25 +134,25 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(ManagedUserDTO managedUserDTO) {
+    public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
-        String username = DomainUtil.getUsernameFromEmail(managedUserDTO.getEmail());
+        String username = DomainUtil.getUsernameFromEmail(userDTO.getEmail());
 
         user.setUsername(username);
-        user.setFirstName(managedUserDTO.getFirstName());
-        user.setLastName(managedUserDTO.getLastName());
-        user.setEmail(managedUserDTO.getEmail());
-        user.setPhoneNumber(managedUserDTO.getPhoneNumber());
-        user.setJobTitle(managedUserDTO.getJobTitle());
-        if (managedUserDTO.getLangKey() == null) {
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setJobTitle(userDTO.getJobTitle());
+        if (userDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language is English
         } else {
-            user.setLangKey(managedUserDTO.getLangKey());
+            user.setLangKey(userDTO.getLangKey());
         }
-        String domain = DomainUtil.getDomainFromEmail(managedUserDTO.getEmail());
+        String domain = DomainUtil.getDomainFromEmail(userDTO.getEmail());
         user.setDomain(domain);
-        user.setAuthorities(managedUserDTO.getAuthorities());
+        user.setAuthorities(userDTO.getAuthorities());
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());

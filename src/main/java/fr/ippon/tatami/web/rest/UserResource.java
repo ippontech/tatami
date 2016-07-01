@@ -13,7 +13,6 @@ import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.web.rest.dto.ManagedUserDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -101,25 +100,25 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
-        log.debug("rest request to save User : {}", managedUserDTO);
-        if (userRepository.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO, HttpServletRequest request) throws URISyntaxException {
+        log.debug("rest request to save User : {}", userDTO);
+        if (userRepository.findOneByEmail(userDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
                 .body(null);
-        } else if (userRepository.findOneByEmail(managedUserDTO.getEmail()).isPresent()) {
+        } else if (userRepository.findOneByEmail(userDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            String domain = DomainUtil.getDomainFromEmail(managedUserDTO.getEmail());
+            String domain = DomainUtil.getDomainFromEmail(userDTO.getEmail());
             User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             if(!domain.equals(currentUser.getDomain())){
                 return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
                     .body(null);
             }
-            User newUser = userService.createUser(managedUserDTO);
+            User newUser = userService.createUser(userDTO);
             String baseUrl = request.getScheme() + // "http"
             "://" +                                // "://"
             request.getServerName() +              // "myhost"
@@ -141,17 +140,17 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ManagedUserDTO> updateUser(@RequestBody ManagedUserDTO managedUserDTO) throws URISyntaxException {
-        log.debug("rest request to update User : {}", managedUserDTO);
-        Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) throws URISyntaxException {
+        log.debug("rest request to update User : {}", userDTO);
+        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
+        existingUser = userRepository.findOneByEmail(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
-        String domain = DomainUtil.getDomainFromEmail(managedUserDTO.getEmail());
+        String domain = DomainUtil.getDomainFromEmail(userDTO.getEmail());
         String userDomain = DomainUtil.getDomainFromEmail(userDetailsService.getUserEmail());
         if(!domain.equals(userDomain)){
             return ResponseEntity.badRequest()
@@ -159,20 +158,20 @@ public class UserResource {
                 .body(null);
         }
         return userRepository
-            .findOneById(managedUserDTO.getId())
+            .findOneById(userDTO.getId())
             .map(user -> {
-                user.setUsername(managedUserDTO.getEmail());
-                user.setFirstName(managedUserDTO.getFirstName());
-                user.setLastName(managedUserDTO.getLastName());
-                user.setEmail(managedUserDTO.getEmail());
-                user.setActivated(managedUserDTO.isActivated());
-                user.setLangKey(managedUserDTO.getLangKey());
-                user.setAuthorities(managedUserDTO.getAuthorities());
+                user.setUsername(userDTO.getEmail());
+                user.setFirstName(userDTO.getFirstName());
+                user.setLastName(userDTO.getLastName());
+                user.setEmail(userDTO.getEmail());
+                user.setActivated(userDTO.isActivated());
+                user.setLangKey(userDTO.getLangKey());
+                user.setAuthorities(userDTO.getAuthorities());
                 userRepository.save(user);
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("user-management.updated", managedUserDTO.getEmail()))
-                    .body(new ManagedUserDTO(userRepository
-                        .findOne(managedUserDTO.getId())));
+                    .headers(HeaderUtil.createAlert("user-management.updated", userDTO.getEmail()))
+                    .body(new UserDTO(userRepository
+                        .findOne(userDTO.getId())));
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
 
@@ -185,7 +184,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ManagedUserDTO>> getAllUsers()
+    public ResponseEntity<List<UserDTO>> getAllUsers()
         throws URISyntaxException {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         String domain = currentUser.getDomain();
@@ -196,10 +195,10 @@ public class UserResource {
             users.add(userRepository.findOneByEmail(userItem).get());
         }
         //List<User> users = userRepository.findAll();
-        List<ManagedUserDTO> managedUserDTOs = users.stream()
-            .map(ManagedUserDTO::new)
+        List<UserDTO> userDTOs = users.stream()
+            .map(UserDTO::new)
             .collect(Collectors.toList());
-        return new ResponseEntity<>(managedUserDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
     /**
@@ -209,7 +208,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String email) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
         /*
         In cases of posts where users are mentioned, we pass in a username instead of an email address when
         a user clicks the link. In these cases, we should append the current user's domain to the username
@@ -223,8 +222,8 @@ public class UserResource {
         }
         log.debug("rest request to get User : {}", email);
         return userService.getUserWithAuthoritiesByEmail(email)
-                .map(ManagedUserDTO::new)
-                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
+                .map(UserDTO::new)
+                .map(UserDTO -> new ResponseEntity<>(UserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**
@@ -253,24 +252,6 @@ public class UserResource {
         userService.deleteUserInformation(email);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", email)).build();
     }
-
-    /**
-     * GET  /rest/users/:username -> get the "jdubois" user
-     */
-//    @RequestMapping(value = "/rest/users/{username}",
-//        method = RequestMethod.GET,
-//        produces = "application/json")
-//    @ResponseBody
-//    @Timed
-//    public UserDTO getUser(@PathVariable("username") String username) {
-//        this.log.debug("rest request to get Profile : {}", username);
-////        User user = userService.getUserByUsername(username);
-//        User user = userRepository.findOneByUsername(username).get();
-//
-//        return new UserDTO(user);
-//
-////        return userService.buildUserDTO(user);
-//    }
 
     /**
      * GET  /users/suggestions -> suggest users to follow

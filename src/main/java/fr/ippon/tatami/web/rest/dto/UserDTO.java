@@ -2,7 +2,9 @@ package fr.ippon.tatami.web.rest.dto;
 
 import fr.ippon.tatami.domain.User;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.*;
 import java.util.Set;
@@ -14,6 +16,8 @@ public class UserDTO {
 
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 100;
+
+    private String id;
 
     @Pattern(regexp = "^[a-z0-9]*$")
     @Size(min = 1, max = 50)
@@ -71,11 +75,8 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this(user.getUsername(), null, user.getAvatar(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities(), user.getJobTitle(), user.getPhoneNumber(), user.getMentionEmail(),
-            user.getRssUid(), user.getWeeklyDigest(),
-            user.getDailyDigest(), user.getDomain());
+        BeanUtils.copyProperties(user, this);
+        this.password = null;
     }
 
     public UserDTO(String username, String password, String avatar, String firstName, String lastName,
@@ -100,6 +101,14 @@ public class UserDTO {
         this.weeklyDigest = weeklyDigest;
         this.dailyDigest = dailyDigest;
         this.domain = domain;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -267,30 +276,40 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserDTO user = (UserDTO) o;
+        UserDTO userDTO = (UserDTO) o;
 
-        return !(username != null ? !username.equals(user.username) : user.username != null);
-
+        return id != null ? id.equals(userDTO.id) : userDTO.id == null;
     }
 
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "UserDTO{" +
-            "username='" + username + '\'' +
+            "id='" + id + '\'' +
+            ", username='" + username + '\'' +
             ", password='" + password + '\'' +
             ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", authorities=" + authorities + '\'' +
             ", jobTitle='" + jobTitle + '\'' +
             ", phoneNumber='" + phoneNumber + '\'' +
-            ", mentionEmail=" + mentionEmail + '\'' +
-            ", rssUid=" + rssUid + '\'' +
-            ", weeklyDigest=" + weeklyDigest + '\'' +
-            ", dailyDigest=" + dailyDigest + '\'' +
-            ", domain=" + domain +
-            "}";
+            ", activated=" + activated +
+            ", langKey='" + langKey + '\'' +
+            ", authorities=" + authorities +
+            ", mentionEmail=" + mentionEmail +
+            ", rssUid='" + rssUid + '\'' +
+            ", weeklyDigest=" + weeklyDigest +
+            ", dailyDigest=" + dailyDigest +
+            ", domain='" + domain + '\'' +
+            ", attachmentsSize=" + attachmentsSize +
+            ", you=" + you +
+            ", isFriend=" + isFriend +
+            ", isFollower=" + isFollower +
+            '}';
     }
 }
