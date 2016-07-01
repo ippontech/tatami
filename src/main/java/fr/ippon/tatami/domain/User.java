@@ -98,6 +98,15 @@ public class User implements Serializable {
     @Column(name = "attachmentsSize")
     private long attachmentsSize;
 
+    @Transient
+    private long statusCount;
+
+    @Transient
+    private long followersCount;
+
+    @Transient
+    private long friendsCount;
+
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
 
@@ -267,6 +276,28 @@ public class User implements Serializable {
 
     public void setAttachmentsSize(long attachmentsSize) {
         this.attachmentsSize = attachmentsSize < 0 ? 0 : attachmentsSize;
+    }
+
+    public long getStatusCount() {
+        return statusCount;
+    }
+
+    public void setStatusCount(long statusCount) {
+        this.statusCount = statusCount < 0 ? 0 : statusCount;
+    }
+
+    public long getFollowersCount() { return followersCount; }
+
+    public void setFollowersCount(long followersCount) {
+        this.followersCount = followersCount < 0 ? 0 : followersCount;
+    }
+
+    public long getFriendsCount() {
+        return friendsCount;
+    }
+
+    public void setFriendsCount(long friendsCount) {
+        this.friendsCount = friendsCount < 0 ? 0 : friendsCount;
     }
 
 

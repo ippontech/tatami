@@ -222,8 +222,8 @@ public class UserResource {
         }
         log.debug("rest request to get User : {}", email);
         return userService.getUserWithAuthoritiesByEmail(email)
-                .map(UserDTO::new)
-                .map(UserDTO -> new ResponseEntity<>(UserDTO, HttpStatus.OK))
+                .map(userService::buildUserDTO)
+                .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**

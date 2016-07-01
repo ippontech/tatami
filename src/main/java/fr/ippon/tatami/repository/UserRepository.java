@@ -21,6 +21,9 @@ public class UserRepository {
     @Inject
     private Session session;
 
+    @Inject
+    private CounterRepository counterRepository;
+
     private Mapper<User> mapper;
 
     private PreparedStatement findAllStmt;
@@ -119,9 +122,17 @@ public class UserRepository {
         if(StringUtils.isBlank(email)) {
             return Optional.empty();
         }
+        User user = null;
         BoundStatement stmt = findOneByEmailStmt.bind();
         stmt.setString("email", email);
-        return findOneFromIndex(stmt);
+        Optional<User> optionalUser = findOneFromIndex(stmt);
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+            user.setStatusCount(counterRepository.getStatusCounter(email));
+            user.setFollowersCount(counterRepository.getFollowersCounter(email));
+            user.setFriendsCount(counterRepository.getFriendsCounter(email));
+        }
+        return Optional.ofNullable(user);
     }
 
     public List<User> findAll() {

@@ -41,6 +41,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
+    private CounterRepository counterRepository;
+
+    @Inject
     private SearchService searchService;
 
     @Inject
@@ -161,6 +164,9 @@ public class UserService {
         user.setDailyDigest(false);
         user.setWeeklyDigest(false);
         user.setMentionEmail(false);
+        counterRepository.createStatusCounter(user.getEmail());
+        counterRepository.createFollowersCounter(user.getEmail());
+        counterRepository.createFriendsCounter(user.getEmail());
         userRepository.save(user);
         searchService.addUser(user);
         log.debug("Created Information for User: {}", user);
@@ -368,7 +374,8 @@ public class UserService {
     public UserDTO buildUserDTO(User user) {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         UserDTO userDTO = getUserDTOFromUser(user);
-        userDTO.setYou(user.equals(currentUser));
+        userDTO.setYou(user.getUsername().equals(currentUser.getUsername()));
+        userDTO.setId(user.getId());
         if (!userDTO.isYou()) {
             Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
             Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());

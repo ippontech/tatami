@@ -69,6 +69,9 @@ public class StatusRepository {
     //Cassandra Template
 
     @Inject
+    private CounterRepository counterRepository;
+
+    @Inject
     private DiscussionRepository discussionRepository;
 
     @Inject
@@ -162,6 +165,8 @@ public class StatusRepository {
         BatchStatement batch = new BatchStatement();
         batch.add(mapper.saveQuery(status));
         session.execute(batch);
+
+        counterRepository.incrementStatusCounter(username);
 
         return status;
     }
@@ -381,6 +386,7 @@ public class StatusRepository {
         BatchStatement batch = new BatchStatement();
         batch.add(deleteByIdStmt.bind().setUUID("statusId", status.getStatusId()));
         session.execute(batch);
+        counterRepository.decrementStatusCounter(status.getUsername());
     }
 
     private boolean computeDetailsAvailable(Status status) {

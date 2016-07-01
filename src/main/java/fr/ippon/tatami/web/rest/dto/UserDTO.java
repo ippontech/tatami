@@ -71,6 +71,12 @@ public class UserDTO {
 
     private boolean isFollower = false;
 
+    private long statusCount;
+
+    private long followersCount;
+
+    private long friendsCount;
+
     public UserDTO() {
     }
 
@@ -83,7 +89,7 @@ public class UserDTO {
         String email, boolean activated, String langKey, Set<String> authorities,
                    String jobTitle, String phoneNumber,
                    boolean mentionEmail, String rssUid, boolean weeklyDigest,
-        boolean dailyDigest, String domain) {
+        boolean dailyDigest, String domain, long statusCount, long followersCount, long friendsCount) {
 
         this.username = username;
         this.password = password;
@@ -101,6 +107,9 @@ public class UserDTO {
         this.weeklyDigest = weeklyDigest;
         this.dailyDigest = dailyDigest;
         this.domain = domain;
+        this.statusCount = statusCount;
+        this.followersCount = followersCount;
+        this.friendsCount = friendsCount;
     }
 
     public String getId() {
@@ -269,6 +278,30 @@ public class UserDTO {
 
     public void setFollower(boolean follower) {
         isFollower = follower;
+    }
+
+    public long getStatusCount() {
+        return statusCount;
+    }
+
+    public void setStatusCount(long statusCount) {
+        this.statusCount = statusCount;
+    }
+
+    public long getFollowerscount() {
+        return followersCount;
+    }
+
+    public void setFollowerscount(long followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public long getFriendsCount() {
+        return friendsCount;
+    }
+
+    public void setFriendsCount(long friendsCount) {
+        this.friendsCount = friendsCount;
     }
 
     @Override
