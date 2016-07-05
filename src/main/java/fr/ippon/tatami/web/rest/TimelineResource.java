@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.ActionStatus;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
+import fr.ippon.tatami.exception.NoUserFoundException;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
@@ -108,7 +109,7 @@ public class TimelineResource {
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
-    public Collection<StatusDTO> listStatusForUser(@PathVariable("email") String email,
+    public ResponseEntity<Collection<StatusDTO>> listStatusForUser(@PathVariable("email") String email,
                                                    @RequestParam(required = false) Integer count,
                                                    @RequestParam(required = false) String start,
                                                    @RequestParam(required = false) String finish) {
@@ -128,10 +129,15 @@ public class TimelineResource {
             count = defaultCount;
         }
         log.debug("REST request to get someone's status (email={}).", email);
-        if (StringUtils.isBlank(email)) {
-            return new ArrayList<>();
+        try {
+            Collection<StatusDTO> statusDTOs = timelineService.getUserline(email, count, start, finish);
+            return ResponseEntity.ok()
+                .body(statusDTOs);
+        } catch (NoUserFoundException e) {
+            return ResponseEntity.badRequest()
+                .body(new ArrayList<>());
         }
-        return timelineService.getUserline(email, count, start, finish);
+
     }
 
     @RequestMapping(value = "/rest/statuses/{statusId}",

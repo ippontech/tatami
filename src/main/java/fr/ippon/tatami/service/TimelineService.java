@@ -3,6 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
+import fr.ippon.tatami.exception.NoUserFoundException;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.security.SecurityUtils;
@@ -492,21 +493,22 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserline(String email, int nbStatus, String start, String finish) {
-        User currentUser = userRepository.findOneByEmail(email).get();
-        if (email == null || email.isEmpty()) { // current user
-            email = currentUser.getEmail();
-        } else {  // another user, in the same domain
-            String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+    public Collection<StatusDTO> getUserline(String email, int nbStatus, String start, String finish) throws NoUserFoundException {
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if(optionalUser.isPresent()){
+            List<String> statuses = userlineRepository.getUserline(email, nbStatus, start, finish);
+            Collection<StatusDTO> dtos = buildStatusList(statuses);
+            if (statuses.size() != dtos.size()) {
+                Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
+                userlineRepository.removeStatusesFromUserline(email, statusIdsToDelete);
+                return getUserline(email, nbStatus, start, finish);
+            }
+            return dtos;
+        } else {
+            throw new NoUserFoundException();
         }
-        List<String> statuses = userlineRepository.getUserline(email, nbStatus, start, finish);
-        Collection<StatusDTO> dtos = buildStatusList(statuses);
-        if (statuses.size() != dtos.size()) {
-            Collection<String> statusIdsToDelete = findStatusesToCleanUp(statuses, dtos);
-            userlineRepository.removeStatusesFromUserline(email, statusIdsToDelete);
-            return getUserline(email, nbStatus, start, finish);
-        }
-        return dtos;
+
+
     }
 
     public void removeStatus(String statusId) {
