@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService'];
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService) {
         var vm = this;
 
         vm.status = $scope.status;
@@ -37,6 +37,7 @@
         vm.goToTagTimeline = goToTagTimeline;
         vm.shareStatus = shareStatus;
         vm.buildAttachmentUrl = buildAttachmentUrl;
+        vm.blockUser = blockUser;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -98,11 +99,16 @@
         }
 
         $ionicPopover.fromTemplateUrl('app/shared/status/blockUserMenu.html', {
-            scope: $scope,
+            scope: $scope
         }).then(function(popover) {
             $scope.popover = popover;
-            $scope.closePopover();
         });
+
+        function blockUser() {
+            BlockService.updateBlockedUser(
+                {username: vm.status.username }
+            );
+        }
 
     }
 })();
