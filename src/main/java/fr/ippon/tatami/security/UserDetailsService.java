@@ -60,6 +60,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 
     public String getUserEmail() {
-        return SecurityUtils.getCurrentUser().getUsername();
+        return SecurityUtils.getCurrentUserUsername();
     }
 }

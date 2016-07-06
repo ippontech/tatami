@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import fr.ippon.tatami.AbstractCassandraTest;
 import fr.ippon.tatami.Application;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,12 +11,13 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
@@ -53,16 +55,16 @@ public class UserResourceIntTest extends AbstractCassandraTest {
     @Test
     public void testGetExistingUser() throws Exception {
         restUserMockMvc.perform(get("/tatami/rest/users/admin@localhost")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.lastName").value("Administrator"));
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$.lastName").value("Administrator"));
     }
 
     @Test
     public void testGetUnknownUser() throws Exception {
         restUserMockMvc.perform(get("/tatami/rest/users/unknown@localhost")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 }

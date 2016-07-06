@@ -369,18 +369,18 @@ public class UserService {
             userDTOs.add(userDTO);
         }
         return userDTOs;
-    };
+    }
 
     public UserDTO buildUserDTO(User user) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        String currentUserEmail = userDetailsService.getUserEmail();
         UserDTO userDTO = getUserDTOFromUser(user);
-        userDTO.setYou(user.equals(currentUser));
+        userDTO.setYou(user.getEmail().equals(currentUserEmail));
         userDTO.setId(user.getId());
         if (!userDTO.isYou()) {
-            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
-            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());
-            userDTO.setFriend(currentFriendLogins.contains(user.getUsername()));
-            userDTO.setFollower(currentFollowersLogins.contains(user.getUsername()));
+            Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUserEmail);
+            Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUserEmail);
+            userDTO.setFriend(currentFriendLogins.contains(user.getEmail()));
+            userDTO.setFollower(currentFollowersLogins.contains(user.getEmail()));
         }
         return userDTO;
     }
