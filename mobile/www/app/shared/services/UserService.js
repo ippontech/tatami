@@ -60,14 +60,20 @@
                         return suggestions;
                     }
                 },
-                'follow': {method: 'PATCH', params: {username: '@username'}},
+                'follow': {
+                    method: 'PATCH', 
+                    params: {username: '@username'}
+                },
                 'searchUsers': {
                     method: 'GET',
                     isArray: true,
                     url: PathService.buildPath('/tatami/rest/users/:term'),
                     transformResponse: responseTransform
                 },
-                'deactivate': {method: 'PATCH', params: {username: '@username'}}
+                'deactivate': {
+                    method: 'PATCH', 
+                    params: {username: '@username'}
+                }
             });
     }
 })();
