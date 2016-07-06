@@ -374,7 +374,7 @@ public class UserService {
     public UserDTO buildUserDTO(User user) {
         User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
         UserDTO userDTO = getUserDTOFromUser(user);
-        userDTO.setYou(user.getUsername().equals(currentUser.getUsername()));
+        userDTO.setYou(user.equals(currentUser));
         userDTO.setId(user.getId());
         if (!userDTO.isYou()) {
             Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());

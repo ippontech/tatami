@@ -312,16 +312,12 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (!username.equals(user.username)) {
-            return false;
-        }
-
-        return true;
+        return id != null ? id.equals(user.id) : user.id == null;
     }
 
     @Override
     public int hashCode() {
-        return username.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
