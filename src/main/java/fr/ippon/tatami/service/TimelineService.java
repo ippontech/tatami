@@ -33,6 +33,9 @@ public class TimelineService {
     private UserService userService;
 
     @Inject
+    private BlockService blockService;
+
+    @Inject
     private StatusRepository statusRepository;
 
     @Inject
@@ -184,15 +187,12 @@ public class TimelineService {
 
     public Collection<StatusDTO> buildStatusList(List<String> line) {
         User currentUser = null;
-        Collection<Group> usergroups;
-        List<String> favoriteLine;
+        Collection<Group> usergroups = Collections.emptyList();
+        List<String> favoriteLine = Collections.emptyList();
         if (SecurityUtils.isAuthenticated()) {
             currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
             usergroups = groupService.getGroupsForUser(currentUser);
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getEmail());
-        } else {
-            usergroups = Collections.emptyList();
-            favoriteLine = Collections.emptyList();
         }
         Collection<StatusDTO> statuses = new ArrayList<>(line.size());
         for (String statusId : line) {
@@ -282,8 +282,7 @@ public class TimelineService {
     }
 
     //@Cacheable("isSharedByMe")
-    private Boolean shareByMe(StatusDTO statusDTO)
-    {
+    private Boolean shareByMe(StatusDTO statusDTO) {
         Boolean isSharedByMe;
 
         Collection<String> userEmailWhoShare = sharesRepository.findUserEmailsWhoSharedAStatus(statusDTO.getStatusId());
@@ -384,6 +383,7 @@ public class TimelineService {
             mentionlineRepository.removeStatusesFromMentionline(currentUser.getEmail(), statusIdsToDelete);
             return getMentionline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -408,6 +408,7 @@ public class TimelineService {
             taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
             return getTagline(tag, nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -424,6 +425,7 @@ public class TimelineService {
             grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
             return getGroupline(groupId, nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -460,6 +462,7 @@ public class TimelineService {
             timelineRepository.removeStatusesFromTimeline(email, statusIdsToDelete);
             return getTimeline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -482,6 +485,7 @@ public class TimelineService {
             domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
             return getDomainline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -503,6 +507,7 @@ public class TimelineService {
                 userlineRepository.removeStatusesFromUserline(email, statusIdsToDelete);
                 return getUserline(email, nbStatus, start, finish);
             }
+            dtos = removeStatusFromBlockedUsers(dtos);
             return dtos;
         } else {
             throw new NoUserFoundException();
@@ -644,6 +649,7 @@ public class TimelineService {
             }
             return getFavoritesline();
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -653,5 +659,18 @@ public class TimelineService {
     private void shareStatusToTimelineAndNotify(String sharedByEmail, String timelineEmail, Share share) {
         timelineRepository.shareStatusToTimeline(sharedByEmail, timelineEmail, share);
 //        atmosphereService.notifyUser(timelineUsername, share);
+    }
+
+    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos){
+        String currentEmail = userDetailsService.getUserEmail();
+        String domain = DomainUtil.getDomainFromEmail(currentEmail);
+        Collection<String> blockedUsers = blockService.getUsersBlockedEmailForUser(currentEmail);
+        Collection<StatusDTO> newDtos = new ArrayList<>();
+        for(StatusDTO dto : dtos){
+            if(!blockedUsers.contains(dto.getUsername() + "@" + domain)){
+                newDtos.add(dto);
+            }
+        }
+        return newDtos;
     }
 }

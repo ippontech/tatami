@@ -315,6 +315,12 @@ CREATE TABLE IF NOT EXISTS mail_digest (
     PRIMARY KEY(digest_id,email)
 );
 
+CREATE TABLE IF NOT EXISTS usersBlocked (
+    email varchar,
+    blockedEmail varchar,
+    PRIMARY KEY(email,blockedEmail)
+);
+
 INSERT INTO user (id, password, username, avatar, firstname, lastname ,email, jobtitle, phonenumber, activated ,lang_key, activation_key, preferences_mention_email, rss_uid, weekly_digest_subscription, daily_digest_subscription, domain, authorities)
 VALUES('1','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', 'system', '', '','System','system@localhost', 'Developer', '8041234567', true,'en','', true, '', false, false, 'localhost', {'ROLE_USER', 'ROLE_ADMIN'});
 

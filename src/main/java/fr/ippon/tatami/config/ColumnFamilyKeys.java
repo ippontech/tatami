@@ -27,6 +27,8 @@ public class ColumnFamilyKeys {
 
     public static final String TAGLINE = "Tagline";
 
+    public static final String USERSBLOCKED_CF = "usersBlocked";
+
     public static final String TIMELINE_CF = "Timeline";
 
     public static final String TIMELINE_SHARES_CF = "TimelineShares";
