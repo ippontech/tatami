@@ -1,0 +1,19 @@
+<ion-popover-view>
+    <ion-content>
+        <div class="list" ng-click="popover.hide()">
+            <a class="item" target="_blank" translate="status.block.reportStatus">
+                Report Post
+            </a>
+            <a class="item" target="_blank" translate="status.block.reportUser">
+                Report User
+            </a>
+            <a class="item" target="_blank" translate="status.block.blockUser">
+                Hide User from Timeline
+            </a>
+            <a class="button button-clear ion-trash-a tatami-button"
+               ng-if="vm.isCurrentUser" ng-click="vm.remove()">
+                Delete
+            </a>
+        </div>
+    </ion-content>
+</ion-popover-view>

@@ -6,6 +6,12 @@
         },
         "reply": "In reply to ",
         "follower": "New follower",
-        "delete": "Are you sure you want to delete the status?"
+        "delete": "Are you sure you want to delete the status?",
+        "block": {
+            "reportUser": "Report User",
+            "reportStatus": "Report Status",
+            "blockUser": "Hide from timeline"
+        }
     }
+
 }

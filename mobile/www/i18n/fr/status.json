@@ -6,6 +6,11 @@
         },
         "reply": "En réponse à ",
         "follower": "Nouvel abonné",
-        "delete": "Êtes-vous sûr de vouloir supprimer ce statut?"
+        "delete": "Êtes-vous sûr de vouloir supprimer ce statut?",
+        "block": {
+            "reportUser": "Report User",
+            "reportStatus": "Report Status",
+            "blockUser": "Hide from timeline"
+        }
     }
 }

@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$filter', '$sce', 'StatusService', 'PathService'];
-    function controller($scope, $state, $ionicPopup, $filter, $sce, StatusService, PathService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService) {
         var vm = this;
 
         vm.status = $scope.status;
@@ -96,5 +96,13 @@
         function buildAttachmentUrl(attachment) {
             return PathService.buildPath('/tatami/file/' + attachment.attachmentId + '/' + attachment.filename);
         }
+
+        $ionicPopover.fromTemplateUrl('app/shared/status/blockUserMenu.html', {
+            scope: $scope,
+        }).then(function(popover) {
+            $scope.popover = popover;
+            $scope.closePopover();
+        });
+
     }
 })();
