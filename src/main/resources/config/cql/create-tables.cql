@@ -33,12 +33,6 @@ CREATE TABLE IF NOT EXISTS timeline (
     PRIMARY KEY(key,status)
 );
 
-CREATE TABLE IF NOT EXISTS timeline (
-    key varchar,
-    status timeuuid,
-    PRIMARY KEY(key,status)
-);
-
 CREATE TABLE IF NOT EXISTS domain (
     domainId varchar,
     email varchar,
