@@ -9,7 +9,7 @@
         "delete": "Êtes-vous sûr de vouloir supprimer ce statut?",
         "block": {
             "reportUser": "Signaler cet utilisateur",
-            "reportStatus": "signaler ce statut",
+            "reportStatus": "Signaler ce statut",
             "blockUser": "Bloquer cet utilisateur"
         }
     }
