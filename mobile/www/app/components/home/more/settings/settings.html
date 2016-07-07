@@ -1,0 +1,15 @@
+<ion-view view-title="{{ 'more.settings' | translate }}">
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-divider" translate="more.language.change"></ion-item>
+            <ion-radio ng-repeat="language in vm.languages"
+                       ng-model="vm.language"
+                       ng-value="language.langKey">
+                {{ language.translateKey | translate }}
+            </ion-radio>
+
+            <ion-item class="item-divider"></ion-item>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

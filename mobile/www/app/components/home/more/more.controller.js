@@ -5,17 +5,15 @@
         .controller('MoreController', moreController);
 
     moreController.$inject = [
-        '$scope',
         '$state',
         '$http',
         '$localStorage',
         '$ionicHistory',
-        '$translate',
         '$ionicPopup',
         'PathService',
         'TatamiEndpoint'
     ];
-    function moreController($scope, $state, $http, $localStorage, $ionicHistory, $translate, $ionicPopup, PathService, TatamiEndpoint) {
+    function moreController($state, $http, $localStorage, $ionicHistory, $ionicPopup, PathService, TatamiEndpoint) {
         var vm = this;
 
         vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefaultEndpoint().url;
@@ -24,30 +22,10 @@
 
         vm.logout = logout;
         vm.goToCompanyTimeline = goToCompanyTimeline;
+        vm.goToSettings = goToSettings;
         vm.updateEndpoint = updateEndpoint;
         vm.isDefaultEndpoint = isDefaultEndpoint;
         vm.useDefaultEndpoint = useDefaultEndpoint;
-
-        vm.language = window.localStorage.getItem('language');
-
-        vm.languages = [
-            {
-                langKey: 'en',
-                translateKey: 'more.language.english'
-            },
-            {
-                langKey: 'fr',
-                translateKey: 'more.language.french'
-            }
-        ];
-
-        $scope.$watch('vm.language', updateLanguage);
-
-        function updateLanguage(language) {
-            $translate.use(language);
-            window.localStorage.setItem('language', language);
-        }
-
 
         function logout() {
             $localStorage.signOut();
@@ -58,6 +36,10 @@
 
         function goToCompanyTimeline() {
             $state.go('company');
+        }
+
+        function goToSettings() {
+            $state.go('settings');
         }
 
         function updateEndpoint() {

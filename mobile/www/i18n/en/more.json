@@ -2,6 +2,8 @@
     "more": {
         "title": "More Options",
         "company": "Company Timeline",
+        "settings": "Settings",
+        "blockedusers": "Manage your blocked users",
         "logout": "Logout",
         "language": {
             "change": "Language",

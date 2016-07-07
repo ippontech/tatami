@@ -2,6 +2,8 @@
     "more": {
         "title": "Plus d'options",
         "company": "Timeline Entreprise",
+        "settings": "Paramètres",
+        "blockedusers": "Gérer les utilisateurs bloqués",
         "logout": "Déconnexion",
         "language": {
             "change": "Langue",
