@@ -3,7 +3,10 @@
         "title": "More Options",
         "company": "Company Timeline",
         "settings": "Settings",
-        "blockedusers": "Manage your blocked users",
+        "blockedusers": {
+            "manage": "Manage your blocked users",
+            "no": "You don't have any blocked user"
+        },
         "logout": "Logout",
         "language": {
             "change": "Language",

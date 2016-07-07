@@ -21,7 +21,7 @@
                 'getBlockedUsersForUser': {
                     method: 'GET',
                     isArray: true,
-                    params: {email: '@username'},
+                    params: {username: '@username'},
                     url: PathService.buildPath('/tatami/rest/block/blockedusers/:username'),
                     transformResponse: responseTransform
                 },

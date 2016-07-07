@@ -26,6 +26,7 @@
         vm.updateEndpoint = updateEndpoint;
         vm.isDefaultEndpoint = isDefaultEndpoint;
         vm.useDefaultEndpoint = useDefaultEndpoint;
+        vm.goToBlockedUsers = goToBlockedUsers;
 
         function logout() {
             $localStorage.signOut();
@@ -40,6 +41,10 @@
 
         function goToSettings() {
             $state.go('settings');
+        }
+
+        function goToBlockedUsers(){
+            $state.go('blockedusers');
         }
 
         function updateEndpoint() {

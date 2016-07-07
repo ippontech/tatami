@@ -1,0 +1,10 @@
+<ion-view view-title="{{ 'more.blockedusers.manage' | translate }}">
+    <ion-content>
+        <ion-list ng-init="getBlockedUsersForUser">
+            <ion-item ng-if="vm.hasBlockedUsers()" ng-repeat="blockeduser in vm.blockedUsers">
+                <span>{{blockeduser.username}}</span>
+            </ion-item>
+            <ion-item ng-if="!vm.hasBlockedUsers()" translate="more.blockedusers.no">No blocked users</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
