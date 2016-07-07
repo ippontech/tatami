@@ -22,7 +22,7 @@ Developement Ribbon
     left: 0;
     border: 0;
     z-index: 1000;
-    background-image: url("../images/development_ribbon.png");
+    background-image: url("../img/development_ribbon.png");
     background-position: center center;
     background-repeat: no-repeat;
 }
@@ -71,7 +71,7 @@ Browser Upgrade Prompt
     display: inline-block;
     width: 347px;
     height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
+    background: url("../img/hipster.png") no-repeat center top;
     background-size: contain;
 }
 
@@ -87,7 +87,7 @@ only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
     .hipster {
-        background: url("../images/hipster2x.png") no-repeat center top;
+        background: url("../img/hipster2x.png") no-repeat center top;
         background-size: contain;
     }
 }

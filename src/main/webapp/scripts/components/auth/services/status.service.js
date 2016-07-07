@@ -4,7 +4,7 @@ angular.module('tatamiJHipsterApp')
         statuses = angular.fromJson(statuses);
 
         for(var i = 0; i < statuses.length; i++) {
-            statuses[i]['avatarURL'] = !statuses[i].avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
+            statuses[i]['avatarURL'] = !statuses[i].avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + statuses[i].avatar + '/photo.jpg';
             updateGeoLocInfo(statuses[i]);
         }
 
@@ -24,7 +24,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: function(status) {
                 status = angular.fromJson(status);
 
-                status.avatarURL = !status.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
+                status.avatarURL = !status.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + status.avatar + '/photo.jpg';
 
                 updateGeoLocInfo(status);
 
@@ -49,12 +49,12 @@ angular.module('tatamiJHipsterApp')
                 details = angular.fromJson(details);
 
                 for(var i = 0; i < details.discussionStatuses.length; i++) {
-                    details.discussionStatuses[i]['avatarURL'] = !details.discussionStatuses[i].avatar.avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
+                    details.discussionStatuses[i]['avatarURL'] = !details.discussionStatuses[i].avatar.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.discussionStatuses[i].avatar + '/photo.jpg';
                     updateGeoLocInfo(details.discussionStatuses[i])
                 }
 
                 for(var i = 0; i < details.sharedByEmails.length; i++) {
-                    details.sharedByEmails[i]['avatarURL'] = !details.sharedByEmails[i].avatar ? '/assets/images/default_image_profile.png' : '/tatami/avatar/' + details.sharedByEmails[i].avatar + '/photo.jpg';
+                    details.sharedByEmails[i]['avatarURL'] = !details.sharedByEmails[i].avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + details.sharedByEmails[i].avatar + '/photo.jpg';
                 }
 
                 return details;
