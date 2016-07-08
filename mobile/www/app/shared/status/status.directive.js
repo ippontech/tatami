@@ -115,7 +115,9 @@
 
         function blockUser() {
             BlockService.updateBlockedUser(
-                {username: vm.status.username }
+                {username: vm.status.username },
+                function (response) {
+                }
             );
         }
 

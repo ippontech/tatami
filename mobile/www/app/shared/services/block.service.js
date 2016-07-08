@@ -28,7 +28,11 @@
                 'updateBlockedUser': {
                     method: 'PATCH',
                     params: { username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/block/update/:username')
+                    url: PathService.buildPath('/tatami/rest/block/update/:username'),
+                    tranformResponse: function (blockedUser) {
+                        blockedUser = angular.fromJson(blockedUser);
+                        return blockedUser;
+                    }
                 }
             });
 

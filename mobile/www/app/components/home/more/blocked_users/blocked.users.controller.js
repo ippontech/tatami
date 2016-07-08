@@ -8,14 +8,13 @@
     function blockedUsersController(currentUser, BlockService) {
         var vm = this;
         vm.currentUser = currentUser;
-        vm.blockedUsers = null;
+        vm.blockedUsers = [];
 
         vm.updateUser = updateUser;
         vm.getBlockedUsersForUser = getBlockedUsersForUser;
         vm.hasBlockedUsers = hasBlockedUsers;
 
-        console.log(getBlockedUsersForUser());
-
+        console.log('hasBlockedUsers=' + vm.hasBlockedUsers());
 
         function updateUser() {
             BlockService.updateBlockedUser(
@@ -24,16 +23,16 @@
         }
 
         function getBlockedUsersForUser() {
-            BlockService.updateBlockedUser(
+            BlockService.getBlockedUsersForUser(
                 {username: vm.currentUser.username},
-                function (result) {
-                    vm.blockedUsers = result;
+                function (response) {
+                    vm.blockedUsers = response;
                 }
             );
         }
-        
+
         function  hasBlockedUsers() {
-            return vm.blockedUsers!=null;
+            return vm.blockedUsers.length>0;
         }
     }
 })();
