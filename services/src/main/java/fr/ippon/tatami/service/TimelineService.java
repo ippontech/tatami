@@ -81,6 +81,9 @@ public class TimelineService {
     @Inject
     private AtmosphereService atmosphereService;
 
+    @Inject
+    private BlockService blockService;
+
     public StatusDTO getStatus(String statusId) {
         List<String> line = new ArrayList<String>();
         line.add(statusId);
@@ -379,6 +382,7 @@ public class TimelineService {
             mentionlineRepository.removeStatusesFromMentionline(currentUser.getLogin(), statusIdsToDelete);
             return getMentionline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -403,6 +407,7 @@ public class TimelineService {
             taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
             return getTagline(tag, nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -419,6 +424,7 @@ public class TimelineService {
             grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
             return getGroupline(groupId, nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -455,6 +461,7 @@ public class TimelineService {
             timelineRepository.removeStatusesFromTimeline(login, statusIdsToDelete);
             return getTimeline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -477,6 +484,7 @@ public class TimelineService {
             domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
             return getDomainline(nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -504,6 +512,7 @@ public class TimelineService {
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
             return getUserline(username, nbStatus, start, finish);
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -640,6 +649,7 @@ public class TimelineService {
             }
             return getFavoritesline();
         }
+        dtos = removeStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -649,5 +659,23 @@ public class TimelineService {
     private void shareStatusToTimelineAndNotify(String sharedByLogin, String timelineLogin, Share share) {
         timelineRepository.shareStatusToTimeline(sharedByLogin, timelineLogin, share);
         atmosphereService.notifyUser(timelineLogin, share);
+    }
+
+    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos){
+        if(authenticationService.hasAuthenticatedUser()) {
+            User currentUser = authenticationService.getCurrentUser();
+            String currentLogin = currentUser.getLogin();
+            String domain = DomainUtil.getDomainFromLogin(currentLogin);
+            Collection<String> blockedUsers = blockService.getUsersBlockedLoginForUser(currentLogin);
+            Collection<StatusDTO> newDtos = new ArrayList<StatusDTO>();
+            for (StatusDTO dto : dtos) {
+                if (!blockedUsers.contains(dto.getUsername() + "@" + domain)) {
+                    newDtos.add(dto);
+                }
+            }
+            return newDtos;
+        }
+        return dtos;
+
     }
 }

@@ -436,7 +436,7 @@ public class UserService {
             userDTOs.add(userDTO);
         }
         return userDTOs;
-    };
+    }
 
 
 

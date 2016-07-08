@@ -997,6 +997,12 @@
             "name":"UserTags",
             "keyType":"UTF8Type",
             "comparatorType":"UTF8Type"
+        },
+        {
+            "name":"UsersBlocked",
+            "keyType":"UTF8Type",
+            "comparatorType":"UTF8Type",
+            "defaultColumnValueType":"LongType"
         }
     ]
 }

@@ -91,4 +91,6 @@ public class ColumnFamilyKeys {
 
     public static final String APPLE_DEVICE_USER_CF = "AppleDeviceUser";
 
+    public static final String BLOCK_USERS_CF = "UsersBlocked";
+
 }
