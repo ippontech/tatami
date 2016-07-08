@@ -1,4 +1,3 @@
-<script src="lib/ionic/release/js/ionic.bundle.js"></script>
 <span>
     <div class="item-avatar item-text-wrap tatami-avatar">
         <img ng-src="{{ vm.status.avatarURL }}"/>
@@ -40,7 +39,8 @@
     <div class="row">
         <div class="col-25 button button-clear ion-chatbox tatami-button" ng-click="vm.postReply()"></div>
         <div class="col-25 button button-clear ion-star tatami-button" ng-click="vm.favorite()" ng-class="{ 'button-energized': vm.status.favorite }"></div>
-        <div class="col-25 button button-clear ion-more tatami-button" ng-click="popover.show($event)"></div>
+        <div class="col-25 button button-clear ion-more tatami-button" ng-if="!vm.isCurrentUser" ng-click="popover.show($event)"></div>
+        <div class="col-25 button button-clear ion-trash-a tatami-button" ng-if="vm.isCurrentUser" ng-click="vm.remove()"></div>
     </div>
 </span>
 

@@ -7,10 +7,13 @@
         "reply": "In reply to ",
         "follower": "New follower",
         "delete": "Are you sure you want to delete the status?",
+        "report" : "Report",
+        "reportMessage": "This status has been reported",
         "block": {
             "reportUser": "Report User",
             "reportStatus": "Report Status",
-            "blockUser": "Hide from timeline"
+            "blockUser": "Hide from timeline",
+            "delete": "Delete"
         }
     }
 

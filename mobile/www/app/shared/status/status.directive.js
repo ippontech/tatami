@@ -38,6 +38,7 @@
         vm.shareStatus = shareStatus;
         vm.buildAttachmentUrl = buildAttachmentUrl;
         vm.blockUser = blockUser;
+        vm.reportStatus = reportStatus;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -86,6 +87,14 @@
 
         function shareStatus() {
             StatusService.update({ statusId: vm.status.statusId }, { shared: !vm.status.shareByMe }, setStatus);
+        }
+
+        function reportStatus() {
+            StatusService.reportStatus({statusId: vm.status.statusId});
+            var confirmPopup = $ionicPopup.alert({
+                title: 'Report',
+                template: '<span translate="status.reportMessage"></span>'
+            });
         }
 
         setStatus.$inject = ['status'];

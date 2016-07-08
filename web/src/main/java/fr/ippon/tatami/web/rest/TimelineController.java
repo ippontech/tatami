@@ -59,6 +59,20 @@ public class TimelineController {
         return timelineService.getStatusDetails(statusId);
     }
 
+
+    /**
+     * Report a status?
+     */
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void reportStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to report a status details Id : {}", statusId);
+        statusUpdateService.reportedStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+
+    }
+
+
     /**
      * GET  /statuses/home_timeline -> get the latest statuses from the current user
      */

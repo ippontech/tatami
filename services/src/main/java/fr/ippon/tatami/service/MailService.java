@@ -2,7 +2,10 @@ package fr.ippon.tatami.service;
 
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
@@ -63,6 +66,9 @@ public class MailService {
 
     @Inject
     private VelocityEngine velocityEngine;
+
+    @Inject
+    private TatamiUserDetailsService tatamiUserDetailsService;
 
     @PostConstruct
     public void init() {
@@ -200,6 +206,24 @@ public class MailService {
         model.put("suggestedGroups", suggestedGroup);
 
         sendTextFromTemplate(user.getLogin(), model, "weeklyDigest", this.locale);
+    }
+
+    @Async
+    public void sendReportedStatusEmail(String emailReporting, AbstractStatus status) {
+        log.debug("Sending Mention e-mail to User '{}' with locale : '{}'", locale);
+        String url = tatamiUrl + "/#/home/status/" + status.getStatusId();
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("status", status);
+        model.put("statusUrl", url);
+
+        //TODO: need to get admin emails
+        String adminEmail = "eklein@ipponusa.com";
+        sendTextFromTemplate(adminEmail, model, "reportedStatus", this.locale);
+
+//        for(String email : tatamiUserDetailsService.getAdminUsers()) {
+//            sendTextFromTemplate(email, model, "reportedStatus", this.locale);
+//        }
     }
 
     public boolean connectSmtpServer() {

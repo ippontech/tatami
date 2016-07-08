@@ -96,6 +96,12 @@ public class StatusUpdateService {
     @Inject
     private AtmosphereService atmosphereService;
 
+    @Inject
+    private MailService mailService;
+
+    @Inject
+    private UserRepository userRepository;
+
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
@@ -407,5 +413,24 @@ public class StatusUpdateService {
     private void addStatusToTimelineAndNotify(String login, Status status) {
         timelineRepository.addStatusToTimeline(login, status.getStatusId());
         atmosphereService.notifyUser(login, status);
+    }
+
+    public void reportedStatus(String mentionedLogin, String statusId) {
+
+        //need to take into consideration private group posts, etc... for admins
+        //if a user flags a post in a private group, admin needs to be able to review post
+        //same for private messages
+//        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
+//            if (status.getStatusPrivate()) { // Private status
+//                mailService.sendUserPrivateMessageEmail(mentionnedUser, status);
+//                if (applePushService != null) {
+//                    applePushService.notifyUser(mentionedLogin, status);
+//                }
+//            } else {
+
+        mailService.sendReportedStatusEmail(mentionedLogin, statusRepository.findStatusById(statusId));
+
+//            }
+//        }
     }
 }

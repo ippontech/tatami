@@ -1,0 +1,13 @@
+#parse("common")
+#msg("reportedStatus.greeting") ${user.Username},
+
+#msg("reportedStatus.text1")
+${status.Content}
+
+#msg("reportedStatus.text2")
+
+${statusUrl}
+
+#msg("reportedStatus.text3")
+
+#msg("email.signature")

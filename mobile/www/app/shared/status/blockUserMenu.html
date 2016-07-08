@@ -4,7 +4,7 @@
             <a class="button button-clear ion-share tatami-button" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
                 Share Status
             </a>
-            <a class="item" target="_blank" translate="status.block.reportStatus">
+            <a class="item" target="_blank" translate="status.block.reportStatus" ng-click="vm.reportStatus()">
                 Report Post
             </a>
             <a class="item" target="_blank" translate="status.block.reportUser">
@@ -15,7 +15,7 @@
             </a>
 
             <a class="button button-clear ion-trash-a tatami-button"
-               ng-if="vm.isCurrentUser = 'ADMIN'" ng-click="vm.remove()">
+               ng-if="vm.currentUser = 'ADMIN'" ng-click="vm.remove()" translate="status.block.delete">
                 Delete
             </a>
         </div>

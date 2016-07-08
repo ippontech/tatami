@@ -90,4 +90,8 @@ public class TatamiUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(login, password,
                 grantedAuthorities);
     }
+
+    public Collection<String> getAdminUsers() {
+        return adminUsers;
+    }
 }

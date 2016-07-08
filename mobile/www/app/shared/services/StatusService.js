@@ -82,6 +82,11 @@
                         return details;
                     }
                 },
+                'reportStatus': {
+                    method: 'POST',
+                    params: {statusId: '@statusId'},
+                    url: PathService.buildPath('/tatami/rest/statuses/report/:statusId')
+                },
                 'update': {method: 'PATCH', params: {statusId: '@statusId'}},
                 'announce': {method: 'PATCH', params: {params: '@statusId'}}
             });
