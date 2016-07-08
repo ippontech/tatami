@@ -16,6 +16,7 @@
                 <span class="inline subheading">&nbsp;&#183; @{{vm.status.username}}</span>
             </a>
             <p class="date">{{vm.status.prettyPrintStatusDate}}</p>
+            <p ng-if="status.groupId">{{ status.groupName }}</p>
         </div>
     </div>
 
