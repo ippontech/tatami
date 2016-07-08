@@ -10,6 +10,7 @@
         vm.user = user;
         vm.statuses = statuses;
         vm.currentUser = currentUser;
+        vm.isCurrentUser = (vm.currentUser.username === vm.user.username);
 
         vm.followUser = followUser;
         vm.getNewStatuses = getNewStatuses;
