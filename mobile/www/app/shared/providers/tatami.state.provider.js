@@ -25,6 +25,7 @@
             profileViews['timeline@home'] = { 'timeline@home': profileViewConfig };
             profileViews['mentions@home'] = { 'mentions@home': profileViewConfig };
             profileViews['favorites@home'] = { 'favorites@home': profileViewConfig };
+            profileViews['more@home'] = { 'more@home': profileViewConfig };
             profileViews['company@home'] = { 'more@home': profileViewConfig };
             profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 

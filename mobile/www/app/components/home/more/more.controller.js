@@ -11,14 +11,16 @@
         '$ionicHistory',
         '$ionicPopup',
         'PathService',
-        'TatamiEndpoint'
+        'TatamiEndpoint',
+        'currentUser'
     ];
-    function moreController($state, $http, $localStorage, $ionicHistory, $ionicPopup, PathService, TatamiEndpoint) {
+    function moreController($state, $http, $localStorage, $ionicHistory, $ionicPopup, PathService, TatamiEndpoint, currentUser) {
         var vm = this;
 
         vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefaultEndpoint().url;
         vm.attempted = false;
         vm.success = true;
+        vm.currentUser = currentUser;
 
         vm.logout = logout;
         vm.goToCompanyTimeline = goToCompanyTimeline;

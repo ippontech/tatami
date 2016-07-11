@@ -28,4 +28,12 @@
             $translate.refresh();
         }
     }
+
+    angular.module('tatami')
+        .run(run);
+
+    run.$inject = ['TatamiState'];
+    function run(TatamiState) {
+        TatamiState.addProfileState('more', 'home');
+    }
 })();
