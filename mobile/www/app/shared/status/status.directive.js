@@ -116,7 +116,11 @@
         function blockUser() {
             BlockService.updateBlockedUser(
                 {username: vm.status.username },
-                function (response) {
+                function () {
+                    $ionicPopup.alert({
+                        template: '<span translate="user.block.success"></span>'
+                    });
+
                 }
             );
         }

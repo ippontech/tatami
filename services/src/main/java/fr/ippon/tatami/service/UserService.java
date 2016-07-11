@@ -48,6 +48,9 @@ public class UserService {
     private FriendRepository friendRepository;
 
     @Inject
+    private BlockService blockService;
+
+    @Inject
     private FollowerRepository followerRepository;
 
     @Inject
@@ -425,6 +428,7 @@ public class UserService {
         User currentUser = authenticationService.getCurrentUser();
         Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
         Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+        Collection<String> currentBlockedUsersLogins = blockService.getUsersBlockedLoginForUser(currentUser.getLogin());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
         for (User user : users) {
             UserDTO userDTO = getUserDTOFromUser(user);
@@ -432,6 +436,7 @@ public class UserService {
             if (!userDTO.isYou()) {
                 userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
                 userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+                userDTO.setBlocked(currentBlockedUsersLogins.contains(user.getLogin()));
             }
             userDTOs.add(userDTO);
         }
@@ -447,8 +452,10 @@ public class UserService {
         if (!userDTO.isYou()) {
             Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getLogin());
             Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getLogin());
+            Collection<String> currentBlockedUsersLogins = blockService.getUsersBlockedLoginForUser(currentUser.getLogin());
             userDTO.setFriend(currentFriendLogins.contains(user.getLogin()));
             userDTO.setFollower(currentFollowersLogins.contains(user.getLogin()));
+            userDTO.setBlocked(currentBlockedUsersLogins.contains(user.getLogin()));
         }
         return userDTO;
     }

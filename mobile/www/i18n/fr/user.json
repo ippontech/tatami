@@ -4,6 +4,14 @@
             "title": "Profil"
         },
         "follow": "S'abonner",
-        "unfollow": "Se désabonner"
+        "unfollow": "Se désabonner",
+        "block":{
+            "success": "Vous avez bloqué cet utilisateur. Vous ne verrez plus ses status.",
+            "title": "Bloquer"
+        } ,
+        "unblock": {
+            "success": "Vous avez débloqué cet utilisateur.",
+            "title": "Débloquer"
+        }
     }
 }

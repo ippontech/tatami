@@ -6,10 +6,15 @@
         <span class="inline subheading">@{{ vm.user.username }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button ng-if="!vm.currentUser || vm.currentUser.username === vm.status.username"
+        <ion-option-button ng-if="(!vm.currentUser || vm.currentUser.username === vm.status.username) && !vm.isManageBlockUsersState()"
                            class="button-positive"
                            ng-click="vm.followUser(user)">
             {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
+        </ion-option-button>
+        <ion-option-button ng-if="vm.isManageBlockUsersState()"
+                           class="button-positive"
+                           ng-click="vm.updateBlockUser()">
+            {{ (vm.user.blocked ? 'user.unblock.title' : 'user.block.title') | translate }}
         </ion-option-button>
     </div>
 </ion-item>

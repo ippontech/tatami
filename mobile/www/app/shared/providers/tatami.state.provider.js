@@ -26,6 +26,7 @@
             profileViews['mentions@home'] = { 'mentions@home': profileViewConfig };
             profileViews['favorites@home'] = { 'favorites@home': profileViewConfig };
             profileViews['company@home'] = { 'more@home': profileViewConfig };
+            profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 
             var conversationViewConfig = {
                 templateUrl: 'app/shared/state/conversation/conversation.html',
@@ -41,6 +42,7 @@
             conversationViews['mentions@home'] = { 'mentions@home': conversationViewConfig };
             conversationViews['favorites@home'] = { 'favorites@home': conversationViewConfig };
             conversationViews['company@home'] = { 'more@home': conversationViewConfig };
+            profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 
             var tagViewConfig = {
                 templateUrl: 'app/shared/state/tag/tag.html',
@@ -56,6 +58,7 @@
             tagViews['mentions@home'] = { 'mentions@home': tagViewConfig };
             tagViews['favorites@home'] = { 'favorites@home': tagViewConfig };
             tagViews['company@home'] = { 'more@home': tagViewConfig };
+            profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 
             var service = {
                 addProfileState: addProfileState,

@@ -14,8 +14,6 @@
         vm.getBlockedUsersForUser = getBlockedUsersForUser;
         vm.hasBlockedUsers = hasBlockedUsers;
 
-        console.log('hasBlockedUsers=' + vm.hasBlockedUsers());
-
         function updateUser() {
             BlockService.updateBlockedUser(
                 {username: vm.status.username}

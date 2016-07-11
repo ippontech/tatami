@@ -37,6 +37,8 @@ public class UserDTO implements Serializable {
 
     private boolean isActivated=true;
 
+    private boolean isBlocked = false;
+
     public boolean isActivated() {
         return isActivated;
     }
@@ -149,6 +151,14 @@ public class UserDTO implements Serializable {
         isYou = you;
     }
 
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -182,6 +192,7 @@ public class UserDTO implements Serializable {
                 ", isFriend=" + isFriend +
                 ", isFollower=" + isFollower +
                 ", isYou=" + isYou +
+                ", isBlocked=" + isBlocked +
                 ", activated=" + isActivated +
                 '}';
     }
