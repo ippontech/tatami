@@ -14,18 +14,18 @@
                     'more': {
                         templateUrl: 'app/components/home/more/more.html',
                         controller: 'MoreController',
-                        controllerAs: 'vm',
-                        resolve: {
-                            translatePartialLoader: getTranslatePartialLoader
-                        }
+                        controllerAs: 'vm'
                     }
+                },
+                resolve: {
+                    translatePartialLoader: getTranslatePartialLoader
                 }
             });
 
         getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
         function getTranslatePartialLoader($translate, $translatePartialLoader) {
             $translatePartialLoader.addPart('more');
-            $translate.refresh();
+            return $translate.refresh();
         }
     }
 
