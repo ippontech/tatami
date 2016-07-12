@@ -27,7 +27,7 @@
             $timeout(function () {
                 $ionicHistory.clearCache();
                 $ionicHistory.clearHistory();
-            }, 1500)
+            }, 1000)
         }
 
         function goToCompanyTimeline() {
