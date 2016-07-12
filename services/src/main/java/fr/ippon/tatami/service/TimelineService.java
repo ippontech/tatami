@@ -382,7 +382,7 @@ public class TimelineService {
             mentionlineRepository.removeStatusesFromMentionline(currentUser.getLogin(), statusIdsToDelete);
             return getMentionline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -407,7 +407,7 @@ public class TimelineService {
             taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
             return getTagline(tag, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -424,7 +424,7 @@ public class TimelineService {
             grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
             return getGroupline(groupId, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -461,7 +461,7 @@ public class TimelineService {
             timelineRepository.removeStatusesFromTimeline(login, statusIdsToDelete);
             return getTimeline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -484,7 +484,7 @@ public class TimelineService {
             domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
             return getDomainline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -512,7 +512,7 @@ public class TimelineService {
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
             return getUserline(username, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -649,7 +649,7 @@ public class TimelineService {
             }
             return getFavoritesline();
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -661,7 +661,7 @@ public class TimelineService {
         atmosphereService.notifyUser(timelineLogin, share);
     }
 
-    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos){
+    private Collection<StatusDTO> filterStatusFromBlockedUsers(Collection<StatusDTO> dtos){
         if(authenticationService.hasAuthenticatedUser()) {
             User currentUser = authenticationService.getCurrentUser();
             String currentLogin = currentUser.getLogin();
