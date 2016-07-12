@@ -10,9 +10,9 @@
         "googleUnavaible": "Google Login unavailable",
         "tos": "Terms of Service",
         "accept": "Accept",
+        "changeServer": "Change Tatami server",
         "endpoint": {
-            "current": "Current Server:",
-            "modify": "Modify"
+            "current": "Current Server:"
         }
     }
 }
