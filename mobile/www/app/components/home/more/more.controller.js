@@ -22,6 +22,8 @@
 
         function logout() {
             $localStorage.signOut();
+            $ionicHistory.clearCache();
+            $ionicHistory.clearHistory();
             vm.attempted = false;
             $state.go('login');
             $timeout(function () {
