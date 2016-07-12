@@ -522,7 +522,7 @@ public class TimelineService {
         if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
             Status status = (Status) abstractStatus;
             User currentUser = authenticationService.getCurrentUser();
-            if (status.getLogin().equals(currentUser.getLogin())) {
+            if (status.getLogin().equals(currentUser.getLogin()) || authenticationService.isCurrentUserInRole("ADMIN")) {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);

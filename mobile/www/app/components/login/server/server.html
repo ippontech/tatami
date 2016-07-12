@@ -1,0 +1,29 @@
+<ion-view view-title="">
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-divider item-button-right" translate="server.endpoint.change"></ion-item>
+            <ion-item ng-show="vm.attempted && !vm.success" translate="server.endpoint.error" class="assertive"></ion-item>
+            <ion-item class="item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text"
+                           ng-model="vm.endpoint"
+                           placeholder="{{ 'server.endpoint.title' | translate }}">
+                </label>
+                <button class="button button-small"
+                        ng-class="{ 'button-balanced': vm.attempted && vm.success,
+                                    'button-assertive': vm.attempted && !vm.success }"
+                        ng-disabled="vm.isDefaultEndpoint()"
+                        ng-click="vm.updateEndpoint()">
+                    <span ng-if="vm.attempted"
+                          ng-class="{ 'ion-checkmark-round': vm.success,
+                                      'ion-close-round': !vm.success }"></span>
+                    <span ng-if="!vm.attempted">Submit</span>
+                </button>
+            </ion-item>
+            <ion-item ng-click="vm.useDefaultEndpoint()"
+                      class="text-center"
+                      translate="server.endpoint.default"></ion-item>
+            <ion-item class="item-divider"></ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

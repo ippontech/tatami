@@ -1,5 +1,12 @@
 <ion-view name="login-view" view-title="{{ 'login.title' | translate }}" hide-back-button="true">
     <ion-content class="has-header has-subheader" scroll="false">
+        <div class="list list-inset">
+            {{ 'login.endpoint.current' | translate }} {{ vm.endpoint | limitTo: 23 }}{{vm.endpoint.length > 23 ? '...' : ''}}
+            <button class="item-button-right button button-small"
+                    ng-click="vm.goToServerConfig()">
+                <span>{{ 'login.endpoint.modify' | translate }}</span>
+            </button>
+        </div>
         <form ng-submit="vm.login()">
             <div class="list list-inset">
                 <label class="item item-input">

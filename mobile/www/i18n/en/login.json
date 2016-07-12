@@ -9,6 +9,10 @@
         "progress": "Login in progress...",
         "googleUnavaible": "Google Login is not available on this server",
         "tos": "Terms of Service",
-        "accept": "Accept"
+        "accept": "Accept",
+        "endpoint": {
+            "current": "Current Server:",
+            "modify": "Modify"
+        }
     }
 }

@@ -1,0 +1,18 @@
+{
+    "server": {
+        "success": "Logged In!",
+        "failed": "Failed to log in!",
+        "progress": "Login in progress...",
+        "endpoint": {
+            "title": "Server",
+            "current": "Current Server:",
+            "change": "Change Server",
+            "error": "Cannot reach server.",
+            "authenticate": {
+                "title": "Successfully changed endpoint",
+                "body": "Please reauthenticate with the new server."
+            },
+            "default": "Use default server"
+        }
+    }
+}

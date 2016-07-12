@@ -1,9 +1,7 @@
 (function() {
     'use strict';
-
-    var defaultEndpoint = {url: 'http://10.1.10.13:8080'};
-    //'http://app.tatamisoft.com'
-    var endpoint = {url: defaultEndpoint.url};
+    var defaultEndpoint = {url: 'http://app.tatamisoft.com'};
+    var endpoint = {url: defaultEndpoint.url}; // Should set to the localStorage endpoint URL (default to defaultEndpoint if unset)
 
     angular.module('tatami')
         .factory('TatamiEndpoint', tatamiEndpoint);

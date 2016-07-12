@@ -9,6 +9,10 @@
         "progress": "Connexion en cours...",
         "googleUnavaible": "Google Login non disponible sur ce serveur",
         "tos": "conditions d'utilisation",
-        "accept": "Accepter les"
+        "accept": "Accepter les",
+        "endpoint": {
+            "current": "Serveur Actuel:",
+            "modify": "Modifier"
+        }
     }
 }

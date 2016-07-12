@@ -1,0 +1,18 @@
+{
+    "server": {
+        "success": "Connexion effectuée !",
+        "failed": "Echec de connexion",
+        "progress": "Connexion en cours...",
+        "endpoint": {
+            "title": "Serveur",
+            "current": "Serveur Actuel:",
+            "change": "Changer de serveur",
+            "error": "Serveur inaccessible",
+            "authenticate": {
+                "title": "Le changement de serveur a réussis",
+                "body": "Veuillez-vous identifier avec le nouveaux serveur."
+            },
+            "default": "Utilizez le serveur de default"
+        }
+    }
+}

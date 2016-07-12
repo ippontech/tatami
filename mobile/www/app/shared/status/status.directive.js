@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService'];
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService']; //, 'AuthenticationService'
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService) { //, AuthenticationService
         var vm = this;
 
         vm.status = $scope.status;
@@ -39,6 +39,7 @@
         vm.buildAttachmentUrl = buildAttachmentUrl;
         vm.blockUser = blockUser;
         vm.reportStatus = reportStatus;
+        // vm.isAdmin = AuthenticationService.isCurrentUserInRole("ADMIN");
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
