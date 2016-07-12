@@ -16,6 +16,12 @@
             "reportStatus": "Signaler ce statut",
             "blockUser": "Bloquer cet utilisateur",
             "delete": "Supprimer"
+        },
+        "announcement": {
+            "title": "a annoncé",
+            "mention": "Votre status a été annoncé",
+            "success": "Vous avez annoncé ce statut",
+            "action": "Annoncer"
         }
     }
 }

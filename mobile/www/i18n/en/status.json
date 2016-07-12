@@ -16,6 +16,12 @@
             "reportStatus": "Report Status",
             "blockUser": "Hide from timeline",
             "delete": "Delete"
+        },
+        "announcement": {
+            "title": "announced",
+            "mention": "Your status has been announced",
+            "success": "You have announced this status",
+            "action": "Announce status"
         }
     }
 

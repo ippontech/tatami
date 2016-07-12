@@ -9,6 +9,14 @@
             <span translate="status.share.title">share</span>
             <br>
         </p>
+        <p ng-if="status.type == 'ANNOUNCEMENT'">
+            <span class="ion-speakerphone">&nbsp;</span>
+            <a ng-click="vm.goToProfile(vm.status.sharedByUsername)">
+                <span class="text-muted">@{{ vm.status.sharedByUsername }}</span>
+            </a>
+            <span translate="status.announcement.title">share</span>
+            <br>
+        </p>
 
         <div class="profile-name">
             <a ng-click="vm.goToProfile(vm.status.username)">
