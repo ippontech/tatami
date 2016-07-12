@@ -1,7 +1,7 @@
 <ion-popover-view>
     <ion-content>
         <div class="list" ng-click="popover.hide()">
-            <a class="item ion-share" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
+            <a class="item ion-share" translate="status.share.action" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
                 Share Status
             </a>
             <a class="item" target="_blank" translate="status.block.reportStatus" ng-click="vm.reportStatus()">

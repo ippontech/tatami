@@ -2,7 +2,9 @@
     "status": {
         "share": {
             "title": "a partagé",
-            "mention": "Votre status a été partagé"
+            "mention": "Votre status a été partagé",
+            "success": "Vous avez partagé ce statut",
+            "action": "Partager"
         },
         "reply": "En réponse à ",
         "follower": "Nouvel abonné",

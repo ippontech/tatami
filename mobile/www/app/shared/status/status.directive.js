@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService']; //, 'AuthenticationService'
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService) { //, AuthenticationService
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate']; //, 'AuthenticationService'
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate) {  //, AuthenticationService
         var vm = this;
 
         vm.status = $scope.status;
@@ -87,12 +87,20 @@
         }
 
         function shareStatus() {
-            StatusService.update({ statusId: vm.status.statusId }, { shared: !vm.status.shareByMe }, setStatus);
+            StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(){
+                setStatus;
+                var msg = 'You shared this status';
+                $translate('status.share.success').then(function(result){
+                    msg = result;
+                    console.log(msg);
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
         }
 
         function reportStatus() {
             StatusService.reportStatus({statusId: vm.status.statusId});
-            var confirmPopup = $ionicPopup.alert({
+            $ionicPopup.alert({
                 title: 'Report',
                 template: '<span translate="status.reportMessage"></span>'
             });

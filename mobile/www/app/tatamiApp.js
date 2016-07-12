@@ -8,7 +8,8 @@
         'ngResource',
         'ngCordova',
         'hc.marked',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'ionic-toast'
     ]);
 
     angular.module('tatami')

@@ -2,7 +2,9 @@
     "status": {
         "share": {
             "title": "shared",
-            "mention": "Your status has been shared"
+            "mention": "Your status has been shared",
+            "success": "You have shared this status",
+            "action": "Share status"
         },
         "reply": "In reply to ",
         "follower": "New follower",
