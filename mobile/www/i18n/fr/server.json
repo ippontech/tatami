@@ -9,10 +9,10 @@
             "change": "Changer de serveur",
             "error": "Serveur inaccessible",
             "authenticate": {
-                "title": "Le changement de serveur a réussis",
-                "body": "Veuillez-vous identifier avec le nouveaux serveur."
+                "title": "Le changement de serveur a réussi",
+                "body": "Veuillez-vous identifier avec le nouveau serveur."
             },
-            "default": "Utilizez le serveur de default"
+            "default": "Utilisez le serveur par défaut"
         }
     }
 }

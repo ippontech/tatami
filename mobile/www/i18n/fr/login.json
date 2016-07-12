@@ -7,7 +7,7 @@
         "success": "Connexion effectuée !",
         "failed": "Echec de connexion",
         "progress": "Connexion en cours...",
-        "googleUnavaible": "Google Login non disponible sur ce serveur",
+        "googleUnavaible": "Google Login indisponible",
         "tos": "conditions d'utilisation",
         "accept": "Accepter les",
         "endpoint": {
