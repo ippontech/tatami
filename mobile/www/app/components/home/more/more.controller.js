@@ -22,14 +22,7 @@
 
         function logout() {
             $localStorage.signOut();
-            $ionicHistory.clearCache();
-            $ionicHistory.clearHistory();
-            vm.attempted = false;
             $state.go('login');
-            $timeout(function () {
-                $ionicHistory.clearCache();
-                $ionicHistory.clearHistory();
-            }, 1000)
         }
 
         function goToCompanyTimeline() {

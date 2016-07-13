@@ -12,15 +12,21 @@
         '$ionicLoading',
         'clientId',
         'PathService',
-        'TatamiEndpoint'
+        'TatamiEndpoint',
+        '$ionicHistory'
     ];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, TatamiEndpoint) {
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, TatamiEndpoint, $ionicHistory) {
 
         $scope.$on('updateEndpoint', function(event, endpoint) {
             vm.endpoint = endpoint;
         });
 
         var vm = this;
+
+        $scope.$on("$ionicView.enter", function () {
+            $ionicHistory.clearCache();
+            $ionicHistory.clearHistory();
+        });
 
         if (clientId && clientId.data && clientId.data.stringList) {
             // Old tatami return the clientId in the stringList property
