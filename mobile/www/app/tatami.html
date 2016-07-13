@@ -1,5 +1,5 @@
 <ion-header-bar align-title="center" class="bar-header bar-dark">
-    <div class="buttons" ng-if="!vm.$state.includes('login') && !vm.$state.includes('follow')">
+    <div class="buttons" ng-if="!(vm.$state.includes('login') || vm.$state.includes('server')) && !vm.$state.includes('follow')">
         <a ui-sref="suggested">
             <button class="button button-clear ion-android-person-add"></button>
         </a>
@@ -14,7 +14,7 @@
             <img class="title-image" src="img/logo.png" />
         </span>
     </div>
-    <div class="buttons" ng-if="!(vm.$state.includes('login') || vm.$state.includes('post'))">
+    <div class="buttons" ng-if="!(vm.$state.includes('login') || vm.$state.includes('server') || vm.$state.includes('post'))">
         <a ui-sref="post">
             <button class="button button-clear ion-android-create"></button>
         </a>
