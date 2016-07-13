@@ -62,7 +62,10 @@
         }
 
         function favorite() {
-            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus)
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus);
+            $translate('status.favorite.toast').then(function(msg){
+                ionicToast.show(msg, 'bottom', false, 2000);
+            });
         }
 
         function postReply() {
@@ -90,7 +93,7 @@
         function shareStatus() {
             StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(){
                 setStatus;
-                $translate('status.share.success').then(function(msg){
+                $translate('status.share.toast').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
                 });
             });
@@ -135,7 +138,7 @@
         function hideStatus() {
             StatusService.hideStatus({statusId: vm.status.statusId}, function () {
                 $scope.onDelete(vm.status);
-                $translate('status.hide.success').then(function(msg){
+                $translate('status.hide.toast').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
                 });
             });

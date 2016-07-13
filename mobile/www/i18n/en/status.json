@@ -3,7 +3,7 @@
         "share": {
             "title": "shared",
             "mention": "Your status has been shared",
-            "success": "You have shared this status",
+            "toast": "You have shared this status",
             "action": "Share status"
         },
         "reply": "In reply to ",
@@ -20,13 +20,15 @@
         "announcement": {
             "title": "announced",
             "mention": "Your status has been announced",
-            "success": "You have announced this status",
+            "toast": "You have announced this status",
             "action": "Announce status"
         },
         "hide": {
             "action": "Hide status",
-            "success": "This status has been removed from your timeline"
+            "toast": "This status has been removed from your timeline"
+        },
+        "favorite": {
+            "toast": "This status has been added at your favorites"
         }
     }
-
 }
