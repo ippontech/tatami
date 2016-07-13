@@ -6,12 +6,10 @@
 
     moreController.$inject = [
         '$state',
-        '$timeout',
         '$localStorage',
-        '$ionicHistory',
         'currentUser'
     ];
-    function moreController($state, $timeout, $localStorage, $ionicHistory, currentUser) {
+    function moreController($state, $localStorage, currentUser) {
         var vm = this;
 
         vm.currentUser = currentUser;
