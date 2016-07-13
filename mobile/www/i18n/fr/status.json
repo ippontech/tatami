@@ -22,6 +22,10 @@
             "mention": "Votre status a été annoncé",
             "success": "Vous avez annoncé ce statut",
             "action": "Annoncer"
+        },
+        "hide": {
+            "action": "Cacher ce statut",
+            "success": "Ce statut a été supprimé de votre timeline"
         }
     }
 }

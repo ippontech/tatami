@@ -22,6 +22,10 @@
             "mention": "Your status has been announced",
             "success": "You have announced this status",
             "action": "Announce status"
+        },
+        "hide": {
+            "action": "Hide status",
+            "success": "This status has been removed from your timeline"
         }
     }
 

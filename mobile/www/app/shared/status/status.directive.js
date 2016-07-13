@@ -39,6 +39,7 @@
         vm.buildAttachmentUrl = buildAttachmentUrl;
         vm.blockUser = blockUser;
         vm.reportStatus = reportStatus;
+        vm.hideStatus = hideStatus;
         // vm.isAdmin = AuthenticationService.isCurrentUserInRole("ADMIN");
 
         function remove() {
@@ -89,10 +90,7 @@
         function shareStatus() {
             StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(){
                 setStatus;
-                var msg = 'You shared this status';
-                $translate('status.share.success').then(function(result){
-                    msg = result;
-                    console.log(msg);
+                $translate('status.share.success').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
                 });
             });
@@ -134,5 +132,13 @@
             );
         }
 
+        function hideStatus() {
+            StatusService.hideStatus({statusId: vm.status.statusId}, function () {
+                $scope.onDelete(vm.status);
+                $translate('status.hide.success').then(function(msg){
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
+        }
     }
 })();

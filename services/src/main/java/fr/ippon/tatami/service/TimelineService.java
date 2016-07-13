@@ -681,6 +681,14 @@ public class TimelineService {
             return newDtos;
         }
         return dtos;
+    }
 
+    public void hideStatus(String statusId) {
+        log.debug("Hiding status from timeline : {}", statusId);
+        User currentUser = authenticationService.getCurrentUser();
+        String login = currentUser.getLogin();
+        Collection<String> statusIds = new ArrayList<String>();
+        statusIds.add(statusId);
+        timelineRepository.removeStatusesFromTimeline(login,statusIds);
     }
 }
