@@ -40,13 +40,13 @@
         function login() {
             var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
                 + encodeURIComponent(vm.user.password);
-            return $http.post(PathService.buildPath('/tatami/authentication'), data, {
+            return $http.post(PathService.buildPath('/tatami/rest/authentication'), data, {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json"
                 }
-            }).success(function (token) {
-                $localStorage.set('token', token);
+            }).success(function (data) {
+                $localStorage.set('token', data.token);
                 vm.user = {remember: false};
                 $state.go('timeline');
             }).error(function () {
