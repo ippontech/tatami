@@ -20,14 +20,15 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate']; //, 'AuthenticationService'
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate) {  //, AuthenticationService
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate) {
         var vm = this;
 
         vm.status = $scope.status;
         vm.status.content = $filter('markdown')(vm.status.content);
 
         vm.currentUser = $scope.currentUser;
+        vm.isAdmin = $scope.currentUser.isAdmin;
         vm.remove = remove;
         vm.favorite = favorite;
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
@@ -40,7 +41,6 @@
         vm.blockUser = blockUser;
         vm.reportStatus = reportStatus;
         vm.hideStatus = hideStatus;
-        // vm.isAdmin = AuthenticationService.isCurrentUserInRole("ADMIN");
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({

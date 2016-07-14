@@ -18,7 +18,7 @@
             </a>
 
             <a class="item ion-trash-a assertive"
-               ng-if="vm.currentUser = 'ADMIN'" ng-click="vm.remove()" translate="status.block.delete">
+               ng-if="vm.currentUser.isAdmin" ng-click="vm.remove()" translate="status.block.delete">
                 Delete
             </a>
         </div>
