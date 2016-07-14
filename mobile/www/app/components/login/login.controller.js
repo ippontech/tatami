@@ -12,14 +12,9 @@
         '$ionicLoading',
         'clientId',
         'PathService',
-        'TatamiEndpoint',
         '$ionicHistory'
     ];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, TatamiEndpoint, $ionicHistory) {
-
-        $scope.$on('updateEndpoint', function(event, endpoint) {
-            vm.endpoint = endpoint;
-        });
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, $ionicHistory) {
 
         var vm = this;
 
@@ -41,7 +36,6 @@
         vm.login = login;
         vm.googleLogin = googleLogin;
         vm.goToServerConfig = goToServerConfig;
-        vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefault().url;
 
         function login() {
             var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
@@ -106,7 +100,6 @@
 
         function goToServerConfig() {
             $state.go('server');
-            console.log(TatamiEndpoint.getEndpoint());
         }
     }
 })();

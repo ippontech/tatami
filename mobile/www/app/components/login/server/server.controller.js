@@ -43,11 +43,7 @@
                 template: '<span translate="server.endpoint.authenticate.body"></span>'
             });
 
-            alertPopup.then($state.go('login').then(broadcastNewEndpoint));
-        }
-
-        function broadcastNewEndpoint() {
-            $scope.$parent.$broadcast('updateEndpoint', vm.endpoint);
+            alertPopup.then($state.go('login'));
         }
 
         function error(result) {

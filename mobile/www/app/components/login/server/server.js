@@ -9,10 +9,14 @@
         $stateProvider
             .state('server', {
                 url: '/server',
-                parent: 'tatami',
-                templateUrl: 'app/components/login/server/server.html',
-                controller: 'ServerController',
-                controllerAs: 'vm',
+                parent: 'login',
+                views: {
+                    '@tatami': {
+                        templateUrl: 'app/components/login/server/server.html',
+                        controller: 'ServerController',
+                        controllerAs: 'vm'
+                    }
+                },
                 resolve: {
                     translatePartialLoader: getTranslatePartialLoader
                 }

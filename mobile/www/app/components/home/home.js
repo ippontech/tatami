@@ -23,7 +23,7 @@
     isAdmin.$inject = ['AccountService'];
     function isAdmin(AccountService) {
         return AccountService.get().$promise.then(function (response) {
-            return response.roles.indexOf("ROLE_ADMIN") > -1;
+            return response.roles ? response.roles.indexOf("ROLE_ADMIN") > -1 : false;
         });
     }
 
