@@ -12,9 +12,9 @@
         "report" : "Report",
         "reportMessage": "This status has been reported",
         "block": {
-            "reportUser": "Report User",
-            "reportStatus": "Report Status",
-            "blockUser": "Hide from timeline",
+            "reportUser": "Report user",
+            "reportStatus": "Report status",
+            "blockUser": "Block user",
             "delete": "Delete"
         },
         "announcement": {
