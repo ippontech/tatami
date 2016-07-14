@@ -29,6 +29,7 @@
         },
         "favorite": {
             "toast": "This status has been added at your favorites"
-        }
+        },
+        "private": "Private message"
     }
 }

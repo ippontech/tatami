@@ -39,6 +39,10 @@
             <span translate="status.reply">In reply to </span>
             <span class="link-span" ng-click="vm.goToConversation(vm.status.replyTo)">@{{ vm.status.replyToUsername }}</span>
         </p>
+        <p ng-if="vm.status.statusPrivate">
+            <span class="ion-locked padding-right"></span>
+            <span translate="status.private"></span>
+        </p>
         <p ng-repeat="attachment in vm.status.attachments">
             <a ng-href="{{ vm.buildAttachmentUrl(attachment) }}">
                 <i class="ion-document-text"></i> {{ attachment.filename }}
