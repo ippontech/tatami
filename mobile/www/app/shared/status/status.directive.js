@@ -41,6 +41,7 @@
         vm.blockUser = blockUser;
         vm.reportStatus = reportStatus;
         vm.hideStatus = hideStatus;
+        vm.announceStatus = announceStatus;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -149,6 +150,15 @@
             StatusService.hideStatus({statusId: vm.status.statusId}, function () {
                 $scope.onDelete(vm.status);
                 $translate('status.hide.toast').then(function(msg){
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
+        }
+
+        function announceStatus() {
+            StatusService.update({statusId: vm.status.statusId}, {announced: true}, function(){
+                setStatus;
+                $translate('status.announcement.toast').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
                 });
             });

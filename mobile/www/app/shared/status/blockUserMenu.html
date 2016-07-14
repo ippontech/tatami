@@ -1,8 +1,13 @@
 <ion-popover-view>
     <ion-content>
         <div class="list" ng-click="popover.hide()">
-            <a class="item ion-share" translate="status.share.action" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
+            <a class="item ion-share" translate="status.share.action"
+               ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
                 Share Status
+            </a>
+            <a class="item ion-speakerphone"  ng-if="vm.currentUser.isAdmin" translate="status.announcement.action"
+               ng-click="vm.announceStatus()" >
+                Announce Status
             </a>
             <a class="item" target="_blank" translate="status.hide.action" ng-click="vm.hideStatus()">
                 Hide status
@@ -14,7 +19,7 @@
                 <!--Report User-->
             <!--</a>-->
             <a class="item" target="_blank" translate="status.block.blockUser" ng-click="vm.blockUser()">
-                Hide User from Timeline
+                Block user
             </a>
 
             <a class="item ion-trash-a assertive"
