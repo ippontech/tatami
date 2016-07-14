@@ -7,7 +7,10 @@
             "title": "Server",
             "current": "Current Server:",
             "change": "Change Server",
-            "error": "Cannot reach server.",
+            "error": {
+                "title": "Failed to change endpoint",
+                "body": "Cannot reach server."
+            },
             "authenticate": {
                 "title": "Successfully changed endpoint",
                 "body": "Please reauthenticate with the new server."

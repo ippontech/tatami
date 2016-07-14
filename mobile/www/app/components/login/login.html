@@ -3,7 +3,7 @@
         <form ng-submit="vm.login()">
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input type="text" placeholder="{{ 'login.email' | translate }}" ng-model="vm.user.email">
+                    <input type="text" autocapitalize="off" autocorrect="off" placeholder="{{ 'login.email' | translate }}" ng-model="vm.user.email">
                 </label>
                 <label class="item item-input">
                     <input type="password" placeholder="{{ 'login.password' | translate }}" ng-model="vm.user.password">

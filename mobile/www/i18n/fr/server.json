@@ -7,9 +7,12 @@
             "title": "Serveur",
             "current": "Serveur Actuel:",
             "change": "Changer de serveur",
-            "error": "Serveur inaccessible",
+            "error": {
+                "title": "Échec de la modification du serveur",
+                "body": "Serveur inaccessible."
+            },
             "authenticate": {
-                "title": "Le changement de serveur a réussi",
+                "title": "Changement de serveur effectué",
                 "body": "Veuillez-vous identifier avec le nouveau serveur."
             },
             "default": "Utilisez le serveur par défaut"
