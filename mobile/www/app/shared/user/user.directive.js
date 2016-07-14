@@ -24,9 +24,9 @@
         var vm = this;
 
         vm.user = $scope.user;
+        vm.$state = $state;
         vm.followUser = followUser;
         vm.goToProfile = goToProfile;
-        vm.isManageBlockUsersState = isManageBlockUsersState;
         vm.updateBlockUser = updateBlockUser;
 
         function followUser() {
@@ -58,10 +58,5 @@
                 }
             );
         }
-
-        function isManageBlockUsersState() {
-            return $state.current.name === 'blockedusers';
-        }
-
     }
 })();

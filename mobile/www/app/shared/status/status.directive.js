@@ -124,15 +124,25 @@
         });
 
         function blockUser() {
-            BlockService.updateBlockedUser(
-                {username: vm.status.username },
-                function () {
-                    $ionicPopup.alert({
-                        template: '<span translate="user.block.success"></span>'
-                    });
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Block User',
+                template: '<span translate="user.block.confirmation"></span>'
+            });
 
+            confirmPopup.then(checkDelete);
+
+            checkDelete.$inject = ['decision'];
+            function checkDelete(decision) {
+                if(decision) {
+                    BlockService.updateBlockedUser( {username: vm.status.username }, function () {
+                            $translate('user.block.success').then(function(msg){
+                                ionicToast.show(msg, 'bottom', false, 2000);
+                            });
+                        }
+                    );
+                    // $scope.onDelete(vm.status);
                 }
-            );
+            }
         }
 
         function hideStatus() {
