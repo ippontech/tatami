@@ -88,7 +88,7 @@ public class TimelineController {
     }
 
     @RequestMapping(value = "/rest/statuses/report/{statusId}",
-            method = RequestMethod.POST)
+            method = RequestMethod.PUT)
     @ResponseBody
     public void deleteReportedStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to delete a status Id : {}", statusId);

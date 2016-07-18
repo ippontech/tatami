@@ -19,6 +19,7 @@ import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -31,6 +32,7 @@ import static fr.ippon.tatami.config.ColumnFamilyKeys.DELETED_STATUSES_CF;
 /**
  * Created by emilyklein on 7/13/16.
  */
+@Repository
 public class CassandraDeletedHoldingRepository implements DeletedHoldingRepository{
 
     //Normal status

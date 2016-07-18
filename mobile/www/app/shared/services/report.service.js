@@ -37,14 +37,13 @@
                     params: {statusId: '@statusId'},
                     transformResponse: responseTransform
                 },
-                'approve': {
+                'approveStatus': {
                     method : 'DELETE',
                     params: {statusId: '@statusId'}
                 },
-                'deleteReported': {
-                    method: 'POST',
+                'deleteStatus': {
+                    method: 'PUT',
                     params: {statusId: '@statusId'}
-
                 }
             });
     }
