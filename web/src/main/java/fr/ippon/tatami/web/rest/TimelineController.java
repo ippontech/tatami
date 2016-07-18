@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
@@ -61,16 +62,36 @@ public class TimelineController {
 
 
     /**
-     * Report a status?
+     * Report a status
      */
     @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            //need to change this from POST to GET because now returning a list of statuses
             method = RequestMethod.POST)
     @ResponseBody
     public void reportStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to report a status details Id : {}", statusId);
-        statusUpdateService.reportedStatus(authenticationService.getCurrentUser().getLogin(), statusId);
 
+        statusUpdateService.reportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
     }
+
+    /**
+     * Report a status
+     */
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.GET)
+    @ResponseBody
+    public Collection<StatusDTO> getReportStatuses(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to report a status details Id : {}", statusId);
+
+        Collection<AbstractStatus> reportedStatusList = statusUpdateService.reportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+
+        return reportedStatusList;
+    }
+
+    //deleteReported
+
+    //approveReported
+
 
 
     /**

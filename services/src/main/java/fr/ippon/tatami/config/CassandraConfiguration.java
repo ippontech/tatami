@@ -93,6 +93,8 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, ColumnFamilyKeys.TATAMIBOT_CONFIGURATION_CF, 0);
             addColumnFamily(cluster, ColumnFamilyKeys.APPLE_DEVICE_CF, 0);
             addColumnFamily(cluster, ColumnFamilyKeys.BLOCK_USERS_CF, 0);
+            addColumnFamily(cluster, ColumnFamilyKeys.STATUS_REPORT_CF, 0);
+            addColumnFamily(cluster, ColumnFamilyKeys.DELETED_STATUSES_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_SHARES_CF, 0);

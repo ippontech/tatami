@@ -20,6 +20,8 @@
         vm.goToSettings = goToSettings;
         vm.goToBlockedUsers = goToBlockedUsers;
 
+        vm.goToReportedStatus = goToReportedStatus;
+
         function logout() {
             $localStorage.signOut();
             vm.attempted = false;
@@ -41,5 +43,10 @@
         function goToBlockedUsers(){
             $state.go('blockedusers');
         }
+
+        function goToReportedStatus(){
+            $state.go('reportedStatus')
+        }
+
     }
 })();

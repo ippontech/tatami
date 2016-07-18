@@ -7,6 +7,9 @@
             "manage": "Manage your blocked users",
             "no": "You don't have any blocked user"
         },
+        "reportedStatus":{
+            "title": "Reported Statuses"
+        },
         "logout": "Logout",
         "language": {
             "change": "Language",
