@@ -14,9 +14,10 @@
         '$ionicLoading',
         '$ionicPopup',
         'repliedToStatus',
-        '$scope'
+        '$scope',
+        '$cordovaGeolocation'
     ];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus, $scope) {
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus, $scope, $cordovaGeolocation) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -24,13 +25,15 @@
             statusPrivate: repliedToStatus ? repliedToStatus.private : false,
             replyTo: repliedToStatus ? repliedToStatus.statusId : '',
             replyToUsername: repliedToStatus ? repliedToStatus.username : '',
-            attachmentIds: []
+            attachmentIds: [],
+            geoLocalization: ""
         };
         vm.images = [];
         vm.isPosting = false;
         vm.remainingLength = vm.charCount;
         vm.newLineCount = 0; //This field takes into consideration the '\n' character that counts for 2 chars in the database.
         vm.pasteFlag = false;
+        vm.shareLocation = false;
 
         vm.post = post;
         vm.reset = reset;
@@ -39,7 +42,7 @@
         vm.getPictureFromLibrary = getPictureFromLibrary;
         vm.remove = remove;
         vm.paste = paste;
-
+        vm.updateLocation = updateLocation;
 
         function post() {
             upload().then(createPost);
@@ -58,10 +61,12 @@
             vm.status = {
                 content: '',
                 statusPrivate: false,
-                attachmentIds: []
+                attachmentIds: [],
+                geoLocalization: ""
             };
             vm.images = [];
             vm.isPosting = false;
+            vm.shareLocation = false;
         }
 
         function close() {
@@ -174,6 +179,23 @@
 
         function paste(){
             vm.pasteFlag = true;
+        }
+
+        function updateLocation() {
+            vm.shareLocation = !vm.shareLocation;
+            if(vm.shareLocation){
+                var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                $cordovaGeolocation
+                    .getCurrentPosition(posOptions)
+                    .then(function (position) {
+                        vm.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
+                    }, function(err) {
+                        vm.shareLocation = !vm.shareLocation;
+                    });
+            } else {
+                vm.status.geoLocalization = "";
+            }
+
         }
     }
 })();

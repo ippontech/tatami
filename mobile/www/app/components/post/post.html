@@ -29,8 +29,11 @@
     </ion-content>
     <ion-footer-bar align-title="right" tatami-post-bar-attach="true" class="bar-subfooter">
         <div class="row" style="width:50%;">
-            <button style="opacity: 0.5;" class="col-33 button button-clear icon ion-camera" ng-click="vm.getPicture()"></button>
-            <button style="opacity: 0.5;" class="col-33 button button-clear icon ion-images" ng-click="vm.getPictureFromLibrary()"></button>
+            <button class="col-33 button button-clear icon ion-camera" ng-click="vm.getPicture()"></button>
+            <button class="col-33 button button-clear icon ion-images" ng-click="vm.getPictureFromLibrary()"></button>
+            <button class="col-33 button button-clear icon ion-location"
+                    ng-click="vm.updateLocation()"
+                    ng-class="{ 'button-calm' : vm.shareLocation, 'button-stable' : !vm.shareLocation }"></button>
         </div>
 
         <h1 class="title">{{vm.remainingLength}}</h1>
