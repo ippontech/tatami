@@ -42,6 +42,10 @@ public class CassandraDeletedHoldingRepository implements DeletedHoldingReposito
     private static final String REPLY_TO = "replyTo";
     private static final String REPLY_TO_USERNAME = "replyToUsername";
     private static final String GEO_LOCALIZATION = "geoLocalization";
+    private static final String ADMIN_DATE_DELETED = "adminDateDeleted";
+    private static final String ADMIN_DELETED = "adminDeleted";
+    private static final String REPORTING_USER = "reportingUser";
+    private static final String DATE_REPORTED = "dateReported";
 
     private ColumnFamilyTemplate<String, String> deletedStatusTemplate;
 
@@ -78,6 +82,11 @@ public class CassandraDeletedHoldingRepository implements DeletedHoldingReposito
             updater.setString(REPLY_TO, deleted.getReplyTo());
             updater.setString(REPLY_TO_USERNAME, deleted.getReplyToUsername());
             updater.setString(GEO_LOCALIZATION, deleted.getGeoLocalization());
+            
+            updater.setLong(ADMIN_DATE_DELETED, Calendar.getInstance().getTimeInMillis());
+            updater.setString(ADMIN_DELETED, adminResolved);
+
+
         }
 
     }
