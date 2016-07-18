@@ -20,14 +20,15 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService']; //, 'AuthenticationService'
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService) { //, AuthenticationService
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate', 'ReportService'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate, ReportService) {
         var vm = this;
 
         vm.status = $scope.status;
         vm.status.content = $filter('markdown')(vm.status.content);
 
         vm.currentUser = $scope.currentUser;
+        vm.isAdmin = $scope.currentUser.isAdmin;
         vm.remove = remove;
         vm.favorite = favorite;
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;
@@ -39,7 +40,8 @@
         vm.buildAttachmentUrl = buildAttachmentUrl;
         vm.blockUser = blockUser;
         vm.reportStatus = reportStatus;
-        // vm.isAdmin = AuthenticationService.isCurrentUserInRole("ADMIN");
+        vm.hideStatus = hideStatus;
+        vm.announceStatus = announceStatus;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -61,7 +63,10 @@
         }
 
         function favorite() {
-            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus)
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus);
+            $translate('status.favorite.toast').then(function(msg){
+                ionicToast.show(msg, 'bottom', false, 2000);
+            });
         }
 
         function postReply() {
@@ -87,12 +92,17 @@
         }
 
         function shareStatus() {
-            StatusService.update({ statusId: vm.status.statusId }, { shared: !vm.status.shareByMe }, setStatus);
+            StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(){
+                setStatus;
+                $translate('status.share.toast').then(function(msg){
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
         }
 
         function reportStatus() {
-            StatusService.reportStatus({statusId: vm.status.statusId});
-            var confirmPopup = $ionicPopup.alert({
+            ReportService.reportStatus({statusId: vm.status.statusId});
+            $ionicPopup.alert({
                 title: 'Report',
                 template: '<span translate="status.reportMessage"></span>'
             });
@@ -115,16 +125,43 @@
         });
 
         function blockUser() {
-            BlockService.updateBlockedUser(
-                {username: vm.status.username },
-                function () {
-                    $ionicPopup.alert({
-                        template: '<span translate="user.block.success"></span>'
-                    });
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Block User',
+                template: '<span translate="user.block.confirmation"></span>'
+            });
 
+            confirmPopup.then(checkDelete);
+
+            checkDelete.$inject = ['decision'];
+            function checkDelete(decision) {
+                if(decision) {
+                    BlockService.updateBlockedUser( {username: vm.status.username }, function () {
+                            $translate('user.block.success').then(function(msg){
+                                ionicToast.show(msg, 'bottom', false, 2000);
+                            });
+                        }
+                    );
+                    // $scope.onDelete(vm.status);
                 }
-            );
+            }
         }
 
+        function hideStatus() {
+            StatusService.hideStatus({statusId: vm.status.statusId}, function () {
+                $scope.onDelete(vm.status);
+                $translate('status.hide.toast').then(function(msg){
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
+        }
+
+        function announceStatus() {
+            StatusService.update({statusId: vm.status.statusId}, {announced: true}, function(){
+                setStatus;
+                $translate('status.announcement.toast').then(function(msg){
+                    ionicToast.show(msg, 'bottom', false, 2000);
+                });
+            });
+        }
     }
 })();

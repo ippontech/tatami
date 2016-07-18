@@ -237,4 +237,14 @@ public class TimelineController {
         }
         return "{}";
     }
+
+    /**
+     * POST /statuses/hide -> hide the status from the current user timeline
+     */
+    @RequestMapping(value = "/rest/statuses/hide/{statusId}",
+            method = RequestMethod.POST)
+    public void hideStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to hide status Id : {}", statusId);
+        timelineService.hideStatus(statusId);
+    }
 }

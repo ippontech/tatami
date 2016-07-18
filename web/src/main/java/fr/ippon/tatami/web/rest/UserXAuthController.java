@@ -1,13 +1,8 @@
 package fr.ippon.tatami.web.rest;
 
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
-import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.client.http.BasicAuthentication;
-import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -19,7 +14,6 @@ import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.security.GoogleAuthenticationToken;
 import fr.ippon.tatami.security.xauth.Token;
 import fr.ippon.tatami.security.xauth.TokenProvider;
-import fr.ippon.tatami.security.xauth.XAuthTokenFilter;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.slf4j.Logger;
@@ -28,7 +22,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import javax.servlet.ServletRequest;
@@ -110,6 +103,17 @@ public class UserXAuthController {
             }
         }
         return authToken;
+    }
+
+    @RequestMapping(value = "/rest/authentication",
+            method = RequestMethod.POST)
+    @Timed
+    public Token authorize(@RequestParam String j_username, @RequestParam String j_password) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(j_username, j_password);
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails details = userDetailsService.loadUserByUsername(j_username);
+        return tokenProvider.createToken(details);
     }
 
     private Person getGoogleUserInfo(String authorizationCode) throws IOException {

@@ -382,7 +382,7 @@ public class TimelineService {
             mentionlineRepository.removeStatusesFromMentionline(currentUser.getLogin(), statusIdsToDelete);
             return getMentionline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -407,7 +407,7 @@ public class TimelineService {
             taglineRepository.removeStatusesFromTagline(tag, domain, statusIdsToDelete);
             return getTagline(tag, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -424,7 +424,7 @@ public class TimelineService {
             grouplineRepository.removeStatusesFromGroupline(groupId, statusIdsToDelete);
             return getGroupline(groupId, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -461,7 +461,7 @@ public class TimelineService {
             timelineRepository.removeStatusesFromTimeline(login, statusIdsToDelete);
             return getTimeline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -484,7 +484,7 @@ public class TimelineService {
             domainlineRepository.removeStatusFromDomainline(domain, statusIdsToDelete);
             return getDomainline(nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -512,7 +512,7 @@ public class TimelineService {
             userlineRepository.removeStatusesFromUserline(login, statusIdsToDelete);
             return getUserline(username, nbStatus, start, finish);
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -522,7 +522,7 @@ public class TimelineService {
         if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
             Status status = (Status) abstractStatus;
             User currentUser = authenticationService.getCurrentUser();
-            if (status.getLogin().equals(currentUser.getLogin()) || authenticationService.isCurrentUserInRole("ADMIN")) {
+            if (status.getLogin().equals(currentUser.getLogin()) || authenticationService.isCurrentUserInRole("ROLE_ADMIN")) {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getLogin());
                 searchService.removeStatus(status);
@@ -532,6 +532,11 @@ public class TimelineService {
             if (abstractStatus.getLogin().equals(currentUser.getLogin())) {
                 statusRepository.removeStatus(abstractStatus);
             }
+        } else if(abstractStatus.getType().equals(StatusType.SHARE) && authenticationService.isCurrentUserInRole("ROLE_ADMIN")) {
+            Share currentShare = (Share) abstractStatus;
+            // We delete the original status
+            String originalStatusId = currentShare.getOriginalStatusId();
+            removeStatus(originalStatusId);
         } else {
             log.debug("Cannot remove status of this type");
         }
@@ -649,7 +654,7 @@ public class TimelineService {
             }
             return getFavoritesline();
         }
-        dtos = removeStatusFromBlockedUsers(dtos);
+        dtos = filterStatusFromBlockedUsers(dtos);
         return dtos;
     }
 
@@ -661,7 +666,7 @@ public class TimelineService {
         atmosphereService.notifyUser(timelineLogin, share);
     }
 
-    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos){
+    private Collection<StatusDTO> filterStatusFromBlockedUsers(Collection<StatusDTO> dtos){
         if(authenticationService.hasAuthenticatedUser()) {
             User currentUser = authenticationService.getCurrentUser();
             String currentLogin = currentUser.getLogin();
@@ -676,6 +681,14 @@ public class TimelineService {
             return newDtos;
         }
         return dtos;
+    }
 
+    public void hideStatus(String statusId) {
+        log.debug("Hiding status from timeline : {}", statusId);
+        User currentUser = authenticationService.getCurrentUser();
+        String login = currentUser.getLogin();
+        Collection<String> statusIds = new ArrayList<String>();
+        statusIds.add(statusId);
+        timelineRepository.removeStatusesFromTimeline(login,statusIds);
     }
 }

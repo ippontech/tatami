@@ -16,6 +16,10 @@
   },
   "resolutions": {
     "angular-sanitize": "~1.5.3",
-    "angular-animate": "~1.5.3"
+    "angular-animate": "~1.5.3",
+    "ionic-toast": "v0.2.0"
+  },
+  "dependencies": {
+    "ionic-toast": "0.2.0"
   }
 }

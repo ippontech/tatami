@@ -2,10 +2,11 @@
     <ion-content>
         <ion-list>
             <ion-item class="item-divider item-button-right" translate="server.endpoint.change"></ion-item>
-            <ion-item ng-show="vm.attempted && !vm.success" translate="server.endpoint.error" class="assertive"></ion-item>
             <ion-item class="item-input-inset">
                 <label class="item-input-wrapper">
                     <input type="text"
+                           autocapitalize="off"
+                           autocorrect="off"
                            ng-model="vm.endpoint"
                            placeholder="{{ 'server.endpoint.title' | translate }}">
                 </label>

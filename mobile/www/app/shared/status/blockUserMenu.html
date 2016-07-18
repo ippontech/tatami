@@ -1,22 +1,32 @@
 <ion-popover-view>
     <ion-content>
         <div class="list" ng-click="popover.hide()">
-            <a class="item ion-share" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
-                Share Status
+            <a class="item" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
+                <span class="ion-share padding-right"></span>
+                <span translate="status.share.action"></span>
             </a>
-            <a class="item" target="_blank" translate="status.block.reportStatus" ng-click="vm.reportStatus()">
-                Report Post
+            <a class="item"  ng-if="vm.currentUser.isAdmin" ng-click="vm.announceStatus()" >
+                <span class="ion-speakerphone padding-right"></span>
+                <span class="right" translate="status.announcement.action"></span>
             </a>
-            <a class="item" target="_blank" translate="status.block.reportUser">
-                Report User
+            <a class="item" target="_blank" ng-click="vm.hideStatus()">
+                <span class="ion-minus-round padding-right"></span>
+                <span translate="status.hide.action" right></span>
             </a>
-            <a class="item" target="_blank" translate="status.block.blockUser" ng-click="vm.blockUser()">
-                Hide User from Timeline
+            <a class="item" target="_blank" ng-click="vm.reportStatus()">
+                <span class="ion-alert padding-right"></span>
+                <span class="html-editor-align-right" translate="status.block.reportStatus"></span>
             </a>
-
-            <a class="item ion-trash-a assertive"
-               ng-if="vm.currentUser = 'ADMIN'" ng-click="vm.remove()" translate="status.block.delete">
-                Delete
+            <!--<a class="item" target="_blank" translate="status.block.reportUser">-->
+                <!--Report User-->
+            <!--</a>-->
+            <a class="item" target="_blank" ng-click="vm.blockUser()">
+                <span class="ion-close-circled padding-right"></span>
+                <span translate="status.block.blockUser"></span>
+            </a>
+            <a class="item assertive" ng-if="vm.currentUser.isAdmin" ng-click="vm.remove()" >
+                <span class="ion-trash-a padding-right"></span>
+                <span translate="status.block.delete"></span>
             </a>
         </div>
     </ion-content>

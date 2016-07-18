@@ -12,15 +12,16 @@
         '$ionicLoading',
         'clientId',
         'PathService',
-        'TatamiEndpoint'
+        '$ionicHistory'
     ];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, TatamiEndpoint) {
-
-        $scope.$on('updateEndpoint', function(event, endpoint) {
-            vm.endpoint = endpoint;
-        });
+    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, $ionicHistory) {
 
         var vm = this;
+
+        $scope.$on("$ionicView.enter", function () {
+            $ionicHistory.clearCache();
+            $ionicHistory.clearHistory();
+        });
 
         if (clientId && clientId.data && clientId.data.stringList) {
             // Old tatami return the clientId in the stringList property
@@ -35,18 +36,17 @@
         vm.login = login;
         vm.googleLogin = googleLogin;
         vm.goToServerConfig = goToServerConfig;
-        vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefault().url;
 
         function login() {
             var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
                 + encodeURIComponent(vm.user.password);
-            return $http.post(PathService.buildPath('/tatami/authentication'), data, {
+            return $http.post(PathService.buildPath('/tatami/rest/authentication'), data, {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json"
                 }
-            }).success(function (token) {
-                $localStorage.set('token', token);
+            }).success(function (data) {
+                $localStorage.set('token', data.token);
                 vm.user = {remember: false};
                 $state.go('timeline');
             }).error(function () {
@@ -100,7 +100,6 @@
 
         function goToServerConfig() {
             $state.go('server');
-            console.log(TatamiEndpoint.getEndpoint());
         }
     }
 })();

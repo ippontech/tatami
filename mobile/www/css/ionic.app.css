@@ -4118,7 +4118,7 @@ a.subdued:last-child {
   z-index: 1;
   padding: 0 8px;
   min-width: initial;
-  min-height: 31px;
+  min-height: 30px;
   font-weight: 400;
   font-size: 13px;
   line-height: 32px; }
@@ -6696,7 +6696,7 @@ button.item.item-button-right {
 
 .item-body {
   overflow: auto;
-  padding: 16px;
+  padding: 8px;
   text-overflow: inherit;
   white-space: normal; }
 
@@ -6707,7 +6707,7 @@ button.item.item-button-right {
 .item-divider {
   padding-top: 8px;
   padding-bottom: 8px;
-  min-height: 30px;
+  min-height: 31px;
   background-color: #f5f5f5;
   color: #222;
   font-weight: 500; }
@@ -8999,7 +8999,7 @@ progress {
   margin: 0;
   padding: 0 12px;
   min-width: 52px;
-  min-height: 47px;
+  min-height: 30px;
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -9384,7 +9384,7 @@ progress {
   -webkit-transition: opacity 0.1s;
   transition: opacity 0.1s;
   padding: 0 6px;
-  max-height: 42px;
+  max-height: 30px;
   border-color: transparent;
   background: none;
   box-shadow: none; }

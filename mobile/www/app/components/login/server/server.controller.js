@@ -39,20 +39,22 @@
             vm.attempted = true;
 
             var alertPopup = $ionicPopup.alert({
-                title: '<span translate="server.endpoint.authenticate.title"></span>',
+                title: $translate.instant('server.endpoint.authenticate.title'),
                 template: '<span translate="server.endpoint.authenticate.body"></span>'
             });
 
-            alertPopup.then($state.go('login').then(broadcastNewEndpoint));
-        }
-
-        function broadcastNewEndpoint() {
-            $scope.$parent.$broadcast('updateEndpoint', vm.endpoint);
+            alertPopup.then($state.go('login'));
         }
 
         function error(result) {
             vm.success = false;
             vm.attempted = true;
+
+            $ionicPopup.alert({
+                title: $translate.instant('server.endpoint.error.title'),
+                template: '<span translate="server.endpoint.error.body"></span>'
+            });
+
             TatamiEndpoint.reset();
         }
 

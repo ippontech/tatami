@@ -2,7 +2,9 @@
     "status": {
         "share": {
             "title": "a partagé",
-            "mention": "Votre status a été partagé"
+            "mention": "Votre status a été partagé",
+            "toast": "Vous avez partagé ce statut",
+            "action": "Partager"
         },
         "reply": "En réponse à ",
         "follower": "Nouvel abonné",
@@ -14,6 +16,20 @@
             "reportStatus": "Signaler ce statut",
             "blockUser": "Bloquer cet utilisateur",
             "delete": "Supprimer"
-        }
+        },
+        "announcement": {
+            "title": "a annoncé",
+            "mention": "Votre status a été annoncé",
+            "toast": "Vous avez annoncé ce statut",
+            "action": "Annoncer"
+        },
+        "hide": {
+            "action": "Cacher ce statut",
+            "toast": "Ce statut a été supprimé de votre timeline"
+        },
+        "favorite": {
+            "toast": "Ce statut a été ajouté à vos favoris"
+        },
+        "private": "Message privé"
     }
 }

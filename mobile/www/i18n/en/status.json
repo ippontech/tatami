@@ -2,7 +2,9 @@
     "status": {
         "share": {
             "title": "shared",
-            "mention": "Your status has been shared"
+            "mention": "Your status has been shared",
+            "toast": "You have shared this status",
+            "action": "Share status"
         },
         "reply": "In reply to ",
         "follower": "New follower",
@@ -10,11 +12,24 @@
         "report" : "Report",
         "reportMessage": "This status has been reported",
         "block": {
-            "reportUser": "Report User",
-            "reportStatus": "Report Status",
-            "blockUser": "Hide from timeline",
+            "reportUser": "Report user",
+            "reportStatus": "Report status",
+            "blockUser": "Block user",
             "delete": "Delete"
-        }
+        },
+        "announcement": {
+            "title": "announced",
+            "mention": "Your status has been announced",
+            "toast": "You have announced this status",
+            "action": "Announce status"
+        },
+        "hide": {
+            "action": "Hide status",
+            "toast": "This status has been removed from your timeline"
+        },
+        "favorite": {
+            "toast": "This status has been added at your favorites"
+        },
+        "private": "Private message"
     }
-
 }

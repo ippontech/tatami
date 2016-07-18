@@ -6,12 +6,10 @@
 
     moreController.$inject = [
         '$state',
-        '$timeout',
         '$localStorage',
-        '$ionicHistory',
         'currentUser'
     ];
-    function moreController($state, $timeout, $localStorage, $ionicHistory, currentUser) {
+    function moreController($state, $localStorage, currentUser) {
         var vm = this;
 
         vm.currentUser = currentUser;
@@ -24,12 +22,7 @@
 
         function logout() {
             $localStorage.signOut();
-            vm.attempted = false;
             $state.go('login');
-            $timeout(function () {
-                $ionicHistory.clearCache();
-                $ionicHistory.clearHistory();
-            }, 1500)
         }
 
         function goToCompanyTimeline() {

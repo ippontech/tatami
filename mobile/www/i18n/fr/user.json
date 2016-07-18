@@ -6,8 +6,9 @@
         "follow": "S'abonner",
         "unfollow": "Se désabonner",
         "block":{
-            "success": "Vous avez bloqué cet utilisateur. Vous ne verrez plus ses status.",
-            "title": "Bloquer"
+            "success": "Vous avez bloqué cet utilisateur",
+            "title": "Bloquer",
+            "confirmation": "Êtes-vous sûr de vouloir bloquer cet utilisateur ? Vous ne verrez plus ses publications."
         } ,
         "unblock": {
             "success": "Vous avez débloqué cet utilisateur.",
