@@ -34,12 +34,12 @@
         <span ng-if="status.type == 'MENTION_SHARE'" translate="status.share.mention">Your status has been shared</span>
         <span ng-if="status.type == 'MENTION_FRIEND'" translate="status.follower">New follower</span>
         <p compile="vm.status.content"></p>
-        <p ng-if="vm.status.replyToUsername">
-            <span class="ios-android-share"></span>
+        <p ng-if="vm.status.replyToUsername" style="font-size: small">
+            <span class="ion-reply"></span>
             <span translate="status.reply">In reply to </span>
             <span class="link-span" ng-click="vm.goToConversation(vm.status.replyTo)">@{{ vm.status.replyToUsername }}</span>
         </p>
-        <p ng-if="vm.status.statusPrivate">
+        <p ng-if="vm.status.statusPrivate" style="font-size: small">
             <span class="ion-locked padding-right"></span>
             <span translate="status.private"></span>
         </p>
