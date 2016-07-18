@@ -42,7 +42,7 @@
                     params: {statusId: '@statusId'}
                 },
                 'deleteReported': {
-                    method: 'PATCH',
+                    method: 'POST',
                     params: {statusId: '@statusId'}
 
                 }
