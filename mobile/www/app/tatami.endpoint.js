@@ -1,17 +1,19 @@
 (function() {
     'use strict';
     var defaultEndpoint = {url: 'http://app.tatamisoft.com'};
-    var endpoint = {url: defaultEndpoint.url}; // Should set to the localStorage endpoint URL (default to defaultEndpoint if unset)
+    var endpoint = {url: defaultEndpoint.url};
 
     angular.module('tatami')
         .factory('TatamiEndpoint', tatamiEndpoint);
 
-    function tatamiEndpoint() {
+    tatamiEndpoint.$inject = ['$localStorage'];
+    function tatamiEndpoint($localStorage) {
         var service = {
             getEndpoint: getEndpoint,
             setEndpoint: setEndpoint,
             getDefault: getDefaultEndpoint,
-            reset: reset
+            reset: reset,
+            prepare: prepare
         };
 
         return service;
@@ -23,6 +25,7 @@
         setEndpoint.$inject = ['updated'];
         function setEndpoint(updated) {
             endpoint.url = updated;
+            $localStorage.set('endpoint', endpoint);
         }
 
         function getDefaultEndpoint() {
@@ -31,6 +34,16 @@
 
         function reset() {
             endpoint = defaultEndpoint;
+            $localStorage.set('endpoint', endpoint);
+        }
+
+        function prepare() {
+            endpoint = $localStorage.get('endpoint');
+            if (endpoint == undefined || endpoint == {}) {
+                $localStorage.signOut();
+                endpoint = defaultEndpoint;
+                $localStorage.set('endpoint', endpoint);
+            }
         }
     }
 })();

@@ -16,8 +16,8 @@
         .run(tatamiRun)
         .config(tatamiConfig);
 
-    tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', '$translate'];
-    function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, $translate) {
+    tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', '$translate', 'PathService', 'TatamiEndpoint', '$http'];
+    function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, $translate, PathService, TatamiEndpoint, $http) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -36,14 +36,36 @@
         });
 
         $ionicPlatform.ready(function () {
-            if (isValidToken()) {
-                $state.go('timeline');
-            } else {
+
+            // first, make sure any custom endpoints the user entered are prepared properly
+            TatamiEndpoint.prepare();
+
+            // is the (new) default endpoint live?
+            $http({
+                url: PathService.buildPath('/tatami/rest/client/id'),
+                method: 'GET'
+            }).then(function(result) {
+                // if the endpoint is live...
+                if (isValidToken()) {
+                    // ...and the token is valid, go to the timeline
+                    $state.go('timeline');
+                } else {
+                    // ...and the token is invalid, trash it and log the user out
+                    $localStorage.signOut();
+                    logout();
+                }
+            }, function(result) {
+                // if the endpoint is invalid/down, the token is worthless now, so trash it,
+                // log out, and reset endpoint to default
+                $localStorage.signOut();
+                TatamiEndpoint.reset();
                 logout();
-            }
+            });
         });
+
         $ionicPlatform.on('resume', function resume() {
             if (!isValidToken()) {
+                $localStorage.signOut();
                 logout();
             }
         });
