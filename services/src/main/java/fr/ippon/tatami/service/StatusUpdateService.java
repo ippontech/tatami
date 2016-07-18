@@ -109,6 +109,9 @@ public class StatusUpdateService {
     @Inject
     private TimelineService timelineService;
 
+    @Inject
+    private DeletedHoldingRepository deletedHoldingRepository;
+
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
@@ -161,7 +164,7 @@ public class StatusUpdateService {
             }
         }
         if (!status.getReplyTo().equals("")) {
-            log.debug("Replacing the status by the status at the origin of the disucssion");
+            log.debug("Replacing the status by the status at the origin of the discussion");
             // Original status is also a reply, replying to the real original status instead
             AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(status.getDiscussionId());
             if (abstractRealOriginalStatus == null ||
@@ -463,6 +466,21 @@ public class StatusUpdateService {
         List<String> reportedStatusId = getAllReportedStatuses();
         Collection<StatusDTO> statusDTOS = timelineService.buildStatusList(reportedStatusId);
         return statusDTOS;
+    }
+    public void approveReportedStatus(String statusId){
+        log.debug("Admin approving reported status {}", statusId );
+        if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
+            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+        }
+    }
+
+    public void deleteReportedStatus(String statusId){
+        log.debug("Admin deleting reported status {}", statusId );
+        if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
+            deletedHoldingRepository.addDeletedStatus(statusId, authenticationService.getCurrentUser().getLogin());
+            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+            timelineService.removeStatus(statusId);
+        }
     }
 
     public boolean isReported(String login, String statusId){

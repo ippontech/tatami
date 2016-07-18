@@ -87,9 +87,21 @@ public class TimelineController {
         return reportedStatusList;
     }
 
-    //deleteReported
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public void deleteReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to delete a status Id : {}", statusId);
+        statusUpdateService.deleteReportedStatus(statusId);
+    }
 
-    //approveReported
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.DELETE)
+    @ResponseBody
+    public void approveReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to approve a status Id : {}", statusId);
+        statusUpdateService.approveReportedStatus(statusId);
+    }
 
 
 
