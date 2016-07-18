@@ -15,10 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_REPORT_CF;
 
@@ -59,7 +56,7 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
     }
 
     @Override
-    public Collection<String> findReportedStatuses() {
+    public List<String> findReportedStatuses() {
         Collection<String> reportedStatuses = new ArrayList<String>();
         RangeSlicesQuery<String, String, String> findAll = HFactory
                 .createRangeSlicesQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())

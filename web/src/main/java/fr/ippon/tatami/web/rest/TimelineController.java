@@ -65,7 +65,6 @@ public class TimelineController {
      * Report a status
      */
     @RequestMapping(value = "/rest/statuses/report/{statusId}",
-            //need to change this from POST to GET because now returning a list of statuses
             method = RequestMethod.POST)
     @ResponseBody
     public void reportStatus(@PathVariable("statusId") String statusId) {
@@ -77,14 +76,14 @@ public class TimelineController {
     /**
      * Report a status
      */
-    @RequestMapping(value = "/rest/statuses/report/{statusId}",
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/statuses/reportedList/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public Collection<StatusDTO> getReportStatuses(@PathVariable("statusId") String statusId) {
         log.debug("REST request to report a status details Id : {}", statusId);
 
-        Collection<AbstractStatus> reportedStatusList = statusUpdateService.reportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
-
+        Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
         return reportedStatusList;
     }
 

@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
+import org.apache.camel.util.Time;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.openjpa.jdbc.kernel.exps.Abs;
 import org.slf4j.Logger;
@@ -104,6 +105,9 @@ public class StatusUpdateService {
 
     @Inject
     private StatusReportRepository statusReportRepository;
+
+    @Inject
+    private TimelineService timelineService;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -418,19 +422,16 @@ public class StatusUpdateService {
         atmosphereService.notifyUser(login, status);
     }
 
-    public Collection<AbstractStatus> reportStatus(String reportingLogin, String statusId) {
+    public void reportStatus(String reportingLogin, String statusId) {
         log.debug("Reported Status: ", statusId);
         statusReportRepository.reportStatus(reportingLogin, statusId);
 
-        //should this be called here?
-        //returns something, need to return something as well
-        Collection<AbstractStatus> reportedStatusList = findReportedStatuses();
+        statusReportRepository.reportStatus(reportingLogin, statusId);
+
 
         //Private posts that are reported!
         //Look at mentioned User, they can do this for private statuses?
         mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
-
-        return reportedStatusList;
     }
 
     public void unreportStatus(String currentAdminLogin, String reportedStatusId){
@@ -442,12 +443,12 @@ public class StatusUpdateService {
         statusReportRepository.unreportStatus(currentAdminLogin, reportedStatusId);
     }
 
-    public Collection<String> getAllReportedStatuses(){
+    public List<String> getAllReportedStatuses(){
         return statusReportRepository.findReportedStatuses();
     }
 
-    public Collection<AbstractStatus> findReportedStatuses (){
-        Collection<String> reportedStatusId = getAllReportedStatuses();
+    public Collection<StatusDTO> findReportedStatuses (){
+        /*Collection<String> reportedStatusId = getAllReportedStatuses();
         Collection<AbstractStatus> reportedStatuses = new ArrayList<AbstractStatus>();
         for (String reportedId : reportedStatusId){
             AbstractStatus status = statusRepository.findStatusById(reportedId);
@@ -456,14 +457,12 @@ public class StatusUpdateService {
             }
         }
         log.debug("Getting reported statuses", reportedStatuses);
-        return reportedStatuses;
-
-        //Should return StatusDTO instead of AbstractService
+        return reportedStatuses;*/
 
 
-
-
-
+        List<String> reportedStatusId = getAllReportedStatuses();
+        Collection<StatusDTO> statusDTOS = timelineService.buildStatusList(reportedStatusId);
+        return statusDTOS;
     }
 
     public boolean isReported(String login, String statusId){
