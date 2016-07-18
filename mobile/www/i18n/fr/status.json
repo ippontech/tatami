@@ -26,6 +26,10 @@
         "hide": {
             "action": "Cacher ce statut",
             "toast": "Ce statut a été supprimé de votre timeline"
-        }
+        },
+        "favorite": {
+            "toast": "Ce statut a été ajouté à vos favoris"
+        },
+        "private": "Message privé"
     }
 }

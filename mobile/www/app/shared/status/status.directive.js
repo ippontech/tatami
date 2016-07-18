@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate'];
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate', 'ReportService'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate, ReportService) {
         var vm = this;
 
         vm.status = $scope.status;
@@ -101,7 +101,7 @@
         }
 
         function reportStatus() {
-            StatusService.reportStatus({statusId: vm.status.statusId});
+            ReportService.reportStatus({statusId: vm.status.statusId});
             $ionicPopup.alert({
                 title: 'Report',
                 template: '<span translate="status.reportMessage"></span>'
