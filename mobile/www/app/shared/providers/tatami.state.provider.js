@@ -43,7 +43,7 @@
             conversationViews['mentions@home'] = { 'mentions@home': conversationViewConfig };
             conversationViews['favorites@home'] = { 'favorites@home': conversationViewConfig };
             conversationViews['company@home'] = { 'more@home': conversationViewConfig };
-            profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
+            conversationViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 
             var tagViewConfig = {
                 templateUrl: 'app/shared/state/tag/tag.html',
@@ -59,15 +59,13 @@
             tagViews['mentions@home'] = { 'mentions@home': tagViewConfig };
             tagViews['favorites@home'] = { 'favorites@home': tagViewConfig };
             tagViews['company@home'] = { 'more@home': tagViewConfig };
-            profileViews['blockedusers@home'] = { 'more@home': profileViewConfig };
+            tagViews['blockedusers@home'] = { 'more@home': profileViewConfig };
 
             var service = {
                 addProfileState: addProfileState,
                 addConversationState: addConversationState,
                 addTagState: addTagState
             };
-
-            return service;
 
             addProfileState.$inject = ['prefixName', 'parentName'];
             function addProfileState(prefixName, parentName) {
@@ -141,6 +139,7 @@
                 }
             }
 
+            return service;
 
         }
     }
