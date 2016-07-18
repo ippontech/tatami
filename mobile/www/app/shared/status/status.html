@@ -23,8 +23,10 @@
                 <h2 class="inline">{{vm.status.firstName}} {{vm.status.lastName}}</h2>
                 <span class="inline subheading">&nbsp;&#183; @{{vm.status.username}}</span>
             </a>
-            <p class="date">{{vm.status.prettyPrintStatusDate}}</p>
-            <p ng-if="status.groupId">{{ status.groupName }}</p>
+            <p>
+                <span class="date padding-right">{{vm.status.prettyPrintStatusDate}}</span>
+                <a ng-if="vm.status.locationURL" class="ion-location" ng-href="{{ vm.status.locationURL }}" target="_blank"></a>
+            </p>
         </div>
     </div>
 
