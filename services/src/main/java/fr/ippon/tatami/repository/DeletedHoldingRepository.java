@@ -7,13 +7,10 @@ import java.util.Collection;
  */
 public interface DeletedHoldingRepository {
 
-    void deletedReportedStatus (String reportingUser, String reportedStatusId, Long timeReported, String adminResolved, Long adminTime);
+    void addDeletedStatus (String reportedStatusId, String adminResolved);
 
-    Collection<String> findDeletedById(String statusId);
 
     Collection<String> findAllDeleted();
-
-    boolean hasBeenDeleted(String statusId);
 
 }
 

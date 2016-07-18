@@ -57,7 +57,7 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
 
     @Override
     public List<String> findReportedStatuses() {
-        Collection<String> reportedStatuses = new ArrayList<String>();
+        List<String> reportedStatuses = new ArrayList<String>();
         RangeSlicesQuery<String, String, String> findAll = HFactory
                 .createRangeSlicesQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
                 .setColumnFamily(STATUS_REPORT_CF)

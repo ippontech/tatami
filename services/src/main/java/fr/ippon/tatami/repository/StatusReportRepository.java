@@ -10,8 +10,6 @@ public interface StatusReportRepository {
 
     void reportStatus (String reportingLogin, String reportedStatusId);
 
-    //void deleteStatus (String currentAdminLogin, String reportedStatusId);
-
     void unreportStatus (String currentAdminLogin, String reportedStatusId);
 
     List<String> findReportedStatuses();
