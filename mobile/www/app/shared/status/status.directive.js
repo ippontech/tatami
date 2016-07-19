@@ -29,6 +29,7 @@
 
         vm.currentUser = $scope.currentUser;
         vm.isAdmin = $scope.currentUser.isAdmin;
+        vm.customHeight = (vm.isAdmin)? {'height': '270px'} : {'height': '170px'}; //Adapts the height of the popover depending on the role because a different number of buttons is displayed
         vm.remove = remove;
         vm.favorite = favorite;
         vm.isCurrentUser = !vm.currentUser || vm.currentUser.username === vm.status.username;

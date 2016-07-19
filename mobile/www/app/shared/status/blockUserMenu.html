@@ -1,4 +1,4 @@
-<ion-popover-view>
+<ion-popover-view ng-style="vm.customHeight">
     <ion-content>
         <div class="list" ng-click="popover.hide()">
             <a class="item"  ng-if="vm.currentUser.isAdmin" ng-click="vm.announceStatus()" >
@@ -13,9 +13,6 @@
                 <span class="ion-alert padding-right"></span>
                 <span class="html-editor-align-right" translate="status.block.reportStatus"></span>
             </a>
-            <!--<a class="item" target="_blank" translate="status.block.reportUser">-->
-                <!--Report User-->
-            <!--</a>-->
             <a class="item" target="_blank" ng-click="vm.blockUser()">
                 <span class="ion-close-circled padding-right"></span>
                 <span translate="status.block.blockUser"></span>
