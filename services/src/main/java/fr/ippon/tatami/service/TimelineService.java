@@ -588,6 +588,11 @@ public class TimelineService {
         if (abstractStatus.getType().equals(StatusType.STATUS)) {
             String login = authenticationService.getCurrentUser().getLogin();
             favoritelineRepository.addStatusToFavoriteline(login, statusId);
+        } else if(abstractStatus.getType().equals(StatusType.SHARE)){
+            Share currentShare = (Share) abstractStatus;
+            // We add the original status the favorites
+            String login = authenticationService.getCurrentUser().getLogin();
+            favoritelineRepository.addStatusToFavoriteline(login, currentShare.getOriginalStatusId());
         } else {
             log.warn("Cannot favorite this type of status: " + abstractStatus);
         }
