@@ -43,6 +43,7 @@
         vm.remove = remove;
         vm.paste = paste;
         vm.updateLocation = updateLocation;
+        vm.updatePrivate = updatePrivate;
 
         function post() {
             upload().then(createPost);
@@ -189,13 +190,16 @@
                     .getCurrentPosition(posOptions)
                     .then(function (position) {
                         vm.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
-                    }, function(err) {
+                    }, function() {
                         vm.shareLocation = !vm.shareLocation;
                     });
             } else {
                 vm.status.geoLocalization = "";
             }
+        }
 
+        function updatePrivate(){
+            vm.status.statusPrivate = !vm.status.statusPrivate;
         }
     }
 })();

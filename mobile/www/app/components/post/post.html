@@ -34,6 +34,9 @@
             <button class="col-33 button button-clear icon ion-location"
                     ng-click="vm.updateLocation()"
                     ng-class="{ 'button-calm' : vm.shareLocation, 'button-stable' : !vm.shareLocation }"></button>
+            <button class="col-33 button button-clear icon ion-locked"
+                    ng-click="vm.updatePrivate()"
+                    ng-class="{ 'button-calm' : vm.status.statusPrivate, 'button-stable' : !vm.status.statusPrivate }"></button>
         </div>
 
         <h1 class="title">{{vm.remainingLength}}</h1>
