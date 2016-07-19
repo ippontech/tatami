@@ -34,7 +34,7 @@
                 'getReportedStatuses': {
                     method: 'GET',
                     isArray: true,
-                    params: {statusId: '@statusId'},
+                    //params: {statusId: '@statusId'},
                     transformResponse: responseTransform
                 },
                 'approveStatus': {

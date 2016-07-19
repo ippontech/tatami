@@ -8,7 +8,8 @@
             "no": "You don't have any blocked user"
         },
         "reportedStatus":{
-            "title": "Reported Statuses"
+            "title": "Reported Statuses",
+            "no": "You don't have any reported statuses"
         },
         "logout": "Logout",
         "language": {

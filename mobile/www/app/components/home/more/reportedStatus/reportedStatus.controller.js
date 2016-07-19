@@ -7,41 +7,44 @@
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['currentUser', 'StatusUpdateService'];
-    function reportedStatusController(currentUser, StatusUpdateService) {
+    reportedStatusController.$inject = ['currentUser', 'ReportService'];
+    function reportedStatusController(currentUser, ReportService) {
         var vm = this;
-        // vm.currentUser = currentUser;
-        // vm.blockedUsers = [];
 
-        vm.updateUser = updateUser;
-        vm.getBlockedUsersForUser = getBlockedUsersForUser;
-        vm.hasBlockedUsers = hasBlockedUsers;
+        vm.reportedStatuses = [];
 
-        console.log('hasBlockedUsers=' + vm.hasBlockedUsers());
+        vm.getReportedStatuses = getReportedStatuses;
+        vm.hasReportedStatus = hasReportedStatus;
 
-        //this should get all reported statuses for admins
+        // console.log('hasReportedStatuses=' + vm.hasReportedStatus());
+
+        function reportStatus() {
+            ReportService.reportStatus({statusId: vm.status.statusId});
+            $ionicPopup.alert({
+                title: 'Report',
+                template: '<span translate="status.reportMessage"></span>'
+            });
+        }
+
         function getReportedStatuses(){
-            StatusUpdateService.getReportedStatus();
-            
-        }
-
-        function updateUser() {
-            BlockService.updateBlockedUser(
-                {username: vm.status.username}
-            );
-        }
-
-        function getBlockedUsersForUser() {
-            BlockService.getBlockedUsersForUser(
-                {username: vm.currentUser.username},
-                function (response) {
-                    vm.blockedUsers = response;
+            ReportService.getReportedStatuses(
+                function(response){
+                    vm.reportedStatuses = response;
                 }
             );
         }
 
-        function  hasBlockedUsers() {
-            return vm.blockedUsers.length>0;
+        //TODO: function for approved statuses
+        function deleteStatus(statusId){
+            ReportService.deleteReported({statusId: vm.status.statusId})
+        }
+
+        function approveStatus(statusId){
+            ReportService.approve({statusId: vm.status.statusId})
+        }
+
+        function  hasReportedStatus() {
+            return vm.reportedStatuses.length>0;
         }
     }
 })();

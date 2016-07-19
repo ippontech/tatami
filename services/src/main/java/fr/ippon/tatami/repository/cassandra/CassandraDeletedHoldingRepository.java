@@ -84,11 +84,9 @@ public class CassandraDeletedHoldingRepository implements DeletedHoldingReposito
             updater.setString(REPLY_TO, deleted.getReplyTo());
             updater.setString(REPLY_TO_USERNAME, deleted.getReplyToUsername());
             updater.setString(GEO_LOCALIZATION, deleted.getGeoLocalization());
-            
+
             updater.setLong(ADMIN_DATE_DELETED, Calendar.getInstance().getTimeInMillis());
             updater.setString(ADMIN_DELETED, adminResolved);
-
-
         }
 
     }
