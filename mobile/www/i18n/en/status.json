@@ -28,7 +28,8 @@
             "toast": "This status has been removed from your timeline"
         },
         "favorite": {
-            "toast": "This status has been added at your favorites"
+            "add": "This status has been added to your favorites",
+            "remove": "This status has been removed from your favorites"
         },
         "private": "Private message"
     }

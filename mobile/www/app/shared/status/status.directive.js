@@ -63,9 +63,17 @@
         }
 
         function favorite() {
-            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, setStatus);
-            $translate('status.favorite.toast').then(function(msg){
-                ionicToast.show(msg, 'bottom', false, 2000);
+            StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function (status) {
+                setStatus(status);
+                if(vm.status.favorite){
+                    $translate('status.favorite.add').then(function(msg){
+                        ionicToast.show(msg, 'bottom', false, 2000);
+                    });
+                } else {
+                    $translate('status.favorite.remove').then(function(msg){
+                        ionicToast.show(msg, 'bottom', false, 2000);
+                    });
+                }
             });
         }
 
@@ -92,9 +100,8 @@
         }
 
         function shareStatus() {
-            vm.status.shareByMe = true;
-            StatusService.update({statusId: vm.status.statusId}, {shared: vm.status.shareByMe}, function(){
-                setStatus;
+            StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(status){
+                setStatus(status);
                 $translate('status.share.toast').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
                 });
