@@ -1,10 +1,6 @@
 <ion-popover-view>
     <ion-content>
         <div class="list" ng-click="popover.hide()">
-            <a class="item" ng-click="vm.shareStatus()" ng-class="{ 'button-royal': vm.status.shareByMe }">
-                <span class="ion-share padding-right"></span>
-                <span translate="status.share.action"></span>
-            </a>
             <a class="item"  ng-if="vm.currentUser.isAdmin" ng-click="vm.announceStatus()" >
                 <span class="ion-speakerphone padding-right"></span>
                 <span class="right" translate="status.announcement.action"></span>

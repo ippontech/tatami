@@ -92,7 +92,8 @@
         }
 
         function shareStatus() {
-            StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(){
+            vm.status.shareByMe = true;
+            StatusService.update({statusId: vm.status.statusId}, {shared: vm.status.shareByMe}, function(){
                 setStatus;
                 $translate('status.share.toast').then(function(msg){
                     ionicToast.show(msg, 'bottom', false, 2000);
