@@ -7,6 +7,10 @@
             "manage": "Gérer les utilisateurs bloqués",
             "no": "Vous n'avez bloqué aucun utilisateur"
         },
+        "reportedStatus": {
+            "title": "Statut signalé",
+            "no": "Vous n'avez pas les statuts signalé"
+        },
         "logout": "Déconnexion",
         "language": {
             "change": "Langue",

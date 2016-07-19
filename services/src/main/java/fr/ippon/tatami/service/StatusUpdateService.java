@@ -6,10 +6,13 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
+import org.apache.camel.util.Time;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.openjpa.jdbc.kernel.exps.Abs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,7 +104,13 @@ public class StatusUpdateService {
     private MailService mailService;
 
     @Inject
-    private UserRepository userRepository;
+    private StatusReportRepository statusReportRepository;
+
+    @Inject
+    private TimelineService timelineService;
+
+    @Inject
+    private DeletedHoldingRepository deletedHoldingRepository;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -154,7 +164,7 @@ public class StatusUpdateService {
             }
         }
         if (!status.getReplyTo().equals("")) {
-            log.debug("Replacing the status by the status at the origin of the disucssion");
+            log.debug("Replacing the status by the status at the origin of the discussion");
             // Original status is also a reply, replying to the real original status instead
             AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(status.getDiscussionId());
             if (abstractRealOriginalStatus == null ||
@@ -415,22 +425,71 @@ public class StatusUpdateService {
         atmosphereService.notifyUser(login, status);
     }
 
-    public void reportedStatus(String mentionedLogin, String statusId) {
+    public void reportStatus(String reportingLogin, String statusId) {
+        log.debug("Reported Status: ", statusId);
+        statusReportRepository.reportStatus(reportingLogin, statusId);
 
-        //need to take into consideration private group posts, etc... for admins
-        //if a user flags a post in a private group, admin needs to be able to review post
-        //same for private messages
-//        if (mentionnedUser != null && (mentionnedUser.getPreferencesMentionEmail() == null || mentionnedUser.getPreferencesMentionEmail().equals(true))) {
-//            if (status.getStatusPrivate()) { // Private status
-//                mailService.sendUserPrivateMessageEmail(mentionnedUser, status);
-//                if (applePushService != null) {
-//                    applePushService.notifyUser(mentionedLogin, status);
-//                }
-//            } else {
+        statusReportRepository.reportStatus(reportingLogin, statusId);
 
-        mailService.sendReportedStatusEmail(mentionedLogin, statusRepository.findStatusById(statusId));
 
-//            }
-//        }
+        //Private posts that are reported!
+        //Look at mentioned User, they can do this for private statuses?
+        mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
     }
+
+    public void unreportStatus(String currentAdminLogin, String reportedStatusId){
+        log.debug(reportedStatusId + " is no longer reported");
+        //can only be accessed by admins
+        //admin login will be stored in table...
+        //go to statusReportRepository?  Or should I go to resolvedReportRepository and skip the former all together?
+
+        statusReportRepository.unreportStatus(currentAdminLogin, reportedStatusId);
+    }
+
+    public List<String> getAllReportedStatuses(){
+        return statusReportRepository.findReportedStatuses();
+    }
+
+    public Collection<StatusDTO> findReportedStatuses (){
+        /*Collection<String> reportedStatusId = getAllReportedStatuses();
+        Collection<AbstractStatus> reportedStatuses = new ArrayList<AbstractStatus>();
+        for (String reportedId : reportedStatusId){
+            AbstractStatus status = statusRepository.findStatusById(reportedId);
+            if (status != null){
+                reportedStatuses.add(status);
+            }
+        }
+        log.debug("Getting reported statuses", reportedStatuses);
+        return reportedStatuses;*/
+
+
+        List<String> reportedStatusId = getAllReportedStatuses();
+        Collection<StatusDTO> statusDTOS = timelineService.buildStatusList(reportedStatusId);
+        return statusDTOS;
+    }
+    public void approveReportedStatus(String statusId){
+        log.debug("Admin approving reported status {}", statusId );
+        if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
+            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+        }
+    }
+
+    public void deleteReportedStatus(String statusId){
+        log.debug("Admin deleting reported status {}", statusId );
+        if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
+            deletedHoldingRepository.addDeletedStatus(statusId, authenticationService.getCurrentUser().getLogin());
+            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+            timelineService.removeStatus(statusId);
+        }
+    }
+
+    public boolean isReported(String login, String statusId){
+        return statusReportRepository.hasBeenReportedByUser(login, statusId);
+    }
+
+
+
+
+
+
 }

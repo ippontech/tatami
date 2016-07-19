@@ -1,0 +1,48 @@
+<!--
+<ion-content class="tatami-header tatami-footer">
+    <ion-list>
+        <ion-item ng-repeat="status in vm.statuses">
+            <tatami-status status="status" current-user="vm.currentUser" on-delete="vm.remove(status)"></tatami-status>
+        </ion-item>
+        <ion-option-button
+            class = "ion-checkmark-round padding-right"
+            ng-click = "vm.approveStatus(status.statusId)">Accept</ion-option-button>
+        <ion-option-button
+            class = "ion-close-round"
+            ng-click = "vm.deleteStatus(status.statusId)">Delete</ion-option-button>
+    </ion-list>
+</ion-content>
+-->
+
+<ion-view view-title="{{ 'more.reportedStatus.title' | translate }}">
+    <ion-content>
+        <ion-list ng-init="vm.getReportedStatuses()">
+            <div class="row">
+                <div class="col-25 button button-clear ion-checkmark-round" ng-click="vm.postReply()"></div>
+                <div class="col-25 button button-clear ion-close-round" ng-click="vm.favorite()" ng-class="{ 'button-energized': vm.status.favorite }"></div>
+            </div>
+            <!--<ion-item ng-if="!vm.hasReportedStatuses()" translate="more.reportedStatus.no">No blocked users</ion-item>-->
+        </ion-list>
+    </ion-content>
+</ion-view>
+
+
+<!--<ion-view view-title="{{ 'more.reportedStatuses.title' | translate }}">
+    <ion-content>
+        <ion-list ng-init="vm.getReportedStatuses()">
+            <div ng-if="vm.hasReportedStatus()" ng-repeat="status in vm.reportedStatuses">
+                <tatami-status status = "status" current-user = "vm.currentUser" on-delete = "vm.deleteStatus(status.statusId)"></tatami-status>
+                <ion-option-button
+                    class = "ion-check-round"
+                    ng-click = "vm.approveStatus(status.statusId)"></ion-option-button>
+                <ion-option-button
+                    class = "ion-close-round"
+                    ng-click = "vm.deleteStatus(status.statusId)"></ion-option-button>
+            </div>
+            <ion-item ng-if="!vm.hasReportedStatuses()" translate="more.reportedStatus.no">No blocked users</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>-->
+
+
+<!--TODO: Don't think that I actually want a directive...  Just need status, date, etc... blah-->

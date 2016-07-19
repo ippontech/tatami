@@ -20,6 +20,11 @@
                 <span translate="more.blockedusers.manage">Manage your blocked users</span>
             </ion-item>
             <ion-item class="item-divider"></ion-item>
+            <ion-item class="text-center" ng-click="vm.goToReportedStatus()">
+                <span class="ion-alert-circled"></span>
+                <span translate="more.reportedStatus.title">Reported Statuses</span>
+            </ion-item>
+            <ion-item class="item-divider"></ion-item>
             <ion-item ng-click="vm.logout()" class="text-center">
                 <span class="ion-power padding-right assertive"></span>&nbsp;
                 <span class="assertive" translate="more.logout">Logout</span>

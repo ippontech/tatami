@@ -93,4 +93,8 @@ public class ColumnFamilyKeys {
 
     public static final String BLOCK_USERS_CF = "UsersBlocked";
 
+    public static final String STATUS_REPORT_CF = "ReportedStatus";
+
+    public static final String DELETED_STATUSES_CF = "DeletedStatusesHolding";
+
 }

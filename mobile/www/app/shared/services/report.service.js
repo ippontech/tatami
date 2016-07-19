@@ -34,17 +34,16 @@
                 'getReportedStatuses': {
                     method: 'GET',
                     isArray: true,
-                    params: {statusId: '@statusId'},
+                    //params: {statusId: '@statusId'},
                     transformResponse: responseTransform
                 },
-                'approve': {
+                'approveStatus': {
                     method : 'DELETE',
                     params: {statusId: '@statusId'}
                 },
-                'deleteReported': {
-                    method: 'PATCH',
+                'deleteStatus': {
+                    method: 'PUT',
                     params: {statusId: '@statusId'}
-
                 }
             });
     }

@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.service.GroupService;
@@ -61,16 +62,47 @@ public class TimelineController {
 
 
     /**
-     * Report a status?
+     * Report a status
      */
     @RequestMapping(value = "/rest/statuses/report/{statusId}",
             method = RequestMethod.POST)
     @ResponseBody
     public void reportStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to report a status details Id : {}", statusId);
-        statusUpdateService.reportedStatus(authenticationService.getCurrentUser().getLogin(), statusId);
 
+        statusUpdateService.reportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
     }
+
+    /**
+     * Report a status
+     */
+    @RequestMapping(value = "/rest/statuses/reportedList/{statusId}",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public Collection<StatusDTO> getReportStatuses(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to report a status details Id : {}", statusId);
+
+        Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
+        return reportedStatusList;
+    }
+
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.PUT)
+    @ResponseBody
+    public void deleteReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to delete a status Id : {}", statusId);
+        statusUpdateService.deleteReportedStatus(statusId);
+    }
+
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+            method = RequestMethod.DELETE)
+    @ResponseBody
+    public void approveReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to approve a status Id : {}", statusId);
+        statusUpdateService.approveReportedStatus(statusId);
+    }
+
 
 
     /**
