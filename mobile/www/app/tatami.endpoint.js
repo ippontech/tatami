@@ -33,8 +33,7 @@
         }
 
         function reset() {
-            endpoint = defaultEndpoint;
-            $localStorage.set('endpoint', endpoint);
+            setEndpoint(defaultEndpoint.url);
         }
 
         function prepare() {
@@ -42,7 +41,7 @@
             if (endpoint == undefined || endpoint == {}) {
                 $localStorage.signOut();
                 endpoint = defaultEndpoint;
-                $localStorage.set('endpoint', endpoint);
+                $localStorage.set('endpoint', defaultEndpoint);
             }
         }
     }

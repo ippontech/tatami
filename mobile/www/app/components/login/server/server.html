@@ -11,14 +11,14 @@
                            placeholder="{{ 'server.endpoint.title' | translate }}">
                 </label>
                 <button class="button button-small"
-                        ng-class="{ 'button-balanced': vm.attempted && vm.success,
-                                    'button-assertive': vm.attempted && !vm.success }"
-                        ng-disabled="vm.isDefaultEndpoint()"
+                        ng-class="{ 'button-balanced': vm.isLastAttempt() && vm.success,
+                                    'button-assertive': vm.isLastAttempt() && !vm.success }"
+                        ng-disabled="vm.isLastAttempt()"
                         ng-click="vm.updateEndpoint()">
-                    <span ng-if="vm.attempted"
+                    <span ng-if="vm.isLastAttempt()"
                           ng-class="{ 'ion-checkmark-round': vm.success,
                                       'ion-close-round': !vm.success }"></span>
-                    <span ng-if="!vm.attempted">Submit</span>
+                    <span ng-if="!vm.isLastAttempt()">Submit</span>
                 </button>
             </ion-item>
             <ion-item ng-click="vm.useDefaultEndpoint()"

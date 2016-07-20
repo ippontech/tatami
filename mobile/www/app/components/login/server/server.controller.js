@@ -19,12 +19,12 @@
         var vm = this;
 
         vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefault().url;
-        vm.attempted = false;
         vm.success = true;
+        vm.previous = vm.endpoint;
 
         vm.updateEndpoint = updateEndpoint;
-        vm.isDefaultEndpoint = isDefaultEndpoint;
         vm.useDefaultEndpoint = useDefaultEndpoint;
+        vm.isLastAttempt = isLastAttempt;
 
         function updateEndpoint() {
             TatamiEndpoint.setEndpoint(vm.endpoint);
@@ -36,7 +36,7 @@
 
         function success(result) {
             vm.success = true;
-            vm.attempted = true;
+            vm.previous = vm.endpoint;
 
             var alertPopup = $ionicPopup.alert({
                 title: $translate.instant('server.endpoint.authenticate.title'),
@@ -48,7 +48,7 @@
 
         function error(result) {
             vm.success = false;
-            vm.attempted = true;
+            vm.previous = vm.endpoint;
 
             $ionicPopup.alert({
                 title: $translate.instant('server.endpoint.error.title'),
@@ -58,8 +58,8 @@
             TatamiEndpoint.reset();
         }
 
-        function isDefaultEndpoint() {
-            return TatamiEndpoint.getEndpoint().url === vm.endpoint;
+        function isLastAttempt() {
+            return vm.previous === vm.endpoint;
         }
 
         function useDefaultEndpoint() {
