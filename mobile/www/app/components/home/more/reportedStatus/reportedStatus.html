@@ -1,5 +1,5 @@
 <ion-view view-title="{{ 'more.reportedStatus.title' | translate }}">
-    <ion-content>
+    <ion-content class="tatami-header tatami-footer">
         <ion-list ng-init="vm.getReportedStatuses()">
             <ion-item ng-if="vm.hasReportedStatus()" ng-repeat="status in vm.reportedStatuses" >
 
