@@ -51,7 +51,7 @@
             </a>
         </p>
     </div>
-    <div class="row">
+    <div ng-if = "vm.state != 'reportedStatus'" class="row">
         <div class="col-25 button button-clear ion-reply tatami-button" ng-click="vm.postReply()"></div>
         <div class="col-25 button button-clear ion-star tatami-button" ng-click="vm.favorite()" ng-class="{ 'button-energized': vm.status.favorite }"></div>
         <div class="col-25 button button-clear ion-share tatami-button" ng-if="!vm.isCurrentUser" ng-click="vm.shareStatus()" ng-class="{ 'button-calm': vm.status.shareByMe }"></div>

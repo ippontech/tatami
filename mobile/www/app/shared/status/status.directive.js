@@ -24,6 +24,7 @@
     function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate, ReportService) {
         var vm = this;
 
+        vm.state = $state.current.name;
         vm.status = $scope.status;
         vm.status.content = $filter('markdown')(vm.status.content);
 

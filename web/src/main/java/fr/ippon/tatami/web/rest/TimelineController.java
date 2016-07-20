@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import twitter4j.StatusUpdate;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -69,19 +70,18 @@ public class TimelineController {
     @ResponseBody
     public void reportStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to report a status details Id : {}", statusId);
-
         statusUpdateService.reportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
     }
 
     /**
      * Report a status
      */
-    @RequestMapping(value = "/rest/statuses/reportedList/{statusId}",
+    @RequestMapping(value = "/rest/statuses/reportedList",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
-    public Collection<StatusDTO> getReportStatuses(@PathVariable("statusId") String statusId) {
-        log.debug("REST request to report a status details Id : {}", statusId);
+    public Collection<StatusDTO> getReportStatuses() {
+        log.debug("REST request to get all reports");
 
         Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
         return reportedStatusList;

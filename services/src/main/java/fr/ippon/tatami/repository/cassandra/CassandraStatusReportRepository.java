@@ -1,8 +1,10 @@
 package fr.ippon.tatami.repository.cassandra;
 
+import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.repository.StatusReportRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
@@ -10,6 +12,7 @@ import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +39,7 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
                 STATUS_REPORT_CF,
                 StringSerializer.get(),
                 StringSerializer.get());
+        reportedStatusTemplate.setCount(Constants.CASSANDRA_MAX_COLUMNS);
     }
 
     @Override
@@ -47,8 +51,6 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
 
     @Override
     public void unreportStatus(String currentUserLogin, String reportedStatusId) {
-        //TODO: determine whether it is being deleted or accepted -> if accepted, delete from reported table, if deleted, add to deleted table
-        //TODO: HELP!!!!!
 
 
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
@@ -69,6 +71,33 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
             reportedStatuses.add(row.getKey());
         }
         return reportedStatuses;
+
+        /*Map<String, Integer> resultMap = new HashMap<String, Integer>();
+        String lastKeyForMissing = "";
+        StringSerializer s = StringSerializer.get();
+        RangeSlicesQuery<String, String, String> allRowsQuery = HFactory.createRangeSlicesQuery(keyspaceOperator, s, s, s);
+        allRowsQuery.setColumnFamily(STATUS_REPORT_CF);
+        allRowsQuery.setRange("", "", false, 3);    //retrieve 3 columns, no reverse
+        allRowsQuery.setReturnKeysOnly();    //enable this line if we want key only
+        allRowsQuery.setRowCount(100);
+        int rowCnt = 0;
+        while (true) {
+            allRowsQuery.setKeys(lastKeyForMissing, "");
+            QueryResult<OrderedRows<String, String, String>> res = allRowsQuery.execute();
+            OrderedRows<String, String, String> rows = res.get();
+            lastKeyForMissing = rows.peekLast().getKey();
+            for (Row<String, String, String> aRow : rows) {
+                if (!resultMap.containsKey(aRow.getKey())) {
+                    resultMap.put(aRow.getKey(), ++rowCnt);
+                    reportedStatuses.add(aRow.getKey());
+                    System.out.println(aRow.getKey() + ":" + rowCnt);
+                }
+            }
+            if (rows.getCount() != 100) {
+                break;
+            }
+        }*/
+        //return reportedStatuses;
     }
 
     @Override
