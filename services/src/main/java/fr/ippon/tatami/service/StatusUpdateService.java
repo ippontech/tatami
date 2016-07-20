@@ -107,6 +107,9 @@ public class StatusUpdateService {
     private StatusReportRepository statusReportRepository;
 
     @Inject
+    private BlockRepository blockRepository;
+
+    @Inject
     private TimelineService timelineService;
 
     @Inject
@@ -428,13 +431,11 @@ public class StatusUpdateService {
     public void reportStatus(String reportingLogin, String statusId) {
         log.debug("Reported Status: ", statusId);
         statusReportRepository.reportStatus(reportingLogin, statusId);
-
-        statusReportRepository.reportStatus(reportingLogin, statusId);
-
+        mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
 
         //Private posts that are reported!
         //Look at mentioned User, they can do this for private statuses?
-        mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
+
     }
 
     public void unreportStatus(String currentAdminLogin, String reportedStatusId){

@@ -33,7 +33,6 @@ public class StatusReportRepositoryTest extends AbstractCassandraTatamiTest {
         assertFalse(statusReportRepository.hasBeenReportedByUser(login, reportedStatusId));
         assertTrue(statusReportRepository.hasBeenReportedByUser(reportingLogin, reportedStatusId));
 
-
     }
 
 
