@@ -112,9 +112,6 @@ public class StatusUpdateService {
     @Inject
     private TimelineService timelineService;
 
-    @Inject
-    private DeletedHoldingRepository deletedHoldingRepository;
-
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
     }
@@ -442,8 +439,7 @@ public class StatusUpdateService {
 
     public Collection<StatusDTO> findReportedStatuses (){
         List<String> reportedStatusId = getAllReportedStatuses(authenticationService.getCurrentUser().getDomain());
-        Collection<StatusDTO> statusDTOS = timelineService.buildStatusList(reportedStatusId);
-        return statusDTOS;
+        return timelineService.buildStatusList(reportedStatusId);
     }
     public void approveReportedStatus(String statusId){
         if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
@@ -459,21 +455,11 @@ public class StatusUpdateService {
         if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
             log.debug("Admin deleting reported status {}", statusId );
             User currentUser = authenticationService.getCurrentUser();
-            deletedHoldingRepository.addDeletedStatus(statusId, authenticationService.getCurrentUser().getLogin());
             statusReportRepository.unreportStatus(currentUser.getDomain(), statusId);
             timelineService.removeStatus(statusId);
         } else {
             log.warn("Attempt to delete reported status {} but is not admin", statusId);
         }
     }
-
-//    public boolean isReported(String login, String statusId){
-//        return statusReportRepository.hasBeenReportedByUser(login, statusId);
-//    }
-
-
-
-
-
 
 }
