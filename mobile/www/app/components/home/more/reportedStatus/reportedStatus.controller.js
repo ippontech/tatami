@@ -7,12 +7,11 @@
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$state'];
-    function reportedStatusController(currentUser, ReportService, $ionicPopup, ionicToast, $state) {
+    reportedStatusController.$inject = ['$state', 'currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$translate'];
+    function reportedStatusController($state, currentUser, ReportService, $ionicPopup, ionicToast, $translate) {
         var vm = this;
 
         vm.reportedStatuses = [];
-
         vm.currentUser = currentUser;
 
         vm.getReportedStatuses = getReportedStatuses;
@@ -20,10 +19,7 @@
         vm.approveStatus = approveStatus;
         vm.deleteStatus = deleteStatus;
 
-        // console.log('hasReportedStatuses=' + vm.hasReportedStatus());
-
         function reportStatus() {
-            console.log("reported a status?");
             ReportService.reportStatus({statusId: vm.status.statusId});
             $ionicPopup.alert({
                 title: 'Report',
@@ -45,7 +41,6 @@
             );
         }
 
-        //TODO: function for approved statuses
         function deleteStatus(statusId){
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete Status',
@@ -58,7 +53,9 @@
                     ReportService.deleteStatus({statusId: statusId}, function () {
                             $translate('status.reportStatus.deleteToast').then(function(msg){
                                 if (ionic.Platform.isIOS()){
+                                    console.log("does toast work?");
                                     ionicToast.show(msg, 'top', false, 2000);
+
                                 }
                                 else{
                                     ionicToast.show(msg, 'bottom', false, 2000);
@@ -83,6 +80,7 @@
                     ReportService.approveStatus({statusId: statusId}, function () {
                             $translate('status.reportStatus.approveToast').then(function(msg){
                                 if (ionic.Platform.isIOS()){
+                                    console.log("should show toast");
                                     ionicToast.show(msg, 'top', false, 2000);
                                 }
                                 else{
