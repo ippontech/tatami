@@ -11,6 +11,10 @@
         "delete": "Are you sure you want to delete the status?",
         "report" : "Report",
         "reportMessage": "This status has been reported",
+        "reportStatus":{
+          "message": "Are you sure you want to report this status?  This action cannot be undone",
+          "toast": "Status has been reported"
+        },
         "block": {
             "reportUser": "Report user",
             "reportStatus": "Report status",

@@ -11,6 +11,10 @@
         "delete": "Êtes-vous sûr de vouloir supprimer ce statut?",
         "report" : "Supprimer",
         "reportMessage": "Ce statut a été signalé",
+        "reportStatus":{
+            "message": "Êtes-vous sûr de vouloir signaler ce statut?",
+            "toast": "Ce statut a été signalé"
+        },
         "block": {
             "reportUser": "Signaler cet utilisateur",
             "reportStatus": "Signaler ce statut",

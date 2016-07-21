@@ -111,11 +111,23 @@
         }
 
         function reportStatus() {
-            ReportService.reportStatus({statusId: vm.status.statusId});
-            $ionicPopup.alert({
-                title: 'Report',
-                template: '<span translate="status.reportMessage"></span>'
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Report Status',
+                template: '<span translate="status.reportStatus.message"></span>'
             });
+            confirmPopup.then(report);
+            reported.$inject = ['decision'];
+            function reported(decision) {
+                if(decision) {
+                    ReportService.reportStatus({statusId: vm.status.statusId}, function () {
+                            $translate('status.reportStatus.toast').then(function(msg){
+                                ionicToast.show(msg, 'bottom', false, 2000);
+                            });
+                        }
+                    );
+                }
+            }
+
         }
 
         setStatus.$inject = ['status'];
