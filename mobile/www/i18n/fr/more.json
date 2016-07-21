@@ -8,7 +8,7 @@
             "no": "Vous n'avez bloqué aucun utilisateur"
         },
         "reportedStatus": {
-            "title": "Statut signalé",
+            "title": "Statuts signalés",
             "no": "Aucun statut n'a été signalé"
         },
         "logout": "Déconnexion",

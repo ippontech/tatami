@@ -13,7 +13,7 @@
         "reportMessage": "Ce statut a été signalé",
         "reportStatus":{
             "message": "Êtes-vous sûr de vouloir signaler ce statut?",
-            "toast": "Vous avez signalé ce statut"
+            "toast": "Vous avez signalé ce statut",
             "approve": "Are you sure you approve this status?  It will continue to be displayed on the Company Timeline",
             "approveToast": "Status has been approved",
             "delete": "Are you sure you want to delete this status?  It will be removed forever",
