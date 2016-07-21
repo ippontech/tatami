@@ -14,19 +14,9 @@
                 controller: 'LoginCtrl',
                 controllerAs: 'vm',
                 resolve: {
-                    clientId: getClientId,
                     translatePartialLoader: getTranslatePartialLoader
                 }
             });
-
-        getClientId.$inject = ['$http', 'PathService'];
-        function getClientId($http, PathService) {
-            return $http({
-                url: PathService.buildPath('/tatami/rest/client/id'),
-                method: 'GET'
-            }).catch(function(error) {
-            });
-        }
 
         getTranslatePartialLoader.$inject = ['$translate', '$translatePartialLoader'];
         function getTranslatePartialLoader($translate, $translatePartialLoader) {

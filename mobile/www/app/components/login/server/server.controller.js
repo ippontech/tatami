@@ -5,17 +5,15 @@
         .controller('ServerController', serverController);
 
     serverController.$inject = [
-        '$scope',
         '$state',
         '$http',
-        '$localStorage',
         '$ionicHistory',
         '$translate',
         '$ionicPopup',
         'PathService',
         'TatamiEndpoint'
     ];
-    function serverController($scope, $state, $http, $localStorage, $ionicHistory, $translate, $ionicPopup, PathService, TatamiEndpoint) {
+    function serverController($state, $http, $ionicHistory, $translate, $ionicPopup, PathService, TatamiEndpoint) {
         var vm = this;
 
         vm.endpoint = TatamiEndpoint.getEndpoint().url || TatamiEndpoint.getDefault().url;

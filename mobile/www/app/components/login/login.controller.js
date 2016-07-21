@@ -5,30 +5,46 @@
         .controller('LoginCtrl', loginCtrl);
 
     loginCtrl.$inject = [
+        'TatamiEndpoint',
         '$scope',
         '$state',
         '$http',
         '$localStorage',
         '$ionicLoading',
-        'clientId',
         'PathService',
         '$ionicHistory'
     ];
-    function loginCtrl($scope, $state, $http, $localStorage, $ionicLoading, clientId, PathService, $ionicHistory) {
+    function loginCtrl(TatamiEndpoint, $scope, $state, $http, $localStorage, $ionicLoading, PathService, $ionicHistory) {
 
         var vm = this;
 
         $scope.$on("$ionicView.enter", function () {
             $ionicHistory.clearCache();
             $ionicHistory.clearHistory();
+            var newEndpoint = TatamiEndpoint.getEndpoint();
+            console.log(vm.lastEndpoint);
+            console.log(newEndpoint);
+            if (vm.lastEndpoint.url !== newEndpoint.url) {
+                console.log("mismatch!");
+                vm.lastEndpoint.url = newEndpoint.url;
+                $http({
+                    url: PathService.buildPath('/tatami/rest/client/id'),
+                    method: 'GET'
+                }).then(function(data) {
+                    console.log(data);
+                    if (data && data.data && data.data.stringList) {
+                        // Old tatami return the clientId in the stringList property
+                        vm.clientId = data.data.stringList[0];
+                    } else if (data && data.data && data.data.clientId) {
+                        vm.clientId = data.data.clientId;
+                    }
+                    else {
+                        vm.clientId = undefined;
+                    }
+                });
+            }
         });
 
-        if (clientId && clientId.data && clientId.data.stringList) {
-            // Old tatami return the clientId in the stringList property
-            vm.clientId = clientId.data.stringList[0];
-        } else if (clientId && clientId.data && clientId.data.clientId) {
-            vm.clientId = clientId.data.clientId;
-        }
         vm.user = {
             remember: false
         };
@@ -36,6 +52,7 @@
         vm.login = login;
         vm.googleLogin = googleLogin;
         vm.goToServerConfig = goToServerConfig;
+        vm.lastEndpoint = {url: ''};
 
         function login() {
             var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
