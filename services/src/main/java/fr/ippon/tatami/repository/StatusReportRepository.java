@@ -3,17 +3,16 @@ package fr.ippon.tatami.repository;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by emilyklein on 7/11/16.
- */
 public interface StatusReportRepository {
 
-    void reportStatus (String reportingLogin, String reportedStatusId);
+    void reportStatus (String domain,  String reportedStatusId, String reportingLogin);
 
-    void unreportStatus (String currentAdminLogin, String reportedStatusId);
+    void unreportStatus (String domain,  String reportedStatusId);
 
-    List<String> findReportedStatuses();
+    List<String> findReportedStatuses(String domain);
 
-    boolean hasBeenReportedByUser(String login, String reportedStatusId);
+    String findUserHavingReported(String domain, String statusId);
+
+    boolean hasBeenReportedByUser(String domain, String reportedStatusId, String login);
 
 }

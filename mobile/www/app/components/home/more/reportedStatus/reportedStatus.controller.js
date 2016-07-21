@@ -7,12 +7,11 @@
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['currentUser', 'ReportService'];
-    function reportedStatusController(currentUser, ReportService) {
+    reportedStatusController.$inject = ['$state', 'currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$translate'];
+    function reportedStatusController($state, currentUser, ReportService, $ionicPopup, ionicToast, $translate) {
         var vm = this;
 
         vm.reportedStatuses = [];
-
         vm.currentUser = currentUser;
 
         vm.getReportedStatuses = getReportedStatuses;
@@ -20,10 +19,7 @@
         vm.approveStatus = approveStatus;
         vm.deleteStatus = deleteStatus;
 
-        // console.log('hasReportedStatuses=' + vm.hasReportedStatus());
-
         function reportStatus() {
-            console.log("reported a status?");
             ReportService.reportStatus({statusId: vm.status.statusId});
             $ionicPopup.alert({
                 title: 'Report',
@@ -38,23 +34,64 @@
         }
 
         function getReportedStatuses(){
-            console.log("In reported statuses");
-            ReportService.getReportedStatuses(null,
-                function(response){
+            ReportService.getReportedStatuses(null, function(response){
                     console.log(response);
                     vm.reportedStatuses = response;
                 }
             );
         }
 
-        //TODO: function for approved statuses
         function deleteStatus(statusId){
-            console.log("in deleted");
-            ReportService.deleteStatus({statusId: statusId})
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete Status',
+                template: '<span translate="status.reportStatus.delete"></span>'
+            });
+            confirmPopup.then(deleted);
+            deleted.$inject = ['decision'];
+            function deleted(decision) {
+                if(decision) {
+                    ReportService.deleteStatus({statusId: statusId}, function () {
+                            $translate('status.reportStatus.deleteToast').then(function(msg){
+                                if (ionic.Platform.isIOS()){
+                                    console.log("does toast work?");
+                                    ionicToast.show(msg, 'top', false, 2000);
+
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
+                            });
+                        }
+                    );
+                    $state.go($state.current, {}, {reload: true});
+                }
+            }
         }
 
         function approveStatus(statusId){
-            ReportService.approveStatus({statusId: statusId})
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Approve Status',
+                template: '<span translate="status.reportStatus.approve"></span>'
+            });
+            confirmPopup.then(approved);
+            approved.$inject = ['decision'];
+            function approved(decision) {
+                if(decision) {
+                    ReportService.approveStatus({statusId: statusId}, function () {
+                            $translate('status.reportStatus.approveToast').then(function(msg){
+                                if (ionic.Platform.isIOS()){
+                                    console.log("should show toast");
+                                    ionicToast.show(msg, 'top', false, 2000);
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
+                            });
+                        }
+                    );
+                    $state.go($state.current, {}, {reload: true});
+                }
+            }
         }
 
         remove.$inject = ['status'];
@@ -63,13 +100,7 @@
         }
 
         function  hasReportedStatus() {
-            console.log(vm.reportedStatuses.length);
-
-            if (vm.reportedStatuses.length>0){
-                return true;
-            }
-            else
-                return false;
+            return vm.reportedStatuses.length > 0
         }
     }
 })();

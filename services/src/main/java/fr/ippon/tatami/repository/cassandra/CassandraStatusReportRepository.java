@@ -1,30 +1,33 @@
 package fr.ippon.tatami.repository.cassandra;
 
 import fr.ippon.tatami.config.Constants;
+import fr.ippon.tatami.config.GroupRoles;
 import fr.ippon.tatami.repository.StatusReportRepository;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
+import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
+import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Keyspace;
-import me.prettyprint.hector.api.beans.OrderedRows;
-import me.prettyprint.hector.api.beans.Row;
+import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.HColumn;
+import me.prettyprint.hector.api.exceptions.HectorException;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.QueryResult;
-import me.prettyprint.hector.api.query.RangeSlicesQuery;
+import me.prettyprint.hector.api.query.SliceQuery;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.*;
 
+import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUP_MEMBERS_CF;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.STATUS_REPORT_CF;
+import static me.prettyprint.hector.api.factory.HFactory.createSliceQuery;
 
-/**
- * Created by emilyklein on 7/11/16.
- */
+
 @Repository
 public class CassandraStatusReportRepository implements StatusReportRepository {
 
@@ -43,71 +46,41 @@ public class CassandraStatusReportRepository implements StatusReportRepository {
     }
 
     @Override
-    public void reportStatus(String reportingUser, String reportedStatusId) {
+    public void reportStatus(String domain,  String reportedStatusId, String reportingLogin) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.insert(reportedStatusId, STATUS_REPORT_CF, HFactory.createColumn(reportingUser,
-                Calendar.getInstance().getTimeInMillis(), StringSerializer.get(), LongSerializer.get()));
+        mutator.insert(domain, STATUS_REPORT_CF, HFactory.createStringColumn(reportedStatusId, reportingLogin));
     }
 
     @Override
-    public void unreportStatus(String currentUserLogin, String reportedStatusId) {
-
-
+    public void unreportStatus(String domain,  String reportedStatusId) {
         Mutator<String> mutator = HFactory.createMutator(keyspaceOperator, StringSerializer.get());
-        mutator.delete(reportedStatusId, STATUS_REPORT_CF, currentUserLogin, StringSerializer.get());
+        mutator.delete(domain, STATUS_REPORT_CF, reportedStatusId, StringSerializer.get());
     }
 
     @Override
-    public List<String> findReportedStatuses() {
+    public List<String> findReportedStatuses(String domain) {
+        SliceQuery<String, String, String> query = HFactory.createSliceQuery(keyspaceOperator, StringSerializer.get(),
+                StringSerializer.get(), StringSerializer.get()).
+                setKey(domain).setColumnFamily(STATUS_REPORT_CF);
+
+        ColumnSliceIterator<String, String, String> iterator =
+                new ColumnSliceIterator<String, String, String>(query, null, "\uFFFF", false);
+
         List<String> reportedStatuses = new ArrayList<String>();
-        RangeSlicesQuery<String, String, String> findAll = HFactory
-                .createRangeSlicesQuery(keyspaceOperator, StringSerializer.get(), StringSerializer.get(), StringSerializer.get())
-                .setColumnFamily(STATUS_REPORT_CF)
-                .setRange(null, null, false, 10)
-                .setRowCount(10);
-
-        OrderedRows<String, String, String> result = findAll.execute().get();
-        for (Row<String, String, String> row : result.getList()) {
-            reportedStatuses.add(row.getKey());
+        while (iterator.hasNext()) {
+            reportedStatuses.add(iterator.next().getName());
         }
         return reportedStatuses;
+    }
 
-        /*Map<String, Integer> resultMap = new HashMap<String, Integer>();
-        String lastKeyForMissing = "";
-        StringSerializer s = StringSerializer.get();
-        RangeSlicesQuery<String, String, String> allRowsQuery = HFactory.createRangeSlicesQuery(keyspaceOperator, s, s, s);
-        allRowsQuery.setColumnFamily(STATUS_REPORT_CF);
-        allRowsQuery.setRange("", "", false, 3);    //retrieve 3 columns, no reverse
-        allRowsQuery.setReturnKeysOnly();    //enable this line if we want key only
-        allRowsQuery.setRowCount(100);
-        int rowCnt = 0;
-        while (true) {
-            allRowsQuery.setKeys(lastKeyForMissing, "");
-            QueryResult<OrderedRows<String, String, String>> res = allRowsQuery.execute();
-            OrderedRows<String, String, String> rows = res.get();
-            lastKeyForMissing = rows.peekLast().getKey();
-            for (Row<String, String, String> aRow : rows) {
-                if (!resultMap.containsKey(aRow.getKey())) {
-                    resultMap.put(aRow.getKey(), ++rowCnt);
-                    reportedStatuses.add(aRow.getKey());
-                    System.out.println(aRow.getKey() + ":" + rowCnt);
-                }
-            }
-            if (rows.getCount() != 100) {
-                break;
-            }
-        }*/
-        //return reportedStatuses;
+    public String findUserHavingReported(String domain, String statusId){
+        ColumnFamilyResult<String, String> res = reportedStatusTemplate.queryColumns(domain);
+        return res.getString(statusId);
     }
 
     @Override
-    public boolean hasBeenReportedByUser(String login, String reportedStatusId) {
-        for (String username : reportedStatusTemplate.queryColumns(reportedStatusId).getColumnNames()) {
-            if (username.equals(login)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean hasBeenReportedByUser(String domain, String reportedStatusId, String login) {
+        return login.equals(reportedStatusTemplate.queryColumns(domain).getString(reportedStatusId));
     }
 
 }

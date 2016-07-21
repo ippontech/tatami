@@ -26,12 +26,12 @@ public class BlockService {
     private UserRepository userRepository;
 
     public void blockUser(String currentLogin, String blockedLogin){
-        log.debug(currentLogin + " is blocking" + blockedLogin);
+        log.debug(currentLogin + " is blocking " + blockedLogin);
         blockRepository.blockUser(currentLogin, blockedLogin);
     }
 
     public void unblockUser(String currentLogin, String unblockedLogin){
-        log.debug(currentLogin + "is unblocking" + unblockedLogin);
+        log.debug(currentLogin + " is unblocking " + unblockedLogin);
         blockRepository.unblockUser(currentLogin, unblockedLogin);
     }
 
@@ -48,7 +48,7 @@ public class BlockService {
                 blockedUsers.add(user);
             }
         }
-        log.debug("Getting users blocked by " + login, blockedUsers);
+        log.debug("Getting users blocked by {}", login);
         return blockedUsers;
     }
 

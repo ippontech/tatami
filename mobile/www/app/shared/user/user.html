@@ -1,20 +1,22 @@
 <ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="vm.goToProfile(vm.user.username)">
-    <img ng-src="{{ vm.user.avatarURL }}" />
-
+    <img ng-src="{{ vm.user.avatarURL }}"/>
     <div class="profile-name">
         <h2 class="inline">{{ vm.user.firstName }} {{ vm.user.lastName }}</h2>
         <span class="inline subheading">@{{ vm.user.username }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
-
-        <ion-option-button ng-if="vm.$state.includes('follow')"
-                           class="button-positive"
+    </div>
+    <span ng-if="vm.$state.includes('follow')">
+        <ion-option-button class="button-positive"
                            ng-click="vm.followUser(user)">
             {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
         </ion-option-button>
-        <ion-option-button ng-if="vm.$state.includes('blockedusers')"
-                           class="button-positive"
+    </span>
+    <span ng-if="vm.$state.includes('blockedusers')">
+        <ion-option-button class="button-positive"
                            ng-click="vm.updateBlockUser()">
             {{ (vm.user.blocked ? 'user.unblock.title' : 'user.block.title') | translate }}
         </ion-option-button>
-    </div>
+    </span>
+    <!--The ion-option-buttons are included in <span></span> because of an ionic bug : if the ion-options button contain an -->
+    <!--ng-if directive and an ng-click directive, then ng-click action from both the ion-item and the ion-option-button will be triggered.-->
 </ion-item>

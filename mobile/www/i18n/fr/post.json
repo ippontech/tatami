@@ -2,7 +2,7 @@
     "post": {
         "title": "Post",
         "message": "Ecrivez votre message ici...",
-        "progress": "Post en cours...",
+        "progress": "Publication en cours...",
         "error": {
             "message": "Un problème est survenu. Retour à la Timeline.",
             "truncated": "Votre message a été tronqué afin de respecter la longueur maximale autorisée"

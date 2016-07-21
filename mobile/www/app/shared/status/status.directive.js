@@ -69,7 +69,12 @@
                 setStatus(status);
                 if(vm.status.favorite){
                     $translate('status.favorite.add').then(function(msg){
-                        ionicToast.show(msg, 'bottom', false, 2000);
+                        if (ionic.Platform.isIOS()){
+                            ionicToast.show(msg, 'top', false, 2000);
+                        }
+                        else{
+                            ionicToast.show(msg, 'bottom', false, 2000);
+                        }
                     });
                 } else {
                     $translate('status.favorite.remove').then(function(msg){
@@ -105,17 +110,40 @@
             StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(status){
                 setStatus(status);
                 $translate('status.share.toast').then(function(msg){
-                    ionicToast.show(msg, 'bottom', false, 2000);
+                    if (ionic.Platform.isIOS()){
+                        ionicToast.show(msg, 'top', false, 2000);
+                    }
+                    else{
+                        ionicToast.show(msg, 'bottom', false, 2000);
+                    }
                 });
             });
         }
 
         function reportStatus() {
-            ReportService.reportStatus({statusId: vm.status.statusId});
-            $ionicPopup.alert({
-                title: 'Report',
-                template: '<span translate="status.reportMessage"></span>'
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Report Status',
+                template: '<span translate="status.reportStatus.message"></span>'
             });
+            confirmPopup.then(reported);
+            reported.$inject = ['decision'];
+            function reported(decision) {
+                if(decision) {
+                    ReportService.reportStatus({statusId: vm.status.statusId}, function () {
+                            $translate('status.reportStatus.toast').then(function(msg){
+                                if (ionic.Platform.isIOS()){
+                                    ionicToast.show(msg, 'top', false, 2000);
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
+
+                            });
+                        }
+                    );
+                }
+            }
+
         }
 
         setStatus.$inject = ['status'];
@@ -147,7 +175,12 @@
                 if(decision) {
                     BlockService.updateBlockedUser( {username: vm.status.username }, function () {
                             $translate('user.block.success').then(function(msg){
-                                ionicToast.show(msg, 'bottom', false, 2000);
+                                if (ionic.Platform.isIOS()){
+                                    ionicToast.show(msg, 'top', false, 2000);
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
                             });
                         }
                     );
@@ -169,7 +202,12 @@
             StatusService.update({statusId: vm.status.statusId}, {announced: true}, function(){
                 setStatus;
                 $translate('status.announcement.toast').then(function(msg){
-                    ionicToast.show(msg, 'bottom', false, 2000);
+                    if (ionic.Platform.isIOS()){
+                        ionicToast.show(msg, 'top', false, 2000);
+                    }
+                    else{
+                        ionicToast.show(msg, 'bottom', false, 2000);
+                    }
                 });
             });
         }

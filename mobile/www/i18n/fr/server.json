@@ -15,7 +15,7 @@
                 "title": "Changement de serveur effectué",
                 "body": "Veuillez-vous identifier avec le nouveau serveur."
             },
-            "default": "Utilisez le serveur par défaut"
+            "default": "Utiliser le serveur par défaut"
         }
     }
 }

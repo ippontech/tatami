@@ -19,8 +19,8 @@
                 <span class="ion-close-circled padding-right"></span>
                 <span translate="more.blockedusers.manage">Manage your blocked users</span>
             </ion-item>
-            <ion-item class="item-divider"></ion-item>
-            <ion-item class="text-center" ng-click="vm.goToReportedStatus()">
+            <ion-item ng-if="vm.currentUser.isAdmin" class="item-divider"></ion-item>
+            <ion-item ng-if="vm.currentUser.isAdmin" class="text-center" ng-click="vm.goToReportedStatus()">
                 <span class="ion-alert-circled"></span>
                 <span translate="more.reportedStatus.title">Reported Statuses</span>
             </ion-item>

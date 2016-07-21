@@ -1,15 +1,15 @@
 {
     "more": {
         "title": "Plus d'options",
-        "company": "Timeline Entreprise",
+        "company": "Timeline de l'entreprise",
         "settings": "Paramètres",
         "blockedusers": {
-            "manage": "Gérer les utilisateurs bloqués",
+            "manage": "Gérer vos utilisateurs bloqués",
             "no": "Vous n'avez bloqué aucun utilisateur"
         },
         "reportedStatus": {
-            "title": "Statut signalé",
-            "no": "Vous n'avez pas les statuts signalé"
+            "title": "Statuts signalés",
+            "no": "Aucun statut n'a été signalé"
         },
         "logout": "Déconnexion",
         "language": {
