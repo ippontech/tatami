@@ -1,6 +1,3 @@
-/**
- * Created by emilyklein on 7/11/16.
- */
 (function() {
     'use strict';
 
@@ -20,17 +17,6 @@
         vm.approveStatus = approveStatus;
         vm.deleteStatus = deleteStatus;
 
-        // console.log('hasReportedStatuses=' + vm.hasReportedStatus());
-
-        function reportStatus() {
-            console.log("reported a status?");
-            ReportService.reportStatus({statusId: vm.status.statusId});
-            $ionicPopup.alert({
-                title: 'Report',
-                template: '<span translate="status.reportMessage"></span>'
-            });
-        }
-
         goToProfile.$inject = ['username'];
         function goToProfile(username) {
             var destinationState = $state.current.name.split('.')[0] + '.profile';
@@ -38,19 +24,15 @@
         }
 
         function getReportedStatuses(){
-            console.log("In reported statuses");
-            ReportService.getReportedStatuses(null,
-                function(response){
+            ReportService.getReportedStatuses(null, function(response){
                     console.log(response);
                     vm.reportedStatuses = response;
                 }
             );
         }
 
-        //TODO: function for approved statuses
-        function deleteStatus(statusId){
-            console.log("in deleted");
-            ReportService.deleteStatus({statusId: statusId})
+        function deleteStatus(statusId) {
+            ReportService.deleteStatus({statusId: statusId});
         }
 
         function approveStatus(statusId){
@@ -63,13 +45,7 @@
         }
 
         function  hasReportedStatus() {
-            console.log(vm.reportedStatuses.length);
-
-            if (vm.reportedStatuses.length>0){
-                return true;
-            }
-            else
-                return false;
+            return vm.reportedStatuses.length > 0
         }
     }
 })();
