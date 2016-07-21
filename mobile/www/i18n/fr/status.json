@@ -2,25 +2,24 @@
     "status": {
         "share": {
             "title": "a partagé",
-            "mention": "Votre status a été partagé",
+            "mention": "Votre statut a été partagé",
             "toast": "Vous avez partagé ce statut",
             "action": "Partager"
         },
         "reply": "En réponse à ",
         "follower": "Nouvel abonné",
-        "delete": "Êtes-vous sûr de vouloir supprimer ce statut?",
+        "delete": "Êtes-vous sûr de vouloir supprimer ce statut ?",
         "report" : "Supprimer",
         "reportMessage": "Ce statut a été signalé",
         "reportStatus":{
             "message": "Êtes-vous sûr de vouloir signaler ce statut?",
-            "toast": "Ce statut a été signalé",
+            "toast": "Vous avez signalé ce statut"
             "approve": "Are you sure you approve this status?  It will continue to be displayed on the Company Timeline",
             "approveToast": "Status has been approved",
             "delete": "Are you sure you want to delete this status?  It will be removed forever",
             "deleteToast": "Status has been deleted"
         },
         "block": {
-            "reportUser": "Signaler cet utilisateur",
             "reportStatus": "Signaler ce statut",
             "blockUser": "Bloquer cet utilisateur",
             "delete": "Supprimer"

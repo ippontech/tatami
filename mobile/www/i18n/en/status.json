@@ -20,7 +20,6 @@
             "deleteToast": "Status has been deleted"
         },
         "block": {
-            "reportUser": "Report user",
             "reportStatus": "Report status",
             "blockUser": "Block user",
             "delete": "Delete"
