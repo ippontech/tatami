@@ -12,8 +12,12 @@
         "report" : "Report",
         "reportMessage": "This status has been reported",
         "reportStatus":{
-          "message": "Are you sure you want to report this status?  This action cannot be undone",
-          "toast": "Status has been reported"
+            "message": "Are you sure you want to report this status?  This action cannot be undone",
+            "toast": "Status has been reported",
+            "approve": "Are you sure you approve this status?  It will continue to be displayed on the Company Timeline",
+            "approveToast": "Status has been approved",
+            "delete": "Are you sure you want to delete this status?  It will be removed forever",
+            "deleteToast": "Status has been deleted"
         },
         "block": {
             "reportUser": "Report user",

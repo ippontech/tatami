@@ -1,11 +1,14 @@
+/**
+ * Created by emilyklein on 7/11/16.
+ */
 (function() {
     'use strict';
 
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['currentUser', 'ReportService'];
-    function reportedStatusController(currentUser, ReportService) {
+    reportedStatusController.$inject = ['currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$state'];
+    function reportedStatusController(currentUser, ReportService, $ionicPopup, ionicToast, $state) {
         var vm = this;
 
         vm.reportedStatuses = [];
@@ -16,6 +19,17 @@
         vm.hasReportedStatus = hasReportedStatus;
         vm.approveStatus = approveStatus;
         vm.deleteStatus = deleteStatus;
+
+        // console.log('hasReportedStatuses=' + vm.hasReportedStatus());
+
+        function reportStatus() {
+            console.log("reported a status?");
+            ReportService.reportStatus({statusId: vm.status.statusId});
+            $ionicPopup.alert({
+                title: 'Report',
+                template: '<span translate="status.reportMessage"></span>'
+            });
+        }
 
         goToProfile.$inject = ['username'];
         function goToProfile(username) {
@@ -31,12 +45,55 @@
             );
         }
 
-        function deleteStatus(statusId) {
-            ReportService.deleteStatus({statusId: statusId});
+        //TODO: function for approved statuses
+        function deleteStatus(statusId){
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete Status',
+                template: '<span translate="status.reportStatus.delete"></span>'
+            });
+            confirmPopup.then(deleted);
+            deleted.$inject = ['decision'];
+            function deleted(decision) {
+                if(decision) {
+                    ReportService.deleteStatus({statusId: statusId}, function () {
+                            $translate('status.reportStatus.deleteToast').then(function(msg){
+                                if (ionic.Platform.isIOS()){
+                                    ionicToast.show(msg, 'top', false, 2000);
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
+                            });
+                        }
+                    );
+                    $state.go($state.current, {}, {reload: true});
+                }
+            }
         }
 
         function approveStatus(statusId){
-            ReportService.approveStatus({statusId: statusId})
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Approve Status',
+                template: '<span translate="status.reportStatus.approve"></span>'
+            });
+            confirmPopup.then(approved);
+            approved.$inject = ['decision'];
+            function approved(decision) {
+                if(decision) {
+                    ReportService.approveStatus({statusId: statusId}, function () {
+                            $translate('status.reportStatus.approveToast').then(function(msg){
+                                if (ionic.Platform.isIOS()){
+                                    ionicToast.show(msg, 'top', false, 2000);
+                                }
+                                else{
+                                    ionicToast.show(msg, 'bottom', false, 2000);
+                                }
+                            });
+                        }
+                    );
+                    $state.go($state.current, {}, {reload: true});
+                }
+            }
         }
 
         remove.$inject = ['status'];

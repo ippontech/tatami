@@ -12,6 +12,7 @@
 
         $stateProvider
             .state('reportedStatus', {
+                cache: false,
                 url: '/reportedStatus',
                 parent: 'more',
                 views: {
