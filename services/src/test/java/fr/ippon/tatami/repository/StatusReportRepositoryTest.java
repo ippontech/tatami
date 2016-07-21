@@ -8,9 +8,6 @@ import java.util.Collection;
 
 import static junit.framework.TestCase.*;
 
-/**
- * Created by emilyklein on 7/13/16.
- */
 public class StatusReportRepositoryTest extends AbstractCassandraTatamiTest {
 
     @Inject
@@ -20,20 +17,30 @@ public class StatusReportRepositoryTest extends AbstractCassandraTatamiTest {
     public void reportNewStatus() {
 
         String reportingLogin = "user@localhost";
-        String reportedStatusId = "12345";
+        String reportedStatusId = "status-id";
         String login = "emily@localhost";
+        String domain = "localhost";
 
-        int sizeOfReported = statusReportRepository.findReportedStatuses().size();
+        int sizeOfReported = statusReportRepository.findReportedStatuses(domain).size();
 
-        statusReportRepository.reportStatus(reportingLogin, reportedStatusId);
-        Collection<String> reportedStatuses = statusReportRepository.findReportedStatuses();
+        statusReportRepository.reportStatus(domain, reportedStatusId, reportingLogin);
+        Collection<String> reportedStatuses = statusReportRepository.findReportedStatuses(domain);
+        String reporter = statusReportRepository.findUserHavingReported(domain, reportedStatusId);
+
         //Now it should be equal to 1, since I added 1 reported status...
         assertEquals(sizeOfReported + 1, reportedStatuses.size());
+        assertEquals(reporter, reportingLogin);
 
-        assertFalse(statusReportRepository.hasBeenReportedByUser(login, reportedStatusId));
-        assertTrue(statusReportRepository.hasBeenReportedByUser(reportingLogin, reportedStatusId));
+        assertFalse(statusReportRepository.hasBeenReportedByUser(domain, reportedStatusId, login));
+        assertTrue(statusReportRepository.hasBeenReportedByUser(domain, reportedStatusId, reportingLogin));
+
+        sizeOfReported = statusReportRepository.findReportedStatuses(domain).size();
+        statusReportRepository.unreportStatus(domain, reportedStatusId);
+        reportedStatuses = statusReportRepository.findReportedStatuses(domain);
+        assertEquals(sizeOfReported - 1, reportedStatuses.size());
 
     }
+
 
 
 }

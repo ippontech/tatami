@@ -430,63 +430,46 @@ public class StatusUpdateService {
 
     public void reportStatus(String reportingLogin, String statusId) {
         log.debug("Reported Status: ", statusId);
-        statusReportRepository.reportStatus(reportingLogin, statusId);
+        String domain = DomainUtil.getDomainFromLogin(reportingLogin);
+        statusReportRepository.reportStatus(domain, statusId, reportingLogin);
         mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
 
-        //Private posts that are reported!
-        //Look at mentioned User, they can do this for private statuses?
-
     }
 
-    public void unreportStatus(String currentAdminLogin, String reportedStatusId){
-        log.debug(reportedStatusId + " is no longer reported");
-        //can only be accessed by admins
-        //admin login will be stored in table...
-        //go to statusReportRepository?  Or should I go to resolvedReportRepository and skip the former all together?
-
-        statusReportRepository.unreportStatus(currentAdminLogin, reportedStatusId);
-    }
-
-    public List<String> getAllReportedStatuses(){
-        return statusReportRepository.findReportedStatuses();
+    private List<String> getAllReportedStatuses(String domain){
+        return statusReportRepository.findReportedStatuses(domain);
     }
 
     public Collection<StatusDTO> findReportedStatuses (){
-        /*Collection<String> reportedStatusId = getAllReportedStatuses();
-        Collection<AbstractStatus> reportedStatuses = new ArrayList<AbstractStatus>();
-        for (String reportedId : reportedStatusId){
-            AbstractStatus status = statusRepository.findStatusById(reportedId);
-            if (status != null){
-                reportedStatuses.add(status);
-            }
-        }
-        log.debug("Getting reported statuses", reportedStatuses);
-        return reportedStatuses;*/
-
-
-        List<String> reportedStatusId = getAllReportedStatuses();
+        List<String> reportedStatusId = getAllReportedStatuses(authenticationService.getCurrentUser().getDomain());
         Collection<StatusDTO> statusDTOS = timelineService.buildStatusList(reportedStatusId);
         return statusDTOS;
     }
     public void approveReportedStatus(String statusId){
-        log.debug("Admin approving reported status {}", statusId );
         if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
-            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+            log.debug("Admin approving reported status {}", statusId );
+            User currentUser = authenticationService.getCurrentUser();
+            statusReportRepository.unreportStatus(currentUser.getDomain(), statusId);
+        } else {
+            log.warn("Attempt to approve reported status {} but is not admin", statusId);
         }
     }
 
     public void deleteReportedStatus(String statusId){
-        log.debug("Admin deleting reported status {}", statusId );
         if(authenticationService.hasAuthenticatedUser() && authenticationService.isCurrentUserInRole("ROLE_ADMIN")){
+            log.debug("Admin deleting reported status {}", statusId );
+            User currentUser = authenticationService.getCurrentUser();
             deletedHoldingRepository.addDeletedStatus(statusId, authenticationService.getCurrentUser().getLogin());
-            statusReportRepository.unreportStatus(authenticationService.getCurrentUser().getLogin(), statusId);
+            statusReportRepository.unreportStatus(currentUser.getDomain(), statusId);
             timelineService.removeStatus(statusId);
+        } else {
+            log.warn("Attempt to delete reported status {} but is not admin", statusId);
         }
     }
 
-    public boolean isReported(String login, String statusId){
-        return statusReportRepository.hasBeenReportedByUser(login, statusId);
-    }
+//    public boolean isReported(String login, String statusId){
+//        return statusReportRepository.hasBeenReportedByUser(login, statusId);
+//    }
 
 
 
