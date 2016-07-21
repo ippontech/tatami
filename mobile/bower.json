@@ -20,6 +20,6 @@
     "ionic-toast": "v0.2.0"
   },
   "dependencies": {
-    "ionic-toast": "0.2.0"
+    "ionic-toast": "^0.4.1"
   }
 }
