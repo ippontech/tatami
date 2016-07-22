@@ -1,0 +1,10 @@
+#parse("common")
+#msg("deactivatedUser.greeting") ${user.Username},
+
+#msg("deactivatedUser.text1")
+
+#msg("deactivatedUser.text2")
+
+#msg("deactivatedUser.text3")
+
+#msg("email.signature")
