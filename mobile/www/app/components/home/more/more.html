@@ -2,12 +2,17 @@
     <ion-content class="tatami-header tatami-footer">
         <ion-list>
             <div>
-                <tatami-user user="vm.currentUser"></tatami-user>
+                <tatami-user user="vm.currentUser" current-user="vm.currentUser"></tatami-user>
             </div>
             <ion-item class="item-divider"></ion-item>
             <ion-item ng-click="vm.goToCompanyTimeline()" class="text-center">
                 <span class="ion-briefcase calm padding-right"></span>&nbsp;
                 <span class="calm" translate="more.company">Company Timeline</span>
+            </ion-item>
+            <ion-item class="item-divider"></ion-item>
+            <ion-item class="text-center" ng-click="vm.goToAllUsers()">
+                <span class="ion-earth padding-right"></span>
+                <span translate="more.allusers">All users</span>
             </ion-item>
             <ion-item class="item-divider"></ion-item>
             <ion-item ng-click="vm.goToSettings()" class="text-center">

@@ -9,7 +9,8 @@
         var directive = {
             restrict: 'E',
             scope: {
-                user: '='
+                user: '=',
+                currentUser: '='
             },
             controller: controller,
             controllerAs: 'vm',
@@ -23,11 +24,13 @@
     function controller($scope, $state, UserService, BlockService, $ionicPopup) {
         var vm = this;
 
+        vm.currentUser = $scope.currentUser;
         vm.user = $scope.user;
         vm.$state = $state;
         vm.followUser = followUser;
         vm.goToProfile = goToProfile;
         vm.updateBlockUser = updateBlockUser;
+        vm.deactivateUser = deactivateUser;
 
         function followUser() {
             UserService.follow({ username : vm.user.username }, { friend: !vm.user.friend, friendShip: true },
@@ -57,6 +60,10 @@
                     vm.user.blocked = !vm.user.blocked;
                 }
             );
+        }
+
+        function deactivateUser() {
+            console.log(vm.user);
         }
     }
 })();

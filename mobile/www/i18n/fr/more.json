@@ -16,7 +16,8 @@
             "change": "Langue",
             "english": "Anglais",
             "french": "Français"
-        }
+        },
+        "allusers": "Tous les utilisateurs"
     }
 
 }
