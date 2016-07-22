@@ -14,10 +14,10 @@
         "reportStatus":{
             "message": "Êtes-vous sûr de vouloir signaler ce statut?",
             "toast": "Vous avez signalé ce statut",
-            "approve": "Êtes-vous sûr de vouloir approuver cette publication ? Il restera inchangé sur les timelines",
-            "approveToast": "Status has been approved",
-            "delete": "Are you sure you want to delete this status?  It will be removed forever",
-            "deleteToast": "Status has been deleted"
+            "approve": "Êtes-vous sûr de vouloir approuver cette publication ? Cela ne modifiera pas son apparition sur Tatami.",
+            "approveToast": "Vous avez approuvé ce statut",
+            "delete": "Êtes-vous sûr de vouloir supprimer ce statut ? Cette action est irréversible.",
+            "deleteToast": "Vous avez supprimé ce statut"
         },
         "block": {
             "reportStatus": "Signaler ce statut",
