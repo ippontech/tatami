@@ -17,8 +17,8 @@
     </ion-option-button>
     <ion-option-button class="button-assertive"
                            ng-show="vm.$state.includes('allusers') && vm.currentUser.isAdmin"
-                           ng-click="vm.deactivateUser()">
-                Deactivate
+                           ng-click="vm.toggleActivateUser()">
+        {{ (vm.user.activated ? 'user.deactivate.title' : 'user.reactivate.title') | translate }}
     </ion-option-button>
     <!--The ion-option-buttons are included in <span></span> because of an ionic bug : if the ion-options button contain an -->
     <!--ng-if directive and an ng-click directive, then ng-click action from both the ion-item and the ion-option-button will be triggered.-->

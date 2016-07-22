@@ -99,11 +99,11 @@ public class UserController {
             produces = "application/json")
     @ResponseBody
     @Timed
-    public Collection<User> getAll(@RequestParam(required = false) Integer pagination) {
+    public Collection<UserDTO> getAll(@RequestParam(required = false) Integer pagination) {
         if (pagination == null) {
             pagination = 0;
         }
-        return userService.getUsersForCurrentDomain(pagination);
+        return userService.buildUserDTOList(userService.getUsersForCurrentDomain(pagination));
     }
 
     /**
