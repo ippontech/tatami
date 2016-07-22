@@ -1,7 +1,12 @@
 {
     "user": {
         "profile": {
-            "title": "Profile"
+            "title": "Profile",
+            "options": {
+                "block": "Block User",
+                "deactivate": "Deactivate User",
+                "reactivate": "Reactivate User"
+            }
         },
         "follow": "Follow",
         "unfollow": "Unfollow",
