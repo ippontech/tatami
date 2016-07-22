@@ -6,7 +6,7 @@
         <i class="icon ion-chevron-right icon-accessory"></i>
     </div>
     <ion-option-button class="button-positive"
-                       ng-show="vm.$state.includes('follow') || vm.$state.includes('allusers')"
+                       ng-show="(vm.$state.includes('follow') || vm.$state.includes('allusers')) && !vm.user.you"
                        ng-click="vm.followUser(user)">
                 {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
     </ion-option-button>
@@ -16,7 +16,7 @@
                 {{ (vm.user.blocked ? 'user.unblock.title' : 'user.block.title') | translate }}
     </ion-option-button>
     <ion-option-button class="button-assertive"
-                           ng-show="vm.$state.includes('allusers') && vm.currentUser.isAdmin"
+                           ng-show="(vm.$state.includes('allusers') && vm.currentUser.isAdmin) && !vm.user.you"
                            ng-click="vm.toggleActivateUser()">
         {{ (vm.user.activated ? 'user.deactivate.title' : 'user.reactivate.title') | translate }}
     </ion-option-button>
