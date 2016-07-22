@@ -1,0 +1,18 @@
+<ion-popover-view ng-style="vm.customHeight">
+    <ion-content>
+        <div class="list" ng-click="popover.hide()">
+            <a class="item assertive" target="_blank" ng-click="vm.blockUser()">
+                <span class="ion-close-circled padding-right"></span>
+                <span translate="profile.options.block"></span>
+            </a>
+            <a class="item assertive" ng-if="vm.currentUser.isAdmin && vm.user.activated" ng-click="vm.toggleActivateUser()" >
+                <span class="ion-trash-a padding-right"></span>
+                <span translate="profile.options.deactivate"></span>
+            </a>
+            <a class="item calm" ng-if="vm.currentUser.isAdmin && !vm.user.activated" ng-click="vm.toggleActivateUser()" >
+                <span class="ion-trash-a padding-right"></span>
+                <span translate="profile.options.reactivate"></span>
+            </a>
+        </div>
+    </ion-content>
+</ion-popover-view>

@@ -1,0 +1,9 @@
+{
+    "profile": {
+        "options": {
+            "block": "Bloquer cet utilisateur",
+            "deactivate": "Désactivater cet utilisateur",
+            "reactivate": "Réactivater cet utilisateur"
+        }
+    }
+}

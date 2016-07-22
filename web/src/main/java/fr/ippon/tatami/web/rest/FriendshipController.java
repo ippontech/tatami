@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.yammer.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.service.FriendshipService;
+import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.dto.UserDTO;
 import org.slf4j.Logger;
@@ -29,6 +30,9 @@ public class FriendshipController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private MailService mailService;
 
     @RequestMapping(value = "/rest/users/{username}/friends",
             method = RequestMethod.GET,
@@ -80,6 +84,7 @@ public class FriendshipController {
         else if ( action.getActivate() != null &&  action.getActivate()) {
             this.log.debug("REST request to desactivate Profile : {}", username);
             userService.desactivateUser(username);
+            mailService.sendDeactivatedEmail(username);
         }
         return userService.buildUserDTO(userService.getUserByUsername(username));
     }

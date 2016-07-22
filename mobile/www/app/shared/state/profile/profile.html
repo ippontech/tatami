@@ -1,5 +1,9 @@
 <ion-view view-title="@{{ vm.user.username }}">
     <ion-nav-buttons side="secondary">
+        <button class="button ion-gear-b"
+                ng-if="!vm.isCurrentUser"
+                style="font-size: 30px;"
+                ng-click="popover.show($event)"></button>
         <button class="button ion-person-add"
                 ng-if="!vm.isCurrentUser"
                 ng-class="{ 'button-calm' : vm.user.friend, 'button-stable button-outline' : !vm.user.friend }"

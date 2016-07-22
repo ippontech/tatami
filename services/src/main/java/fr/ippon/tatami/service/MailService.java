@@ -222,13 +222,9 @@ public class MailService {
         model.put("status", status);
         model.put("statusUrl", url);
 
-        //TODO: need to get admin emails
-        String adminEmail = "eklein@ipponusa.com";
-        sendTextFromTemplate(adminEmail, model, "reportedStatus", this.locale);
-
-//        for(String email : tatamiUserDetailsService.getAdminUsers()) {
-//            sendTextFromTemplate(email, model, "reportedStatus", this.locale);
-//        }
+        for(String email : tatamiUserDetailsService.getAdminUsers()) {
+            sendTextFromTemplate(email, model, "reportedStatus", this.locale);
+        }
     }
 
     @Async
