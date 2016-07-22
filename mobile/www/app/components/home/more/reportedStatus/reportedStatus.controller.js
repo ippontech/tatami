@@ -7,8 +7,8 @@
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['$state', '$scope', 'currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$translate'];
-    function reportedStatusController($state, $scope, currentUser, ReportService, $ionicPopup, ionicToast, $translate) {
+    reportedStatusController.$inject = ['$state', '$scope', 'currentUser', 'ReportService', '$ionicPopup', '$translate', 'ToastService'];
+    function reportedStatusController($state, $scope, currentUser, ReportService, $ionicPopup, $translate, ToastService) {
         var vm = this;
 
         vm.reportedStatuses = [];
@@ -52,16 +52,7 @@
             function deleted(decision) {
                 if(decision) {
                     ReportService.deleteStatus({statusId: statusId}, function () {
-                            $translate('status.reportStatus.deleteToast').then(function(msg){
-                                if (ionic.Platform.isIOS()){
-                                    console.log("does toast work?");
-                                    ionicToast.show(msg, 'top', false, 2000);
-
-                                }
-                                else{
-                                    ionicToast.show(msg, 'bottom', false, 2000);
-                                }
-                            });
+                        ToastService.display('status.reportStatus.deleteToast');
                         }
                     );
                     $state.go($state.current, {}, {reload: true});
@@ -79,15 +70,7 @@
             function approved(decision) {
                 if(decision) {
                     ReportService.approveStatus({statusId: statusId}, function () {
-                            $translate('status.reportStatus.approveToast').then(function(msg){
-                                if (ionic.Platform.isIOS()){
-                                    console.log("should show toast");
-                                    ionicToast.show(msg, 'top', false, 2000);
-                                }
-                                else{
-                                    ionicToast.show(msg, 'bottom', false, 2000);
-                                }
-                            });
+                        ToastService.display('status.reportStatus.approveToast');
                         }
                     );
                     $state.go($state.current, {}, {reload: true});

@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', 'ionicToast', '$translate', 'ReportService'];
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, ionicToast, $translate, ReportService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', '$translate', 'ReportService', 'ToastService'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, $translate, ReportService, ToastService) {
         var vm = this;
 
         vm.state = $state.current.name;
@@ -68,23 +68,9 @@
             StatusService.update({ statusId: vm.status.statusId }, { favorite: !vm.status.favorite }, function (status) {
                 setStatus(status);
                 if(vm.status.favorite){
-                    $translate('status.favorite.add').then(function(msg){
-                        if (ionic.Platform.isIOS()){
-                            ionicToast.show(msg, 'top', false, 2000);
-                        }
-                        else{
-                            ionicToast.show(msg, 'bottom', false, 2000);
-                        }
-                    });
+                    ToastService.display('status.favorite.add');
                 } else {
-                    $translate('status.favorite.remove').then(function(msg){
-                        if (ionic.Platform.isIOS()){
-                            ionicToast.show(msg, 'top', false, 2000);
-                        }
-                        else{
-                            ionicToast.show(msg, 'bottom', false, 2000);
-                        }
-                    });
+                    ToastService.display('status.favorite.remove');
                 }
             });
         }
@@ -114,14 +100,7 @@
         function shareStatus() {
             StatusService.update({statusId: vm.status.statusId}, {shared: !vm.status.shareByMe}, function(status){
                 setStatus(status);
-                $translate('status.share.toast').then(function(msg){
-                    if (ionic.Platform.isIOS()){
-                        ionicToast.show(msg, 'top', false, 2000);
-                    }
-                    else{
-                        ionicToast.show(msg, 'bottom', false, 2000);
-                    }
-                });
+                ToastService.display('status.share.toast');
             });
         }
 
@@ -135,15 +114,7 @@
             function reported(decision) {
                 if(decision) {
                     ReportService.reportStatus({statusId: vm.status.statusId}, function () {
-                            $translate('status.reportStatus.toast').then(function(msg){
-                                if (ionic.Platform.isIOS()){
-                                    ionicToast.show(msg, 'top', false, 2000);
-                                }
-                                else{
-                                    ionicToast.show(msg, 'bottom', false, 2000);
-                                }
-
-                            });
+                        ToastService.display('status.reportStatus.toast');
                         }
                     );
                 }
@@ -179,14 +150,7 @@
             function checkDelete(decision) {
                 if(decision) {
                     BlockService.updateBlockedUser( {username: vm.status.username }, function () {
-                            $translate('user.block.success').then(function(msg){
-                                if (ionic.Platform.isIOS()){
-                                    ionicToast.show(msg, 'top', false, 2000);
-                                }
-                                else{
-                                    ionicToast.show(msg, 'bottom', false, 2000);
-                                }
-                            });
+                        ToastService.display('user.block.success');
                         }
                     );
                     // $scope.onDelete(vm.status);
@@ -197,23 +161,14 @@
         function hideStatus() {
             StatusService.hideStatus({statusId: vm.status.statusId}, function () {
                 $scope.onDelete(vm.status);
-                $translate('status.hide.toast').then(function(msg){
-                    ionicToast.show(msg, 'bottom', false, 2000);
-                });
+                ToastService.display('status.hide.toast');
             });
         }
 
         function announceStatus() {
             StatusService.update({statusId: vm.status.statusId}, {announced: true}, function(){
                 setStatus;
-                $translate('status.announcement.toast').then(function(msg){
-                    if (ionic.Platform.isIOS()){
-                        ionicToast.show(msg, 'top', false, 2000);
-                    }
-                    else{
-                        ionicToast.show(msg, 'bottom', false, 2000);
-                    }
-                });
+                ToastService.display('status.announcement.toast');
             });
         }
     }

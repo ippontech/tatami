@@ -210,7 +210,7 @@ public class MailService {
 
     @Async
     public void sendReportedStatusEmail(String emailReporting, AbstractStatus status) {
-        log.debug("Sending Mention e-mail to User '{}' with locale : '{}'", locale);
+        log.debug("Sending reported status e-mail to User '{}' with locale : '{}'", locale);
         String url = tatamiUrl + "/#/home/status/" + status.getStatusId();
 
         Map<String, Object> model = new HashMap<String, Object>();
@@ -224,6 +224,16 @@ public class MailService {
 //        for(String email : tatamiUserDetailsService.getAdminUsers()) {
 //            sendTextFromTemplate(email, model, "reportedStatus", this.locale);
 //        }
+    }
+
+    @Async
+    public void sendDeactivatedEmail(String deactivatedEmail) {
+        log.debug("Sending deactivation e-mail to User '{}' with locale : '{}'", locale);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("deactivatedEmail", deactivatedEmail);
+
+        sendTextFromTemplate(deactivatedEmail, model, "deactivatedUser", this.locale);
     }
 
     public boolean connectSmtpServer() {
