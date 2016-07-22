@@ -13,7 +13,7 @@
         "block":{
             "success": "You have blocked this user",
             "title": "Block",
-            "confirmation": "Are you sure you want to block this user ? You won't be able to see his posts anymore."
+            "confirmation": "Are you sure you want to block this user? You won't be able to see their posts anymore."
         } ,
         "unblock": {
             "success": "You have unblocked this user",
@@ -21,11 +21,11 @@
         },
         "reactivate": {
             "title": "Reactivate",
-            "confirmation": "Are you sure you want to reactivate this user ?"
+            "confirmation": "Are you sure you want to reactivate this user?"
         },
         "deactivate": {
             "title": "Deactivate",
-            "confirmation": "Are you sure you want to deactivate this user ? He won't be able to log in Tatami."
+            "confirmation": "Are you sure you want to deactivate this user? They won't be able to log in to Tatami."
         }
     }
 }

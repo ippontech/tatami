@@ -11,7 +11,7 @@
         vm.statuses = statuses;
         vm.currentUser = currentUser;
         vm.isCurrentUser = (vm.currentUser.username === vm.user.username);
-        vm.customHeight = (vm.currentUser.isAdmin) ? {'height': '170px'} : {'height': '70px'}; //Adapts the height of the popover depending on the role because a different number of buttons is displayed
+        vm.customHeight = (vm.currentUser.isAdmin) ? {'height': '120px'} : {'height': '70px'}; //Adapts the height of the popover depending on the role because a different number of buttons is displayed
 
         vm.followUser = followUser;
         vm.getNewStatuses = getNewStatuses;
@@ -35,17 +35,35 @@
         }
 
         function toggleActivateUser() {
-            console.log("toggleActivateUser");
-            UserService.deactivate({ username : vm.user.username }, {activate: true},
-                function() {
-                    console.log(vm.user.username);
-                    vm.user.activated = !vm.user.activated;
+            var confirmPopup;
+            if (vm.user.activated) {
+                confirmPopup = $ionicPopup.confirm({
+                    title: $translate.instant('user.deactivate.title'),
+                    template: '<span translate="user.deactivate.confirmation"></span>'
                 });
+            } else {
+                confirmPopup = $ionicPopup.confirm({
+                    title: $translate.instant('user.reactivate.title'),
+                    template: '<span translate="user.reactivate.confirmation"></span>'
+                });
+            }
+
+            confirmPopup.then(checkDelete);
+
+            checkDelete.$inject = ['decision'];
+            function checkDelete(decision) {
+                if(decision) {
+                    UserService.deactivate({ username : vm.user.username }, {activate: true},
+                        function() {
+                            vm.user.activated = !vm.user.activated;
+                        });
+                }
+            }
         }
 
         function blockUser() {
             var confirmPopup = $ionicPopup.confirm({
-                title: 'Block User',
+                title: $translate.instant('user.block.title'),
                 template: '<span translate="user.block.confirmation"></span>'
             });
 
