@@ -22,16 +22,12 @@
             $ionicHistory.clearCache();
             $ionicHistory.clearHistory();
             var newEndpoint = TatamiEndpoint.getEndpoint();
-            console.log(vm.lastEndpoint);
-            console.log(newEndpoint);
             if (vm.lastEndpoint.url !== newEndpoint.url) {
-                console.log("mismatch!");
                 vm.lastEndpoint.url = newEndpoint.url;
                 $http({
                     url: PathService.buildPath('/tatami/rest/client/id'),
                     method: 'GET'
                 }).then(function(data) {
-                    console.log(data);
                     if (data && data.data && data.data.stringList) {
                         // Old tatami return the clientId in the stringList property
                         vm.clientId = data.data.stringList[0];
