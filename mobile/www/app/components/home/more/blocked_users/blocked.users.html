@@ -1,5 +1,6 @@
 <ion-view view-title="{{ 'more.blockedusers.manage' | translate }}">
     <ion-content>
+        <ion-refresher on-refresh="vm.getBlockedUsersForUser()"></ion-refresher>
         <ion-list ng-init="vm.getBlockedUsersForUser()">
             <div ng-if="vm.hasBlockedUsers()" ng-repeat="blockeduser in vm.blockedUsers">
                 <tatami-user user="blockeduser"></tatami-user>

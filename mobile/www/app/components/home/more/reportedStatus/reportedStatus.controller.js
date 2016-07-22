@@ -7,8 +7,8 @@
     angular.module('tatami')
         .controller('ReportedStatusController', reportedStatusController);
 
-    reportedStatusController.$inject = ['$state', 'currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$translate'];
-    function reportedStatusController($state, currentUser, ReportService, $ionicPopup, ionicToast, $translate) {
+    reportedStatusController.$inject = ['$state', '$scope', 'currentUser', 'ReportService', '$ionicPopup', 'ionicToast', '$translate'];
+    function reportedStatusController($state, $scope, currentUser, ReportService, $ionicPopup, ionicToast, $translate) {
         var vm = this;
 
         vm.reportedStatuses = [];
@@ -39,6 +39,7 @@
                     vm.reportedStatuses = response;
                 }
             );
+            $scope.$broadcast('scroll.refreshComplete');
         }
 
         function deleteStatus(statusId){
@@ -104,3 +105,5 @@
         }
     }
 })();
+
+

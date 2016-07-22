@@ -4,8 +4,8 @@
     angular.module('tatami')
         .controller('BlockedUsersController', blockedUsersController);
 
-    blockedUsersController.$inject = ['currentUser', 'BlockService'];
-    function blockedUsersController(currentUser, BlockService) {
+    blockedUsersController.$inject = ['$scope', 'currentUser', 'BlockService'];
+    function blockedUsersController($scope, currentUser, BlockService) {
         var vm = this;
         vm.currentUser = currentUser;
         vm.blockedUsers = [];
@@ -27,6 +27,7 @@
                     vm.blockedUsers = response;
                 }
             );
+            $scope.$broadcast('scroll.refreshComplete');
         }
 
         function  hasBlockedUsers() {

@@ -78,7 +78,12 @@
                     });
                 } else {
                     $translate('status.favorite.remove').then(function(msg){
-                        ionicToast.show(msg, 'bottom', false, 2000);
+                        if (ionic.Platform.isIOS()){
+                            ionicToast.show(msg, 'top', false, 2000);
+                        }
+                        else{
+                            ionicToast.show(msg, 'bottom', false, 2000);
+                        }
                     });
                 }
             });
