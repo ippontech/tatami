@@ -14,12 +14,6 @@
         vm.getBlockedUsersForUser = getBlockedUsersForUser;
         vm.hasBlockedUsers = hasBlockedUsers;
 
-        function updateUser() {
-            BlockService.updateBlockedUser(
-                {username: vm.status.username}
-            );
-        }
-
         function getBlockedUsersForUser() {
             BlockService.getBlockedUsersForUser(
                 {username: vm.currentUser.username},
