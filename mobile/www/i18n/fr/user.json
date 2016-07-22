@@ -13,6 +13,14 @@
         "unblock": {
             "success": "Vous avez débloqué cet utilisateur.",
             "title": "Débloquer"
+        },
+        "reactivate": {
+            "title": "Réactiver",
+            "confirmation": "Êtes-vous sûr de vouloir réactiver cet utilisateur ?"
+        },
+        "deactivate": {
+            "title": "Désactiver",
+            "confirmation": "Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il ne pourra plus se connecter à Tatami."
         }
     }
 }

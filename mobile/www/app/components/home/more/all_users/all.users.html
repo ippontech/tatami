@@ -1,0 +1,10 @@
+<ion-view view-title="{{ 'more.allusers' | translate }}">
+    <ion-content>
+        <ion-refresher on-refresh="vm.getAllUsers()"></ion-refresher>
+        <ion-list ng-init="vm.getAllUsers()">
+            <div ng-repeat="user in vm.users">
+                <tatami-user user="user" current-user="vm.currentUser"></tatami-user>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

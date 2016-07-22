@@ -17,7 +17,7 @@
         vm.goToCompanyTimeline = goToCompanyTimeline;
         vm.goToSettings = goToSettings;
         vm.goToBlockedUsers = goToBlockedUsers;
-
+        vm.goToAllUsers = goToAllUsers;
         vm.goToReportedStatus = goToReportedStatus;
 
         function logout() {
@@ -39,6 +39,10 @@
 
         function goToReportedStatus(){
             $state.go('reportedStatus')
+        }
+
+        function goToAllUsers() {
+            $state.go('allusers')
         }
 
     }

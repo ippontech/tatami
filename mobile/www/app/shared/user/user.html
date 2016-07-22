@@ -5,18 +5,21 @@
         <span class="inline subheading">@{{ vm.user.username }}</span>
         <i class="icon ion-chevron-right icon-accessory"></i>
     </div>
-    <span ng-if="vm.$state.includes('follow')">
-        <ion-option-button class="button-positive"
-                           ng-click="vm.followUser(user)">
-            {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
-        </ion-option-button>
-    </span>
-    <span ng-if="vm.$state.includes('blockedusers')">
-        <ion-option-button class="button-positive"
-                           ng-click="vm.updateBlockUser()">
-            {{ (vm.user.blocked ? 'user.unblock.title' : 'user.block.title') | translate }}
-        </ion-option-button>
-    </span>
+    <ion-option-button class="button-positive"
+                       ng-show="vm.$state.includes('follow') || vm.$state.includes('allusers')"
+                       ng-click="vm.followUser(user)">
+                {{ (vm.user.friend ? 'user.unfollow' : 'user.follow') | translate }}
+    </ion-option-button>
+    <ion-option-button class="button-positive"
+                       ng-show="vm.$state.includes('blockedusers')"
+                       ng-click="vm.updateBlockUser()">
+                {{ (vm.user.blocked ? 'user.unblock.title' : 'user.block.title') | translate }}
+    </ion-option-button>
+    <ion-option-button class="button-assertive"
+                           ng-show="vm.$state.includes('allusers') && vm.currentUser.isAdmin"
+                           ng-click="vm.toggleActivateUser()">
+        {{ (vm.user.activated ? 'user.deactivate.title' : 'user.reactivate.title') | translate }}
+    </ion-option-button>
     <!--The ion-option-buttons are included in <span></span> because of an ionic bug : if the ion-options button contain an -->
     <!--ng-if directive and an ng-click directive, then ng-click action from both the ion-item and the ion-option-button will be triggered.-->
 </ion-item>

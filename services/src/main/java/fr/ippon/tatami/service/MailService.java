@@ -237,8 +237,7 @@ public class MailService {
 
         User currentUser = authenticationService.getCurrentUser();
         String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-
-        String deactivatedEmail = deactivatedUsername + "@" + domain;
+        String deactivatedEmail = DomainUtil.getLoginFromUsernameAndDomain(deactivatedUsername, domain);
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("deactivatedEmail", deactivatedEmail);

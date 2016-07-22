@@ -13,6 +13,14 @@
         "unblock": {
             "success": "You have unblocked this user",
             "title": "Unblock"
+        },
+        "reactivate": {
+            "title": "Reactivate",
+            "confirmation": "Are you sure you want to reactivate this user ?"
+        },
+        "deactivate": {
+            "title": "Deactivate",
+            "confirmation": "Are you sure you want to deactivate this user ? He won't be able to log in Tatami."
         }
     }
 }
