@@ -5,8 +5,10 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.Status;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.dto.StatusDTO;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class MailService {
 
     @Inject
     private MessageSource mailMessageSource;
+
+    @Inject
+    private AuthenticationService authenticationService;
 
     private String host;
 
@@ -227,8 +232,13 @@ public class MailService {
     }
 
     @Async
-    public void sendDeactivatedEmail(String deactivatedEmail) {
+    public void sendDeactivatedEmail(String deactivatedUsername) {
         log.debug("Sending deactivation e-mail to User '{}' with locale : '{}'", locale);
+
+        User currentUser = authenticationService.getCurrentUser();
+        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
+
+        String deactivatedEmail = deactivatedUsername + "@" + domain;
 
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("deactivatedEmail", deactivatedEmail);
