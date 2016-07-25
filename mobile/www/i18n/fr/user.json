@@ -1,7 +1,12 @@
 {
     "user": {
         "profile": {
-            "title": "Profil"
+            "title": "Profil",
+            "options": {
+                "block": "Bloquer cet utilisateur",
+                "deactivate": "Désactiver cet utilisateur",
+                "reactivate": "Réactiver cet utilisateur"
+            }
         },
         "follow": "S'abonner",
         "unfollow": "Se désabonner",
