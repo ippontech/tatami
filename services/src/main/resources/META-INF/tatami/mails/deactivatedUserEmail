@@ -1,5 +1,5 @@
 #parse("common")
-#msg("deactivatedUser.greeting") ${user.Username},
+#msg("deactivatedUser.greeting") ${username},
 
 #msg("deactivatedUser.text1")
 

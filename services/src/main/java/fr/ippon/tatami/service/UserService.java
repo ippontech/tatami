@@ -267,6 +267,7 @@ public class UserService {
             if ( user.getActivated() ) {
                 userRepository.desactivateUser(user);
                 favoritelineRepository.deleteFavoriteline(user.getLogin());
+                mailService.sendDeactivatedEmail(user.getLogin());
                 log.debug("User " + user.getLogin() + " has been successfully desactivated !");
             }
 

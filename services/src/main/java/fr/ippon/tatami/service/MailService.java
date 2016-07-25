@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.Status;
+import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthenticationService;
 import fr.ippon.tatami.security.TatamiUserDetailsService;
@@ -48,6 +49,12 @@ public class MailService {
 
     @Inject
     private AuthenticationService authenticationService;
+
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private DomainRepository domainRepository;
 
     private String host;
 
@@ -228,17 +235,12 @@ public class MailService {
     }
 
     @Async
-    public void sendDeactivatedEmail(String deactivatedUsername) {
-        log.debug("Sending deactivation e-mail to User '{}' with locale : '{}'", locale);
-
-        User currentUser = authenticationService.getCurrentUser();
-        String domain = DomainUtil.getDomainFromLogin(currentUser.getLogin());
-        String deactivatedEmail = DomainUtil.getLoginFromUsernameAndDomain(deactivatedUsername, domain);
-
+    public void sendDeactivatedEmail(String email) {
+        log.debug("Sending deactivation e-mail to User '{}' with locale : '{}'", email, locale);
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("deactivatedEmail", deactivatedEmail);
-
-        sendTextFromTemplate(deactivatedEmail, model, "deactivatedUser", this.locale);
+        model.put("deactivatedEmail", email);
+        model.put("username", DomainUtil.getUsernameFromLogin(email));
+        sendTextFromTemplate(email, model, "deactivatedUser", this.locale);
     }
 
     public boolean connectSmtpServer() {
