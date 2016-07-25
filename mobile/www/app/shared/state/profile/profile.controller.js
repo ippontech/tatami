@@ -72,20 +72,13 @@
             checkDelete.$inject = ['decision'];
             function checkDelete(decision) {
                 if(decision) {
-                    BlockService.updateBlockedUser( {username: vm.status.username }, function () {
-                            $translate('user.block.success').then(function(msg){
-                                if (ionic.Platform.isIOS()){
-                                    ionicToast.show(msg, 'top', false, 2000);
-                                }
-                                else{
-                                    ionicToast.show(msg, 'bottom', false, 2000);
-                                }
-                            });
+                    BlockService.updateBlockedUser( {username: vm.user.username }, function () {
+                            ToastService.display('user.block.success');
                         }
                     );
-                    // $scope.onDelete(vm.status);
                 }
             }
+
         }
 
         $ionicPopover.fromTemplateUrl('app/shared/state/profile/userOptionsMenu.html', {
