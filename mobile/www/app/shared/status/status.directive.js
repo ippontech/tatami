@@ -153,6 +153,7 @@
                         ToastService.display('user.block.success');
                         }
                     );
+                    $state.go($state.current, {}, {reload: true});
                     // $scope.onDelete(vm.status);
                 }
             }

@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', 'UserService', 'BlockService', '$ionicPopup'];
-    function controller($scope, $state, UserService, BlockService, $ionicPopup) {
+    controller.$inject = ['$scope', '$state', 'UserService', 'BlockService', '$ionicPopup', '$ionicListDelegate'];
+    function controller($scope, $state, UserService, BlockService, $ionicPopup, $ionicListDelegate) {
         var vm = this;
 
         vm.currentUser = $scope.currentUser;
@@ -37,6 +37,7 @@
                 function() {
                     vm.user.friend = !vm.user.friend;
                 });
+            $ionicListDelegate.closeOptionButtons();
         }
 
         function goToProfile(username) {
@@ -60,6 +61,7 @@
                     vm.user.blocked = !vm.user.blocked;
                 }
             );
+            $ionicListDelegate.closeOptionButtons();
         }
 
         function toggleActivateUser() {
@@ -86,6 +88,7 @@
                     );
                 }
             }
+            $ionicListDelegate.closeOptionButtons();
         }
     }
 })();
