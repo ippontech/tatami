@@ -23,6 +23,8 @@ import org.springframework.core.env.Environment;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Cassandra configuration file.
@@ -94,7 +96,6 @@ public class CassandraConfiguration {
             addColumnFamily(cluster, ColumnFamilyKeys.APPLE_DEVICE_CF, 0);
             addColumnFamily(cluster, ColumnFamilyKeys.BLOCK_USERS_CF, 0);
             addColumnFamily(cluster, ColumnFamilyKeys.STATUS_REPORT_CF, 0);
-            addColumnFamily(cluster, ColumnFamilyKeys.DELETED_STATUSES_CF, 0);
 
             addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_CF, 0);
             addColumnFamilySortedbyUUID(cluster, ColumnFamilyKeys.TIMELINE_SHARES_CF, 0);
@@ -118,6 +119,27 @@ public class CassandraConfiguration {
 
             //Tatami Bot CF
             addColumnFamily(cluster, ColumnFamilyKeys.TATAMIBOT_DUPLICATE_CF, 0);
+        } else {
+            /*
+            This case only concerns the creation of new CF that didn't exist in the previous version of Tatami.
+            As we cannot afford to drop the keyspace in production, this case is an update of the database that
+            should be executed only one time in production.
+             */
+            List<ColumnFamilyDefinition> lcf = keyspaceDef.getCfDefs();
+            List<String> lcfNames = new ArrayList<String>();
+            for(ColumnFamilyDefinition cfd : lcf){
+                lcfNames.add(cfd.getName());
+            }
+            // The new tables
+            if(!lcfNames.contains(ColumnFamilyKeys.BLOCK_USERS_CF)){
+                addColumnFamily(cluster, ColumnFamilyKeys.BLOCK_USERS_CF, 0);
+                log.debug("{} column family successfully created", ColumnFamilyKeys.BLOCK_USERS_CF);
+
+            }
+            if(!lcfNames.contains(ColumnFamilyKeys.STATUS_REPORT_CF)){
+                addColumnFamily(cluster, ColumnFamilyKeys.STATUS_REPORT_CF, 0);
+                log.debug("{} column family successfully created", ColumnFamilyKeys.STATUS_REPORT_CF);
+            }
         }
         return HFactory.createKeyspace(cassandraKeyspace, cluster, consistencyLevelPolicy);
     }
