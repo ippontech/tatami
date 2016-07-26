@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>a
+    <title th:text="#{email.deactivate.title}">JHipster Deactivate User</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="#{email.deactivate.greeting(${user.username})}">
+    Dear
+</p>
+<p th:text="#{email.deactivate.text1}">
+    Your account has been deactivated..
+</p>
+<p th:text="#{email.deactivate.text2}">
+    For more information, please contact your administrator.
+</p>
+<p>
+    <span th:text="#{email.deactivate.text3}">Regards, </span>
+    <br/>
+    <em th:text="#{email.signature}">JHipster.</em>
+</p>
+</body>
+</html>

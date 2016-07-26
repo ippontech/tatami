@@ -10,16 +10,14 @@ import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,6 +101,15 @@ public class StatusUpdateService {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private MailService mailService;
+
+    @Inject
+    private TimelineService timelineService;
+
+    @Inject
+    private ReportedStatusRepository reportedStatusRepository;
 
     public void postStatus(String content, boolean statusPrivate, Collection<String> attachmentIds, String geoLocalization) {
         createStatus(content, statusPrivate, null, "", "", "", attachmentIds, null, geoLocalization);
@@ -189,6 +196,49 @@ public class StatusUpdateService {
                             attachmentIds);
 
             discussionRepository.addReplyToDiscussion(status.getStatusId().toString(), replyStatus.getStatusId().toString());
+        }
+    }
+
+    public void reportedStatus(User reportingUser, String statusId){
+        log.debug("Reported Status: '{}'", statusId);
+        String domain = userService.getCurrentUser().get().getDomain();
+        reportedStatusRepository.reportStatus(domain, statusId, reportingUser.getEmail());
+        mailService.sendReportedStatusEmail(reportingUser, statusId);
+    }
+
+    private List<String> getAllReportedStatuses(String domain){
+        return reportedStatusRepository.findReportedStatuses(domain);
+    }
+
+    public Collection<StatusDTO> findReportedStatuses(){
+        List<String> reportedStatusId = getAllReportedStatuses(userService.getCurrentUser().get().getDomain());
+        return timelineService.buildStatusList(reportedStatusId);
+    }
+
+    public void deleteReportedStatus(String statusId){
+        //TODO: Need to check to see if user is admin
+        if(true){
+            log.debug("ADMIN deleting reported status '{}'", statusId);
+            User currentUser = userService.getCurrentUser().get();
+            reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
+            timelineService.removeStatus(statusId);
+        }
+        else{
+            log.warn ("Attempted to delete reported status '{}' but is not an admin", statusId);
+        }
+
+
+    }
+
+    public void approveReportedStatus(String statusId){
+        //TODO: Need to determine whether or not a user is an admin
+        if(true){
+            log.debug("Admin approves reported status '{}'", statusId);
+            User currentUser= userService.getCurrentUser().get();
+            reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
+        }
+        else{
+            log.warn("Attempted to approve status '{}' but is not an admin", statusId);
         }
     }
 
@@ -297,6 +347,7 @@ public class StatusUpdateService {
         return status;
     }
 
+
     private void manageGroups(Status status, Group group, Collection<String> followersForUser) {
         if (group != null) {
             grouplineRepository.addStatusToGroupline(group.getGroupId(), status.getStatusId().toString());
@@ -318,7 +369,6 @@ public class StatusUpdateService {
             }
         }
     }
-
 
     private void addToCompanyWall(Status status, Group group) {
         if (isPublicGroup(group)) {
@@ -418,4 +468,5 @@ public class StatusUpdateService {
         timelineRepository.addStatusToTimeline(email, status.getStatusId().toString());
         atmosphereService.notifyUser(email, status);
     }
+
 }

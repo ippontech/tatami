@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>a
+    <title th:text="#{email.reported.title}">JHipster password reset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="#{email.reported.greeting}">
+    Dear admin
+</p>
+<p th:text="#{email.reported.text1}">
+    For your JHipster account a password reset was requested, please click on the URL below to reset it:
+</p>
+<p>
+    <!--TODO: Need to find out what really needs to be here-->
+    <a th:href="@{|${statusUrl}/#/login/reset/finish?key=${user.resetKey}|}"
+       th:text="|${user.username}|">Reset Link</a>
+</p>
+<p>
+    <span th:text="#{email.reported.text2}">Regards, </span>
+    <br/>
+    <em th:text="#{email.signature}">JHipster.</em>
+</p>
+</body>
+</html>

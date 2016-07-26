@@ -11,6 +11,7 @@ import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
+import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -55,6 +56,9 @@ public class TimelineResource {
 
     @Inject
     private UserDetailsService userDetailsService;
+
+    @Inject
+    private UserService userService;
 
     /**
      * GET  /rest/statuses/details/{statusId} -> returns the details for a status, specified by the statusId parameter
@@ -217,4 +221,53 @@ public class TimelineResource {
         }
         return ResponseEntity.ok().body(status);
     }
+
+    /**
+     * POST /rest/statuses/report/{statusId} -> adds a reported status to the column family
+     */
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+        method = RequestMethod.POST)
+    @ResponseBody
+    public void reportStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to get status details Id : {}", statusId);
+        statusUpdateService.reportedStatus(userService.getCurrentUser().get(),statusId);
+    }
+
+    /**
+     * GET rest/statuses/report/reportedList -> gets the reported statuses
+     */
+    @RequestMapping (value = "rest/statuses/report/reportedList",
+        method = RequestMethod.GET,
+        produces = "application/json")
+    @ResponseBody
+        public Collection<StatusDTO> getReportedStatuses(){
+        log.debug("REST request to get all reported statuses");
+        Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
+        return reportedStatusList;
+    }
+
+    /**
+     * GET rest/statuses/report/{statusId} -> adds deleted reported status to second column family
+     */
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+        method = RequestMethod.PUT)
+    @ResponseBody
+    public void deleteReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to delete a status Id : {}", statusId);
+        statusUpdateService.deleteReportedStatus(statusId);
+    }
+
+    /**
+     * GET rest/statuses/report/{statusId} -> deletes approved status from the column family
+     */
+    @RequestMapping(value = "/rest/statuses/report/{statusId}",
+        method = RequestMethod.DELETE)
+    @ResponseBody
+    public void approveReportedStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to approve a status Id : {}", statusId);
+        statusUpdateService.approveReportedStatus(statusId);
+    }
+
+
+
 }
