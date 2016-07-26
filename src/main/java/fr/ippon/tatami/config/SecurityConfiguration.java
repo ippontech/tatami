@@ -77,7 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/tatami/register").permitAll()
             .antMatchers("/tatami/activate").permitAll()
             .antMatchers("/tatami/authenticate").permitAll()
-            .antMatchers("/tatami/authentication").permitAll()
+            .antMatchers("/tatami/rest/authentication").permitAll()
             .antMatchers("/tatami/account/reset_password/init").permitAll()
             .antMatchers("/tatami/account/reset_password/finish").permitAll()
             .antMatchers("/tatami/rest/client/id").permitAll()

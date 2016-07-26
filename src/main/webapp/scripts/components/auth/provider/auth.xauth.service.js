@@ -6,13 +6,13 @@ tatamiJHipsterApp
             login: function(credentials) {
                 var data = "j_username=" +  encodeURIComponent(credentials.username) + "&j_password="
                     + encodeURIComponent(credentials.password);
-                return $http.post('tatami/authentication', data, {
+                return $http.post('tatami/rest/authentication', data, {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         "Accept": "application/json"
                     }
                 }).success(function (response) {
-                    localStorageService.set('token', response);
+                    localStorageService.set('token', response.token);
                     return response;
                 });
             },

@@ -117,15 +117,15 @@ public class XAuthResource {
         return new JSONObject().put("token", getToken(authorizationCode));
     }
 
-    @RequestMapping(value = "/authentication",
+    @RequestMapping(value = "/rest/authentication",
         method = RequestMethod.POST)
     @Timed
-    public Token authorize(@RequestParam String j_username, @RequestParam String j_password) {
+    public JSONObject authorize(@RequestParam String j_username, @RequestParam String j_password) throws JSONException {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(j_username, j_password);
         Authentication authentication = this.authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails details = this.userDetailsService.loadUserByUsername(j_username);
-        return tokenProvider.createToken(details);
+        return new JSONObject().put("token", tokenProvider.createToken(details));
     }
 
     private Token getToken(String authorizationCode) {
