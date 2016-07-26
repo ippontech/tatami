@@ -220,10 +220,12 @@ public class UserService {
     }
 
     public Optional<User> getUserWithAuthoritiesByEmail(String email) {
-        return userRepository.findOneByEmail(email).map(u -> {
-            u.getAuthorities().size();
-            return u;
-        });
+        return userRepository.findOneByEmail(email);
+    }
+
+    public boolean getAdmin(String email) {
+        Optional<User> userOptional = getUserWithAuthoritiesByEmail(email);
+        return userOptional.isPresent() && userOptional.get().getAuthorities().contains(AuthoritiesConstants.ADMIN);
     }
 
 

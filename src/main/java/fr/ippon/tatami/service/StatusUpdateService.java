@@ -216,25 +216,21 @@ public class StatusUpdateService {
     }
 
     public void deleteReportedStatus(String statusId){
-        //TODO: Need to check to see if user is admin
-        if(true){
+        User currentUser = userService.getCurrentUser().get();
+        if(userService.getAdmin(currentUser.getEmail())){
             log.debug("ADMIN deleting reported status '{}'", statusId);
-            User currentUser = userService.getCurrentUser().get();
             reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
             timelineService.removeStatus(statusId);
         }
         else{
             log.warn ("Attempted to delete reported status '{}' but is not an admin", statusId);
         }
-
-
     }
 
     public void approveReportedStatus(String statusId){
-        //TODO: Need to determine whether or not a user is an admin
-        if(true){
+        User currentUser= userService.getCurrentUser().get();
+        if(userService.getAdmin(currentUser.getEmail())){
             log.debug("Admin approves reported status '{}'", statusId);
-            User currentUser= userService.getCurrentUser().get();
             reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
         }
         else{

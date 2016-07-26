@@ -79,18 +79,5 @@ public class ReportedStatusRepository {
             .collect(Collectors.toList());
     }
 
-
-    //TODO: Is this used at all???
-    public String findUserHavingReported(String domain, String statusId){
-        String user = "";
-        return domain;
-    }
-
-    //TODO: Is this used at all???
-    public boolean hasBeenReportedByUser(String domain, String reportedStatusId, String login){
-        boolean var = true;
-        return var;
-    }
-
 }
 
