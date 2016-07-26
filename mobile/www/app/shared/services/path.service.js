@@ -15,7 +15,7 @@
 
         getAvatar.$inject = ['user'];
         function getAvatar(user) {
-            return TatamiEndpoint.getEndpoint().url + (user.avatar === '' ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg');
+            return TatamiEndpoint.getEndpoint().url + (user.avatar && user.avatar !== '' ? '/tatami/avatar/' + user.avatar + '/photo.jpg' : '/assets/img/default_image_profile.png');
         }
 
         buildPath.$inject = ['resourcePath'];
