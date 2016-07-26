@@ -1,10 +1,10 @@
 <ion-view view-title="{{ 'more.allusers' | translate }}">
-    <ion-content>
-        <ion-refresher on-refresh="vm.getAllUsers()"></ion-refresher>
-        <ion-list ng-init="vm.getAllUsers()">
+    <ion-content class="tatami-header tatami-footer">
+        <ion-list ng-init="vm.refreshUsers()">
             <div ng-repeat="user in vm.users">
                 <tatami-user user="user" current-user="vm.currentUser"></tatami-user>
             </div>
         </ion-list>
+        <ion-infinite-scroll ng-if="!vm.isFinished" on-infinite="vm.getNextUsers()"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

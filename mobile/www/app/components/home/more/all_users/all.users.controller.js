@@ -4,19 +4,23 @@
     angular.module('tatami')
         .controller('AllUsersController', allUsersController);
 
-    allUsersController.$inject = ['$scope', 'currentUser', 'UserService'];
-    function allUsersController($scope, currentUser, UserService) {
+    allUsersController.$inject = ['currentUser', 'TatamiUserRefresherService'];
+    function allUsersController(currentUser, TatamiUserRefresherService) {
         var vm = this;
         vm.currentUser = currentUser;
         vm.users = [];
+        vm.isFinished = false;
 
-        vm.getAllUsers = getAllUsers;
-        
-        function getAllUsers() {
-            UserService.query(null, function (users) {
-                vm.users = users;
-            });
-            $scope.$broadcast('scroll.refreshComplete');
+        vm.getNextUsers = getNextUsers;
+
+        function getNextUsers() {
+            return TatamiUserRefresherService.getNextUsers(vm.users.length).then(addUsers);
+        }
+
+        addUsers.$inject = ['users'];
+        function addUsers(nextUsers) {
+            vm.users.push.apply(vm.users, nextUsers);
+            vm.isFinished = nextUsers.length === 0;
         }
     }
 })();

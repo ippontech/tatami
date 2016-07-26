@@ -9,7 +9,9 @@
         var service = {
             refreshSuggested: refreshSuggested,
             refreshFollowers: refreshFollowers,
-            refreshFollowing: refreshFollowing
+            refreshFollowing: refreshFollowing,
+            getNextUsers: getNextUsers,
+            updateInfiniteUsers: updateInfiniteUsers
         };
 
         return service;
@@ -34,6 +36,18 @@
 
             return users;
 
+        }
+
+        getNextUsers.$inject = ['usersCount'];
+        function getNextUsers(usersCount) {
+            return UserService.query({ pagination: usersCount }).$promise.then(updateInfiniteUsers);
+        }
+
+        updateInfiniteUsers.$inject = ['users'];
+        function updateInfiniteUsers(users) {
+            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+
+            return users;
         }
     }
 })();
