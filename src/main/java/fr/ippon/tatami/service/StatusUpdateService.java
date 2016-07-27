@@ -199,41 +199,40 @@ public class StatusUpdateService {
         }
     }
 
-    public void reportedStatus(User reportingUser, String statusId){
+    public void reportedStatus(User reportingUser, String statusId) {
         log.debug("Reported Status: '{}'", statusId);
-        String domain = userService.getCurrentUser().get().getDomain();
+        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserUsername());
         reportedStatusRepository.reportStatus(domain, statusId, reportingUser.getEmail());
         mailService.sendReportedStatusEmail(reportingUser, statusId);
     }
 
-    private List<String> getAllReportedStatuses(String domain){
+    private List<String> getAllReportedStatuses(String domain) {
         return reportedStatusRepository.findReportedStatuses(domain);
     }
 
-    public Collection<StatusDTO> findReportedStatuses(){
-        List<String> reportedStatusId = getAllReportedStatuses(userService.getCurrentUser().get().getDomain());
+    public Collection<StatusDTO> findReportedStatuses() {
+        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserUsername());
+        List<String> reportedStatusId = getAllReportedStatuses(domain);
         return timelineService.buildStatusList(reportedStatusId);
     }
 
-    public void deleteReportedStatus(String statusId){
-        User currentUser = userService.getCurrentUser().get();
-        if(userService.getAdmin(currentUser.getEmail())){
+    public void deleteReportedStatus(String statusId) {
+        String currentEmail = SecurityUtils.getCurrentUserUsername();
+        if (userService.isAdmin(currentEmail)) {
             log.debug("ADMIN deleting reported status '{}'", statusId);
-            reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
+            reportedStatusRepository.unreportStatus(DomainUtil.getDomainFromEmail(currentEmail), statusId);
             timelineService.removeStatus(statusId);
-        }
-        else{
-            log.warn ("Attempted to delete reported status '{}' but is not an admin", statusId);
+        } else {
+            log.warn("Attempted to delete reported status '{}' but is not an admin", statusId);
         }
     }
 
-    public void approveReportedStatus(String statusId){
-        User currentUser= userService.getCurrentUser().get();
-        if(userService.getAdmin(currentUser.getEmail())){
+    public void approveReportedStatus(String statusId) {
+        String currentEmail = SecurityUtils.getCurrentUserUsername();
+        if (userService.isAdmin(currentEmail)) {
             log.debug("Admin approves reported status '{}'", statusId);
-            reportedStatusRepository.unreportStatus(currentUser.getDomain(), statusId);
-        }
-        else{
+            reportedStatusRepository.unreportStatus(DomainUtil.getDomainFromEmail(currentEmail), statusId);
+        } else {
             log.warn("Attempted to approve status '{}' but is not an admin", statusId);
         }
     }

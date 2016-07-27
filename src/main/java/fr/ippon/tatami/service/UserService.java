@@ -223,7 +223,7 @@ public class UserService {
         return userRepository.findOneByEmail(email);
     }
 
-    public boolean getAdmin(String email) {
+    public boolean isAdmin(String email) {
         Optional<User> userOptional = getUserWithAuthoritiesByEmail(email);
         return userOptional.isPresent() && userOptional.get().getAuthorities().contains(AuthoritiesConstants.ADMIN);
     }

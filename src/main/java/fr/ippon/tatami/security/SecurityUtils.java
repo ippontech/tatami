@@ -19,7 +19,7 @@ public final class SecurityUtils {
     }
 
     /**
-     * Get the username of the current user.
+     * Get the username (email) of the current user.
      */
     public static String getCurrentUserUsername() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
