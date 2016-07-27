@@ -4,7 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
-import fr.ippon.tatami.security.UserDetailsService;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.TagMembershipService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.TrendService;
@@ -48,9 +48,6 @@ public class TagResource {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
     /**
      * GET  /rest/tags/{tagName}/tag_timeline -> get the latest status for a given tag
      */
@@ -84,7 +81,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public Collection<TagDTO> getPopularTags() {
-        String userEmail = userDetailsService.getUserEmail();
+        String userEmail = SecurityUtils.getCurrentUserEmail();
         String domain = DomainUtil.getDomainFromEmail(userEmail);
         List<TrendDTO> trends = trendService.getCurrentTrends(domain);
         Collection<String> followedTags = userTagRepository.findTags(userEmail);
@@ -105,7 +102,7 @@ public class TagResource {
                                       @RequestParam(required = false, value = "user") String email,
                                       @RequestParam(required = false, value = "search") String search) {
         Collection<TagDTO> tags = new ArrayList<>();
-        String userEmail = userDetailsService.getUserEmail();
+        String userEmail = SecurityUtils.getCurrentUserEmail();
         String domain = DomainUtil.getDomainFromEmail(userEmail);
         Collection<String> followedTags = userTagRepository.findTags(userEmail);
 
@@ -171,7 +168,7 @@ public class TagResource {
     @ResponseBody
     @Timed
     public TagDTO getTag(@PathVariable("tag") String tagName) {
-        Collection<String> followedTags = userTagRepository.findTags(userDetailsService.getUserEmail());
+        Collection<String> followedTags = userTagRepository.findTags(SecurityUtils.getCurrentUserEmail());
         TagDTO tag = new TagDTO();
         tag.setName(tagName);
         tag.setFollowed(followedTags.contains(tagName));

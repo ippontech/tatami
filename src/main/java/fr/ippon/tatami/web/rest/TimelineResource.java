@@ -6,8 +6,6 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.exception.NoUserFoundException;
-import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
@@ -50,12 +48,6 @@ public class TimelineResource {
 
     @Inject
     private GroupService groupService;
-
-    @Inject
-    private UserRepository userRepository;
-
-    @Inject
-    private UserDetailsService userDetailsService;
 
     @Inject
     private UserService userService;
@@ -114,9 +106,9 @@ public class TimelineResource {
         produces = "application/json")
     @ResponseBody
     public ResponseEntity<Collection<StatusDTO>> listStatusForUser(@PathVariable("email") String email,
-                                                   @RequestParam(required = false) Integer count,
-                                                   @RequestParam(required = false) String start,
-                                                   @RequestParam(required = false) String finish) {
+                                                                   @RequestParam(required = false) Integer count,
+                                                                   @RequestParam(required = false) String start,
+                                                                   @RequestParam(required = false) String finish) {
         /*
         In cases of posts where users are mentioned, we pass in a username instead of an email address when
         a user clicks the link. In these cases, we should append the current user's domain to the username
@@ -125,7 +117,7 @@ public class TimelineResource {
         See marked.js
         */
         if (!DomainUtil.isValidEmailAddress(email)) {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             email += "@" + currentUser.getDomain();
         }
 
@@ -202,7 +194,7 @@ public class TimelineResource {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds, status.getGeoLocalization());
         } else {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             Collection<Group> groups = groupService.getGroupsForUser(currentUser);
             UUID statusGroupId = UUID.fromString(status.getGroupId());
             Optional<Group> groupOptional = groups.stream().filter(group -> group.getGroupId().equals(statusGroupId)).findFirst();
@@ -230,17 +222,17 @@ public class TimelineResource {
     @ResponseBody
     public void reportStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to get status details Id : {}", statusId);
-        statusUpdateService.reportedStatus(userService.getCurrentUser().get(),statusId);
+        statusUpdateService.reportedStatus(userService.getCurrentUser().get(), statusId);
     }
 
     /**
      * GET rest/statuses/report/reportedList -> gets the reported statuses
      */
-    @RequestMapping (value = "rest/statuses/report/reportedList",
+    @RequestMapping(value = "rest/statuses/report/reportedList",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
-        public Collection<StatusDTO> getReportedStatuses(){
+    public Collection<StatusDTO> getReportedStatuses() {
         log.debug("REST request to get all reported statuses");
         Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
         return reportedStatusList;
@@ -267,7 +259,6 @@ public class TimelineResource {
         log.debug("REST request to approve a status Id : {}", statusId);
         statusUpdateService.approveReportedStatus(statusId);
     }
-
 
 
 }

@@ -4,9 +4,8 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
-import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,7 +17,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
-import fr.ippon.tatami.repository.search.GroupSearchRepository;
 
 /**
  * Service bean for managing groups.
@@ -41,13 +39,7 @@ public class GroupService {
     private UserGroupRepository userGroupRepository;
 
     @Inject
-    private GroupSearchRepository groupSearchRepository;
-
-    @Inject
     private UserRepository userRepository;
-
-    @Inject
-    private UserDetailsService userDetailsService;
 
     @Inject
     private SearchService searchService;
@@ -55,15 +47,18 @@ public class GroupService {
     @Inject
     private FriendRepository friendRepository;
 
+    @Inject
+    private UserService userService;
+
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
         log.debug("Creating group : {}", name);
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
+        String email = SecurityUtils.getCurrentUserEmail();
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
-        groupMembersRepository.addAdmin(groupId, currentUser.getEmail());
+        groupMembersRepository.addAdmin(groupId, email);
         groupCounterRepository.incrementGroupCounter(domain, groupId);
-        userGroupRepository.addGroupAsAdmin(currentUser.getEmail(), groupId);
+        userGroupRepository.addGroupAsAdmin(email, groupId);
         Group group = getGroupById(domain, groupId);
         searchService.addGroup(group);
     }
@@ -72,19 +67,19 @@ public class GroupService {
     public void editGroup(Group group) {
         log.debug("Editing group : {}", group.getGroupId());
         groupRepository.editGroupDetails(group.getGroupId(),
-                group.getName(),
-                group.getDescription(),
-                group.isArchivedGroup());
+            group.getName(),
+            group.getDescription(),
+            group.isArchivedGroup());
         searchService.removeGroup(group);
         searchService.addGroup(group);
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         Collection<String> friendUsernames = friendRepository.findFriendsForUser(email.split("@")[0]);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
-        email += "@"+currentUser.getDomain();
+        email += "@" + currentUser.getDomain();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByEmail(member.getKey()).get();
@@ -104,8 +99,6 @@ public class GroupService {
         }
         return userGroupDTOs;
     }
-
-
 
 
     public UserGroupDTO getMembersForGroup(UUID groupId, User userWanted) {
@@ -160,7 +153,7 @@ public class GroupService {
     }
 
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         return getGroupsWhereUserIsAdmin(currentUser);
     }
 
@@ -212,7 +205,7 @@ public class GroupService {
 
 
     public Collection<Group> buildGroupList(Collection<Group> groups) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         return buildGroupList(currentUser, groups);
     }
 
@@ -226,7 +219,7 @@ public class GroupService {
     }
 
     public Group buildGroup(Group group) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         return buildGroup(currentUser, group);
     }
 
@@ -253,22 +246,19 @@ public class GroupService {
     }
 
     public Group buildGroup(User user, Group group) {
-        if(group != null ) {
+        if (group != null) {
             if (isGroupManagedByCurrentUser(group)) {
                 group.setAdministrator(true);
                 group.setMember(true);
-            }
-            else if(group.isPublicGroup()) {
+            } else if (group.isPublicGroup()) {
                 Group result = getGroupFromUser(user, group.getGroupId());
                 group.setAdministrator(false); // If we made it here, the user is not an admin
                 if (result != null) {
                     group.setMember(true); // We found a group, so the user is a member
-                }
-                else {
+                } else {
                     group.setMember(false); // Since no group was found, the user is not a member
                 }
-            }
-            else {
+            } else {
                 Group result = getGroupFromUser(user, group.getGroupId());
                 group.setAdministrator(false); // If we make it here, the user is not an admin
                 if (result == null) {
@@ -280,8 +270,8 @@ public class GroupService {
                 }
             }
             long counter = 0;
-            for ( UserGroupDTO userGroup :  getMembersForGroup(group.getGroupId(),SecurityUtils.getCurrentUserEmail())) {
-                if(userGroup.isActivated()) {
+            for (UserGroupDTO userGroup : getMembersForGroup(group.getGroupId(), SecurityUtils.getCurrentUserEmail())) {
+                if (userGroup.isActivated()) {
                     counter++;
                 }
             }
@@ -299,7 +289,7 @@ public class GroupService {
     }
 
     public Group buildGroupIds(UUID groupId) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         return buildGroupIds(currentUser, groupId);
     }
 

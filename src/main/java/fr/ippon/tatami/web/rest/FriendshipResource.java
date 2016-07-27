@@ -1,21 +1,16 @@
-
 package fr.ippon.tatami.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
-import fr.ippon.tatami.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.UserDetailsService;
-import fr.ippon.tatami.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +36,6 @@ public class FriendshipResource {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
-
     @RequestMapping(value = "/rest/users/{email}/friends",
         method = RequestMethod.GET,
         produces = "application/json")
@@ -58,8 +49,8 @@ public class FriendshipResource {
 
                 See marked.js
         */
-        if (!DomainUtil.isValidEmailAddress(email)){
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        if (!DomainUtil.isValidEmailAddress(email)) {
+            User currentUser = userService.getCurrentUser().get();
             email += "@" + currentUser.getDomain();
         }
         User user = userRepository.findOneByEmail(email).get();
@@ -85,8 +76,8 @@ public class FriendshipResource {
 
                 See marked.js
         */
-        if (!DomainUtil.isValidEmailAddress(email)){
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        if (!DomainUtil.isValidEmailAddress(email)) {
+            User currentUser = userService.getCurrentUser().get();
             email += "@" + currentUser.getDomain();
         }
         User user = userRepository.findOneByEmail(email).get();
@@ -108,13 +99,12 @@ public class FriendshipResource {
     @Timed
     @ResponseBody
     public UserDTO updateFriend(@PathVariable("email") String email) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
 
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email.split("@")[0]+"@"+currentUser.getDomain()).get());
-        if(!toReturn.isFriend()) {
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email.split("@")[0] + "@" + currentUser.getDomain()).get());
+        if (!toReturn.isFriend()) {
             friendshipService.followUser(toReturn.getEmail());
-        }
-        else {
+        } else {
             friendshipService.unfollowUser(toReturn.getEmail());
         }
         return toReturn;

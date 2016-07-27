@@ -3,35 +3,27 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
+import fr.ippon.tatami.repository.GroupRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
-import fr.ippon.tatami.service.util.DomainUtil;
-import fr.ippon.tatami.repository.search.GroupSearchRepository;
-import fr.ippon.tatami.repository.GroupRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
-import java.util.*;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 
 /**
  * REST controller for managing groups
@@ -52,9 +44,6 @@ public class GroupResource {
     private GroupRepository groupRepository;
 
     @Inject
-    private GroupSearchRepository groupSearchRepository;
-
-    @Inject
     private UserService userService;
 
     @Inject
@@ -63,20 +52,16 @@ public class GroupResource {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
-
     /**
      * Get groups of the current user.
      */
     @RequestMapping(value = "/rest/groups",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<Group> getGroups() {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         return groupService.getGroupsForUser(currentUser);
     }
 
@@ -84,12 +69,12 @@ public class GroupResource {
      * GET  /group/:groupId -> returns the group with the requested id
      */
     @RequestMapping(value = "/rest/groups/{groupId}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Group getGroup(@PathVariable("groupId") String groupId) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
         Group publicGroup = groupService.getGroupById(domain, UUID.fromString(groupId));
         if (publicGroup != null && publicGroup.isPublicGroup()) {
@@ -124,8 +109,8 @@ public class GroupResource {
      * PUT  /group/:groupId -> update the group with the requested id
      */
     @RequestMapping(value = "/rest/groups/{groupId}",
-            method = RequestMethod.PUT,
-            produces = "application/json")
+        method = RequestMethod.PUT,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Group updateGroup(@PathVariable("groupId") String groupId, @RequestBody Group groupEdit, HttpServletResponse response) {
@@ -136,7 +121,7 @@ public class GroupResource {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return null;
             } else {
-                String domain = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getDomain();
+                String domain = userService.getCurrentUser().get().getDomain();
                 group.setDomain(domain);
                 group.setName(groupEdit.getName());
                 group.setDescription(groupEdit.getDescription());
@@ -151,13 +136,9 @@ public class GroupResource {
     }
 
 
-
-
-
-
     @RequestMapping(value = "/rest/groups/{groupId}/timeline",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listStatusForGroup(@PathVariable(value = "groupId") String groupId,
@@ -184,8 +165,8 @@ public class GroupResource {
      * GET  /groupmemberships/lookup -> return extended data about the user's groups
      */
     @RequestMapping(value = "/rest/groupmemberships/lookup",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String email) {
@@ -198,13 +179,12 @@ public class GroupResource {
     }
 
 
-
     /**
      * Get groups where the current user is admin.
      */
     @RequestMapping(value = "/rest/admin/groups",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<Group> getAdminGroups() {
@@ -215,8 +195,8 @@ public class GroupResource {
      * POST create new group.
      */
     @RequestMapping(value = "/rest/groups",
-            method = RequestMethod.POST,
-            produces = "application/json")
+        method = RequestMethod.POST,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Group createGroup(HttpServletResponse response, @RequestBody Group group) {
@@ -232,12 +212,12 @@ public class GroupResource {
      * GET  /groupmemberships/suggestions -> suggest groups to join
      */
     @RequestMapping(value = "/rest/groupmemberships/suggestions",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<Group> suggestions() {
-        return groupService.buildGroupList(suggestionService.suggestGroups(userDetailsService.getUserEmail()));
+        return groupService.buildGroupList(suggestionService.suggestGroups(SecurityUtils.getCurrentUserEmail()));
     }
 
 
@@ -245,13 +225,13 @@ public class GroupResource {
      * GET  /groups/{groupId}/members/ -> members of the group
      */
     @RequestMapping(value = "/rest/groups/{groupId}/members",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
@@ -270,13 +250,13 @@ public class GroupResource {
      * GET  /groups/{groupId}/members/{userUsername} -> get a member to group status
      */
     @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
@@ -310,15 +290,15 @@ public class GroupResource {
      * PUT  /groups/{groupId}/members/{userUsername} -> add a member to group
      */
     @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
-            method = RequestMethod.PUT,
-            produces = "application/json")
+        method = RequestMethod.PUT,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToAdd = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
+        User userToAdd = userRepository.findOneByEmail(email + "@" + currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 
@@ -344,15 +324,15 @@ public class GroupResource {
      * DELETE  /groups/{groupId}/members/{userUsername} -> remove a member to group
      */
     @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
-            method = RequestMethod.DELETE,
-            produces = "application/json")
+        method = RequestMethod.DELETE,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToremove = userRepository.findOneByEmail(email+"@"+currentUser.getDomain()).get();
+        User userToremove = userRepository.findOneByEmail(email + "@" + currentUser.getDomain()).get();
 
         UserGroupDTO dto = null;
 

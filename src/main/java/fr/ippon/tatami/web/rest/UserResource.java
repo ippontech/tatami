@@ -4,10 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.DomainRepository;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.SearchService;
 import fr.ippon.tatami.service.SuggestionService;
@@ -15,6 +13,7 @@ import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
+import org.elasticsearch.common.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
- *
+ * <p>
  * <p>This class accesses the User entity, and needs to fetch its collection of authorities.</p>
  * <p>
  * For a normal use-case, it would be better to have an eager relationship between User and Authority,
@@ -70,9 +69,6 @@ public class UserResource {
     private DomainRepository domainRepository;
 
     @Inject
-    private UserSearchRepository userSearchRepository;
-
-    @Inject
     private SearchService searchService;
 
     @Inject
@@ -83,9 +79,6 @@ public class UserResource {
 
     @Inject
     private UserService userService;
-
-    @Inject
-    private UserDetailsService userDetailsService;
 
     /**
      * POST  /users -> Creates a new user.
@@ -112,22 +105,22 @@ public class UserResource {
                 .body(null);
         } else {
             String domain = DomainUtil.getDomainFromEmail(userDTO.getEmail());
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-            if(!domain.equals(currentUser.getDomain())){
+            User currentUser = userService.getCurrentUser().get();
+            if (!domain.equals(currentUser.getDomain())) {
                 return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
                     .body(null);
             }
             User newUser = userService.createUser(userDTO);
             String baseUrl = request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                "://" +                                // "://"
+                request.getServerName() +              // "myhost"
+                ":" +                                  // ":"
+                request.getServerPort() +              // "80"
+                request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/tatami/users/" + newUser.getUsername()))
-                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getUsername()))
+                .headers(HeaderUtil.createAlert("user-management.created", newUser.getUsername()))
                 .body(newUser);
         }
     }
@@ -151,8 +144,8 @@ public class UserResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use")).body(null);
         }
         String domain = DomainUtil.getDomainFromEmail(userDTO.getEmail());
-        String userDomain = DomainUtil.getDomainFromEmail(userDetailsService.getUserEmail());
-        if(!domain.equals(userDomain)){
+        String userDomain = SecurityUtils.getCurrentUserDomain();
+        if (!domain.equals(userDomain)) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
                 .body(null);
@@ -186,12 +179,12 @@ public class UserResource {
     @Timed
     public ResponseEntity<List<UserDTO>> getAllUsers()
         throws URISyntaxException {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         String domain = currentUser.getDomain();
-        log.debug("attempting to list all users in domain: {}",domain);
+        log.debug("attempting to list all users in domain: {}", domain);
         List<String> userList = domainRepository.getEmailsInDomain(domain);
         List<User> users = new ArrayList<User>();
-        for(String userItem : userList) {
+        for (String userItem : userList) {
             users.add(userRepository.findOneByEmail(userItem).get());
         }
         //List<User> users = userRepository.findAll();
@@ -216,16 +209,17 @@ public class UserResource {
 
         See marked.js
         */
-        if (!DomainUtil.isValidEmailAddress(email)){
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        if (!DomainUtil.isValidEmailAddress(email)) {
+            User currentUser = userService.getCurrentUser().get();
             email += "@" + currentUser.getDomain();
         }
         log.debug("rest request to get User : {}", email);
         return userService.getUserWithAuthoritiesByEmail(email)
-                .map(userService::buildUserDTO)
-                .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map(userService::buildUserDTO)
+            .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     /**
      * DELETE  USER :username -> delete User with the corresponding "email".
      */
@@ -237,20 +231,20 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         log.debug("rest request to delete User: {}", email);
 
-        if(email.equals(userDetailsService.getUserEmail())){
+        if (email.equals(SecurityUtils.getCurrentUserEmail())) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "deleteself", "You cannot delete yourself."))
                 .body(null);
         }
         String targetDomain = DomainUtil.getDomainFromEmail(email);
-        String userDomain = DomainUtil.getDomainFromEmail(userDetailsService.getUserEmail());
-        if( !targetDomain.equals(userDomain)){
+        String userDomain = SecurityUtils.getCurrentUserDomain();
+        if (!targetDomain.equals(userDomain)) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "domainbad", "Domain does not match."))
                 .body(null);
         }
         userService.deleteUserInformation(email);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", email)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("user-management.deleted", email)).build();
     }
 
     /**
@@ -274,19 +268,15 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public Collection<UserDTO> search(@PathVariable String query) {
-        String prefix = query.toLowerCase();
+        Collection<User> users = new ArrayList<>();
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<String> emails = searchService.searchUserByPrefix(domain, prefix);
-        Collection<User> users;
-
-        if (query != null && !query.equals("")) {
-            this.log.debug("REST request to find users starting with : {}", prefix);
+        if (StringUtils.isNotBlank(query)) {
+            String prefix = query.toLowerCase();
+            Collection<String> emails = searchService.searchUserByPrefix(SecurityUtils.getCurrentUserDomain(), prefix);
+            log.debug("REST request to find users starting with : {}", prefix);
             users = userService.getUsersByEmail(emails);
-        } else {
-            users = new ArrayList<User>();
         }
+
         return userService.buildUserDTOList(users);
     }
 }

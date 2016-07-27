@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -13,7 +12,6 @@ import fr.ippon.tatami.web.rest.dto.Preferences;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import fr.ippon.tatami.web.rest.dto.UserPassword;
 import fr.ippon.tatami.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +21,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -56,10 +52,6 @@ public class AccountResource {
     @Inject
     private PasswordEncoder passwordEncoder;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
-
     /**
      * POST  /register -> register the user.
      */
@@ -69,23 +61,23 @@ public class AccountResource {
     @Timed
     public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
         return userRepository.findOneByEmail(userDTO.getEmail())
-                .map(email -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    String username = DomainUtil.getUsernameFromEmail(userDTO.getEmail());
-                    User user = userService.createUserInformation(username, userDTO.getPassword(),
+            .map(email -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
+            .orElseGet(() -> {
+                String username = DomainUtil.getUsernameFromEmail(userDTO.getEmail());
+                User user = userService.createUserInformation(username, userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
                     userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), userDTO.getEmail().split("@")[1]);
-                    String baseUrl = request.getScheme() + // "http"
+                String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
                     request.getServerName() +              // "myhost"
                     ":" +                                  // ":"
                     request.getServerPort() +              // "80"
                     request.getContextPath();              // "/myContextPath" or "" if deployed in root context
 
-                    mailService.sendActivationEmail(user, baseUrl);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
-                });
+                mailService.sendActivationEmail(user, baseUrl);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            });
     }
 
     /**
@@ -139,7 +131,7 @@ public class AccountResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
-            .findOneByEmail(userDetailsService.getUserEmail())
+            .findOneByEmail(SecurityUtils.getCurrentUserEmail())
             .map(u -> {
                 userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
                     userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber());
@@ -190,7 +182,7 @@ public class AccountResource {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
-              .map(user -> new ResponseEntity<String>(HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .map(user -> new ResponseEntity<String>(HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     private boolean checkPasswordLength(String password) {
@@ -209,7 +201,7 @@ public class AccountResource {
     @Timed
     public Preferences getPreferences() {
         log.debug("REST request to get account's preferences");
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
 
         return new Preferences(currentUser);
     }
@@ -226,7 +218,7 @@ public class AccountResource {
         log.debug("REST request to set account's preferences");
         Preferences preferences = null;
         try {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             currentUser.setMentionEmail(newPreferences.getMentionEmail());
             currentUser.setDailyDigest(newPreferences.getDailyDigest());
             currentUser.setWeeklyDigest(newPreferences.getWeeklyDigest());
@@ -270,7 +262,7 @@ public class AccountResource {
 //    @ResponseBody
 //    @Timed
 //    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
-//        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+//        User currentUser = userService.getCurrentUser().get();
 //        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
 //        if (userService.isDomainHandledByLDAP(domain)) {
 //            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -291,7 +283,7 @@ public class AccountResource {
     public UserPassword setPassword(@RequestBody UserPassword userPassword, HttpServletResponse response) {
         log.debug("REST request to set account's password");
         try {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!passwordEncoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {

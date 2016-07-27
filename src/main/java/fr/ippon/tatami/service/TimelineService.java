@@ -7,7 +7,6 @@ import fr.ippon.tatami.exception.NoUserFoundException;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import org.slf4j.Logger;
@@ -78,15 +77,6 @@ public class TimelineService {
     private GroupService groupService;
 
     @Inject
-    private UserDetailsService userDetailsService;
-
-//    @Inject
-//    private SearchService searchService;
-
-//    @Inject
-//    private AtmosphereService atmosphereService;
-
-    @Inject
     private UserRepository userRepository;
 
     public StatusDTO getStatus(String statusId) {
@@ -99,7 +89,7 @@ public class TimelineService {
             StatusDTO statusDTO = statusCollection.iterator().next();
             // Private message check
             if (statusDTO.isStatusPrivate()) {
-                String email = userDetailsService.getUserEmail();
+                String email = SecurityUtils.getCurrentUserEmail();
                 if (!timelineRepository.isStatusInTimeline(email, statusId)) {
                     log.info("User " + email + " tried to access private message ID " + statusId);
                     return null;
@@ -190,7 +180,7 @@ public class TimelineService {
         Collection<Group> usergroups = Collections.emptyList();
         List<String> favoriteLine = Collections.emptyList();
         if (SecurityUtils.isAuthenticated()) {
-            currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            currentUser = userService.getCurrentUser().get();
             usergroups = groupService.getGroupsForUser(currentUser);
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getEmail());
         }
@@ -205,7 +195,7 @@ public class TimelineService {
                     // => for non-authenticated rss access
                     if ((currentUser != null) && !statusUser.getDomain().equals(currentUser.getDomain())) {
                         throw new DomainViolationException("User " + currentUser + " tried to access " +
-                                " status : " + abstractStatus);
+                            " status : " + abstractStatus);
                     }
 
                     StatusDTO statusDTO = new StatusDTO();
@@ -275,7 +265,7 @@ public class TimelineService {
             }
         }
 
-        for(StatusDTO statusDTO : statuses)
+        for (StatusDTO statusDTO : statuses)
             statusDTO.setShareByMe(shareByMe(statusDTO));
 
         return statuses;
@@ -286,10 +276,10 @@ public class TimelineService {
         Boolean isSharedByMe;
 
         Collection<String> userEmailWhoShare = sharesRepository.findUserEmailsWhoSharedAStatus(statusDTO.getStatusId());
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        if(userEmailWhoShare.contains(currentUser.getEmail()) )
+        User currentUser = userService.getCurrentUser().get();
+        if (userEmailWhoShare.contains(currentUser.getEmail()))
             isSharedByMe = true;
-        else if(currentUser.getUsername().equals(statusDTO.getSharedByUsername())) //Greg ce n'est pas normal de devoir faire ça
+        else if (currentUser.getUsername().equals(statusDTO.getSharedByUsername())) //Greg ce n'est pas normal de devoir faire ça
             isSharedByMe = true;
         else
             isSharedByMe = false;
@@ -299,7 +289,7 @@ public class TimelineService {
 
     /**
      * Find old statuses.
-     *
+     * <p>
      * Statuses might not be up to date on the current line : they might have been deleted, or the user has lost the
      * permission to see them.
      */
@@ -373,9 +363,9 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getMentionline(int nbStatus, String start, String finish) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         List<String> statuses =
-                mentionlineRepository.getMentionline(currentUser.getEmail(), nbStatus, start, finish);
+            mentionlineRepository.getMentionline(currentUser.getEmail(), nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
@@ -398,8 +388,7 @@ public class TimelineService {
         if (tag == null || tag.isEmpty()) {
             tag = hashtagDefault;
         }
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
         List<String> statuses = taglineRepository.getTagline(domain, tag, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
@@ -436,16 +425,16 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getTimeline(int nbStatus, String start, String finish) {
-        String email = userDetailsService.getUserEmail();
+        String email = SecurityUtils.getCurrentUserEmail();
         return getUserTimeline(email, nbStatus, start, finish);
     }
 
     /**
      * The timeline contains the user's status merged with his friends status.
-     *
+     * <p>
      * getUserTimeline returns the time line for an arbitrary user (and not only
      * the logged-in user).
-     *
+     * <p>
      * This is used for RSS syndication.
      *
      * @param email    Email address of the user we want the timeline of
@@ -454,7 +443,7 @@ public class TimelineService {
      */
     public Collection<StatusDTO> getUserTimeline(String email, int nbStatus, String start, String finish) {
         List<String> statuses =
-                timelineRepository.getTimeline(email, nbStatus, start, finish);
+            timelineRepository.getTimeline(email, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
@@ -474,10 +463,9 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getDomainline(int nbStatus, String start, String finish) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
         List<String> statuses =
-                domainlineRepository.getDomainline(domain, nbStatus, start, finish);
+            domainlineRepository.getDomainline(domain, nbStatus, start, finish);
 
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
@@ -493,13 +481,13 @@ public class TimelineService {
     /**
      * The userline contains the user's own status
      *
-     * @param email the email of hte user to retrieve the userline of
+     * @param email    the email of hte user to retrieve the userline of
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
     public Collection<StatusDTO> getUserline(String email, int nbStatus, String start, String finish) throws NoUserFoundException {
         Optional<User> optionalUser = userRepository.findOneByEmail(email);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             List<String> statuses = userlineRepository.getUserline(email, nbStatus, start, finish);
             Collection<StatusDTO> dtos = buildStatusList(statuses);
             if (statuses.size() != dtos.size()) {
@@ -521,14 +509,14 @@ public class TimelineService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
             Status status = (Status) abstractStatus;
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             if (status.getUsername().equals(currentUser.getUsername())) {
                 statusRepository.removeStatus(status);
                 counterRepository.decrementStatusCounter(currentUser.getEmail());
 //                searchService.removeStatus(status);
             }
         } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             if (abstractStatus.getUsername().equals(currentUser.getUsername())) {
                 statusRepository.removeStatus(abstractStatus);
             }
@@ -539,7 +527,7 @@ public class TimelineService {
 
     public void shareStatus(String statusId) {
         log.debug("Share status : {}", statusId);
-        String currentEmail = userDetailsService.getUserEmail();
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {
             if (abstractStatus.getType().equals(StatusType.STATUS)) {
@@ -581,7 +569,7 @@ public class TimelineService {
         log.debug("Favorite status : {}", statusId);
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus.getType().equals(StatusType.STATUS)) {
-            favoritelineRepository.addStatusToFavoriteline(userDetailsService.getUserEmail(), statusId);
+            favoritelineRepository.addStatusToFavoriteline(SecurityUtils.getCurrentUserEmail(), statusId);
         } else {
             log.warn("Cannot favorite this type of status: " + abstractStatus);
         }
@@ -591,7 +579,7 @@ public class TimelineService {
         log.debug("Un-favorite status : {}", statusId);
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus.getType().equals(StatusType.STATUS)) {
-            String userEmail = userDetailsService.getUserEmail();
+            String userEmail = SecurityUtils.getCurrentUserEmail();
             favoritelineRepository.removeStatusFromFavoriteline(userEmail, statusId);
         } else {
             log.warn("Cannot un-favorite this type of status: " + abstractStatus);
@@ -600,7 +588,7 @@ public class TimelineService {
 
     public void announceStatus(String statusId) {
         log.debug("Announce status : {}", statusId);
-        String currentEmail = userDetailsService.getUserEmail();
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null) {
             if (abstractStatus.getType().equals(StatusType.STATUS)) {
@@ -625,7 +613,7 @@ public class TimelineService {
 
         // add status to everyone's timeline
         String domain = status.getDomain();
-        log.info("Announcing to domain: "+domain);
+        log.info("Announcing to domain: " + domain);
         List<String> emails = domainRepository.getEmailsInDomain(domain);
         timelineRepository.announceStatusToTimeline(currentEmail, emails, announcement);
 //        for (String username : usernames) {
@@ -639,7 +627,7 @@ public class TimelineService {
      * @return a status list
      */
     public Collection<StatusDTO> getFavoritesline() {
-        String currentEmail = userDetailsService.getUserEmail();
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         List<String> statuses = favoritelineRepository.getFavoriteline(currentEmail);
         Collection<StatusDTO> dtos = buildStatusList(statuses);
         if (statuses.size() != dtos.size()) {
@@ -661,13 +649,13 @@ public class TimelineService {
 //        atmosphereService.notifyUser(timelineUsername, share);
     }
 
-    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos){
-        String currentEmail = userDetailsService.getUserEmail();
+    private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos) {
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         String domain = DomainUtil.getDomainFromEmail(currentEmail);
         Collection<String> blockedUsers = blockService.getUsersBlockedEmailForUser(currentEmail);
         Collection<StatusDTO> newDtos = new ArrayList<>();
-        for(StatusDTO dto : dtos){
-            if(!blockedUsers.contains(dto.getUsername() + "@" + domain)){
+        for (StatusDTO dto : dtos) {
+            if (!blockedUsers.contains(dto.getUsername() + "@" + domain)) {
                 newDtos.add(dto);
             }
         }

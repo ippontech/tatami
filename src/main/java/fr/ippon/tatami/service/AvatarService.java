@@ -4,10 +4,7 @@ import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.AvatarRepository;
-import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,17 +30,14 @@ public class AvatarService {
     private AvatarRepository avatarRepository;
 
     @Inject
-    private DomainConfigurationRepository domainConfigurationRepository;
-
-    @Inject
     private UserRepository userRepository;
 
     @Inject
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     public String createAvatar(Avatar avatar) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
 
         if (currentUser.getAvatar() != null && !("").equals(currentUser.getAvatar())) {
             deleteAvatar(currentUser.getAvatar());
@@ -71,7 +65,7 @@ public class AvatarService {
     public void deleteAvatar(String avatarId) {
         avatarRepository.removeAvatar(avatarId);
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         userRepository.save(currentUser);
     }
 
@@ -94,7 +88,7 @@ public class AvatarService {
     }
 
     public Avatar createAvatarBasedOnAvatar(Avatar avatar) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         Avatar dbAvatar = avatarRepository.findAvatarByFilename(avatar.getFilename());
         if (dbAvatar != null) {
             return dbAvatar;
@@ -118,12 +112,11 @@ public class AvatarService {
         InputStream is = null;
         byte[] bytes = null;
         try {
-            is = url.openStream ();
+            is = url.openStream();
             bytes = IOUtils.toByteArray(is);
         } catch (IOException e) {
             //handle errors
-        }
-        finally {
+        } finally {
             if (is != null) is.close();
         }
         return bytes;

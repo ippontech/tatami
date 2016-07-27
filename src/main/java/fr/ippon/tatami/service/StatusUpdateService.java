@@ -49,9 +49,6 @@ public class StatusUpdateService {
     private MentionService mentionService;
 
     @Inject
-    private UserRepository userRepository;
-
-    @Inject
     private UserlineRepository userlineRepository;
 
     @Inject
@@ -97,9 +94,6 @@ public class StatusUpdateService {
     private AtmosphereService atmosphereService;
 
     @Inject
-    private UserDetailsService userDetailsService;
-
-    @Inject
     private UserService userService;
 
     @Inject
@@ -130,22 +124,22 @@ public class StatusUpdateService {
     public void replyToStatus(String content, String replyTo, Collection<String> attachmentIds) throws ArchivedGroupException, ReplyStatusException {
         AbstractStatus abstractStatus = statusRepository.findStatusById(replyTo);
         if (abstractStatus != null &&
-                !abstractStatus.getType().equals(StatusType.STATUS) &&
-                !abstractStatus.getType().equals(StatusType.SHARE) &&
-                !abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            !abstractStatus.getType().equals(StatusType.STATUS) &&
+            !abstractStatus.getType().equals(StatusType.SHARE) &&
+            !abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
 
             log.debug("Cannot reply to a status of this type");
             throw new ReplyStatusException();
         }
         if (abstractStatus != null &&
-                abstractStatus.getType().equals(StatusType.SHARE)) {
+            abstractStatus.getType().equals(StatusType.SHARE)) {
 
             log.debug("Replacing the share by the original status");
             Share share = (Share) abstractStatus;
             AbstractStatus abstractRealStatus = statusRepository.findStatusById(share.getOriginalStatusId());
             abstractStatus = abstractRealStatus;
         } else if (abstractStatus != null &&
-                abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
 
             log.debug("Replacing the announcement by the original status");
             Announcement announcement = (Announcement) abstractStatus;
@@ -167,33 +161,33 @@ public class StatusUpdateService {
             // Original status is also a reply, replying to the real original status instead
             AbstractStatus abstractRealOriginalStatus = statusRepository.findStatusById(status.getDiscussionId());
             if (abstractRealOriginalStatus == null ||
-                    !abstractRealOriginalStatus.getType().equals(StatusType.STATUS)) {
+                !abstractRealOriginalStatus.getType().equals(StatusType.STATUS)) {
 
                 throw new ReplyStatusException();
             }
             Status realOriginalStatus = (Status) abstractRealOriginalStatus;
 
             Status replyStatus = createStatus(
-                    content,
-                    realOriginalStatus.getStatusPrivate(),
-                    group,
-                    realOriginalStatus.getStatusId().toString(),
-                    status.getStatusId().toString(),
-                    status.getUsername(),
-                    attachmentIds);
+                content,
+                realOriginalStatus.getStatusPrivate(),
+                group,
+                realOriginalStatus.getStatusId().toString(),
+                status.getStatusId().toString(),
+                status.getUsername(),
+                attachmentIds);
 
             discussionRepository.addReplyToDiscussion(realOriginalStatus.getStatusId().toString(), replyStatus.getStatusId().toString());
         } else {
             log.debug("Replying directly to the status at the origin of the disucssion");
             // The original status of the discussion is the one we reply to
             Status replyStatus =
-                    createStatus(content,
-                            status.getStatusPrivate(),
-                            group,
-                            status.getStatusId().toString(),
-                            status.getStatusId().toString(),
-                            status.getUsername(),
-                            attachmentIds);
+                createStatus(content,
+                    status.getStatusPrivate(),
+                    group,
+                    status.getStatusId().toString(),
+                    status.getStatusId().toString(),
+                    status.getUsername(),
+                    attachmentIds);
 
             discussionRepository.addReplyToDiscussion(status.getStatusId().toString(), replyStatus.getStatusId().toString());
         }
@@ -201,7 +195,7 @@ public class StatusUpdateService {
 
     public void reportedStatus(User reportingUser, String statusId) {
         log.debug("Reported Status: '{}'", statusId);
-        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
         reportedStatusRepository.reportStatus(domain, statusId, reportingUser.getEmail());
         mailService.sendReportedStatusEmail(reportingUser, statusId);
     }
@@ -211,7 +205,7 @@ public class StatusUpdateService {
     }
 
     public Collection<StatusDTO> findReportedStatuses() {
-        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
         List<String> reportedStatusId = getAllReportedStatuses(domain);
         return timelineService.buildStatusList(reportedStatusId);
     }
@@ -231,7 +225,7 @@ public class StatusUpdateService {
         String currentEmail = SecurityUtils.getCurrentUserEmail();
         if (userService.isAdmin(currentEmail)) {
             log.debug("Admin approves reported status '{}'", statusId);
-            reportedStatusRepository.unreportStatus(DomainUtil.getDomainFromEmail(currentEmail), statusId);
+            reportedStatusRepository.unreportStatus(SecurityUtils.getCurrentUserDomain(), statusId);
         } else {
             log.warn("Attempted to approve status '{}' but is not an admin", statusId);
         }
@@ -246,14 +240,14 @@ public class StatusUpdateService {
                                 Collection<String> attachmentIds) {
 
         return createStatus(
-                content,
-                statusPrivate,
-                group,
-                discussionId,
-                replyTo,
-                replyToUsername,
-                attachmentIds,
-                null, null);
+            content,
+            statusPrivate,
+            group,
+            discussionId,
+            replyTo,
+            replyToUsername,
+            attachmentIds,
+            null, null);
     }
 
     private Status createStatus(String content,
@@ -274,30 +268,30 @@ public class StatusUpdateService {
         }
         String currentEmail;
         if (user == null) {
-            currentEmail = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get().getEmail();
+            currentEmail = SecurityUtils.getCurrentUserEmail();
         } else {
             currentEmail = user.getEmail();
         }
-        String username = userRepository.findOneByEmail(currentEmail).get().getUsername();
+        String username = DomainUtil.getUsernameFromEmail(currentEmail);
         String domain = DomainUtil.getDomainFromEmail(currentEmail);
 
         Status status =
-                statusRepository.createStatus(username,
-                        currentEmail,
-                        domain,
-                        statusPrivate,
-                        group,
-                        attachmentIds,
-                        content,
-                        discussionId,
-                        replyTo,
-                        replyToUsername,
-                        geoLocalization);
+            statusRepository.createStatus(username,
+                currentEmail,
+                domain,
+                statusPrivate,
+                group,
+                attachmentIds,
+                content,
+                discussionId,
+                replyTo,
+                replyToUsername,
+                geoLocalization);
 
         if (attachmentIds != null && attachmentIds.size() > 0) {
             for (String attachmentId : attachmentIds) {
                 statusAttachmentRepository.addAttachmentId(status.getStatusId().toString(),
-                        attachmentId);
+                    attachmentId);
             }
         }
 
@@ -403,8 +397,8 @@ public class StatusUpdateService {
             String mentionedUser = extractUsernameWithoutAt(m.group());
             String mentionedUserEmail = (mentionedUser + "@" + domain);
             if (mentionedUser != null &&
-                    !mentionedUser.equals(currentUser) &&
-                    !followersForUser.contains(mentionedUser)) {
+                !mentionedUser.equals(currentUser) &&
+                !followersForUser.contains(mentionedUser)) {
 
                 log.debug("Mentioning : {}", mentionedUserEmail);
 
@@ -423,7 +417,7 @@ public class StatusUpdateService {
 
     private void addStatusToTagFollowers(Status status, Group group, String tag) {
         Collection<String> followersEmailForTag =
-                tagFollowerRepository.findFollowers(status.getDomain(), tag);
+            tagFollowerRepository.findFollowers(status.getDomain(), tag);
 
         if (isPublicGroup(group)) { // This is a public status
             for (String followerEmail : followersEmailForTag) {

@@ -1,5 +1,6 @@
 package fr.ippon.tatami.security;
 
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,13 @@ import java.util.Collection;
 public final class SecurityUtils {
 
     private SecurityUtils() {
+    }
+
+    /**
+     * Get the domain of the current user.
+     */
+    public static String getCurrentUserDomain() {
+        return DomainUtil.getDomainFromEmail(getCurrentUserEmail());
     }
 
     /**
@@ -70,9 +78,10 @@ public final class SecurityUtils {
         }
         throw new IllegalStateException("User not found!");
     }
+
     /**
      * If the current user has a specific authority (security role).
-     *
+     * <p>
      * <p>The name of this method comes from the isUserInRole() method in the Servlet API</p>
      */
     public static boolean isCurrentUserInRole(String authority) {

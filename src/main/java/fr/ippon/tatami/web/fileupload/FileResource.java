@@ -1,18 +1,14 @@
 package fr.ippon.tatami.web.fileupload;
 
 import com.codahale.metrics.annotation.Timed;
-
 import fr.ippon.tatami.domain.Attachment;
 import fr.ippon.tatami.domain.Avatar;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.AttachmentService;
 import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
-
 import fr.ippon.tatami.web.rest.dto.AvatarMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +25,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -70,16 +65,13 @@ public class FileResource {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
     @PostConstruct
     public void init() {
         this.tatamiUrl = env.getProperty("tatami.url");
     }
 
     @RequestMapping(value = "/file/{attachmentId}/*",
-            method = RequestMethod.GET)
+        method = RequestMethod.GET)
     @Timed
     public ResponseEntity download(@PathVariable("attachmentId") String attachmentId) throws IOException {
 
@@ -107,12 +99,12 @@ public class FileResource {
     }
 
     @RequestMapping(value = "/thumbnail/{attachmentId}/*",
-			method = RequestMethod.GET)
+        method = RequestMethod.GET)
     @Timed
     public void thumbnail(@PathVariable("attachmentId") String attachmentId,
-            			  HttpServletRequest request,
-            			  HttpServletResponse response) throws IOException {
-    	// Cache the file in the browser
+                          HttpServletRequest request,
+                          HttpServletResponse response) throws IOException {
+        // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
         response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
 
@@ -145,9 +137,8 @@ public class FileResource {
     }
 
 
-
     @RequestMapping(value = "/avatar/{avatarId}/*",
-            method = RequestMethod.GET)
+        method = RequestMethod.GET)
     @Timed
     public void getAvatar(@PathVariable("avatarId") String avatarId,
                           HttpServletRequest request,
@@ -186,11 +177,11 @@ public class FileResource {
     }
 
     @RequestMapping(value = "/rest/fileupload/avatar",
-            method = RequestMethod.POST)
+        method = RequestMethod.POST)
     @ResponseBody
     @Timed
     public List<UploadedFile> uploadAvatar(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+        @RequestParam("uploadFile") MultipartFile file) throws IOException {
 
         Avatar avatar = new Avatar();
         avatar.setContent(file.getBytes());
@@ -202,16 +193,16 @@ public class FileResource {
 
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile uploadedFile = new UploadedFile(
-                avatar.getAvatarId(),
-                file.getOriginalFilename(),
-                Long.valueOf(file.getSize()).intValue(),
-                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
+            avatar.getAvatarId(),
+            file.getOriginalFilename(),
+            Long.valueOf(file.getSize()).intValue(),
+            tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/" + file.getOriginalFilename());
 
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
         uploadedFiles.add(uploadedFile);
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);
@@ -221,8 +212,8 @@ public class FileResource {
     }
 
     @RequestMapping(value = "/rest/urlupload/avatar",
-            method = RequestMethod.POST,
-            produces = "application/json")
+        method = RequestMethod.POST,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public List<UploadedFile> uploadUrlAvatar(@RequestBody AvatarMeta avatarMeta) throws IOException {
@@ -239,14 +230,14 @@ public class FileResource {
         }
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile uploadedFile = new UploadedFile(
-                avatar.getAvatarId(),
-                avatar.getFilename(),
-                Long.valueOf(avatar.getSize()).intValue(),
-                tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/url");
+            avatar.getAvatarId(),
+            avatar.getFilename(),
+            Long.valueOf(avatar.getSize()).intValue(),
+            tatamiUrl + "/tatami/avatar/" + avatar.getAvatarId() + "/url");
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), avatar.getFilename());
         uploadedFiles.add(uploadedFile);
         if (avatar.getAvatarId() != null) {
-            User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+            User currentUser = userService.getCurrentUser().get();
             currentUser.setAvatar(avatar.getAvatarId());
             userRepository.save(currentUser);
         }
@@ -256,11 +247,11 @@ public class FileResource {
 
 
     @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
-            method = RequestMethod.POST)
+        method = RequestMethod.POST)
     @ResponseBody
     @Timed
     public void uploadAvatarIE(
-            @RequestParam("uploadFile") MultipartFile file) throws IOException {
+        @RequestParam("uploadFile") MultipartFile file) throws IOException {
 
         Avatar avatar = new Avatar();
         avatar.setContent(file.getBytes());
@@ -272,7 +263,7 @@ public class FileResource {
 
         log.info("Avatar url : {}/tatami/avatar/{}/{}", tatamiUrl, avatar.getAvatarId(), file.getOriginalFilename());
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);
@@ -284,7 +275,7 @@ public class FileResource {
     @ResponseBody
     @Timed
     public List<UploadedFile> upload(@RequestParam("uploadFile") MultipartFile file)
-            throws IOException, StorageSizeException {
+        throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
@@ -299,21 +290,21 @@ public class FileResource {
 
         List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
         UploadedFile uploadedFile = new UploadedFile(
-                attachment.getAttachmentId(),
-                file.getOriginalFilename(),
-                Long.valueOf(file.getSize()).intValue(),
-                tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
+            attachment.getAttachmentId(),
+            file.getOriginalFilename(),
+            Long.valueOf(file.getSize()).intValue(),
+            tatamiUrl + "/tatami/file/" + attachment.getAttachmentId() + "/" + file.getOriginalFilename());
 
         uploadedFiles.add(uploadedFile);
         return uploadedFiles;
     }
 
-	@RequestMapping(value = "/rest/fileuploadIE", headers = "content-type=multipart/*",
-    		method = RequestMethod.POST, produces = "text/html")
+    @RequestMapping(value = "/rest/fileuploadIE", headers = "content-type=multipart/*",
+        method = RequestMethod.POST, produces = "text/html")
     @ResponseBody
     @Timed
     public String uploadIE(@RequestParam("uploadFile") MultipartFile file)
-            throws IOException, StorageSizeException {
+        throws IOException, StorageSizeException {
 
         Attachment attachment = new Attachment();
         attachment.setContent(file.getBytes());
@@ -326,14 +317,14 @@ public class FileResource {
 
         log.debug("Created attachment : {}", attachment.getAttachmentId());
 
-        String result = attachment.getAttachmentId()+":::"+file.getOriginalFilename()+":::"+file.getSize();
+        String result = attachment.getAttachmentId() + ":::" + file.getOriginalFilename() + ":::" + file.getSize();
 
         return URLEncoder.encode(result, "UTF-8");
 
     }
 
     @RequestMapping(value = "/file/file_not_found",
-            method = RequestMethod.GET)
+        method = RequestMethod.GET)
     @Timed
     public ModelAndView FileNotFound() {
         log.debug("File not found !");

@@ -8,12 +8,10 @@ import fr.ippon.tatami.repository.DomainConfigurationRepository;
 import fr.ippon.tatami.repository.UserAttachmentRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -26,7 +24,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
-
 
 @Service
 public class AttachmentService {
@@ -46,24 +43,21 @@ public class AttachmentService {
     private UserRepository userRepository;
 
     @Inject
-    private Environment env;
-
-    @Inject
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     public String createAttachment(Attachment attachment) throws StorageSizeException {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         DomainConfiguration domainConfiguration =
-                domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
+            domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
         long newAttachmentsSize = currentUser.getAttachmentsSize() + attachment.getSize();
         if (newAttachmentsSize > domainConfiguration.getStorageSizeAsLong()) {
             log.info("User " + currentUser.getUsername() +
-                    " has tried to exceed his storage capacity. current storage=" +
-                    currentUser.getAttachmentsSize() +
-                    ", storage capacity=" +
-                    domainConfiguration.getStorageSizeAsLong());
+                " has tried to exceed his storage capacity. current storage=" +
+                currentUser.getAttachmentsSize() +
+                ", storage capacity=" +
+                domainConfiguration.getStorageSizeAsLong());
 
             throw new StorageSizeException("User storage exceeded for user " + currentUser.getUsername());
         }
@@ -71,8 +65,8 @@ public class AttachmentService {
         attachment.setThumbnail(computeThumbnail(attachment));
 
         attachmentRepository.createAttachment(attachment);
-        userAttachmentRepository.addAttachmentId(userDetailsService.getUserEmail(),
-                attachment.getAttachmentId());
+        userAttachmentRepository.addAttachmentId(SecurityUtils.getCurrentUserEmail(),
+            attachment.getAttachmentId());
 
         // Refresh user data, to reduce the risk of errors
         currentUser.setAttachmentsSize(currentUser.getAttachmentsSize() + attachment.getSize());
@@ -81,19 +75,19 @@ public class AttachmentService {
     }
 
     public Attachment getAttachmentById(String attachmentId) {
-        Attachment attachment =  attachmentRepository.findAttachmentById(attachmentId);
+        Attachment attachment = attachmentRepository.findAttachmentById(attachmentId);
         //Computing the thumbnail if it does not exists
-        if(! attachment.getHasThumbnail()) {
-        	attachment.setThumbnail(computeThumbnail(attachment));
-        	attachmentRepository.updateThumbnail(attachment);
+        if (!attachment.getHasThumbnail()) {
+            attachment.setThumbnail(computeThumbnail(attachment));
+            attachmentRepository.updateThumbnail(attachment);
         }
         return attachment;
     }
 
     public Collection<String> getAttachmentIdsForCurrentUser(int pagination, String finish) {
         Collection<String> attachmentIds =
-                userAttachmentRepository.
-                        findAttachmentIds(userDetailsService.getUserEmail(), pagination,finish);
+            userAttachmentRepository.
+                findAttachmentIds(SecurityUtils.getCurrentUserEmail(), pagination, finish);
 
         log.debug("Collection of attachments : {}", attachmentIds.size());
 
@@ -102,7 +96,7 @@ public class AttachmentService {
 
     public void deleteAttachment(Attachment attachment) {
         log.debug("Removing attachment : {}", attachment);
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
 
         for (String attachmentIdTest : userAttachmentRepository.findAttachmentIds(currentUser.getEmail())) {
             if (attachmentIdTest.equals(attachment.getAttachmentId())) {
@@ -118,9 +112,9 @@ public class AttachmentService {
     }
 
     public Collection<Long> getDomainQuota() {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = userService.getCurrentUser().get();
         DomainConfiguration domainConfiguration =
-                domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
+            domainConfigurationRepository.findDomainConfigurationByDomain(currentUser.getDomain());
 
         Long domainQuota = domainConfiguration.getStorageSizeAsLong();
         Long userQuota = currentUser.getAttachmentsSize();
@@ -136,47 +130,47 @@ public class AttachmentService {
     }
 
     private byte[] computeThumbnail(Attachment attachment) {
-    	byte[] result = new byte[0];
+        byte[] result = new byte[0];
 
-            InputStream inputStream=null;
-            try{
-                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("tatami.properties");
+        InputStream inputStream = null;
+        try {
+            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("tatami.properties");
 
-                Properties props = new Properties();
-                props.load(inputStream);
+            Properties props = new Properties();
+            props.load(inputStream);
 
-                String[] imagesExtentions = ("tatami.attachment.thumbnail.extensions").split(",");
+            String[] imagesExtentions = ("tatami.attachment.thumbnail.extensions").split(",");
 
 
-                for (String ext : imagesExtentions) {
-                    if (attachment.getFilename().endsWith(ext)) {
-                        attachment.setHasThumbnail(true);
-                        break;
-                    }
+            for (String ext : imagesExtentions) {
+                if (attachment.getFilename().endsWith(ext)) {
+                    attachment.setHasThumbnail(true);
+                    break;
                 }
-
-            } catch(IOException e){
-                throw new IllegalStateException(e);
-            }finally{
-                // apache commons / IO
-                IOUtils.closeQuietly(inputStream);
             }
 
-        if(attachment.getHasThumbnail()) {
-    		try {
-    			BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-				thumbnail.createGraphics()
-						.drawImage(ImageIO
-								.read(new ByteArrayInputStream(attachment.getContent()))
-    							.getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH), 0, 0, null);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(thumbnail, "png", baos);
-				baos.flush();
-				result = baos.toByteArray();
-    		} catch(IOException e) {
-    			log.error("Error creating thumbnail for attachment "+attachment.getAttachmentId());
-    		}
-    	}
-    	return result;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            // apache commons / IO
+            IOUtils.closeQuietly(inputStream);
+        }
+
+        if (attachment.getHasThumbnail()) {
+            try {
+                BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+                thumbnail.createGraphics()
+                    .drawImage(ImageIO
+                        .read(new ByteArrayInputStream(attachment.getContent()))
+                        .getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH), 0, 0, null);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(thumbnail, "png", baos);
+                baos.flush();
+                result = baos.toByteArray();
+            } catch (IOException e) {
+                log.error("Error creating thumbnail for attachment " + attachment.getAttachmentId());
+            }
+        }
+        return result;
     }
 }

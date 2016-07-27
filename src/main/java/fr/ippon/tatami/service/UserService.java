@@ -6,7 +6,6 @@ import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.repository.search.UserSearchRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
@@ -55,11 +54,8 @@ public class UserService {
     @Inject
     private MailDigestRepository mailDigestRepository;
 
-    @Inject
-    private UserDetailsService userDetailsService;
-
     public Optional<User> getCurrentUser() {
-        return userRepository.findOneByEmail(userDetailsService.getUserEmail());
+        return userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail());
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -77,20 +73,20 @@ public class UserService {
     }
 
     public Optional<User> completePasswordReset(String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetKey(key)
+        return userRepository.findOneByResetKey(key)
             .filter(user -> {
                 ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
                 return user.getResetDate().after(Date.from(oneDayAgo.toInstant()));
-           })
-           .map(user -> {
+            })
+            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
                 userRepository.save(user);
                 return user;
-           });
+            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -105,7 +101,7 @@ public class UserService {
     }
 
     public User createUserInformation(String username, String password, String firstName, String lastName, String email,
-        String langKey, String jobTitle, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
+                                      String langKey, String jobTitle, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
 
         User newUser = new User();
         newUser.setId(UUID.randomUUID().toString());
@@ -175,7 +171,7 @@ public class UserService {
 
     public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle,
                                       String phoneNumber) {
-        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
+        getCurrentUser().ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
@@ -192,7 +188,7 @@ public class UserService {
 
     public void updateUserPreferences(boolean mentionEmail, String rssUid,
                                       boolean weeklyDigest, boolean dailyDigest) {
-        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
+        getCurrentUser().ifPresent(u -> {
             u.setMentionEmail(mentionEmail);
             u.setRssUid(rssUid);
             u.setWeeklyDigest(weeklyDigest);
@@ -211,7 +207,7 @@ public class UserService {
     }
 
     public void changePassword(String password) {
-        userRepository.findOneByEmail(userDetailsService.getUserEmail()).ifPresent(u -> {
+        getCurrentUser().ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
@@ -230,7 +226,7 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        Optional<User> userOptional = userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail());
+        Optional<User> userOptional = getCurrentUser();
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.getAuthorities().size(); // eagerly load the association
@@ -246,7 +242,7 @@ public class UserService {
      */
     public String updateRssTimelinePreferences(boolean booleanPreferencesRssTimeline) {
 
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = getCurrentUser().get();
         String rssUid = currentUser.getRssUid();
         if (booleanPreferencesRssTimeline) {
             // if we already have an rssUid it means it's already activated :
@@ -291,7 +287,7 @@ public class UserService {
      * update registration to weekly digest email.
      */
     public void updateWeeklyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = getCurrentUser().get();
         currentUser.setWeeklyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
@@ -319,7 +315,7 @@ public class UserService {
      * Update registration to daily digest email.
      */
     public void updateDailyDigestRegistration(boolean registration) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = getCurrentUser().get();
         currentUser.setDailyDigest(registration);
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
@@ -357,7 +353,7 @@ public class UserService {
     }
 
     public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
-        User currentUser = userRepository.findOneByEmail(userDetailsService.getUserEmail()).get();
+        User currentUser = getCurrentUser().get();
         Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
         Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
@@ -374,7 +370,7 @@ public class UserService {
     }
 
     public UserDTO buildUserDTO(User user) {
-        String currentUserEmail = userDetailsService.getUserEmail();
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
         UserDTO userDTO = getUserDTOFromUser(user);
         userDTO.setYou(user.getEmail().equals(currentUserEmail));
         userDTO.setId(user.getId());

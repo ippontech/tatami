@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -37,9 +38,8 @@ public class UserDetailsService implements org.springframework.security.core.use
         String lowercaseUsername = username.toLowerCase();
         Optional<User> userFromDatabase = userRepository.findOneByEmail(lowercaseUsername);
 
-        if( userFromDatabase.equals(Optional.empty()))
-        {
-            throw new UsernameNotFoundException("User "+username+" not in the database.");
+        if (userFromDatabase.equals(Optional.empty())) {
+            throw new UsernameNotFoundException("User " + username + " not in the database.");
         }
 
         return userFromDatabase.map(user -> {
@@ -53,10 +53,7 @@ public class UserDetailsService implements org.springframework.security.core.use
                 user.getPassword(),
                 grantedAuthorities);
         }).orElseThrow(() -> new UsernameNotFoundException("User " + userFromDatabase.get().getUsername() + " was not found in the " +
-        "database"));
+            "database"));
     }
 
-    public String getUserEmail() {
-        return SecurityUtils.getCurrentUserEmail();
-    }
 }

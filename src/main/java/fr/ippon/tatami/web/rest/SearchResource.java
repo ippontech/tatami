@@ -4,18 +4,16 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.Tag;
 import fr.ippon.tatami.domain.User;
-import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.repository.UserTagRepository;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.*;
-import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.SearchResults;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -23,12 +21,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/tatami")
 public class SearchResource {
     private final Logger log = LoggerFactory.getLogger(SearchResource.class);
-
 
     @Inject
     private SearchService searchService;
@@ -47,9 +43,6 @@ public class SearchResource {
 
     @Inject
     private UserTagRepository userTagRepository;
-
-    @Inject
-    private UserRepository userRepository;
 
     /**
      * GET  /search/all?q=tatami -> search users, tags, groups for "tatami"
@@ -81,8 +74,7 @@ public class SearchResource {
                                                    @RequestParam(value = "rpp", required = false, defaultValue = "20") Integer rpp) {
 
         log.debug("REST request to search status containing these words ({}).", query);
-        final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
+        String domain = SecurityUtils.getCurrentUserDomain();
         List<String> line;
         if (StringUtils.isNotBlank(query)) {
             line = searchService.searchStatus(domain, query, page, rpp);
@@ -104,15 +96,12 @@ public class SearchResource {
     @ResponseBody
     @Timed
     public Collection<Tag> searchRecentTags(@RequestParam("q") String query) {
-        String prefix = query.toLowerCase();
-        final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<String> followedTags = userTagRepository.findTags(currentUser.getEmail());
-        Collection<String> trends = trendService.searchTags(domain, prefix, 5);
         Collection<Tag> tags = new ArrayList<>();
-
-        if (query != null && !query.equals("")) {
-            this.log.debug("REST request to find tags starting with : {}", prefix);
+        if (StringUtils.isNotBlank(query)) {
+            String prefix = query.toLowerCase();
+            Collection<String> followedTags = userTagRepository.findTags(SecurityUtils.getCurrentUserEmail());
+            Collection<String> trends = trendService.searchTags(SecurityUtils.getCurrentUserDomain(), prefix, 5);
+            log.debug("REST request to find tags starting with : {}", prefix);
             for (String trend : trends) {
                 Tag tag = new Tag();
                 tag.setName(trend);
@@ -137,15 +126,11 @@ public class SearchResource {
     @ResponseBody
     @Timed
     public Collection<Group> searchGroups(@RequestParam("q") String query) {
-        String prefix = query.toLowerCase();
-        final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<Group> groups;
-        if (query != null && !query.equals("")) {
-            this.log.debug("REST request to find groups starting with : {}", prefix);
-            groups = searchService.searchGroupByPrefix(domain, prefix, 5);
-        } else {
-            groups = new ArrayList<>();
+        Collection<Group> groups = new ArrayList<>();
+        if (StringUtils.isNotBlank(query)) {
+            String prefix = query.toLowerCase();
+            log.debug("REST request to find groups starting with : {}", prefix);
+            groups = searchService.searchGroupByPrefix(SecurityUtils.getCurrentUserDomain(), prefix, 5);
         }
         return groupService.buildGroupList(groups);
     }
@@ -165,20 +150,14 @@ public class SearchResource {
     @ResponseBody
     @Timed
     public Collection<UserDTO> searchUsers(@RequestParam("q") String query) {
-        String prefix = query.toLowerCase();
+        Collection<User> users = new ArrayList<>();
 
-        final User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<String> emails = searchService.searchUserByPrefix(domain, prefix);
-        Collection<User> users;
-
-        if (query != null && !query.equals("")) {
-            this.log.debug("REST request to find users starting with : {}", prefix);
+        if (StringUtils.isNotBlank(query)) {
+            String prefix = query.toLowerCase();
+            Collection<String> emails = searchService.searchUserByPrefix(SecurityUtils.getCurrentUserDomain(), prefix);
+            log.debug("REST request to find users starting with : {}", prefix);
             users = userService.getUsersByEmail(emails);
-        } else {
-            users = new ArrayList<>();
         }
         return userService.buildUserDTOList(users);
-
     }
 }
