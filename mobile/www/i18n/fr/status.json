@@ -38,6 +38,7 @@
             "add": "Ce statut a été ajouté à vos favoris",
             "remove": "Ce statut a été supprimé de vos favoris"
         },
-        "private": "Message privé"
+        "private": "Message privé",
+        "noContent" : "Cette section est actuellement vide"
     }
 }

@@ -4,6 +4,7 @@
         <ion-item ng-repeat="status in vm.statuses">
             <tatami-status status="status" current-user="vm.currentUser" on-delete="vm.remove(status)"></tatami-status>
         </ion-item>
+        <div class="text-center" ng-if="!vm.statuses.length" translate="status.noContent" ng-style="{'color':'#ababab','padding':'40px'}"/>
     </ion-list>
     <ion-infinite-scroll ng-if="!vm.finishedTimeline && !vm.$state.includes('*.conversation')" on-infinite="vm.getNewInfiniteScrollStatuses()"></ion-infinite-scroll>
 </ion-content>

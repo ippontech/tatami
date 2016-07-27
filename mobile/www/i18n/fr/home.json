@@ -4,5 +4,6 @@
         "mentions": "Mentions",
         "favorites": "Favoris",
         "more": "Plus"
-    }
+    },
+    "noContent" : "Cette section est actuellement vide"
 }

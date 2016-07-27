@@ -38,6 +38,7 @@
             "add": "This status has been added to your favorites",
             "remove": "This status has been removed from your favorites"
         },
-        "private": "Private message"
+        "private": "Private message",
+        "noContent" : "No content found"
     }
 }

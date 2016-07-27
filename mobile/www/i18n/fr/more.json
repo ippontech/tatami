@@ -3,8 +3,8 @@
         "title": "Plus d'options",
         "company": "Timeline de l'entreprise",
         "settings": "Paramètres",
-        "blockedusers": {
-            "manage": "Gérer vos utilisateurs bloqués",
+        "blockedUsers": {
+            "title": "Gérer vos utilisateurs bloqués",
             "no": "Vous n'avez bloqué aucun utilisateur"
         },
         "reportedStatus": {
@@ -17,7 +17,7 @@
             "english": "Anglais",
             "french": "Français"
         },
-        "allusers": "Tous les utilisateurs"
+        "allUsers": "Tous les utilisateurs"
     }
 
 }

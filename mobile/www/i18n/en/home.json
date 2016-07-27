@@ -4,5 +4,7 @@
         "mentions": "Mentions",
         "favorites": "Favorites",
         "more": "More"
-    }
+    },
+    "noContent" : "No content found"
+
 }
