@@ -24,12 +24,12 @@
             <h3>
                 <span ng-if="$state.includes('profileStatuses')">
                     <span ng-if="user.you">
-                        <strong ng-if="user.statusCount == 1" translate="tatami.home.profile.youStatusesSingular"></strong>
-                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="tatami.home.profile.youStatusesPlural" translate-values="{ amount: user.statusCount }"></strong>
+                        <strong ng-if="user.statusCount == 1" translate="home.profile.youStatusesSingular"></strong>
+                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="home.profile.youStatusesPlural" translate-values="{ amount: user.statusCount }"></strong>
                     </span>
                     <span ng-if="!user.you">
-                        <strong ng-if="user.statusCount == 1" translate="tatami.home.profile.userStatusesSingular" translate-values="{ username: user.username }"></strong>
-                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="tatami.home.profile.userStatusesPlural" translate-values="{ username: user.username, amount: user.statusCount }"></strong>
+                        <strong ng-if="user.statusCount == 1" translate="home.profile.userStatusesSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.statusCount <= 0 || user.statusCount > 1" translate="home.profile.userStatusesPlural" translate-values="{ username: user.username, amount: user.statusCount }"></strong>
                     </span>
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
@@ -41,12 +41,12 @@
 
                 <span ng-if="$state.includes('profileFollowing')">
                     <span ng-if="user.you">
-                        <strong ng-if="user.friendsCount == 1" translate="tatami.home.profile.youFollowingSingular"></strong>
-                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="tatami.home.profile.youFollowingPlural" translate-values="{ amount: user.friendsCount }"></strong>
+                        <strong ng-if="user.friendsCount == 1" translate="home.profile.youFollowingSingular"></strong>
+                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="home.profile.youFollowingPlural" translate-values="{ amount: user.friendsCount }"></strong>
                     </span>
                     <span ng-if="!user.you">
-                        <strong ng-if="user.friendsCount == 1" translate="tatami.home.profile.userFollowingSingular" translate-values="{ username: user.username }"></strong>
-                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="tatami.home.profile.userFollowingPlural" translate-values="{ username: user.username, amount: user.friendsCount }"></strong>
+                        <strong ng-if="user.friendsCount == 1" translate="home.profile.userFollowingSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.friendsCount <= 0 || user.friendsCount > 1" translate="home.profile.userFollowingPlural" translate-values="{ username: user.username, amount: user.friendsCount }"></strong>
                     </span>
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
@@ -58,12 +58,12 @@
 
                 <span ng-if="$state.includes('profileFollowers')">
                     <span ng-if="user.you">
-                        <strong ng-if="user.followersCount == 1" translate="tatami.home.profile.youFollowersSingular"></strong>
-                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="tatami.home.profile.youFollowersPlural" translate-values="{ amount: user.followersCount }"></strong>
+                        <strong ng-if="user.followersCount == 1" translate="home.profile.youFollowersSingular"></strong>
+                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="home.profile.youFollowersPlural" translate-values="{ amount: user.followersCount }"></strong>
                     </span>
                     <span ng-if="!user.you">
-                        <strong ng-if="user.followersCount == 1" translate="tatami.home.profile.userFollowersSingular" translate-values="{ username: user.username }"></strong>
-                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="tatami.home.profile.userFollowersPlural" translate-values="{ username: user.username, amount: user.followersCount }"></strong>
+                        <strong ng-if="user.followersCount == 1" translate="home.profile.userFollowersSingular" translate-values="{ username: user.username }"></strong>
+                        <strong ng-if="user.followersCount <= 0 || user.followersCount > 1" translate="home.profile.userFollowersPlural" translate-values="{ username: user.username, amount: user.followersCount }"></strong>
                     </span>
                     <span ng-if="user.follower" class="badge hidden-phone">
                         {{ 'tatami.home.profile.followsYou' | translate | uppercase }}
