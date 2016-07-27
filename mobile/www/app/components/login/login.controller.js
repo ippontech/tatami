@@ -12,9 +12,10 @@
         '$localStorage',
         '$ionicLoading',
         'PathService',
-        '$ionicHistory'
+        '$ionicHistory',
+        'ToastService'
     ];
-    function loginCtrl(TatamiEndpoint, $scope, $state, $http, $localStorage, $ionicLoading, PathService, $ionicHistory) {
+    function loginCtrl(TatamiEndpoint, $scope, $state, $http, $localStorage, $ionicLoading, PathService, $ionicHistory, ToastService) {
 
         var vm = this;
 
@@ -24,20 +25,6 @@
             var newEndpoint = TatamiEndpoint.getEndpoint();
             if (vm.lastEndpoint.url !== newEndpoint.url) {
                 vm.lastEndpoint.url = newEndpoint.url;
-                $http({
-                    url: PathService.buildPath('/tatami/rest/client/id'),
-                    method: 'GET'
-                }).then(function(data) {
-                    if (data && data.data && data.data.stringList) {
-                        // Old tatami return the clientId in the stringList property
-                        vm.clientId = data.data.stringList[0];
-                    } else if (data && data.data && data.data.clientId) {
-                        vm.clientId = data.data.clientId;
-                    }
-                    else {
-                        vm.clientId = undefined;
-                    }
-                });
             }
         });
 
@@ -46,7 +33,7 @@
         };
         vm.failed = false;
         vm.login = login;
-        vm.googleLogin = googleLogin;
+        vm.tryGoogleLogin = tryGoogleLogin;
         vm.goToServerConfig = goToServerConfig;
         vm.lastEndpoint = {url: ''};
 
@@ -67,11 +54,35 @@
             });
         }
 
-        function googleLogin() {
+        function tryGoogleLogin() {
+            $http({
+                url: PathService.buildPath('/tatami/rest/client/id'),
+                method: 'GET'
+            }).then(function (data) {
+                var clientId;
+                if (data && data.data && data.data.stringList) {
+                    // Old tatami return the clientId in the stringList property
+                    clientId = data.data.stringList[0];
+                } else if (data && data.data && data.data.clientId) {
+                    clientId = data.data.clientId;
+                }
+
+                // Do Google login or display an error message
+                if (clientId) {
+                    googleLogin(clientId);
+                } else {
+                    ToastService.display('login.googleUnavaible');
+                }
+            }, function () {
+                ToastService.display('login.googleUnavaible');
+            });
+        }
+
+        function googleLogin(clientId) {
             var emailScope = 'https://www.googleapis.com/auth/plus.profile.emails.read';
             var profileScope = 'https://www.googleapis.com/auth/plus.me';
             var googleUrl = 'https://accounts.google.com/o/oauth2/auth?' +
-                'client_id=' + vm.clientId + '&' +
+                'client_id=' + clientId + '&' +
                 'redirect_uri=http://localhost/callback&' +
                 'scope=' + emailScope + ' ' + profileScope + '&' +
                 'approval_prompt=force&response_type=code&access_type=offline';

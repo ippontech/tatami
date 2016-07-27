@@ -30,8 +30,8 @@
                     </button>
                 </div>
                 <div class="col col-50">
-                    <button ng-disabled="!vm.tos || !vm.clientId"
-                            ng-click="vm.googleLogin()"
+                    <button ng-disabled="!vm.tos"
+                            ng-click="vm.tryGoogleLogin()"
                             translate="login.google"
                             class="button button-block button-stable"
                             type="button">
@@ -49,9 +49,6 @@
 
             <div ng-show="vm.failed" class="bar bar-assertive">
                 <h1 class="title" translate="login.failed">Failed to log in!</h1>
-            </div>
-            <div ng-show="!vm.clientId" class="bar bar-assertive">
-                <h1 class="title" translate="login.googleUnavaible"></h1>
             </div>
         </form>
     </ion-content>
