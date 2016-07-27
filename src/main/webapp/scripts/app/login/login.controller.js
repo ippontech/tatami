@@ -16,7 +16,7 @@ angular.module('tatamiJHipsterApp')
             }).then(function () {
                 $scope.authenticationError = false;
                 if ($rootScope.previousStateName === 'register') {
-                    $state.go('home');
+                    $state.go('login');
                 } else {
                     $state.isAdmin = Principal.hasAnyAuthority(["ROLE_ADMIN"]);
                     $state.go('timeline');

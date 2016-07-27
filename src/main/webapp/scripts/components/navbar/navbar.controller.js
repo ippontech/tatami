@@ -9,7 +9,7 @@ tatamiJHipsterApp
         $scope.logout = function () {
             Auth.logout();
             $state.isAdmin = false;
-            $state.go('home');
+            $state.go('login');
 
         };
         $scope.search = {};

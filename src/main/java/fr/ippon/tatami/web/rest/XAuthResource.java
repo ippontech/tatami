@@ -87,7 +87,7 @@ public class XAuthResource {
     @Timed
     public RedirectView callback(@RequestParam String code) throws JSONException {
         Token token = getToken(code);
-        return new RedirectView("/#/login?token=" + token.getToken() + "&expires=" + token.getExpires());
+        return new RedirectView("/#/?token=" + token.getToken() + "&expires=" + token.getExpires());
     }
 
     @RequestMapping(value = "rest/client/id",
