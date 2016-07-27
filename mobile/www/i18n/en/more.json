@@ -3,9 +3,9 @@
         "title": "More Options",
         "company": "Company Timeline",
         "settings": "Settings",
-        "blockedusers": {
-            "manage": "Manage your blocked users",
-            "no": "You don't have any blocked user"
+        "blockedUsers": {
+            "title": "Blocked Users",
+            "no": "You don't have any blocked users"
         },
         "reportedStatus":{
             "title": "Reported Statuses",
@@ -17,7 +17,7 @@
             "english": "English",
             "french": "French"
         },
-        "allusers": "All users"
+        "allUsers": "All Users"
     }
 
 }

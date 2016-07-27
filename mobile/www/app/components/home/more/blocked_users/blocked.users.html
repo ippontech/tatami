@@ -1,11 +1,11 @@
-<ion-view view-title="{{ 'more.blockedusers.manage' | translate }}">
-    <ion-content>
+<ion-view view-title="{{ 'more.blockedUsers.title' | translate }}">
+    <ion-content ng-style="{'background-color':'#f5f5f5'}">
         <ion-refresher on-refresh="vm.getBlockedUsersForUser()"></ion-refresher>
         <ion-list ng-init="vm.getBlockedUsersForUser()">
+            <div class="text-center" ng-if="!vm.hasBlockedUsers()" translate="more.blockedUsers.no" ng-style="{'color':'#ababab','padding':'40px'}"/>
             <div ng-if="vm.hasBlockedUsers()" ng-repeat="blockeduser in vm.blockedUsers">
                 <tatami-user user="blockeduser"></tatami-user>
             </div>
-            <ion-item ng-if="!vm.hasBlockedUsers()" translate="more.blockedusers.no">No blocked users</ion-item>
         </ion-list>
     </ion-content>
 </ion-view>

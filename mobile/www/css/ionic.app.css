@@ -4118,7 +4118,7 @@ a.subdued:last-child {
   z-index: 1;
   padding: 0 8px;
   min-width: initial;
-  min-height: 30px;
+  min-height: 31px;
   font-weight: 400;
   font-size: 13px;
   line-height: 32px; }
@@ -5627,7 +5627,7 @@ ion-tabs.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs.tabs-color-a
   display: block;
   margin-top: 12px;
   margin-left: -110px;
-  height: 270px;
+  height: 280px;
   width: 220px;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -6696,7 +6696,7 @@ button.item.item-button-right {
 
 .item-body {
   overflow: auto;
-  padding: 8px;
+  padding: 16px;
   text-overflow: inherit;
   white-space: normal; }
 
@@ -6707,7 +6707,7 @@ button.item.item-button-right {
 .item-divider {
   padding-top: 8px;
   padding-bottom: 8px;
-  min-height: 31px;
+  min-height: 30px;
   background-color: #f5f5f5;
   color: #222;
   font-weight: 500; }
@@ -8999,7 +8999,7 @@ progress {
   margin: 0;
   padding: 0 12px;
   min-width: 52px;
-  min-height: 30px;
+  min-height: 47px;
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -9384,7 +9384,7 @@ progress {
   -webkit-transition: opacity 0.1s;
   transition: opacity 0.1s;
   padding: 0 6px;
-  max-height: 30px;
+  max-height: 42px;
   border-color: transparent;
   background: none;
   box-shadow: none; }

@@ -1,5 +1,5 @@
 <ion-view view-title="{{ 'tab.following' | translate }}">
-    <ion-content>
+    <ion-content ng-style="{'background-color':'#f5f5f5'}">
         <ion-refresher on-refresh="vm.getNewFollowing()"></ion-refresher>
         <ion-list>
             <div ng-repeat="user in vm.following">

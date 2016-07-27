@@ -10,7 +10,7 @@
                 style="font-size: 30px;"
                 ng-click="vm.followUser()"></button>
     </ion-nav-buttons>
-    <ion-content class="tatami-header tatami-footer">
+    <ion-content class="tatami-header tatami-footer" ng-style="{'background-color':'#f5f5f5'}">
         <ion-refresher on-refresh="vm.getNewStatuses()"></ion-refresher>
         <tatami-user-detail user="vm.user"></tatami-user-detail>
         <ion-list>
