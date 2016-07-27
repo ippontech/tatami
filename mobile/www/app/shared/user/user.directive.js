@@ -37,12 +37,12 @@
                 function() {
                     vm.user.friend = !vm.user.friend;
                 });
-            $ionicListDelegate.closeOptionButtons();
         }
 
         function goToProfile(username) {
             var destinationState = $state.current.name.split('.')[0] + '.profile';
             $state.go(destinationState, { username : username });
+            $ionicListDelegate.closeOptionButtons();
         }
 
         function updateBlockUser() {
