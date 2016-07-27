@@ -262,7 +262,7 @@ public class UserResource {
     @ResponseBody
     @Timed
     public Collection<User> suggestions() {
-        return suggestionService.suggestUsers(SecurityUtils.getCurrentUserUsername());
+        return suggestionService.suggestUsers(SecurityUtils.getCurrentUserEmail());
     }
 
     /**

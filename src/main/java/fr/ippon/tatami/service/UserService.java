@@ -230,7 +230,7 @@ public class UserService {
 
 
     public User getUserWithAuthorities() {
-        Optional<User> userOptional = userRepository.findOneByEmail(SecurityUtils.getCurrentUserUsername());
+        Optional<User> userOptional = userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.getAuthorities().size(); // eagerly load the association

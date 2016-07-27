@@ -24,7 +24,7 @@ public class SecurityUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        String login = SecurityUtils.getCurrentUserUsername();
+        String login = SecurityUtils.getCurrentUserEmail();
         assertThat(login).isEqualTo("admin");
     }
 

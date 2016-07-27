@@ -280,7 +280,7 @@ public class GroupService {
                 }
             }
             long counter = 0;
-            for ( UserGroupDTO userGroup :  getMembersForGroup(group.getGroupId(),SecurityUtils.getCurrentUserUsername())) {
+            for ( UserGroupDTO userGroup :  getMembersForGroup(group.getGroupId(),SecurityUtils.getCurrentUserEmail())) {
                 if(userGroup.isActivated()) {
                     counter++;
                 }

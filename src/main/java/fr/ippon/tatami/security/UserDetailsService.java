@@ -8,13 +8,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,6 +57,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 
     public String getUserEmail() {
-        return SecurityUtils.getCurrentUserUsername();
+        return SecurityUtils.getCurrentUserEmail();
     }
 }

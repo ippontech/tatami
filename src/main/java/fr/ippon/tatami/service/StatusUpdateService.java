@@ -201,7 +201,7 @@ public class StatusUpdateService {
 
     public void reportedStatus(User reportingUser, String statusId) {
         log.debug("Reported Status: '{}'", statusId);
-        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserUsername());
+        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserEmail());
         reportedStatusRepository.reportStatus(domain, statusId, reportingUser.getEmail());
         mailService.sendReportedStatusEmail(reportingUser, statusId);
     }
@@ -211,13 +211,13 @@ public class StatusUpdateService {
     }
 
     public Collection<StatusDTO> findReportedStatuses() {
-        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserUsername());
+        String domain = DomainUtil.getDomainFromEmail(SecurityUtils.getCurrentUserEmail());
         List<String> reportedStatusId = getAllReportedStatuses(domain);
         return timelineService.buildStatusList(reportedStatusId);
     }
 
     public void deleteReportedStatus(String statusId) {
-        String currentEmail = SecurityUtils.getCurrentUserUsername();
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         if (userService.isAdmin(currentEmail)) {
             log.debug("ADMIN deleting reported status '{}'", statusId);
             reportedStatusRepository.unreportStatus(DomainUtil.getDomainFromEmail(currentEmail), statusId);
@@ -228,7 +228,7 @@ public class StatusUpdateService {
     }
 
     public void approveReportedStatus(String statusId) {
-        String currentEmail = SecurityUtils.getCurrentUserUsername();
+        String currentEmail = SecurityUtils.getCurrentUserEmail();
         if (userService.isAdmin(currentEmail)) {
             log.debug("Admin approves reported status '{}'", statusId);
             reportedStatusRepository.unreportStatus(DomainUtil.getDomainFromEmail(currentEmail), statusId);
