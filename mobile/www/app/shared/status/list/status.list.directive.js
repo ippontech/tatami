@@ -55,7 +55,7 @@
 
         addNewStatuses.$inject = ['oldStatuses'];
         function addNewStatuses(oldStatuses) {
-            if(oldStatuses.length < 20) {
+            if(oldStatuses.length === 0) {
                 vm.finishedTimeline = true;
             }
 
