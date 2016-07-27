@@ -6,7 +6,7 @@ angular.module('tatamiJHipsterApp')
             .state('login', {
                 //   abstract: true,
                 parent: 'site',
-                url: '/login?token&expires',
+                url: '/?token&expires',
                 data: {
                     authorities: [],
                     pageTitle: 'login.title'
