@@ -1,18 +1,10 @@
 'use strict';
 
 angular.module('tatamiJHipsterApp')
-    .controller('LoginController', function ($rootScope, $window, $scope, $state, $http, $timeout, $location, $stateParams, Auth, Principal, localStorageService) {
+    .controller('LoginController', function ($rootScope, $window, $scope, $state, $timeout, Auth, Principal) {
         $scope.user = {};
         $scope.errors = {};
 
-        if ($stateParams.token && $stateParams.expires) {
-            var token = {
-                token: $stateParams.token,
-                expires: $stateParams.expires
-            };
-            localStorageService.set('token', token);
-            $state.go('timeline');
-        }
         $scope.rememberMe = false;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
         $scope.login = function (event) {

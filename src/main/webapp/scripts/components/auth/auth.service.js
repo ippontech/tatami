@@ -1,7 +1,7 @@
 'use strict';
 
 tatamiJHipsterApp
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, AccountService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, AccountService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, localStorageService) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -36,6 +36,10 @@ tatamiJHipsterApp
             },
 
             authorize: function(force) {
+                // Store the token if present, the user will be redirect to the timeline if the token is valid
+                if ($rootScope.toStateParams.token && $rootScope.toStateParams.expires) {
+                    localStorageService.set('token', $rootScope.toStateParams);
+                }
                 return Principal.identity(force)
                     .then(function() {
                         var isAuthenticated = Principal.isAuthenticated();
