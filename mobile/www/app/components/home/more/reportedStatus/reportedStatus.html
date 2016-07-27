@@ -9,7 +9,7 @@
                     <div class="col-25 button button-clear ion-close-round" ng-click="vm.deleteStatus(status.statusId)"></div>
                 </div>
             </ion-item>
-            <ion-item ng-if="!vm.hasReportedStatus()" translate="more.reportedStatus.no">No blocked users</ion-item>
+            <div class="text-center" ng-if="!vm.hasReportedStatus()" translate="more.reportedStatus.no" ng-style="{'color':'#ababab','padding':'40px'}"/>
         </ion-list>
     </ion-content>
 </ion-view>
