@@ -8,12 +8,12 @@
             "current": "Current Server:",
             "change": "Change Server",
             "error": {
-                "title": "Failed to change endpoint",
-                "body": "Cannot reach server."
+                "title": "Error",
+                "body": "Failed to change endpoint - cannot reach server."
             },
             "authenticate": {
-                "title": "Successfully changed endpoint",
-                "body": "Please reauthenticate with the new server."
+                "title": "Success",
+                "body": "Endpoint changed - please reauthenticate with the new server."
             },
             "default": "Use default server"
         }
