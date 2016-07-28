@@ -1,3 +1,4 @@
+
 package fr.ippon.tatami.repository;
 
 import com.datastax.driver.core.*;
@@ -44,11 +45,6 @@ public class ReportedStatusRepository {
     public static final String DOMAIN = "domain";
     public static final String STATUS_ID = "role";
     public static final String REPORTING_LOGIN = "groupId";
-
-    @PostConstruct
-    public void init(){
-        //TODO: Initially create table here?  Do I need to do something else????
-    }
 
     public void reportStatus(String domain, String reportedStatusID, String reportingLogin){
         Statement statement = QueryBuilder.insertInto(REPORTED_STATUS)

@@ -95,6 +95,4 @@ public class ColumnFamilyKeys {
 
     public static final String REPORTED_STATUS_CF = "ReportedStatus";
 
-    public static final String DELETED_REPORTED_STATUS_CF = "DeletedReportedStatus";
-
 }

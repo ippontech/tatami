@@ -185,7 +185,11 @@ public class UserResource {
         List<String> userList = domainRepository.getEmailsInDomain(domain);
         List<User> users = new ArrayList<User>();
         for (String userItem : userList) {
-            users.add(userRepository.findOneByEmail(userItem).get());
+            Optional<User> optionalUser = userRepository.findOneByEmail(userItem);
+            if(optionalUser.isPresent()){
+                User user = optionalUser.get();
+                users.add(user);
+            }
         }
         //List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = users.stream()
