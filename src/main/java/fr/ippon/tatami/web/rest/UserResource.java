@@ -183,19 +183,11 @@ public class UserResource {
         String domain = currentUser.getDomain();
         log.debug("attempting to list all users in domain: {}", domain);
         List<String> userList = domainRepository.getEmailsInDomain(domain);
-        List<User> users = new ArrayList<User>();
-        for (String userItem : userList) {
-            Optional<User> optionalUser = userRepository.findOneByEmail(userItem);
-            if(optionalUser.isPresent()){
-                User user = optionalUser.get();
-                users.add(user);
-            }
-        }
-        //List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOs = users.stream()
-            .map(UserDTO::new)
+        List<UserDTO> users = userList.stream().map(email -> userRepository.findOneByEmail(email))
+            .filter(Optional::isPresent)
+            .map(user -> new UserDTO(user.get()))
             .collect(Collectors.toList());
-        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**

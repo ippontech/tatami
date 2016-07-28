@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="user in users">
+            <tr ng-repeat="user in users track by user.id">
                 <td><a ui-sref="user-management-detail({login:user.email})">{{user.id}}</a></td>
 
                 <td>{{user.email}}</td>
