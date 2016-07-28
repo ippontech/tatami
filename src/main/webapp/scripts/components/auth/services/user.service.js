@@ -9,16 +9,17 @@ tatamiJHipsterApp
 
         return users;
     };
+    var singleResponseTransform = function(user) {
+        user = angular.fromJson(user);
+        user['avatarURL'] = !user.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+        return user;
+    };
 
     return $resource('/tatami/rest/users/:email', null,
     {
         'get': {
             method: 'GET', params: { email: '@email' },
-            transformResponse: function(user) {
-                user = angular.fromJson(user);
-                user['avatarURL'] = !user.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
-                return user;
-            }
+            transformResponse: singleResponseTransform
         },
         'query': {
             method: 'GET', isArray: true, url: '/tatami/rest/users',
@@ -45,7 +46,11 @@ tatamiJHipsterApp
                 return suggestions;
             }
         },
-        'follow': { method: 'PATCH', params: { email: '@email' } },
+        'follow': {
+            method: 'PATCH',
+            params: { email: '@email' },
+            transformResponse: singleResponseTransform
+        },
         'searchUsers': { method: 'GET', isArray: true, url: '/tatami/rest/users/:term', transformResponse: responseTransform },
         'deactivate': { method: 'PATCH', params: { email: '@email' } },
         'delete': { method: 'DELETE', params: { email: '@email' } },

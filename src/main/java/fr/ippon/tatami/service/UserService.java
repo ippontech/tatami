@@ -54,6 +54,9 @@ public class UserService {
     @Inject
     private MailDigestRepository mailDigestRepository;
 
+    @Inject
+    private BlockService blockService;
+
     public Optional<User> getCurrentUser() {
         return userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail());
     }
@@ -353,17 +356,9 @@ public class UserService {
     }
 
     public Collection<UserDTO> buildUserDTOList(Collection<User> users) {
-        User currentUser = getCurrentUser().get();
-        Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUser.getUsername());
-        Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUser.getUsername());
         Collection<UserDTO> userDTOs = new ArrayList<UserDTO>();
         for (User user : users) {
-            UserDTO userDTO = getUserDTOFromUser(user);
-            userDTO.setYou(user.equals(currentUser));
-            if (!userDTO.isYou()) {
-                userDTO.setFriend(currentFriendLogins.contains(user.getUsername()));
-                userDTO.setFollower(currentFollowersLogins.contains(user.getUsername()));
-            }
+            UserDTO userDTO = buildUserDTO(user);
             userDTOs.add(userDTO);
         }
         return userDTOs;
@@ -377,8 +372,10 @@ public class UserService {
         if (!userDTO.isYou()) {
             Collection<String> currentFriendLogins = friendRepository.findFriendsForUser(currentUserEmail);
             Collection<String> currentFollowersLogins = followerRepository.findFollowersForUser(currentUserEmail);
+            Collection<String> currentBlockedUsers = blockService.getUsersBlockedEmailForUser(currentUserEmail);
             userDTO.setFriend(currentFriendLogins.contains(user.getEmail()));
             userDTO.setFollower(currentFollowersLogins.contains(user.getEmail()));
+            userDTO.setBlocked(currentBlockedUsers.contains(user.getEmail()));
         }
         return userDTO;
     }

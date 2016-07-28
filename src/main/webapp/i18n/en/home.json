@@ -99,7 +99,11 @@
                 "following": "Following",
                 "followers": "Followers",
                 "trends": "Trends"
-            }
+            },
+
+            "block": "Block",
+            "blocked": "Blocked",
+            "unblock": "Unblock"
         },
 
         "searchPage": {

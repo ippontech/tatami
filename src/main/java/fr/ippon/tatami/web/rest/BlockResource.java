@@ -38,13 +38,14 @@ public class BlockResource {
     UserDetailsService userDetailsService;
 
 
-    @RequestMapping(value = "/rest/block/blockedusers/{username}",
+    @RequestMapping(value = "/rest/block/blockedusers/{email}",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getBlockedUsersForUser(@PathVariable String username) {
-        Collection<User> blockedUsers = blockService.getUsersBlockedForUser(DomainUtil.getEmailFromUsernameAndDomain(username, SecurityUtils.getCurrentUserDomain()));
+    public Collection<UserDTO> getBlockedUsersForUser(@PathVariable String email) {
+
+        Collection<User> blockedUsers = blockService.getUsersBlockedForUser(email);
 
         return userService.buildUserDTOList(blockedUsers);
     }
@@ -52,23 +53,23 @@ public class BlockResource {
 
     /**
      * Method used by current user. Switch the blocked/unblocked status of the clicked user.
-     *
-     * @param username (of the clicked user)
+     * @param email (of the clicked user)
      * @return
      */
-    @RequestMapping(value = "/rest/block/update/{username}",
+    @RequestMapping(value = "/rest/block/update/{email}",
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateBlockedUser(@PathVariable("username") String username) {
+    public UserDTO updateBlockedUser(@PathVariable("email") String email) {
         String currentUserEmail = SecurityUtils.getCurrentUserEmail();
-        String userEmail = DomainUtil.getEmailFromUsernameAndDomain(username, SecurityUtils.getCurrentUserDomain());
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(userEmail).get());
-        if (blockService.isBlocked(currentUserEmail, toReturn.getEmail())) {
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
+        if(  toReturn.isBlocked()  ) {
             blockService.unblockUser(currentUserEmail, toReturn.getEmail());
-        } else {
+        }
+        else {
             blockService.blockUser(currentUserEmail, toReturn.getEmail());
         }
+        toReturn.setBlocked(toReturn.isBlocked());
         return toReturn;
     }
 

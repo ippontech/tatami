@@ -13,17 +13,13 @@ import java.util.stream.Collectors;
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static fr.ippon.tatami.config.ColumnFamilyKeys.USERSBLOCKED_CF;
 
-/**
- * Created by matthieudelafourniere on 7/5/16.
- */
-
 @Repository
 public class BlockRepository {
 
     @Inject
     Session session;
 
-    protected String usersBlockedTable = USERSBLOCKED_CF;
+    private String usersBlockedTable = USERSBLOCKED_CF;
 
     public void blockUser(String currentEmail, String blockedEmail){
         Statement statement = QueryBuilder.insertInto(usersBlockedTable)

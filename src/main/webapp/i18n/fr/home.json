@@ -99,7 +99,11 @@
                 "following": "Abonnement",
                 "followers": "Abonné",
                 "trends": "Tendances"
-            }
+            },
+
+            "block": "Bloquer",
+            "blocked": "Bloqué",
+            "unblock": "Débloquer"
         },
 
         "searchPage": {

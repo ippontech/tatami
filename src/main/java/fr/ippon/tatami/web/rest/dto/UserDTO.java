@@ -71,6 +71,8 @@ public class UserDTO {
 
     private boolean isFollower = false;
 
+    private boolean isBlocked = false;
+
     private long statusCount;
 
     private long followersCount;
@@ -280,6 +282,14 @@ public class UserDTO {
         isFollower = follower;
     }
 
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
     public long getStatusCount() {
         return statusCount;
     }
@@ -343,6 +353,7 @@ public class UserDTO {
             ", you=" + you +
             ", isFriend=" + isFriend +
             ", isFollower=" + isFollower +
+            ", isBlocked=" + isBlocked +
             '}';
     }
 }
