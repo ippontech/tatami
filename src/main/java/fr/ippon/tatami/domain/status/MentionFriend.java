@@ -113,22 +113,10 @@ public class MentionFriend implements AbstractStatus {
         this.email = email;
     }
 
-    private String followerEmail;
-
-    public String getFollowerEmail() {
-        return followerEmail;
-    }
-
-    public void setFollowerEmail(String followerEmail) {
-        this.followerEmail = followerEmail;
-    }
-
-
-
     @Override
     public String toString() {
         return "MentionFriend{" +
-                "followerEmail='" + followerEmail + '\'' +
+                "followerUsername='" + followerUsername + '\'' +
                 "} " + super.toString();
     }
 }
