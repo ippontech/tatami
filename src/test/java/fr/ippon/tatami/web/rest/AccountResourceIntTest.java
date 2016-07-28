@@ -170,7 +170,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            false                     // isAdmin
         );
 
         restMvc.perform(
@@ -205,7 +206,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            false                     // isAdmin
         );
 
         restUserMockMvc.perform(
@@ -240,7 +242,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            false                     // isAdmin
         );
 
         restUserMockMvc.perform(
@@ -277,14 +280,15 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            false                     // isAdmin
         );
 
         // Duplicate username, different e-mail
         UserDTO dup = new UserDTO(u.getUsername(), u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
-            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount());
+            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
         // Good user
         restMvc.perform(
@@ -328,14 +332,15 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            false                     // isAdmin
         );
 
         // Duplicate e-mail, different username
         UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
-            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount());
+            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
         // Good user
         restMvc.perform(
@@ -377,7 +382,8 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "ippon.fr",              // domain
             0,                       // statusCount
             0,                       // followersCount
-            0                        // friendsCount
+            0,                        // friendsCount
+            true                     // isAdmin
         );
 
         restMvc.perform(

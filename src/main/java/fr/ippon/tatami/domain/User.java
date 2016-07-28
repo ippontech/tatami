@@ -107,6 +107,9 @@ public class User implements Serializable {
     @Transient
     private long friendsCount;
 
+    @Transient
+    private boolean isAdmin = false;
+
     @JsonIgnore
     private Set<String> authorities = new HashSet<>();
 
@@ -299,6 +302,10 @@ public class User implements Serializable {
     public void setFriendsCount(long friendsCount) {
         this.friendsCount = friendsCount < 0 ? 0 : friendsCount;
     }
+
+    public boolean getIsAdmin() { return isAdmin; }
+
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
 
     @Override

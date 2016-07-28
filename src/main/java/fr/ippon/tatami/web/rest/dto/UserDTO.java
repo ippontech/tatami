@@ -2,6 +2,7 @@ package fr.ippon.tatami.web.rest.dto;
 
 import fr.ippon.tatami.domain.User;
 
+import fr.ippon.tatami.security.AuthoritiesConstants;
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.BeanUtils;
@@ -79,19 +80,22 @@ public class UserDTO {
 
     private long friendsCount;
 
+    private boolean isAdmin = false;
+
     public UserDTO() {
     }
 
     public UserDTO(User user) {
         BeanUtils.copyProperties(user, this);
         this.password = null;
+        this.isAdmin = authorities.contains(AuthoritiesConstants.ADMIN);
     }
 
     public UserDTO(String username, String password, String avatar, String firstName, String lastName,
         String email, boolean activated, String langKey, Set<String> authorities,
                    String jobTitle, String phoneNumber,
                    boolean mentionEmail, String rssUid, boolean weeklyDigest,
-        boolean dailyDigest, String domain, long statusCount, long followersCount, long friendsCount) {
+        boolean dailyDigest, String domain, long statusCount, long followersCount, long friendsCount, boolean isAdmin) {
 
         this.username = username;
         this.password = password;
@@ -112,6 +116,7 @@ public class UserDTO {
         this.statusCount = statusCount;
         this.followersCount = followersCount;
         this.friendsCount = friendsCount;
+        this.isAdmin = isAdmin;
     }
 
     public String getId() {
@@ -312,6 +317,14 @@ public class UserDTO {
 
     public void setFriendsCount(long friendsCount) {
         this.friendsCount = friendsCount;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override
