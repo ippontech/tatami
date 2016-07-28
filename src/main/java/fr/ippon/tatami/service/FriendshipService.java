@@ -3,15 +3,18 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.MentionFriend;
 import fr.ippon.tatami.repository.*;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.util.DomainUtil;
+import org.elasticsearch.common.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Manages the user's frienships.
@@ -25,9 +28,6 @@ import java.util.List;
 public class FriendshipService {
 
     private final Logger log = LoggerFactory.getLogger(FriendshipService.class);
-
-    @Inject
-    private UserService userService;
 
     @Inject
     private UserRepository userRepository;
@@ -54,26 +54,25 @@ public class FriendshipService {
      */
     public boolean followUser(String emailToFollow) {
         log.debug("Following user : {}", emailToFollow);
-        User currentUser = userService.getCurrentUser().get();
-        User followedUser = userRepository.findOneByEmail(emailToFollow).get();
-        if (followedUser != null && !followedUser.equals(currentUser)) {
-            if (counterRepository.getFriendsCounter(currentUser.getUsername()) > 0) {
-                for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getUsername())) {
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        if (!StringUtils.equals(emailToFollow, currentUserEmail)) {
+            if (counterRepository.getFriendsCounter(currentUserEmail) > 0) {
+                for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUserEmail)) {
                     if (alreadyFollowingTest.equals(emailToFollow)) {
-                        log.debug("User {} already follows user {}", currentUser.getUsername(), followedUser.getUsername());
+                        log.debug("User {} already follows user {}", currentUserEmail, emailToFollow);
                         return false;
                     }
                 }
             }
-            friendRepository.addFriend(currentUser.getUsername(), followedUser.getUsername());
-            counterRepository.incrementFriendsCounter(currentUser.getUsername());
-            followerRepository.addFollower(followedUser.getUsername(), currentUser.getUsername());
-            counterRepository.incrementFollowersCounter(followedUser.getUsername());
+            friendRepository.addFriend(currentUserEmail, emailToFollow);
+            counterRepository.incrementFriendsCounter(currentUserEmail);
+            followerRepository.addFollower(emailToFollow, currentUserEmail);
+            counterRepository.incrementFollowersCounter(emailToFollow);
             // mention the friend that the user has started following him
-            MentionFriend mentionFriend = statusRepository.createMentionFriend(followedUser.getUsername(), followedUser.getDomain(), currentUser.getUsername());
-            mentionlineRepository.addStatusToMentionline(mentionFriend.getUsername(), mentionFriend.getStatusId().toString());
+            MentionFriend mentionFriend = statusRepository.createMentionFriend(emailToFollow, DomainUtil.getDomainFromEmail(emailToFollow), currentUserEmail);
+            mentionlineRepository.addStatusToMentionline(mentionFriend.getEmail(), mentionFriend.getStatusId().toString());
 
-            log.debug("User {} now follows user {} ", currentUser.getUsername(), followedUser.getUsername());
+            log.debug("User {} now follows user {} ", currentUserEmail, emailToFollow);
             return true;
         } else {
             log.debug("Followed user does not exist : " + emailToFollow);
@@ -88,9 +87,7 @@ public class FriendshipService {
      */
     public boolean unfollowUser(String emailToUnfollow) {
         log.debug("Removing followed user : {}", emailToUnfollow);
-        User currentUser = userService.getCurrentUser().get();
-        User userToUnfollow = userRepository.findOneByEmail(emailToUnfollow).get();
-        return unfollowUser(currentUser, userToUnfollow);
+        return unfollowUser(SecurityUtils.getCurrentUserEmail(), emailToUnfollow);
     }
 
     /**
@@ -98,124 +95,70 @@ public class FriendshipService {
      *
      * @return true if the operation succeeds, false otherwise
      */
-    public boolean unfollowUser(User currentUser, User userToUnfollow) {
-        if (userToUnfollow != null) {
-            String userEmailToUnfollow = userToUnfollow.getEmail();
-            boolean userAlreadyFollowed = false;
+    public boolean unfollowUser(String currentUserEmail, String userEmailToUnfollow) {
+        if (StringUtils.isNotBlank(userEmailToUnfollow)) {
+            boolean userAlreadyFollowed = friendRepository.findFriendsForUser(currentUserEmail).contains(userEmailToUnfollow);
 
-            for (String alreadyFollowingTest : friendRepository.findFriendsForUser(currentUser.getUsername())) {
-                if (alreadyFollowingTest.equals(userToUnfollow.getUsername())) {
-                    userAlreadyFollowed = true;
-                }
-            }
             log.debug("userAlreadyFollowed :" + userAlreadyFollowed + ":" + userEmailToUnfollow);
             if (userAlreadyFollowed) {
-                friendRepository.removeFriend(currentUser.getUsername(), userToUnfollow.getUsername());
-                counterRepository.decrementFriendsCounter(currentUser.getUsername());
-                followerRepository.removeFollower(userToUnfollow.getUsername(), currentUser.getUsername());
-                counterRepository.decrementFollowersCounter(userToUnfollow.getUsername());
-                log.debug("User {} has stopped following user {}", currentUser.getEmail(), userEmailToUnfollow);
+                friendRepository.removeFriend(currentUserEmail, userEmailToUnfollow);
+                counterRepository.decrementFriendsCounter(currentUserEmail);
+                followerRepository.removeFollower(userEmailToUnfollow, currentUserEmail);
+                counterRepository.decrementFollowersCounter(userEmailToUnfollow);
+                log.debug("User {} has stopped following user {}", currentUserEmail, userEmailToUnfollow);
                 return true;
-            } else {
-                return false;
             }
         } else {
             log.debug("Followed user does not exist.");
-            return false;
         }
+        return false;
     }
 
-    public List<String> getFriendIdsForUser(String email) {
+    public List<String> getFriendEmailsForUser(String email) {
         log.debug("Retrieving friends for user with email : {}", email);
-        return friendRepository.findFriendsForUser(email.split("@")[0]);
+        return friendRepository.findFriendsForUser(email);
     }
 
-    public Collection<String> getFollowerIdsForUser(String userEmail) {
+    public Collection<String> getFollowerEmailsForUser(String userEmail) {
         log.debug("Retrieving followed users : {}", userEmail);
         return followerRepository.findFollowersForUser(userEmail);
     }
 
     public Collection<User> getFriendsForUser(String userEmail) {
-
-        User currentUser = userService.getCurrentUser().get();
-        Collection<String> friendEmails = friendRepository.findFriendsForUser(userEmail);
-        Collection<User> friends = new ArrayList<User>();
-        for (String friendEmail : friendEmails) {
-            User friend = userRepository.findOneByEmail(friendEmail + "@" + currentUser.getDomain()).get();
-            friends.add(friend);
-        }
-        return friends;
+        return friendRepository.findFriendsForUser(userEmail).stream()
+            .map(friendEmail -> userRepository.findOneByEmail(friendEmail))
+            .filter(Optional::isPresent)
+            .map(Optional::get).collect(Collectors.toList());
     }
 
     public Collection<User> getFollowersForUser(String userEmail) {
-        Collection<String> followersEmails = followerRepository.findFollowersForUser(userEmail);
-        Collection<User> followers = new ArrayList<User>();
-        for (String followerEmail : followersEmails) {
-            /*
-                In cases of posts where users are mentioned, we pass in a username instead of an email address when
-                a user clicks the link. In these cases, we should append the current user's domain to the username
-                before we proceed.
-
-                See marked.js
-        */
-            if (!DomainUtil.isValidEmailAddress(followerEmail)) {
-                User currentUser = userService.getCurrentUser().get();
-                followerEmail += "@" + currentUser.getDomain();
-            }
-            User follower = userRepository.findOneByEmail(followerEmail).get();
-            followers.add(follower);
-        }
-        return followers;
+        return followerRepository.findFollowersForUser(userEmail).stream()
+            .map(followerEmail -> userRepository.findOneByEmail(followerEmail))
+            .filter(Optional::isPresent)
+            .map(Optional::get).collect(Collectors.toList());
     }
 
     /**
-     * Finds if the "userUsername" user is followed by the current user.
+     * Finds if the "userEmail" user is followed by the current user.
      */
     public boolean isFollowed(String userEmail) {
         log.debug("Retrieving if you follow this user : {}", userEmail);
-        boolean isFollowed = false;
-        User user = userService.getCurrentUser().get();
-        if (null != user && !userEmail.equals(user.getUsername())) {
-            Collection<String> users = getFollowerIdsForUser(userEmail);
-            if (null != users && users.size() > 0) {
-                for (String follower : users) {
-                    if (follower.equals(user.getUsername())) {
-                        isFollowed = true;
-                        break;
-                    }
-                }
-            }
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        if (!StringUtils.equals(currentUserEmail, userEmail)) {
+            return getFollowerEmailsForUser(userEmail).stream().anyMatch(email -> email.equals(currentUserEmail));
         }
-        return isFollowed;
+        return false;
     }
 
     /**
-     * Finds if  the current user user follow the "userUsername".
+     * Finds if the current user follow the "userEmail" user.
      */
-    public boolean isFollowing(String userUsername) {
-        log.debug("Retrieving if you follow this user : {}", userUsername);
-        boolean isFollowing = false;
-        User user = userService.getCurrentUser().get();
-        if (null != user && !userUsername.equals(user.getUsername())) {
-//            Collection<User> users = getFriendsForUser(user.getUsername());
-            Collection<User> users = getFriendsForUser(user.getUsername());
-            if (null != users && users.size() > 0) {
-                for (User follower : users) {
-//                    if (follower.getUsername().equals(userUsername)) {
-                    if (follower.getUsername().equals(userUsername)) {
-                        isFollowing = true;
-                        break;
-                    }
-                }
-            }
+    public boolean isFollowing(String userEmail) {
+        log.debug("Retrieving if you follow this user : {}", userEmail);
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        if (!StringUtils.equals(currentUserEmail, userEmail)) {
+            return getFollowerEmailsForUser(currentUserEmail).stream().anyMatch(email -> email.equals(userEmail));
         }
-        return isFollowing;
+        return false;
     }
-
-//    This method is on the chopping block to be removed. It seems that we dont need a username column.
-//    private String getUsernameFromUsername(String username) {
-//        User currentUser = userService.getCurrentUser().get();
-//        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
-//        return DomainUtil.getUsernameFromUsernameAndDomain(username, domain);
-//    }
 }
