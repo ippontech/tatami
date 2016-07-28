@@ -3,7 +3,7 @@ angular.module('tatamiJHipsterApp')
     .directive('tatamiStatusList', function() {
             return {
                 restrict: 'E',
-                templateUrl: 'scripts/app/shared/status/list/tatamiStatusList.html',
+                templateUrl: 'scripts/shared/lists/status/tatamiStatusList.html',
                 scope: {
                     statuses: '='
                 },

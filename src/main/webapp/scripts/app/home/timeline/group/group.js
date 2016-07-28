@@ -35,7 +35,7 @@
                         controller: 'GroupStatusesController'
                     },
                     'homeBodyContent@timelineHome': {
-                        templateUrl: 'scripts/app/shared/lists/user/userList.html',
+                        templateUrl: 'scripts/shared/lists/user/userList.html',
                         controller: 'UserListController'
                     }
                 },
