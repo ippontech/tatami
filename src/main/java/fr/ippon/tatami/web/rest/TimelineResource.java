@@ -260,5 +260,15 @@ public class TimelineResource {
         statusUpdateService.approveReportedStatus(statusId);
     }
 
+    /**
+     * POST /rest/statuses/hide/{statusId} -> removes status from current user Timelime
+     */
+    @RequestMapping(value = "/rest/statuses/hide/{statusId}",
+        method = RequestMethod.POST)
+    @ResponseBody
+    public void hideStatus(@PathVariable("statusId") String statusId) {
+        log.debug("REST request to hide status Id : {}", statusId);
+        timelineService.hideStatus(statusId);
+    }
 
 }

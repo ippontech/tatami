@@ -18,7 +18,7 @@
                             </a>
                         </div>
                         <div class="status-content-container" ng-init="expanded = false" ng-click="getShares(status, $index); expanded = !expanded">
-                            <h5 class="statusitem-name">
+                            <h5 class="statusitem-name" ng-click="console()">
                                 <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
                                     <a ui-sref="profileStatuses({ email: status.sharedByUsername })">
@@ -126,11 +126,11 @@
                                             <i class="glyphicon glyphicon-star"></i>
                                             <span translate="status.favorite"></span>
                                         </button>
-                                        <button ng-if="$state.isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
+                                        <button ng-if="isAdmin && status.groupId === null" ng-click="announceStatus(status)" class="btn-link status-action status-action-announce button-ios">
                                             <i class="glyphicon glyphicon-bullhorn"></i>
                                             <span translate="status.announce"></span>
                                         </button>
-                                        <button ng-if="status.yours" ng-click="deleteStatus(status, $index,('status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
+                                        <button ng-if="status.yours || isAdmin" ng-click="deleteStatus(status, $index,('status.confirmDelete' | translate))" class="btn-link status-action status-action-delete button-ios">
                                             <i class="glyphicon glyphicon-trash"></i>
                                             <span translate="status.delete"></span>
                                         </button>
@@ -140,6 +140,9 @@
                                             <span translate="status.viewConversation"></span>
                                         </a>
                                     </span>
+                                    <button ng-if="!status.yours" class="btn-link status-action button-ios pull-right" ng-click="hideStatus(status, $index)">
+                                        <span translate="status.hide"></span>
+                                    </button>
                                 </small>
                             </div>
                         </div>

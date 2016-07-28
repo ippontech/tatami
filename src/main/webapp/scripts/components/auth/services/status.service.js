@@ -61,6 +61,11 @@ angular.module('tatamiJHipsterApp')
             }
         },
         'update': { method: 'PATCH', params: { statusId: '@statusId' } },
-        'announce': { method: 'PATCH', params: { params: '@statusId' } }
+        'announce': { method: 'PATCH', params: { params: '@statusId' } },
+        'hideStatus': {
+            method: 'POST',
+            params: {statusId: '@statusId'},
+            url: '/tatami/rest/statuses/hide/:statusId'
+        }
     });
 }]);

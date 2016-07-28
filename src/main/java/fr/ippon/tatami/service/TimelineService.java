@@ -268,7 +268,6 @@ public class TimelineService {
 
     private void setStatusDTOFromMentionFriend(StatusDTO statusDTO, MentionFriend mentionFriend, User statusUser){
         statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
-        statusDTO.setSharedByUsername(mentionFriend.getUsername());
         statusUser = userRepository.findOneByEmail(mentionFriend.getfollowerUsername() + "@" + statusUser.getDomain()).get();
         statusDTO.setFirstName(statusUser.getFirstName());
         statusDTO.setLastName(statusUser.getLastName());
@@ -665,5 +664,13 @@ public class TimelineService {
             }
         }
         return newDtos;
+    }
+
+    public void hideStatus(String statusId) {
+        log.debug("Hiding status from timeline : {}", statusId);
+        String email = SecurityUtils.getCurrentUserEmail();
+        Collection<String> statusIds = new ArrayList<String>();
+        statusIds.add(statusId);
+        timelineRepository.removeStatusesFromTimeline(email,statusIds);
     }
 }

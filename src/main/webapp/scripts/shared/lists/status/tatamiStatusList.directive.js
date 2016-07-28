@@ -27,6 +27,7 @@ angular.module('tatamiJHipsterApp')
                         }
 
                         $scope.busy = false;
+                        $scope.isAdmin = $state.isAdmin;
 
                         if($scope.statuses.length === 0) {
                             $scope.end = true;
@@ -260,6 +261,12 @@ angular.module('tatamiJHipsterApp')
                                 });
                             }
                         };
+
+                        $scope.hideStatus = function (status, index) {
+                            StatusService.hideStatus({statusId: status.statusId}, function () {
+                                $scope.statuses.splice(index,1);
+                            })
+                        }
                     }
                 ]
             }

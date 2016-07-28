@@ -14,6 +14,7 @@
         "announce": "Annoncer",
         "isAnnounced": "Annoncé par",
         "viewConversation": "Voir La Conversation",
-        "shares": "Partages"
+        "shares": "Partages",
+        "hide": "Cacher ce statut"
     }
 }
