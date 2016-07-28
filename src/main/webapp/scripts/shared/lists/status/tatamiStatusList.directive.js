@@ -43,7 +43,7 @@ angular.module('tatamiJHipsterApp')
 
                         var requestNewStatuses = function() {
                             // In milliseconds
-                            var pollingDelay = 20000;
+                            var pollingDelay = 600000;
 
                             $scope.poller = $timeout(function() {
                                 var args = null;
@@ -260,6 +260,12 @@ angular.module('tatamiJHipsterApp')
                                 });
                             }
                         };
+
+                        $scope.hideStatus = function (status, index) {
+                            StatusService.hideStatus({statusId: status.statusId}, function () {
+                                $scope.statuses.splice(index,1);
+                            })
+                        }
                     }
                 ]
             }

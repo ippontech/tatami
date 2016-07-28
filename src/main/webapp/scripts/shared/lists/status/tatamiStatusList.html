@@ -140,6 +140,9 @@
                                             <span translate="status.viewConversation"></span>
                                         </a>
                                     </span>
+                                    <button ng-if="!status.yours" class="btn-link status-action button-ios pull-right" ng-click="hideStatus(status, $index)">
+                                        <span translate="status.hide"></span>
+                                    </button>
                                 </small>
                             </div>
                         </div>

@@ -665,4 +665,12 @@ public class TimelineService {
         }
         return newDtos;
     }
+
+    public void hideStatus(String statusId) {
+        log.debug("Hiding status from timeline : {}", statusId);
+        String email = SecurityUtils.getCurrentUserEmail();
+        Collection<String> statusIds = new ArrayList<String>();
+        statusIds.add(statusId);
+        timelineRepository.removeStatusesFromTimeline(email,statusIds);
+    }
 }
