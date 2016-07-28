@@ -370,19 +370,19 @@ public class UserService {
     }
 
     private UserDTO getUserDTOFromUser(User user) {
-        UserDTO friend = new UserDTO();
-        friend.setEmail(user.getEmail());
-        friend.setUsername(user.getUsername());
-        friend.setAvatar(user.getAvatar());
-        friend.setFirstName(user.getFirstName());
-        friend.setLastName(user.getLastName());
-        friend.setJobTitle(user.getJobTitle());
-        friend.setPhoneNumber(user.getPhoneNumber());
-        friend.setAttachmentsSize(user.getAttachmentsSize());
-//        friend.setStatusCount(user.getStatusCount());
-//        friend.setFriendsCount(user.getFriendsCount());
-//        friend.setFollowersCount(user.getFollowersCount());
-        friend.setActivated(user.getActivated());
-        return friend;
+        UserDTO dto = new UserDTO();
+        dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        dto.setAvatar(user.getAvatar());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setJobTitle(user.getJobTitle());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setAttachmentsSize(user.getAttachmentsSize());
+        dto.setStatusCount(user.getStatusCount());
+        dto.setFriendsCount(user.getFriendsCount());
+        dto.setFollowerscount(user.getFollowersCount());
+        dto.setActivated(user.getActivated());
+        return dto;
     }
 }

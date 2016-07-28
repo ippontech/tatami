@@ -119,20 +119,18 @@ public class UserRepository {
     }
 
     public Optional<User> findOneByEmail(String email) {
-        if(StringUtils.isBlank(email)) {
+        if (StringUtils.isBlank(email)) {
             return Optional.empty();
         }
-        User user = null;
         BoundStatement stmt = findOneByEmailStmt.bind();
         stmt.setString("email", email);
         Optional<User> optionalUser = findOneFromIndex(stmt);
-        if (optionalUser.isPresent()) {
-            user = optionalUser.get();
+        return optionalUser.map(user -> {
             user.setStatusCount(counterRepository.getStatusCounter(email));
             user.setFollowersCount(counterRepository.getFollowersCounter(email));
             user.setFriendsCount(counterRepository.getFriendsCounter(email));
-        }
-        return Optional.ofNullable(user);
+            return Optional.of(user);
+        }).orElse(Optional.empty());
     }
 
     public List<User> findAll() {
