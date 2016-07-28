@@ -27,6 +27,7 @@ angular.module('tatamiJHipsterApp')
                         }
 
                         $scope.busy = false;
+                        $scope.isAdmin = $state.isAdmin;
 
                         if($scope.statuses.length === 0) {
                             $scope.end = true;
@@ -43,7 +44,7 @@ angular.module('tatamiJHipsterApp')
 
                         var requestNewStatuses = function() {
                             // In milliseconds
-                            var pollingDelay = 600000;
+                            var pollingDelay = 20000;
 
                             $scope.poller = $timeout(function() {
                                 var args = null;
