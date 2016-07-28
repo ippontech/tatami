@@ -116,20 +116,10 @@ public class TimelineService {
         Status status = null;
         if (abstractStatus.getType() == null || abstractStatus.getType().equals(StatusType.STATUS)) {
             status = (Status) abstractStatus;
-        } else if (abstractStatus.getType().equals(StatusType.SHARE)) {
+        } else if (abstractStatus.getType().equals(StatusType.SHARE) || abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+            //An announcement is a share
             Share share = (Share) abstractStatus;
             AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
-            if (originalStatus == null) {
-                log.debug("Original Status could not be found");
-                return details;
-            } else if (originalStatus.getType() != null && !originalStatus.getType().equals(StatusType.STATUS)) {
-                log.debug("Original status does not have the correct type");
-                return details;
-            }
-            status = (Status) originalStatus;
-        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
-            Announcement announcement = (Announcement) abstractStatus;
-            AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
             if (originalStatus == null) {
                 log.debug("Original Status could not be found");
                 return details;
@@ -198,26 +188,19 @@ public class TimelineService {
                             " status : " + abstractStatus);
                     }
 
-                    StatusDTO statusDTO = new StatusDTO();
-                    statusDTO.setStatusId(abstractStatus.getStatusId().toString());
-                    statusDTO.setStatusDate(abstractStatus.getStatusDate());
-                    statusDTO.setGeoLocalization(abstractStatus.getGeoLocalization());
-                    statusDTO.setActivated(statusUser.getActivated());
-                    statusDTO.setYours(statusUser.equals(currentUser));
+                    StatusDTO statusDTO = buildStatusDTOFromAbstractStatus(abstractStatus, statusUser, currentUser);
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);
                     } else {
-                        statusDTO.setType(abstractStatus.getType());
+                        statusDTO.setType(type);
                     }
 
                     if (abstractStatus.getType().equals(StatusType.SHARE)) {
                         Share share = (Share) abstractStatus;
                         AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
                         if (originalStatus != null) { // Find the original status
-                            statusDTO.setTimelineId(share.getStatusId().toString());
-                            statusDTO.setSharedByUsername(share.getUsername());
-                            statusDTO.setYours(statusUser.equals(currentUser));
+                            setStatusDTOFromShare(statusDTO, share,  statusUser,  currentUser);
                             statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
@@ -236,21 +219,14 @@ public class TimelineService {
                         }
                     } else if (abstractStatus.getType().equals(StatusType.MENTION_FRIEND)) {
                         MentionFriend mentionFriend = (MentionFriend) abstractStatus;
-                        statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
-                        statusDTO.setSharedByUsername(mentionFriend.getUsername());
-                        statusUser = userRepository.findOneByEmail(mentionFriend.getFollowerEmail()).get();
-                        statusDTO.setFirstName(statusUser.getFirstName());
-                        statusDTO.setLastName(statusUser.getLastName());
-                        statusDTO.setAvatar(statusUser.getAvatar());
-                        statusDTO.setUsername(statusUser.getUsername());
+                        setStatusDTOFromMentionFriend(statusDTO, mentionFriend, statusUser);
                         statuses.add(statusDTO);
                     } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
                         Announcement announcement = (Announcement) abstractStatus;
                         AbstractStatus originalStatus = statusRepository.findStatusById(announcement.getOriginalStatusId());
                         if (originalStatus != null) { // Find the status that was announced
-                            statusDTO.setTimelineId(announcement.getStatusId().toString());
-                            statusDTO.setSharedByUsername(announcement.getEmail());
-                            statusDTO.setYours(statusUser.equals(currentUser));
+                            //An announcement is a share
+                            setStatusDTOFromShare(statusDTO, announcement, statusUser, currentUser);
                             statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
@@ -272,6 +248,32 @@ public class TimelineService {
             statusDTO.setShareByMe(shareByMe(statusDTO));
 
         return statuses;
+    }
+
+    private StatusDTO buildStatusDTOFromAbstractStatus(AbstractStatus abstractStatus, User statusUser, User currentUser){
+        StatusDTO statusDTO = new StatusDTO();
+        statusDTO.setStatusId(abstractStatus.getStatusId().toString());
+        statusDTO.setStatusDate(abstractStatus.getStatusDate());
+        statusDTO.setGeoLocalization(abstractStatus.getGeoLocalization());
+        statusDTO.setActivated(statusUser.getActivated());
+        statusDTO.setYours(statusUser.equals(currentUser));
+        return statusDTO;
+    }
+
+    private void setStatusDTOFromShare(StatusDTO statusDTO, Share share, User statusUser, User currentUser){
+        statusDTO.setTimelineId(share.getStatusId().toString());
+        statusDTO.setSharedByUsername(share.getUsername());
+        statusDTO.setYours(statusUser.equals(currentUser));
+    }
+
+    private void setStatusDTOFromMentionFriend(StatusDTO statusDTO, MentionFriend mentionFriend, User statusUser){
+        statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
+        statusDTO.setSharedByUsername(mentionFriend.getUsername());
+        statusUser = userRepository.findOneByEmail(mentionFriend.getFollowerEmail()).get();
+        statusDTO.setFirstName(statusUser.getFirstName());
+        statusDTO.setLastName(statusUser.getLastName());
+        statusDTO.setAvatar(statusUser.getAvatar());
+        statusDTO.setUsername(statusUser.getUsername());
     }
 
     //@Cacheable("isSharedByMe")
