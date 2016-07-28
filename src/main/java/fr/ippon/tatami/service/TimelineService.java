@@ -203,6 +203,7 @@ public class TimelineService {
                     statusDTO.setStatusDate(abstractStatus.getStatusDate());
                     statusDTO.setGeoLocalization(abstractStatus.getGeoLocalization());
                     statusDTO.setActivated(statusUser.getActivated());
+                    statusDTO.setYours(statusUser.equals(currentUser));
                     StatusType type = abstractStatus.getType();
                     if (type == null) {
                         statusDTO.setType(StatusType.STATUS);
@@ -216,6 +217,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the original status
                             statusDTO.setTimelineId(share.getStatusId().toString());
                             statusDTO.setSharedByUsername(share.getUsername());
+                            statusDTO.setYours(statusUser.equals(currentUser));
                             statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {
@@ -248,6 +250,7 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was announced
                             statusDTO.setTimelineId(announcement.getStatusId().toString());
                             statusDTO.setSharedByUsername(announcement.getEmail());
+                            statusDTO.setYours(statusUser.equals(currentUser));
                             statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
                             addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
                         } else {

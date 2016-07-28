@@ -47,6 +47,8 @@ public class StatusDTO implements Serializable {
 
     private String username;
 
+    private boolean yours;
+
     private boolean statusPrivate;
 
     private boolean activated;
@@ -152,6 +154,14 @@ public class StatusDTO implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setYours(boolean isYours){
+        this.yours = isYours;
+    }
+
+    public boolean isYours(){
+        return yours;
     }
 
     public boolean isStatusPrivate() {
@@ -354,6 +364,7 @@ public class StatusDTO implements Serializable {
                 ", detailsAvailable=" + detailsAvailable +
                 ", sharedByUsername='" + sharedByUsername + '\'' +
                 ", shareByMe='" + shareByMe + '\'' +
+                ", isYours='" + yours + '\'' +
                 '}';
     }
 }
