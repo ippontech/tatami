@@ -39,6 +39,8 @@ public class UserDTO implements Serializable {
 
     private boolean isBlocked = false;
 
+    private boolean isAdmin = false;
+
     public boolean isActivated() {
         return isActivated;
     }
@@ -158,6 +160,10 @@ public class UserDTO implements Serializable {
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
     }
+
+    public boolean getIsAdmin() { return isAdmin; }
+
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
     @Override
     public boolean equals(Object o) {

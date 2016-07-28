@@ -92,6 +92,7 @@ public class User implements Serializable {
 
     private long followersCount;
 
+    private Boolean isAdmin = false;
 
     public Boolean getActivated() {
         return activated;
@@ -228,6 +229,10 @@ public class User implements Serializable {
     public void setFollowersCount(long followersCount) {
         this.followersCount = followersCount;
     }
+
+    public Boolean getIsAdmin() { return isAdmin; }
+
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
     public Boolean getWeeklyDigestSubscription() {
         return weeklyDigestSubscription;

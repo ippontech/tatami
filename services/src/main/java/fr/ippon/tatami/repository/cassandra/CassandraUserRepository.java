@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.validation.ContraintsUserCreation;
 import fr.ippon.tatami.repository.CounterRepository;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.AuthenticationService;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -39,6 +40,9 @@ public class CassandraUserRepository implements UserRepository {
 
     @Inject
     private CounterRepository counterRepository;
+
+    @Inject
+    private AuthenticationService authenticationService;
 
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static final Validator validator = factory.getValidator();
@@ -90,6 +94,7 @@ public class CassandraUserRepository implements UserRepository {
             user.setStatusCount(counterRepository.getStatusCounter(login));
             user.setFollowersCount(counterRepository.getFollowersCounter(login));
             user.setFriendsCount(counterRepository.getFriendsCounter(login));
+            user.setIsAdmin(authenticationService.isCurrentUserInRole("ROLE_ADMIN"));
         }
         return user;
     }
