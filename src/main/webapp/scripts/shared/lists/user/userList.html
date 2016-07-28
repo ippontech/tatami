@@ -2,7 +2,7 @@
     <section class="timeline">
         <div class="useritem" ng-repeat="user in users">
             <div class='pull-left background-image-fffix'>
-                <a ui-sref="profileStatuses({ email: user.email })">
+                <a ui-sref="profileStatuses({ email: user.username })">
                     <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.avatarURL + ')' }"></div>
                 </a>
             </div>
@@ -12,13 +12,13 @@
                       ng-class="{ 'label-danger': user.friend && hover, 'label-info': user.friend && !hover, 'label-glyphicon-plus': !user.friend }">
                         <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                <a ui-sref="profileStatuses({ email: user.email })">
+                <a ui-sref="profileStatuses({ email: user.username })">
                     <strong>
                         {{ user.firstName + ' ' + user.lastName }}
                     </strong>
                 </a>
 
-                <a ui-sref="profileStatuses({ email: user.email })">
+                <a ui-sref="profileStatuses({ email: user.username })">
                     <small>
                         @{{ user.username }}
                     </small>
