@@ -25,6 +25,7 @@
             var newEndpoint = TatamiEndpoint.getEndpoint();
             if (vm.lastEndpoint.url !== newEndpoint.url) {
                 vm.lastEndpoint.url = newEndpoint.url;
+                vm.failed = false;
             }
         });
 
