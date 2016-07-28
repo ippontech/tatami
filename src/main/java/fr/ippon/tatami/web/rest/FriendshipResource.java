@@ -58,7 +58,7 @@ public class FriendshipResource {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        Collection<User> friends = friendshipService.getFriendsForUser(user.getUsername());
+        Collection<User> friends = friendshipService.getFriendsForUser(user.getEmail());
 
         return userService.buildUserDTOList(friends);
     }
@@ -84,7 +84,7 @@ public class FriendshipResource {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        Collection<User> friends = friendshipService.getFollowersForUser(user.getUsername());
+        Collection<User> friends = friendshipService.getFollowersForUser(user.getEmail());
 
         return userService.buildUserDTOList(friends);
     }

@@ -103,7 +103,7 @@ public class GroupService {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             User user = userRepository.findOneByEmail(member.getKey()).get();
-            if (user.getUsername() == userWanted.getUsername()) {
+            if (userWanted.equals(user)) {
                 UserGroupDTO dto = new UserGroupDTO();
                 dto.setUsername(user.getUsername());
                 dto.setAvatar(user.getAvatar());
