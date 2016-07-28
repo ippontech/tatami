@@ -381,7 +381,7 @@ public class UserService {
         dto.setAttachmentsSize(user.getAttachmentsSize());
         dto.setStatusCount(user.getStatusCount());
         dto.setFriendsCount(user.getFriendsCount());
-        dto.setFollowerscount(user.getFollowersCount());
+        dto.setFollowersCount(user.getFollowersCount());
         dto.setActivated(user.getActivated());
         return dto;
     }

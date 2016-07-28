@@ -284,7 +284,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         UserDTO dup = new UserDTO(u.getUsername(), u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
-            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowerscount(), u.getFriendsCount());
+            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount());
 
         // Good user
         restMvc.perform(
@@ -335,7 +335,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
             u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
-            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowerscount(), u.getFriendsCount());
+            u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount());
 
         // Good user
         restMvc.perform(

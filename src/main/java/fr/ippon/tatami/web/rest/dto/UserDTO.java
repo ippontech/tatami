@@ -298,11 +298,11 @@ public class UserDTO {
         this.statusCount = statusCount;
     }
 
-    public long getFollowerscount() {
+    public long getFollowersCount() {
         return followersCount;
     }
 
-    public void setFollowerscount(long followersCount) {
+    public void setFollowersCount(long followersCount) {
         this.followersCount = followersCount;
     }
 
