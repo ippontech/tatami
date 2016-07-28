@@ -209,7 +209,7 @@ public class UserResource {
             email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
         log.debug("rest request to get User : {}", email);
-        return userService.getUserWithAuthoritiesByEmail(email)
+        return userService.getUser(email)
             .map(userService::buildUserDTO)
             .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

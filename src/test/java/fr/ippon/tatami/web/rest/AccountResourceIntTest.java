@@ -119,7 +119,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         user.setWeeklyDigest(false);
         user.setDailyDigest(false);
         user.setDomain("ippon.fr");
-        when(mockUserService.getUserWithAuthorities()).thenReturn(user);
+        when(mockUserService.getCurrentUser()).thenReturn(Optional.of(user));
 
         restUserMockMvc.perform(get("/tatami/rest/account/profile")
                 .accept(MediaType.APPLICATION_JSON))
@@ -141,7 +141,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
     @Test
     public void testGetUnknownAccount() throws Exception {
-        when(mockUserService.getUserWithAuthorities()).thenReturn(null);
+        when(mockUserService.getCurrentUser()).thenReturn(Optional.empty());
 
         restUserMockMvc.perform(get("/tatami/rest/account/profile")
                 .accept(MediaType.APPLICATION_JSON))

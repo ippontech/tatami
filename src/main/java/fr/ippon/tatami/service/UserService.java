@@ -57,6 +57,10 @@ public class UserService {
     @Inject
     private BlockService blockService;
 
+    public Optional<User> getUser(String email) {
+        return userRepository.findOneByEmail(email);
+    }
+
     public Optional<User> getCurrentUser() {
         return userRepository.findOneByEmail(SecurityUtils.getCurrentUserEmail());
     }
@@ -218,24 +222,9 @@ public class UserService {
         });
     }
 
-    public Optional<User> getUserWithAuthoritiesByEmail(String email) {
-        return userRepository.findOneByEmail(email);
-    }
-
     public boolean isAdmin(String email) {
-        Optional<User> userOptional = getUserWithAuthoritiesByEmail(email);
+        Optional<User> userOptional = getUser(email);
         return userOptional.isPresent() && userOptional.get().getAuthorities().contains(AuthoritiesConstants.ADMIN);
-    }
-
-
-    public User getUserWithAuthorities() {
-        Optional<User> userOptional = getCurrentUser();
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.getAuthorities().size(); // eagerly load the association
-            return user;
-        }
-        return null;
     }
 
     /**
