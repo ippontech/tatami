@@ -269,7 +269,7 @@ public class TimelineService {
     private void setStatusDTOFromMentionFriend(StatusDTO statusDTO, MentionFriend mentionFriend, User statusUser){
         statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
         statusDTO.setSharedByUsername(mentionFriend.getUsername());
-        statusUser = userRepository.findOneByEmail(mentionFriend.getFollowerEmail()).get();
+        statusUser = userRepository.findOneByEmail(mentionFriend.getfollowerUsername() + "@" + statusUser.getDomain()).get();
         statusDTO.setFirstName(statusUser.getFirstName());
         statusDTO.setLastName(statusUser.getLastName());
         statusDTO.setAvatar(statusUser.getAvatar());
