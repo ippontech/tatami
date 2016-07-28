@@ -1,32 +1,20 @@
-
 package fr.ippon.tatami.repository;
-
-import com.datastax.driver.core.*;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.utils.UUIDs;
-import fr.ippon.tatami.config.ColumnFamilyKeys;
-import org.springframework.stereotype.Repository;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.util.*;
-
-import fr.ippon.tatami.domain.Group;
-import java.util.stream.Collectors;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.UUID;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.set;
 
 /**
  * Created by emilyklein on 7/26/16.
- *
+ * <p>
  * Cassandra implementation of the Userline repository.
  * <p/>
  * Structure :
@@ -34,7 +22,6 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.set;
  * - Name : status Id
  * - Value : ""
  */
-
 @Repository
 public class ReportedStatusRepository {
 
@@ -46,23 +33,22 @@ public class ReportedStatusRepository {
     public static final String STATUS_ID = "role";
     public static final String REPORTING_LOGIN = "groupId";
 
-    public void reportStatus(String domain, String reportedStatusID, String reportingLogin){
+    public void reportStatus(String domain, String reportedStatusID, String reportingLogin) {
         Statement statement = QueryBuilder.insertInto(REPORTED_STATUS)
             .value(DOMAIN, domain)
             .value(STATUS_ID, reportedStatusID)
             .value(REPORTING_LOGIN, reportingLogin);
         session.execute(statement);
-
     }
 
-    public void unreportStatus(String domain, String statusId){
+    public void unreportStatus(String domain, String statusId) {
         Statement statement = QueryBuilder.delete().from(REPORTED_STATUS)
             .where(eq(DOMAIN, domain))
             .and(eq(STATUS_ID, statusId));
         session.execute(statement);
     }
 
-    public List<String> findReportedStatuses (String domain){
+    public List<String> findReportedStatuses(String domain) {
         Statement statement = QueryBuilder.select()
             .all()
             .from(REPORTED_STATUS)
