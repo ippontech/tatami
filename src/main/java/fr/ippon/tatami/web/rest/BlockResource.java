@@ -3,9 +3,11 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.BlockService;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +44,7 @@ public class BlockResource {
     @Timed
     @ResponseBody
     public Collection<UserDTO> getBlockedUsersForUser(@PathVariable String username) {
-
-        User currentUser = userService.getCurrentUser().get();
-        String email = username + "@" + currentUser.getDomain();
-
-        Collection<User> blockedUsers = blockService.getUsersBlockedForUser(email);
+        Collection<User> blockedUsers = blockService.getUsersBlockedForUser(DomainUtil.getEmailFromUsernameAndDomain(username, SecurityUtils.getCurrentUserDomain()));
 
         return userService.buildUserDTOList(blockedUsers);
     }
@@ -63,13 +61,13 @@ public class BlockResource {
     @Timed
     @ResponseBody
     public UserDTO updateBlockedUser(@PathVariable("username") String username) {
-        User currentUser = userService.getCurrentUser().get();
-        String email = username + "@" + currentUser.getDomain();
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
-        if (blockService.isBlocked(currentUser.getEmail(), toReturn.getEmail())) {
-            blockService.unblockUser(currentUser.getEmail(), toReturn.getEmail());
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        String userEmail = DomainUtil.getEmailFromUsernameAndDomain(username, SecurityUtils.getCurrentUserDomain());
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(userEmail).get());
+        if (blockService.isBlocked(currentUserEmail, toReturn.getEmail())) {
+            blockService.unblockUser(currentUserEmail, toReturn.getEmail());
         } else {
-            blockService.blockUser(currentUser.getEmail(), toReturn.getEmail());
+            blockService.blockUser(currentUserEmail, toReturn.getEmail());
         }
         return toReturn;
     }

@@ -69,7 +69,7 @@ public class FriendshipService {
             followerRepository.addFollower(emailToFollow, currentUserEmail);
             counterRepository.incrementFollowersCounter(emailToFollow);
             // mention the friend that the user has started following him
-            MentionFriend mentionFriend = statusRepository.createMentionFriend(emailToFollow, DomainUtil.getDomainFromEmail(emailToFollow), currentUserEmail);
+            MentionFriend mentionFriend = statusRepository.createMentionFriend(emailToFollow, currentUserEmail);
             mentionlineRepository.addStatusToMentionline(mentionFriend.getEmail(), mentionFriend.getStatusId().toString());
 
             log.debug("User {} now follows user {} ", currentUserEmail, emailToFollow);

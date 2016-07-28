@@ -210,8 +210,7 @@ public class UserResource {
         See marked.js
         */
         if (!DomainUtil.isValidEmailAddress(email)) {
-            User currentUser = userService.getCurrentUser().get();
-            email += "@" + currentUser.getDomain();
+            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
         log.debug("rest request to get User : {}", email);
         return userService.getUserWithAuthoritiesByEmail(email)

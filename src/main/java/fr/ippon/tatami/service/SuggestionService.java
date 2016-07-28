@@ -52,10 +52,10 @@ public class SuggestionService {
     public Collection<User> suggestUsers(String email) {
         User currentUser = userService.getCurrentUser().get();
         Map<String, Integer> userCount = new HashMap<String, Integer>();
-        List<String> friendIds = friendshipService.getFriendIdsForUser(email);
+        List<String> friendIds = friendshipService.getFriendEmailsForUser(email);
         List<String> sampleFriendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : sampleFriendIds) {
-            List<String> friendsOfFriend = friendshipService.getFriendIdsForUser(friendId);
+            List<String> friendsOfFriend = friendshipService.getFriendEmailsForUser(friendId);
             friendsOfFriend = AnalysisUtil.reduceCollectionSize(friendsOfFriend, SUB_SAMPLE_SIZE);
             for (String friendOfFriend : friendsOfFriend) {
                 if (!friendIds.contains(friendOfFriend) && !friendOfFriend.equals(email)) {
@@ -66,7 +66,7 @@ public class SuggestionService {
         List<String> mostFollowedUsersEmail = AnalysisUtil.findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
-            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail+"@"+currentUser.getDomain()).get();
+            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail).get();
             if ( suggestion.getActivated() && !suggestion.getEmail().equals(currentUser.getEmail())){
                 userSuggestions.add(suggestion);
             }
@@ -83,10 +83,10 @@ public class SuggestionService {
         String domain = DomainUtil.getDomainFromEmail(email);
         Map<String, Integer> groupCount = new HashMap<>();
         List<UUID> groupIds = userGroupRepository.findGroups(email);
-        List<String> friendIds = friendshipService.getFriendIdsForUser(email);
+        List<String> friendIds = friendshipService.getFriendEmailsForUser(email);
         friendIds = AnalysisUtil.reduceCollectionSize(friendIds, SAMPLE_SIZE);
         for (String friendId : friendIds) {
-            List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId+"@"+domain);
+            List<UUID> groupsOfFriend = userGroupRepository.findGroups(friendId);
             for (UUID groupOfFriend : groupsOfFriend) {
                 if (!groupIds.contains(groupOfFriend)) {
                     AnalysisUtil.incrementKeyCounterInMap(groupCount, groupOfFriend.toString());

@@ -7,8 +7,8 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.domain.Attachment;
-import fr.ippon.tatami.domain.Domain;
 import fr.ippon.tatami.domain.Group;
+import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import fr.ippon.tatami.domain.status.*;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -226,18 +225,17 @@ public class StatusRepository {
         return announcement;
     }
 
-
-    public MentionFriend createMentionFriend(String username, String domain, String followerUsername) {
+    public MentionFriend createMentionFriend(String email, String followerEmail) {
         MentionFriend mentionFriend = new MentionFriend();
-        mentionFriend.setUsername(username);
         mentionFriend.setType(StatusType.MENTION_FRIEND);
-        mentionFriend.setUsername(username);
-        mentionFriend.setDomain(domain);
-        mentionFriend.setEmail(username+"@"+domain);
+        mentionFriend.setUsername(DomainUtil.getUsernameFromEmail(email));
+        mentionFriend.setDomain(DomainUtil.getDomainFromEmail(email));
+        mentionFriend.setEmail(email);
 
         Insert inserter = this.createBaseStatus(mentionFriend);
+        String followerUsername = DomainUtil.getUsernameFromEmail(followerEmail);
         mentionFriend.setfollowerUsername(followerUsername);
-        inserter = inserter.value("followerUsername",followerUsername);
+        inserter = inserter.value("followerUsername", followerUsername);
         log.debug("Persisting Announcement : {}", mentionFriend);
         session.execute(inserter);
         return mentionFriend;

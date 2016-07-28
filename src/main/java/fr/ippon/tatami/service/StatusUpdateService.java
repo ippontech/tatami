@@ -12,6 +12,7 @@ import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -395,10 +396,9 @@ public class StatusUpdateService {
         Matcher m = PATTERN_LOGIN.matcher(status.getContent());
         while (m.find()) {
             String mentionedUser = extractUsernameWithoutAt(m.group());
-            String mentionedUserEmail = (mentionedUser + "@" + domain);
-            if (mentionedUser != null &&
-                !mentionedUser.equals(currentUser) &&
+            if (!StringUtils.equals(mentionedUser, currentUser) &&
                 !followersForUser.contains(mentionedUser)) {
+                String mentionedUserEmail = DomainUtil.getEmailFromUsernameAndDomain(mentionedUser, domain);
 
                 log.debug("Mentioning : {}", mentionedUserEmail);
 

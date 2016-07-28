@@ -655,7 +655,7 @@ public class TimelineService {
         Collection<String> blockedUsers = blockService.getUsersBlockedEmailForUser(currentEmail);
         Collection<StatusDTO> newDtos = new ArrayList<>();
         for (StatusDTO dto : dtos) {
-            if (!blockedUsers.contains(dto.getUsername() + "@" + domain)) {
+            if (!blockedUsers.contains(DomainUtil.getEmailFromUsernameAndDomain(dto.getUsername(), domain))) {
                 newDtos.add(dto);
             }
         }

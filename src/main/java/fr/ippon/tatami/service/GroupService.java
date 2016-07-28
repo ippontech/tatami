@@ -75,11 +75,9 @@ public class GroupService {
     }
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
-        User currentUser = userService.getCurrentUser().get();
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email.split("@")[0]);
+        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
         Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
-        email += "@" + currentUser.getDomain();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
             User user = userRepository.findOneByEmail(member.getKey()).get();

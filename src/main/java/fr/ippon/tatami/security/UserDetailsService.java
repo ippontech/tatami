@@ -38,7 +38,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         String lowercaseUsername = username.toLowerCase();
         Optional<User> userFromDatabase = userRepository.findOneByEmail(lowercaseUsername);
 
-        if (userFromDatabase.equals(Optional.empty())) {
+        if (!userFromDatabase.isPresent()) {
             throw new UsernameNotFoundException("User " + username + " not in the database.");
         }
 

@@ -15,6 +15,7 @@ import fr.ippon.tatami.security.GoogleAuthenticationToken;
 import fr.ippon.tatami.security.xauth.Token;
 import fr.ippon.tatami.security.xauth.TokenProvider;
 import fr.ippon.tatami.security.xauth.XAuthTokenFilter;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
@@ -123,7 +124,7 @@ public class GoogleTokenService {
             throw new UsernameNotFoundException(msg);
         }
 
-        if(!email.contains("@")) {
+        if(!DomainUtil.isValidEmailAddress(email)) {
             log.debug("User email {} from OAuth response is incorrect.", email);
             throw new UsernameNotFoundException("OAuth response did not contains a valid user email");
         }
@@ -145,7 +146,7 @@ public class GoogleTokenService {
 
         User createdUser = new User();
 
-        createdUser.setUsername(email.split("@")[0]);
+        createdUser.setUsername(DomainUtil.getUsernameFromEmail(email));
         createdUser.setId(UUID.randomUUID().toString());
         createdUser.setEmail(email);
         createdUser.setFirstName(firstName);
@@ -170,8 +171,7 @@ public class GoogleTokenService {
         String activation = randomUtil.generateActivationKey();
         createdUser.setActivationKey(activation);
 
-        String domain = email.split("@")[1];
-        createdUser.setDomain(domain);
+        createdUser.setDomain(DomainUtil.getDomainFromEmail(email));
 
         userRepository.save(createdUser);
         return DetailsService.loadUserByUsername(createdUser.getEmail());

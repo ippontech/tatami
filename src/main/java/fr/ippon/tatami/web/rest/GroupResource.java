@@ -172,7 +172,7 @@ public class GroupResource {
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String email) {
         User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
-            log.debug("Trying to find group for non-existing email = {}", email);
+            log.debug("Trying to find group for non-existing username = {}", email);
             return new ArrayList<Group>();
         }
         return groupService.getGroupsForUser(user);
@@ -241,7 +241,7 @@ public class GroupResource {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getUsername());
+            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getEmail());
         }
         return users;
     }
@@ -266,7 +266,7 @@ public class GroupResource {
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getUsername());
+            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getEmail());
         }
 
         for (UserGroupDTO user : users) {
@@ -289,16 +289,16 @@ public class GroupResource {
     /**
      * PUT  /groups/{groupId}/members/{userUsername} -> add a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
         method = RequestMethod.PUT,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
+    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToAdd = userRepository.findOneByEmail(email + "@" + currentUser.getDomain()).get();
+        User userToAdd = userRepository.findOneByEmail(DomainUtil.getEmailFromUsernameAndDomain(username, currentUser.getDomain())).get();
 
         UserGroupDTO dto = null;
 
@@ -323,18 +323,16 @@ public class GroupResource {
     /**
      * DELETE  /groups/{groupId}/members/{userUsername} -> remove a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
         method = RequestMethod.DELETE,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
+    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
 
         User currentUser = userService.getCurrentUser().get();
         Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToremove = userRepository.findOneByEmail(email + "@" + currentUser.getDomain()).get();
-
-        UserGroupDTO dto = null;
+        User userToremove = userRepository.findOneByEmail(DomainUtil.getEmailFromUsernameAndDomain(username, currentUser.getDomain())).get();
 
         if (currentUser == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required

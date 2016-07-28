@@ -3,6 +3,7 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.FriendshipService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -50,8 +51,7 @@ public class FriendshipResource {
                 See marked.js
         */
         if (!DomainUtil.isValidEmailAddress(email)) {
-            User currentUser = userService.getCurrentUser().get();
-            email += "@" + currentUser.getDomain();
+            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
         User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
@@ -77,8 +77,7 @@ public class FriendshipResource {
                 See marked.js
         */
         if (!DomainUtil.isValidEmailAddress(email)) {
-            User currentUser = userService.getCurrentUser().get();
-            email += "@" + currentUser.getDomain();
+            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
         User user = userRepository.findOneByEmail(email).get();
         if (user == null) {
@@ -99,9 +98,7 @@ public class FriendshipResource {
     @Timed
     @ResponseBody
     public UserDTO updateFriend(@PathVariable("email") String email) {
-        User currentUser = userService.getCurrentUser().get();
-
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email.split("@")[0] + "@" + currentUser.getDomain()).get());
+        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
         if (!toReturn.isFriend()) {
             friendshipService.followUser(toReturn.getEmail());
         } else {

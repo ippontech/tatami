@@ -15,6 +15,7 @@ import fr.ippon.tatami.security.GoogleAuthenticationToken;
 import fr.ippon.tatami.security.xauth.Token;
 import fr.ippon.tatami.security.xauth.TokenProvider;
 import fr.ippon.tatami.service.UserService;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -172,7 +173,7 @@ public class XAuthResource {
             throw new UsernameNotFoundException("OAuth response did not contain the user email");
         }
 
-        if (!login.contains("@")) {
+        if (!DomainUtil.isValidEmailAddress(login)) {
             throw new UsernameNotFoundException("OAuth response did not contains a valid user email (" + login + ")");
         }
 

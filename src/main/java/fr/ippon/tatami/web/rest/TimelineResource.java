@@ -6,6 +6,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.exception.NoUserFoundException;
+import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;
 import fr.ippon.tatami.service.TimelineService;
@@ -117,8 +118,7 @@ public class TimelineResource {
         See marked.js
         */
         if (!DomainUtil.isValidEmailAddress(email)) {
-            User currentUser = userService.getCurrentUser().get();
-            email += "@" + currentUser.getDomain();
+            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
 
         if (count == null || count == 0) {
