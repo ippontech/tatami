@@ -5,7 +5,7 @@ angular.module('tatamiJHipsterApp')
         $scope.user = {};
         $scope.errors = {};
 
-        $scope.rememberMe = false;
+        $scope.rememberMe = true;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
         $scope.login = function (event) {
             event.preventDefault();

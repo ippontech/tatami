@@ -56,23 +56,6 @@ describe('Controller Tests', function() {
             expect($scope.success).toEqual('OK');
             expect($scope.registerAccount.langKey).toEqual('en');
             expect(MockTranslate.use).toHaveBeenCalled();
-            expect($scope.errorUserExists).toBeNull();
-            expect($scope.errorEmailExists).toBeNull();
-            expect($scope.error).toBeNull();
-        });
-
-        it('should notify of user existence upon 400/login already in use', function() {
-            // given
-            MockAuth.createAccount.and.returnValue($q.reject({
-                status: 400,
-                data: 'login already in use'
-            }));
-            createController();
-            $scope.registerAccount.password = $scope.confirmPassword = 'password';
-            // when
-            $scope.$apply($scope.register); // $q promises require an $apply
-            // then
-            expect($scope.errorUserExists).toEqual('ERROR');
             expect($scope.errorEmailExists).toBeNull();
             expect($scope.error).toBeNull();
         });
@@ -89,7 +72,6 @@ describe('Controller Tests', function() {
             $scope.$apply($scope.register); // $q promises require an $apply
             // then
             expect($scope.errorEmailExists).toEqual('ERROR');
-            expect($scope.errorUserExists).toBeNull();
             expect($scope.error).toBeNull();
         });
 
@@ -103,7 +85,6 @@ describe('Controller Tests', function() {
             // when
             $scope.$apply($scope.register); // $q promises require an $apply
             // then
-            expect($scope.errorUserExists).toBeNull();
             expect($scope.errorEmailExists).toBeNull();
             expect($scope.error).toEqual('ERROR');
         });

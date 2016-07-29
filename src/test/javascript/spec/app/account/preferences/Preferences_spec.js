@@ -1,13 +1,11 @@
 describe("Preferences Tests", function() {
     var ctrl, preferencesService;
-    beforeEach(module('ui.router'));
-    beforeEach(module('PreferencesModule'));
-    beforeEach(module('pascalprecht.translate'));
+    beforeEach(module('tatamiJHipsterApp'));
 
     //mocking ngToast
     beforeEach(module({
         ngToast: {
-            create: function() { 
+            create: function() {
             }
         },
         PreferencesService : {
@@ -31,7 +29,6 @@ describe("Preferences Tests", function() {
         ctrl = $controller('PreferencesController', {
             $scope : $scope,
             $translate : $translate,
-            'prefs' : prefs,
             'PreferencesService' : preferencesService,
             'ngToast': _ngToast_
         });
@@ -40,13 +37,6 @@ describe("Preferences Tests", function() {
     //Tests that the test can be run, even if nonsensical
     it('sanity check', function() {
            expect(true).toBeTruthy();
-    });
-    //this proves that the controller is loading properly, and tests below are valid.
-    it ('test working properly', function(){
-        console.log("Scope prefs: " + $scope.prefs.test);
-        expect($scope.prefs!==null);
-        expect($scope.prefs.test==="accepted");
-
     });
     it ('can save preferences', function(){
         $scope.savePrefs();
