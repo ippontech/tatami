@@ -513,10 +513,10 @@ public class TimelineService {
         AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
         if (abstractStatus != null && abstractStatus.getType().equals(StatusType.STATUS)) {
             Status status = (Status) abstractStatus;
-            User currentUser = userService.getCurrentUser().get();
-            if (status.getUsername().equals(currentUser.getUsername())) {
+            String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+            if (status.getEmail().equals(currentUserEmail) || SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
                 statusRepository.removeStatus(status);
-                counterRepository.decrementStatusCounter(currentUser.getEmail());
+                counterRepository.decrementStatusCounter(status.getEmail());
 //                searchService.removeStatus(status);
             }
         } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
@@ -524,6 +524,11 @@ public class TimelineService {
             if (abstractStatus.getUsername().equals(currentUser.getUsername())) {
                 statusRepository.removeStatus(abstractStatus);
             }
+        } else if(abstractStatus.getType().equals(StatusType.SHARE) && SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
+            Share currentShare = (Share) abstractStatus;
+            // We delete the original status
+            String originalStatusId = currentShare.getOriginalStatusId();
+            removeStatus(originalStatusId);
         } else {
             log.debug("Cannot remove status of this type");
         }
