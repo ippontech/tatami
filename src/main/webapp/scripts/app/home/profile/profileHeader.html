@@ -78,17 +78,17 @@
                             ng-mouseleave="hoverFollow = false" class="btn btn-sm btn-header"
                             ng-class="{ 'btn-danger': user.friend && hoverFollow, 'btn-info': user.friend && !hoverFollow }">
                         <span class="glyphicon" ng-class="user.friend ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
-                            <span ng-if="!user.friend" class="hidden-phone" translate="home.profile.follow"></span>
-                            <span ng-if="user.friend && !hoverFollow" class="hidden-phone" translate="home.profile.following"></span>
-                            <span ng-if="user.friend && hoverFollow" class="hidden-phone" translate="home.profile.unfollow"></span>
+                        <span ng-if="!user.friend" class="hidden-phone" translate="home.profile.follow"></span>
+                        <span ng-if="user.friend && !hoverFollow" class="hidden-phone" translate="home.profile.following"></span>
+                        <span ng-if="user.friend && hoverFollow" class="hidden-phone" translate="home.profile.unfollow"></span>
                     </button>
                     <button type="button" ng-click="updateBlockUser()" ng-init="hoverBlock = false" ng-mouseenter="hoverBlock = true"
                             ng-mouseleave="hoverBlock = false" class="btn btn-sm btn-header"
                             ng-class="{ 'btn-danger': user.blocked && hoverBlock, 'btn-info': user.blocked && !hoverBlock }">
                         <span class="glyphicon" ng-class="user.blocked ? 'glyphicon-ok-sign' : 'glyphicon-remove-sign'"></span>
-                            <span ng-if="!user.blocked" class="hidden-phone" translate="home.profile.block"></span>
-                            <span ng-if="user.blocked && !hoverBlock" class="hidden-phone" translate="home.profile.blocked"></span>
-                            <span ng-if="user.blocked && hoverBlock" class="hidden-phone" translate="home.profile.unblock"></span>
+                        <span ng-if="!user.blocked" class="hidden-phone" translate="home.profile.block"></span>
+                        <span ng-if="user.blocked && !hoverBlock" class="hidden-phone" translate="home.profile.blocked"></span>
+                        <span ng-if="user.blocked && hoverBlock" class="hidden-phone" translate="home.profile.unblock"></span>
                     </button>
                 </span>
 
