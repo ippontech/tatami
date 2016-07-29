@@ -32,6 +32,11 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
+    <scm>
+        <connection>scm:git:https://github.com/ippontech/tatami.git</connection>
+        <url>https://github.com/ippontech/tatami</url>
+    </scm>
+
     <properties>
         <hikaricp.version>2.4.1</hikaricp.version>
         <assertj-core.version>3.1.0</assertj-core.version>
@@ -380,6 +385,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>tatami-${buildNumber}</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <resources>
             <resource>
@@ -481,6 +487,15 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>index.html</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
@@ -580,6 +595,22 @@
                 </configuration>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <shortRevisionLength>7</shortRevisionLength>
+                </configuration>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
