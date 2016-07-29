@@ -3,7 +3,7 @@
 var tatamiJHipsterApp = angular.module('tatamiJHipsterApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     // jhipster-needle-angularjs-add-module JHipster will add new module
-    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ngToast', 'angularMoment','bm.uiTour'])
+    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar', 'ngToast', 'angularMoment','bm.uiTour', 'ngMaterial'])
 
 
     .run(function ($rootScope, $stateParams, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {

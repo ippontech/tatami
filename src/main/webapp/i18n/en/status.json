@@ -15,7 +15,9 @@
         "isAnnounced": "Announced by",
         "viewConversation": "View Conversation",
         "shares": "Shares",
-        "hide": "Hide from Timeline"
+        "hide": "Hide from Timeline",
+        "report": "Report this Status",
+        "block": "Block this User"
 
     }
 }

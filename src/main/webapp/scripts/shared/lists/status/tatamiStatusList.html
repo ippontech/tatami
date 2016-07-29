@@ -134,20 +134,40 @@
                                             <i class="glyphicon glyphicon-trash"></i>
                                             <span translate="status.delete"></span>
                                         </button>
+                                        <md-menu ng-if="!status.yours">
+                                            <button class="btn-link status-action status-action-favorite button-ios"
+                                                    ng-click="openMenu($mdOpenMenu, $event)">
+                                                <i class="glyphicon glyphicon-option-horizontal"></i>
+                                            </button>
+                                            <md-menu-content width ="3">
+                                                <md-menu-item>
+                                                    <md-button class="btn-link status-action" ng-click="hideStatus(status, $index)">
+                                                        <span translate="status.hide"></span>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button class="btn-link status-action">
+                                                        <span translate="status.report"></span>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button class="btn-link status-action">
+                                                        <span translate="status.block"></span>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+
                                     </span>
                                     <span ng-if="status.replyTo" class="pull-right">
                                         <a ui-sref="status({ statusId: status.statusId })" class="btn-link status-action button-ios">
                                             <span translate="status.viewConversation"></span>
                                         </a>
                                     </span>
-                                    <button ng-if="!status.yours" class="btn-link status-action button-ios pull-right" ng-click="hideStatus(status, $index)">
-                                        <span translate="status.hide"></span>
-                                    </button>
                                 </small>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

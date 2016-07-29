@@ -21,7 +21,7 @@ angular.module('tatamiJHipsterApp')
                     'PostModalService',
                     'TagService',
                     'GeolocalisationService',
-                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, GeolocalisationService, statuses, showModal) {
+                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, GeolocalisationService, statuses, showModal, ngMaterial) {
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
@@ -267,6 +267,10 @@ angular.module('tatamiJHipsterApp')
                                 $scope.statuses.splice(index,1);
                             })
                         }
+
+                        $scope.openMenu = function($mdOpenMenu, ev) {
+                            $mdOpenMenu(ev);
+                        };
                     }
                 ]
             }
