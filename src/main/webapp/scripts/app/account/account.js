@@ -28,8 +28,7 @@ tatamiJHipsterApp
                     }],
                     profileInfo: ['AccountService', function(AccountService) {
                         return AccountService.get().$promise;
-                    }],
-
+                    }]
                 }
 
             })
