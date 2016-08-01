@@ -385,7 +385,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>tatami-${buildNumber}</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <resources>
             <resource>
