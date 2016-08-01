@@ -68,6 +68,16 @@ public class Avatar implements Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        else if (!(obj instanceof Avatar)) return false;
+        else {
+            Avatar otherAvatar = (Avatar) obj;
+            return this.avatarId.equals(otherAvatar.avatarId);
+        }
+    }
+
+    @Override
     public String toString() {
         return "Avatar{" +
                 "avatarId='" + avatarId + '\'' +
