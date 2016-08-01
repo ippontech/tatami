@@ -97,10 +97,6 @@ public class UserResource {
         log.debug("rest request to save User : {}", userDTO);
         if (userRepository.findOneByEmail(userDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("user-management", "userexists", "Login already in use"))
-                .body(null);
-        } else if (userRepository.findOneByEmail(userDTO.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use"))
                 .body(null);
         } else {
