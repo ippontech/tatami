@@ -231,7 +231,7 @@ public class TimelineResource {
     /**
      * GET rest/statuses/report/reportedList -> gets the reported statuses
      */
-    @RequestMapping(value = "rest/statuses/report/reportedList",
+    @RequestMapping(value = "/rest/statuses/report/reportedList",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody

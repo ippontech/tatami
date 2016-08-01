@@ -18,10 +18,12 @@ angular.module('tatamiJHipsterApp')
                     'GroupService',
                     'HomeService',
                     'StatusService',
+                    'BlockService',
+                    'ReportService',
                     'PostModalService',
                     'TagService',
                     'GeolocalisationService',
-                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, PostModalService, TagService, GeolocalisationService, statuses, showModal, ngMaterial) {
+                    function($scope, $state, $stateParams, $timeout, $window, $uibModal, $translate, GroupService, HomeService, StatusService, BlockService, ReportService, PostModalService, TagService, GeolocalisationService, statuses, showModal, ngMaterial) {
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
@@ -266,6 +268,18 @@ angular.module('tatamiJHipsterApp')
                             StatusService.hideStatus({statusId: status.statusId}, function () {
                                 $scope.statuses.splice(index,1);
                             })
+                        }
+
+                        $scope.blockUsers = function (email){
+                            BlockService.updateBlockedUser({email: email}, function (){
+                                console.log("blocked this user");
+                            })
+                        }
+
+                        $scope.reportStatus = function (statusId){
+                            ReportService.reportStatus({statusId: statusId}, function () {
+                                console.log("reported status");
+                            });
                         }
 
                         $scope.openMenu = function($mdOpenMenu, ev) {
