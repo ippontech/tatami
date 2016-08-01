@@ -36,7 +36,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: responseTransform
         },
         'getCompanyTimeline': {
-            method: 'GET', isArray: true, url: '/tatami/rest/statuses/domain_timeline',
+            method: 'GET', isArray: true, url: '/tatami/rest/company',
             transformResponse: responseTransform
         },
         'getUserTimeline': {

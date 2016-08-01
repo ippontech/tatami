@@ -83,9 +83,12 @@ public class TimelineResource {
     }
 
     /**
-     * GET  /rest/statuses/domain_timeline -> get the latest statuses from the domain
+     * GET  /rest/company -> get the latest statuses from the domain
+     *
+     * NOTE: This endpoint was "/rest/statuses/domain_timeline", but was changed to match the old implementation
+     * so that the mobile app could access the company timeline safely regardless of the web app's version
      */
-    @RequestMapping(value = "/rest/statuses/domain_timeline",
+    @RequestMapping(value = "/rest/company",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
