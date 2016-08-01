@@ -60,7 +60,7 @@ tatamiJHipsterApp
                         $scope.uploadStatus.isUploading = true;
                         Upload.upload({
                             url: '/tatami/rest/fileupload/avatar',
-                            data: { uploadFile: files[i] },
+                            data: { uploadFile: files[i] }
                         }).then(function (data) {
                             $scope.current.attachments.push(data.data[0]);
                             $scope.uploadStatus.isUploading = false;
