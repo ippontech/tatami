@@ -62,6 +62,11 @@
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <springfox.version>2.0.3</springfox.version>
         <!-- Sonar properties -->
+        <sonar.host.url>http://127.0.0.1/sonar</sonar.host.url>
+        <sonar.projectKey>tatami</sonar.projectKey>
+        <sonar.projectName>tatami</sonar.projectName>
+        <sonar.login>tatami</sonar.login>
+        <sonar.password>tatami</sonar.password>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
