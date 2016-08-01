@@ -68,13 +68,17 @@ public class Avatar implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj == null) return false;
-        else if (!(obj instanceof Avatar)) return false;
-        else {
-            Avatar otherAvatar = (Avatar) obj;
-            return this.avatarId.equals(otherAvatar.avatarId);
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Avatar avatar = (Avatar) o;
+
+        return avatarId != null ? avatarId.equals(avatar.avatarId) : avatar.avatarId == null;
     }
 
     @Override
