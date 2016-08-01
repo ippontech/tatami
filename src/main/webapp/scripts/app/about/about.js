@@ -24,8 +24,7 @@ tatamiJHipsterApp
                 url: '/license',
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/about/license/license.html',
-
+                        templateUrl: 'scripts/app/about/license/license.html'
                     }
                 }
             })
@@ -35,9 +34,7 @@ tatamiJHipsterApp
                 url: '/presentation',
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/about/presentation/presentation.html',
-
-
+                        templateUrl: 'scripts/app/about/presentation/presentation.html'
                     }
                 }
             })
@@ -48,8 +45,7 @@ tatamiJHipsterApp
 
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/about/tos/tos.html',
-
+                        templateUrl: 'scripts/app/about/tos/tos.html'
                     }
                 }
             })
