@@ -19,7 +19,7 @@
                       mentio-items="users"
                       mentio-search="fetchUsers(term)"
                       mentio-select="selectUser(item)"
-                      mentio-template-url="/app/shared/topMenu/post/DropdownUserTemplate.html"
+                      mentio-template-url="/scripts/components/navbar/post/DropdownUserTemplate.html"
                       class="form-control"
                       ng-trim="false"
                       popover="{{ 'post.content.mandatory' | translate }}"
@@ -35,7 +35,7 @@
 
             <mentio-menu mentio-for="'postContent'"
                          mentio-trigger-char="'#'"
-                         mentio-template-url="/app/shared/topMenu/post/DropdownTagTemplate.html"
+                         mentio-template-url="/scripts/components/navbar/post/DropdownTagTemplate.html"
                          mentio-search="fetchTags(term)"
                          mentio-select="selectTag(item)"
                          mentio-items="tags">

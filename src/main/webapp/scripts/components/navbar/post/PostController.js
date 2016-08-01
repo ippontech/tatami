@@ -72,7 +72,7 @@ tatamiJHipsterApp.controller('PostController', [
             else {
                 return $scope.charCount;
             }
-        }
+        };
 
         $scope.uploadStatus = {
             isUploading: false,
@@ -146,7 +146,7 @@ tatamiJHipsterApp.controller('PostController', [
                         });
                     }
                 }
-            }
+            };
 
         $scope.fileSize = function(file) {
             if(file.size / 1000 < 1000) {
@@ -205,7 +205,7 @@ tatamiJHipsterApp.controller('PostController', [
         };
 
         $scope.selectUser = function(item) {
-            return '@' + item.email;
+            return '@' + item.username;
         };
 
         $scope.fetchTags = function(term) {
