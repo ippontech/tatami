@@ -620,9 +620,6 @@ public class TimelineService {
         log.info("Announcing to domain: " + domain);
         List<String> emails = domainRepository.getEmailsInDomain(domain);
         timelineRepository.announceStatusToTimeline(currentEmail, emails, announcement);
-//        for (String username : usernames) {
-//            atmosphereService.notifyUser(username, announcement);
-//        }
     }
 
     /**
@@ -646,11 +643,10 @@ public class TimelineService {
     }
 
     /**
-     * Adds the status to the timeline and notifies the user with Atmosphere.
+     * Adds the status to the timeline.
      */
     private void shareStatusToTimelineAndNotify(String sharedByEmail, String timelineEmail, Share share) {
         timelineRepository.shareStatusToTimeline(sharedByEmail, timelineEmail, share);
-//        atmosphereService.notifyUser(timelineUsername, share);
     }
 
     private Collection<StatusDTO> removeStatusFromBlockedUsers(Collection<StatusDTO> dtos) {

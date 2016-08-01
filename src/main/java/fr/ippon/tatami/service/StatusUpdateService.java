@@ -6,7 +6,6 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.security.UserDetailsService;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
@@ -90,9 +89,6 @@ public class StatusUpdateService {
 
     @Inject
     private StatusAttachmentRepository statusAttachmentRepository;
-
-    @Inject
-    private AtmosphereService atmosphereService;
 
     @Inject
     private UserService userService;
@@ -451,11 +447,10 @@ public class StatusUpdateService {
     }
 
     /**
-     * Adds the status to the timeline and notifies the user with Atmosphere.
+     * Adds the status to the timeline.
      */
     private void addStatusToTimelineAndNotify(String email, Status status) {
         timelineRepository.addStatusToTimeline(email, status.getStatusId().toString());
-        atmosphereService.notifyUser(email, status);
     }
 
 }
