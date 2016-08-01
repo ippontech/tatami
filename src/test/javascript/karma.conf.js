@@ -41,9 +41,9 @@ module.exports = function (config) {
             'main/webapp/bower_components/ez-ng/dist/ez-ng.js',
             'main/webapp/bower_components/angular-hotkeys/build/hotkeys.js',
             'main/webapp/bower_components/angular-ui-tour/dist/angular-ui-tour.js',
-            'main/webapp/bower_components/ment.io/dist/mentio.js',
             'main/webapp/bower_components/angular-messages/angular-messages.js',
             'main/webapp/bower_components/angular-material/angular-material.js',
+            'main/webapp/bower_components/ment.io/dist/mentio.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
