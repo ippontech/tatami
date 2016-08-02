@@ -177,15 +177,7 @@ angular.module('tatamiJHipsterApp')
                              */
 
                             else if($state.$current.name == 'tag') {
-                                TagService.getTagTimeline({ tag: $scope.$stateParams.tag, finish: $scope.finish }, loadOldStatuses);
-                            }
-
-                            else if($state.$current.name == 'statuses') {
-                                GroupService.getStatuses({ groupId: $scope.$stateParams.groupId, finish: $scope.finish }, loadOldStatuses);
-                            }
-
-                            else if($state.$current.name == 'statuses') {
-                                StatusService.getUserTimeline({ email: $scope.$stateParams.email, finish: $scope.finish }, loadOldStatuses);
+                                TagService.getTagTimeline({ tag: $scope.$root.$stateParams.tag, finish: $scope.finish }, loadOldStatuses);
                             }
                         };
 
