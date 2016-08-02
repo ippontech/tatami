@@ -13,10 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Service bean for managing groups.
@@ -76,24 +73,30 @@ public class GroupService {
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
-        Collection<UserGroupDTO> userGroupDTOs = new TreeSet<UserGroupDTO>();
+        Collection<String> friendEmails = friendRepository.findFriendsForUser(email);
+        Collection<UserGroupDTO> userGroupDTOs = new TreeSet<>();
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
             UserGroupDTO dto = new UserGroupDTO();
-            User user = userRepository.findOneByEmail(member.getKey()).get();
-            dto.setUsername(user.getUsername());
-            dto.setAvatar(user.getAvatar());
-            dto.setFirstName(user.getFirstName());
-            dto.setLastName(user.getLastName());
-            dto.setRole(member.getValue());
-            dto.setActivated(user.getActivated());
-            if (friendUsernames.contains(user.getUsername())) {
-                dto.setFriend(true);
+            Optional<User> optionalUser = userRepository.findOneByEmail(member.getKey());
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                dto.setEmail(user.getEmail());
+                dto.setUsername(user.getUsername());
+                dto.setAvatar(user.getAvatar());
+                dto.setFirstName(user.getFirstName());
+                dto.setLastName(user.getLastName());
+                dto.setRole(member.getValue());
+                dto.setActivated(user.getActivated());
+                if (friendEmails.contains(user.getEmail())) {
+                    dto.setFriend(true);
+                }
+                if (email.equals(user.getEmail())) {
+                    dto.setYou(true);
+                }
+                userGroupDTOs.add(dto);
+            } else {
+                log.debug("User {} was deleted", member.getKey());
             }
-            if (email.equals(user.getEmail())) {
-                dto.setYou(true);
-            }
-            userGroupDTOs.add(dto);
         }
         return userGroupDTOs;
     }
@@ -102,15 +105,20 @@ public class GroupService {
     public UserGroupDTO getMembersForGroup(UUID groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
         for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            User user = userRepository.findOneByEmail(member.getKey()).get();
-            if (userWanted.equals(user)) {
-                UserGroupDTO dto = new UserGroupDTO();
-                dto.setUsername(user.getUsername());
-                dto.setAvatar(user.getAvatar());
-                dto.setFirstName(user.getFirstName());
-                dto.setLastName(user.getLastName());
-                dto.setRole(member.getValue());
-                return dto;
+            Optional<User> optionalUser = userRepository.findOneByEmail(member.getKey());
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                if (userWanted.equals(user)) {
+                    UserGroupDTO dto = new UserGroupDTO();
+                    dto.setUsername(user.getUsername());
+                    dto.setAvatar(user.getAvatar());
+                    dto.setFirstName(user.getFirstName());
+                    dto.setLastName(user.getLastName());
+                    dto.setRole(member.getValue());
+                    return dto;
+                }
+            } else {
+                log.debug("User {} was deleted", member.getKey());
             }
         }
         return null;
@@ -124,7 +132,7 @@ public class GroupService {
     }
 
     @Cacheable(value = "group-user-cache", key = "#user.username")
-    public Collection<Group> getGroupsOfUser(User user) {
+    private Collection<Group> getGroupsOfUser(User user) {
         Collection<UUID> groupIds = userGroupRepository.findGroups(user.getEmail());
         return getGroupDetails(user, groupIds);
     }
@@ -135,7 +143,7 @@ public class GroupService {
         return internalGetGroupById(domain, groupId);
     }
 
-    public Collection<Group> getGroupsWhereUserIsAdmin(User user) {
+    private Collection<Group> getGroupsWhereUserIsAdmin(User user) {
         Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getEmail());
         return getGroupDetails(user, groupIds);
     }
@@ -151,8 +159,12 @@ public class GroupService {
     }
 
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
-        User currentUser = userService.getCurrentUser().get();
-        return getGroupsWhereUserIsAdmin(currentUser);
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        if (optionalCurrentUser.isPresent()) {
+            return getGroupsWhereUserIsAdmin(optionalCurrentUser.get());
+        }
+        log.warn("Current User is not found");
+        return Collections.emptyList();
     }
 
     private Group internalGetGroupById(String domain, UUID groupId) {
@@ -203,11 +215,16 @@ public class GroupService {
 
 
     public Collection<Group> buildGroupList(Collection<Group> groups) {
-        User currentUser = userService.getCurrentUser().get();
-        return buildGroupList(currentUser, groups);
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        if (optionalCurrentUser.isPresent()) {
+            return buildGroupList(optionalCurrentUser.get(), groups);
+        }
+        log.warn("Current User is not found");
+        return Collections.emptyList();
+
     }
 
-    public Collection<Group> buildGroupList(User user, Collection<Group> groups) {
+    private Collection<Group> buildGroupList(User user, Collection<Group> groups) {
 
         for (Group group : groups) {
             buildGroup(user, group);
@@ -216,9 +233,13 @@ public class GroupService {
         return groups;
     }
 
-    public Group buildGroup(Group group) {
-        User currentUser = userService.getCurrentUser().get();
-        return buildGroup(currentUser, group);
+    private Group buildGroup(Group group) {
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        if (optionalCurrentUser.isPresent()) {
+            return buildGroup(optionalCurrentUser.get(), group);
+        }
+        log.warn("Current User is not found");
+        return null;
     }
 
     private Group getGroupFromUser(User currentUser, UUID groupId) {
@@ -243,7 +264,7 @@ public class GroupService {
         return isGroupManagedByCurrentUser;
     }
 
-    public Group buildGroup(User user, Group group) {
+    private Group buildGroup(User user, Group group) {
         if (group != null) {
             if (isGroupManagedByCurrentUser(group)) {
                 group.setAdministrator(true);
@@ -278,7 +299,7 @@ public class GroupService {
         return group;
     }
 
-    public Collection<Group> buildGroupIdsList(Collection<UUID> groupIds) {
+    private Collection<Group> buildGroupIdsList(Collection<UUID> groupIds) {
         Collection<Group> groups = new TreeSet<Group>();
         for (UUID groupId : groupIds) {
             groups.add(buildGroupIds(groupId));
@@ -286,12 +307,16 @@ public class GroupService {
         return groups;
     }
 
-    public Group buildGroupIds(UUID groupId) {
-        User currentUser = userService.getCurrentUser().get();
-        return buildGroupIds(currentUser, groupId);
+    private Group buildGroupIds(UUID groupId) {
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        if (optionalCurrentUser.isPresent()) {
+            return buildGroupIds(optionalCurrentUser.get(), groupId);
+        }
+        log.warn("Current User is not found");
+        return null;
     }
 
-    public Group buildGroupIds(User user, UUID groupId) {
+    private Group buildGroupIds(User user, UUID groupId) {
         String domain = DomainUtil.getDomainFromEmail(user.getEmail());
         Group group = getGroupById(domain, groupId);
         return buildGroup(group);

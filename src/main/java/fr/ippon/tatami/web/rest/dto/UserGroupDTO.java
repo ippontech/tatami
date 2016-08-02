@@ -11,6 +11,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     private String username;
 
+    private String email;
+
     private String firstName;
 
     private String lastName;
@@ -39,6 +41,14 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
@@ -121,7 +131,8 @@ public class UserGroupDTO implements Comparable<UserGroupDTO>, Serializable {
     @Override
     public String toString() {
         return "UserGroupDTO{" +
-        "username='" + username + '\'' +
+                "username='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +

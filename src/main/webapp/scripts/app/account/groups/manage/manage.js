@@ -19,14 +19,13 @@ tatamiJHipsterApp
                     members : getMembers
                 }
 
-            })
+            });
         getGroup.$inject = ['GroupService', '$stateParams'];
         function getGroup(GroupService, $stateParams) {
             return GroupService.get({groupId: $stateParams.groupId}).$promise;
         }
         getMembers.$inject = ['GroupService', '$stateParams'];
         function getMembers(GroupService, $stateParams) {
-            console.log($stateParams.groupId);
             return GroupService.getMembers({groupId: $stateParams.groupId}).$promise;
 
         }

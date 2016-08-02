@@ -1,7 +1,3 @@
-/**
- * Created by emilyklein on 6/22/16.
- */
-
 angular.module('tatamiJHipsterApp')
     .controller('GroupStatusesController', ['$scope', 'GroupService', 'profileInfo', 'group', '$stateParams', '$state',
         function ($scope, GroupService, profileInfo, group, $stateParams, $state) {
@@ -13,18 +9,17 @@ angular.module('tatamiJHipsterApp')
                 if (!$scope.group.member) {
 
                     GroupService.join(
-                        {groupId: $scope.group.groupId, email: $scope.profile.data.username},
+                        {groupId: $scope.group.groupId, email: $scope.profile.data.email},
                         null,
-                        function (response) {
+                        function () {
                                 $scope.$state.reload();
                         }
                     );
                 } else {
                     GroupService.leave(
-                        {groupId: $scope.group.groupId, email: $scope.profile.data.username},
+                        {groupId: $scope.group.groupId, email: $scope.profile.data.email},
                         null,
-                        function (response) {
-                            console.log(response);
+                        function () {
                                 $scope.$state.reload();
                         }
                     );

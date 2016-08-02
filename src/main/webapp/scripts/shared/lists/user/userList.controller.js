@@ -5,7 +5,7 @@ tatamiJHipsterApp.controller('UserListController', ['$scope', 'UserService', 'us
         $scope.users = users;
 
         $scope.followUser = function(user, index) {
-            UserService.follow({ email: user.username }, { friend: !user.friend, friendShip: true },
+            UserService.follow({ email: user.email }, { friend: !user.friend, friendShip: true },
                 function(response) {
                     $scope.users[index].friend = response.friend;
                     $scope.$state.reload();

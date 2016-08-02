@@ -10,7 +10,6 @@ import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.SuggestionService;
 import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.service.UserService;
-import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import org.slf4j.Logger;
@@ -20,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * REST controller for managing groups
@@ -61,8 +57,8 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Collection<Group> getGroups() {
-        User currentUser = userService.getCurrentUser().get();
-        return groupService.getGroupsForUser(currentUser);
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        return optionalCurrentUser.isPresent() ? groupService.getGroupsForUser(optionalCurrentUser.get()) : Collections.emptyList();
     }
 
     /**
@@ -74,34 +70,38 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Group getGroup(@PathVariable("groupId") String groupId) {
-        User currentUser = userService.getCurrentUser().get();
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Group publicGroup = groupService.getGroupById(domain, UUID.fromString(groupId));
-        if (publicGroup != null && publicGroup.isPublicGroup()) {
-            Group result = getGroupFromUser(currentUser, groupId);
-            Group groupClone = (Group) publicGroup.clone();
-            if (result != null) {
-                groupClone.setMember(true);
-            }
-            if (isGroupManagedByCurrentUser(publicGroup)) {
-                groupClone.setAdministrator(true);
-            }
-            return groupClone;
-        } else {
-            Group result = getGroupFromUser(currentUser, groupId);
-            Group groupClone = null;
-            if (result == null) {
-                log.info("Permission denied! User {} tried to access group ID = {} ", currentUser.getUsername(), groupId);
-                return null;
-            } else {
-                groupClone = (Group) result.clone();
-                groupClone.setMember(true);
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        if(optionalCurrentUser.isPresent()){
+            User currentUser = optionalCurrentUser.get();
+            String domain = SecurityUtils.getCurrentUserDomain();
+            Group publicGroup = groupService.getGroupById(domain, UUID.fromString(groupId));
+            if (publicGroup != null && publicGroup.isPublicGroup()) {
+                Group result = getGroupFromUser(currentUser, groupId);
+                Group groupClone = (Group) publicGroup.clone();
+                if (result != null) {
+                    groupClone.setMember(true);
+                }
                 if (isGroupManagedByCurrentUser(publicGroup)) {
                     groupClone.setAdministrator(true);
                 }
+                return groupClone;
+            } else {
+                Group result = getGroupFromUser(currentUser, groupId);
+                Group groupClone = null;
+                if (result == null) {
+                    log.info("Permission denied! User {} tried to access group ID = {} ", currentUser.getUsername(), groupId);
+                } else {
+                    groupClone = (Group) result.clone();
+                    groupClone.setMember(true);
+                    if (isGroupManagedByCurrentUser(publicGroup)) {
+                        groupClone.setAdministrator(true);
+                    }
+                }
+                return groupClone;
             }
-            return groupClone;
         }
+        log.warn("Current user not found");
+        return null;
     }
 
 
@@ -121,7 +121,7 @@ public class GroupResource {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return null;
             } else {
-                String domain = userService.getCurrentUser().get().getDomain();
+                String domain = SecurityUtils.getCurrentUserDomain();
                 group.setDomain(domain);
                 group.setName(groupEdit.getName());
                 group.setDescription(groupEdit.getDescription());
@@ -148,14 +148,14 @@ public class GroupResource {
 
         log.debug("REST request to get statuses for group : {}", groupId);
         if (groupId == null) {
-            return new ArrayList<StatusDTO>();
+            return new ArrayList<>();
         }
         if (count == null) {
             count = 20;
         }
         Group group = this.getGroup(groupId);
         if (group == null) {
-            return new ArrayList<StatusDTO>();
+            return new ArrayList<>();
         } else {
             return timelineService.getGroupline(groupId, count, start, finish);
         }
@@ -170,12 +170,12 @@ public class GroupResource {
     @ResponseBody
     @Timed
     public Collection<Group> getUserGroups(@RequestParam("screen_name") String email) {
-        User user = userRepository.findOneByEmail(email).get();
-        if (user == null) {
-            log.debug("Trying to find group for non-existing username = {}", email);
-            return new ArrayList<Group>();
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if (!optionalUser.isPresent()) {
+            log.debug("Trying to find group for non-existing email = {}", email);
+            return new ArrayList<>();
         }
-        return groupService.getGroupsForUser(user);
+        return groupService.getGroupsForUser(optionalUser.get());
     }
 
 
@@ -231,86 +231,88 @@ public class GroupResource {
     @Timed
     public Collection<UserGroupDTO> getGroupsUsers(HttpServletResponse response, @PathVariable("groupId") String groupId) {
 
-        User currentUser = userService.getCurrentUser().get();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        Group currentGroup = groupService.getGroupById(SecurityUtils.getCurrentUserDomain(), UUID.fromString(groupId));
 
         Collection<UserGroupDTO> users = null;
 
-        if (currentUser == null) {
+        if (currentUserEmail == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getEmail());
+            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUserEmail);
         }
         return users;
     }
 
     /**
-     * GET  /groups/{groupId}/members/{userUsername} -> get a member to group status
+     * GET  /groups/{groupId}/members/{userEmail} -> get a member to group status
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
 
-        User currentUser = userService.getCurrentUser().get();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
+        Optional<User> optionalCurrentUser = userService.getCurrentUser();
+        Group currentGroup = groupService.getGroupById(SecurityUtils.getCurrentUserDomain(), UUID.fromString(groupId));
 
-        Collection<UserGroupDTO> users = null;
-
-        if (currentUser == null) {
+        if (!optionalCurrentUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
         } else if (currentGroup == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getEmail());
-        }
+            User currentUser = optionalCurrentUser.get();
+            Collection<UserGroupDTO> users = groupService.getMembersForGroup(UUID.fromString(groupId), currentUser.getEmail());
 
-        for (UserGroupDTO user : users) {
-            if (user.getUsername().equals(currentUser.getUsername())) {
-                return user;
+
+            for (UserGroupDTO user : users) {
+                if (user.getUsername().equals(currentUser.getUsername())) {
+                    return user;
+                }
             }
+
+            UserGroupDTO currentUserDTO = new UserGroupDTO();
+            currentUserDTO.setUsername(currentUser.getUsername());
+            currentUserDTO.setAvatar(currentUser.getAvatar());
+            currentUserDTO.setFirstName(currentUser.getFirstName());
+            currentUserDTO.setLastName(currentUser.getLastName());
+            currentUserDTO.setIsMember(false);
+
+            return currentUserDTO;
         }
 
-        UserGroupDTO currentUserDTO = new UserGroupDTO();
-        currentUserDTO.setUsername(currentUser.getUsername());
-//        currentUserDTO.setUsername(currentUser.getUsername());
-//        currentUserDTO.setAvatar(currentUser.getAvatar());
-        currentUserDTO.setFirstName(currentUser.getFirstName());
-        currentUserDTO.setLastName(currentUser.getLastName());
-        currentUserDTO.setIsMember(false);
-
-        return currentUserDTO;
+        return null;
     }
 
     /**
-     * PUT  /groups/{groupId}/members/{userUsername} -> add a member to group
+     * PUT  /groups/{groupId}/members/{userEmail} -> add a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
         method = RequestMethod.PUT,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
 
-        User currentUser = userService.getCurrentUser().get();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToAdd = userRepository.findOneByEmail(DomainUtil.getEmailFromUsernameAndDomain(username, currentUser.getDomain())).get();
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        Group currentGroup = groupService.getGroupById(SecurityUtils.getCurrentUserDomain(), UUID.fromString(groupId));
+        Optional<User> optionalUserToAdd = userRepository.findOneByEmail(email);
 
         UserGroupDTO dto = null;
 
-        if (currentUser == null) {
+        if (currentUserEmail == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
-        } else if (currentGroup == null || userToAdd == null) {
+        } else if (currentGroup == null || !optionalUserToAdd.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
         } else {
-            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToAdd)) {
+            User userToAdd = optionalUserToAdd.get();
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUserEmail.equals(userToAdd.getEmail())) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
                 dto = groupService.getMembersForGroup(UUID.fromString(groupId), userToAdd);
-            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToAdd) && !isGroupManagedByCurrentUser(currentGroup)) {
+            } else if (currentGroup.isPublicGroup() && currentUserEmail.equals(userToAdd.getEmail()) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.addMemberToGroup(userToAdd, currentGroup);
                 dto = groupService.getMembersForGroup(UUID.fromString(groupId), userToAdd);
             } else {
@@ -321,30 +323,31 @@ public class GroupResource {
     }
 
     /**
-     * DELETE  /groups/{groupId}/members/{userUsername} -> remove a member to group
+     * DELETE  /groups/{groupId}/members/{userEmail} -> remove a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
         method = RequestMethod.DELETE,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
 
-        User currentUser = userService.getCurrentUser().get();
-        Group currentGroup = groupService.getGroupById(currentUser.getDomain(), UUID.fromString(groupId));
-        User userToremove = userRepository.findOneByEmail(DomainUtil.getEmailFromUsernameAndDomain(username, currentUser.getDomain())).get();
+        String currentUserEmail = SecurityUtils.getCurrentUserEmail();
+        Group currentGroup = groupService.getGroupById(SecurityUtils.getCurrentUserDomain(), UUID.fromString(groupId));
+        Optional<User> optionalUserToremove = userRepository.findOneByEmail(email);
 
-        if (currentUser == null) {
+        if (currentUserEmail == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Authentication required
             return false;
-        } else if (currentGroup == null || userToremove == null) {
+        } else if (currentGroup == null || !optionalUserToremove.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Resource not found
             return false;
         } else {
-            if (isGroupManagedByCurrentUser(currentGroup) && !currentUser.equals(userToremove)) {
+            User userToremove = optionalUserToremove.get();
+            if (isGroupManagedByCurrentUser(currentGroup) && !currentUserEmail.equals(userToremove.getEmail())) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
                 groupService.getMembersForGroup(UUID.fromString(groupId), userToremove);
-            } else if (currentGroup.isPublicGroup() && currentUser.equals(userToremove) && !isGroupManagedByCurrentUser(currentGroup)) {
+            } else if (currentGroup.isPublicGroup() && currentUserEmail.equals(userToremove.getEmail()) && !isGroupManagedByCurrentUser(currentGroup)) {
                 groupService.removeMemberFromGroup(userToremove, currentGroup);
                 groupService.getMembersForGroup(UUID.fromString(groupId), userToremove);
             } else {

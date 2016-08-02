@@ -249,25 +249,4 @@ public class UserResource {
     public Collection<User> suggestions() {
         return suggestionService.suggestUsers(SecurityUtils.getCurrentUserEmail());
     }
-
-    /**
-     * SEARCH  /_search/users/:query -> search for the User corresponding
-     * to the query.
-     */
-    @RequestMapping(value = "/rest/search/users/{query}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public Collection<UserDTO> search(@PathVariable String query) {
-        Collection<User> users = new ArrayList<>();
-
-        if (StringUtils.isNotBlank(query)) {
-            String prefix = query.toLowerCase();
-            Collection<String> emails = searchService.searchUserByPrefix(SecurityUtils.getCurrentUserDomain(), prefix);
-            log.debug("REST request to find users starting with : {}", prefix);
-            users = userService.getUsersByEmail(emails);
-        }
-
-        return userService.buildUserDTOList(users);
-    }
 }
