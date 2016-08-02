@@ -29,7 +29,7 @@ tatamiJHipsterApp
             else {
                 return $scope.charCount;
             }
-        }
+        };
 
 
         // Update the user information
