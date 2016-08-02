@@ -30,7 +30,6 @@ tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 
      * Resets the group creation view
      */
     $scope.reset = function() {
-           console.log($scope.groups);
         $scope.groups = {};
         $scope.current.createGroup = false;
     };
@@ -39,7 +38,6 @@ tatamiJHipsterApp.controller('GroupsCreateController', ['$scope', '$translate', 
      * Creates a new group on the server
      */
     $scope.createNewGroup = function() {
-        console.log($scope.groups);
         GroupService.save($scope.groups, function() {
             $scope.reset();
             $scope.$state.reload();
