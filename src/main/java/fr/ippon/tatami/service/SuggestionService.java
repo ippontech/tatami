@@ -66,9 +66,15 @@ public class SuggestionService {
         List<String> mostFollowedUsersEmail = AnalysisUtil.findMostUsedKeys(userCount);
         List<User> userSuggestions = new ArrayList<User>();
         for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
-            User suggestion = userRepository.findOneByEmail(mostFollowedUserEmail).get();
-            if ( suggestion.getActivated() && !suggestion.getEmail().equals(currentUser.getEmail())){
-                userSuggestions.add(suggestion);
+
+            Optional<User> optionalSuggestion = userRepository.findOneByEmail(mostFollowedUserEmail);
+            if ( optionalSuggestion.isPresent()) {
+                User suggestion = optionalSuggestion.get();
+                if (suggestion.getActivated() && !suggestion.getEmail().equals(currentUser.getEmail())) {
+                    userSuggestions.add(suggestion);
+                }
+            } else {
+                log.warn("User {} deleted", mostFollowedUserEmail);
             }
         }
         if (userSuggestions.size() > SUGGESTIONS_SIZE) {
