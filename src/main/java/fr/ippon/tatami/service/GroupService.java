@@ -4,6 +4,7 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
+import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class GroupService {
         String email = SecurityUtils.getCurrentUserEmail();
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, email);
-        groupCounterRepository.incrementGroupCounter(groupId);
+        groupCounterRepository.incrementGroupCounter(groupId, domain);
         userGroupRepository.addGroupAsAdmin(email, groupId);
         searchService.addGroup(getGroupById(groupId));
     }
@@ -148,7 +149,7 @@ public class GroupService {
 
     private Group internalGetGroupById(UUID groupId) {
         Group group = groupRepository.getGroupById(groupId);
-        long counter = groupCounterRepository.getGroupCounter(groupId);
+        long counter = groupCounterRepository.getGroupCounter(groupId, SecurityUtils.getCurrentUserDomain());
         group.setCounter(counter);
         return group;
     }
@@ -160,7 +161,7 @@ public class GroupService {
         boolean userIsAlreadyAMember = userCurrentGroupIds.stream().anyMatch(uuid -> uuid.equals(groupId));
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getEmail());
-            groupCounterRepository.incrementGroupCounter(groupId);
+            groupCounterRepository.incrementGroupCounter(groupId, DomainUtil.getDomainFromEmail(user.getEmail()));
             userGroupRepository.addGroupAsMember(user.getEmail(), groupId);
         } else {
             log.debug("User {} is already a member of group {}", user.getUsername(), group.getName());
@@ -174,7 +175,7 @@ public class GroupService {
         boolean userIsAlreadyAMember = userCurrentGroupIds.stream().anyMatch(uuid -> uuid.equals(groupId));
         if (userIsAlreadyAMember) {
             groupMembersRepository.removeMember(groupId, email);
-            groupCounterRepository.decrementGroupCounter(groupId);
+            groupCounterRepository.decrementGroupCounter(groupId, DomainUtil.getDomainFromEmail(email));
             userGroupRepository.removeGroup(email, groupId);
         } else {
             log.debug("User {} is not a member of group {}", email, group.getName());

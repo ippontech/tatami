@@ -28,11 +28,12 @@ public class GroupCounterRepository {
     @Inject
     private Session session;
 
-    public long getGroupCounter(UUID groupId) {
+    public long getGroupCounter(UUID groupId, String domain) {
         Statement statement = QueryBuilder.select()
             .column("counter")
             .from(ColumnFamilyKeys.GROUP_COUNTER_CF)
-            .where(eq("groupId", groupId));
+            .where(eq("groupId", groupId))
+            .and(eq("domain", domain));
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {
             return results.one().getLong("counter");
@@ -41,23 +42,26 @@ public class GroupCounterRepository {
         }
     }
 
-    public void incrementGroupCounter(UUID groupId) {
+    public void incrementGroupCounter(UUID groupId, String domain) {
         Statement statement = QueryBuilder.update(ColumnFamilyKeys.GROUP_COUNTER_CF)
             .with(incr("counter", 1))
-            .where(eq("groupId", groupId));
+            .where(eq("groupId", groupId))
+            .and(eq("domain", domain));
         session.execute(statement);
     }
 
-    public void decrementGroupCounter(UUID groupId) {
+    public void decrementGroupCounter(UUID groupId, String domain) {
         Statement statement = QueryBuilder.update(ColumnFamilyKeys.GROUP_COUNTER_CF)
             .with(decr("counter", 1))
-            .where(eq("groupId", groupId));
+            .where(eq("groupId", groupId))
+            .and(eq("domain", domain));
         session.execute(statement);
     }
 
-    public void deleteGroupCounter(String groupId) {
+    public void deleteGroupCounter(String groupId, String domain) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.GROUP_COUNTER_CF)
-            .where(eq("groupId", groupId));
+            .where(eq("groupId", groupId))
+            .and(eq("domain", domain));
         session.execute(statement);
     }
 }
