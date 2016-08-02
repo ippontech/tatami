@@ -19,6 +19,18 @@ tatamiJHipsterApp
 
 
         $scope.userProfile = $scope.profile;
+        $scope.charCount = 1000;
+
+        //Get the character count remaing for job description
+        $scope.calculateRemainingLength = function(){
+            console.log($scope.userProfile.jobDescription);
+            if ($scope.userProfile.jobDescription != null) {
+                return $scope.charCount - $scope.userProfile.jobDescription.length - ($scope.userProfile.jobDescription.match(/\n/g) || []).length;
+            }
+            else {
+                return $scope.charCount;
+            }
+        }
 
 
         // Update the user information

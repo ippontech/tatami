@@ -29,38 +29,39 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="firstName" class="col-sm-2 control-label">First Name</label>
+                    <label for="firstName" class="col-sm-2 control-label" translate="account.profile.firstName">First Name</label>
                     <div class="col-sm-10">
                         <input name="firstName" type="text" size="15" maxlength="40" class="form-control" ng-model="userProfile.firstName">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+                    <label for="lastName" class="col-sm-2 control-label" translate="account.profile.lastName">Last Name</label>
                     <div class="col-sm-10">
                         <input name="lastName" type="text" id="lastName" size="15" maxlength="40" class="form-control" ng-model="userProfile.lastName">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="jobTitle" class="col-sm-2 control-label">Job Title</label>
+                    <label for="jobTitle" class="col-sm-2 control-label" translate="account.profile.jobTitle">Job Title</label>
                     <div class="col-sm-10">
                         <input name="jobTitle" type="text" size="15" maxlength="100" class="form-control" ng-model="userProfile.jobTitle">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="phoneNumber" class="col-sm-2 control-label">Phone</label>
+                    <label for="phoneNumber" class="col-sm-2 control-label" translate="account.profile.phoneNumber">Phone</label>
                     <div class="col-sm-10">
                         <input name="phoneNumber" type="text" size="10" maxlength="40" class="form-control" ng-model="userProfile.phoneNumber">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="jobDescription" class="col-sm-2 control-label">Job Description</label>
+                    <label for="jobDescription" class="col-sm-2 control-label" translate="account.profile.jobDescription">Job Description</label>
                     <div class="col-sm-10">
-                        <input name="jobDescription" type="text" size="10" maxlength="1000" class="form-control" ng-model="userProfile.jobDescription">
+                        <textarea ng-style="{'height':'100px', 'display':'inline-block'}" name="jobDescription" type="text" maxlength="1000" class="form-control" ng-model="userProfile.jobDescription"></textarea>
+                    </div>
+                    <div class = "pull-right">
+                        {{ 'account.profile.remainingChar' | translate }}
+                        <span class="countstatus badge">{{ calculateRemainingLength() }}</span>
                     </div>
                 </div>
-
-
-
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="input-xlarge btn btn-primary btn-block"translate="form.save" ng-click="updateUser()"></button>

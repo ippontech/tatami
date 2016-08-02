@@ -9,8 +9,10 @@
             "lastName": "Last Name",
             "jobTitle": "Job Title",
             "phoneNumber": "Phone Number",
+            "jobDescription": "Job Description",
             "delete": "Delete your account",
             "confirmDelete": "You are about to delete your account. Are you sure?",
+            "remainingChar": "Characters Left:",
             "save": "Your profile has been saved"
         },
         "preferences": {
