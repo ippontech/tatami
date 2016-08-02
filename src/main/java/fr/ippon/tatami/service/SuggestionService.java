@@ -5,6 +5,7 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserGroupRepository;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.service.util.DomainUtil;
+import fr.ippon.tatami.web.rest.util.AnalysisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.*;
-
-import fr.ippon.tatami.web.rest.util.AnalysisUtil;
 
 /**
  * Analyses data to find suggestions of users, groups... for the current user.
@@ -68,7 +67,7 @@ public class SuggestionService {
         for (String mostFollowedUserEmail : mostFollowedUsersEmail) {
 
             Optional<User> optionalSuggestion = userRepository.findOneByEmail(mostFollowedUserEmail);
-            if ( optionalSuggestion.isPresent()) {
+            if (optionalSuggestion.isPresent()) {
                 User suggestion = optionalSuggestion.get();
                 if (suggestion.getActivated() && !suggestion.getEmail().equals(currentUser.getEmail())) {
                     userSuggestions.add(suggestion);
@@ -102,7 +101,7 @@ public class SuggestionService {
         List<String> mostFollowedGroups = AnalysisUtil.findMostUsedKeys(groupCount);
         List<Group> groupSuggestions = new ArrayList<Group>();
         for (String mostFollowedGroup : mostFollowedGroups) {
-            Group suggestion = groupService.getGroupById(domain, UUID.fromString(mostFollowedGroup));
+            Group suggestion = groupService.getGroupById(UUID.fromString(mostFollowedGroup));
             if (suggestion.isPublicGroup()) { // Only suggest public groups for the moment
                 groupSuggestions.add(suggestion);
             }

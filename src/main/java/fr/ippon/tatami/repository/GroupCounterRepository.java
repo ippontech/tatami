@@ -5,9 +5,6 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
-import fr.ippon.tatami.repository.GroupCounterRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -31,13 +28,11 @@ public class GroupCounterRepository {
     @Inject
     private Session session;
 
-
-    public long getGroupCounter(String domain, UUID groupId) {
+    public long getGroupCounter(UUID groupId) {
         Statement statement = QueryBuilder.select()
-                .column("counter")
-                .from(ColumnFamilyKeys.GROUP_COUNTER_CF)
-                .where(eq("domain", domain))
-                .and(eq("groupId",groupId));
+            .column("counter")
+            .from(ColumnFamilyKeys.GROUP_COUNTER_CF)
+            .where(eq("groupId", groupId));
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {
             return results.one().getLong("counter");
@@ -46,31 +41,23 @@ public class GroupCounterRepository {
         }
     }
 
-    protected final Logger log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
-
-
-    public void incrementGroupCounter(String domain, UUID groupId) {
+    public void incrementGroupCounter(UUID groupId) {
         Statement statement = QueryBuilder.update(ColumnFamilyKeys.GROUP_COUNTER_CF)
-                .with(incr("counter",1))
-                .where(eq("domain",domain))
-                .and(eq("groupId", groupId));
+            .with(incr("counter", 1))
+            .where(eq("groupId", groupId));
         session.execute(statement);
     }
 
-
-    public void decrementGroupCounter(String domain, UUID groupId) {
+    public void decrementGroupCounter(UUID groupId) {
         Statement statement = QueryBuilder.update(ColumnFamilyKeys.GROUP_COUNTER_CF)
-                .with(decr("counter",1))
-                .where(eq("domain",domain))
-                .and(eq("groupId", groupId));
+            .with(decr("counter", 1))
+            .where(eq("groupId", groupId));
         session.execute(statement);
     }
 
-
-    public void deleteGroupCounter(String domain, String groupId) {
+    public void deleteGroupCounter(String groupId) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.GROUP_COUNTER_CF)
-                .where(eq("domain", domain))
-                .and(eq("groupId",groupId));
+            .where(eq("groupId", groupId));
         session.execute(statement);
     }
 }

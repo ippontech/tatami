@@ -4,7 +4,6 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.SecurityUtils;
-import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.web.rest.dto.UserGroupDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Service bean for managing groups.
@@ -44,9 +47,6 @@ public class GroupService {
     @Inject
     private FriendRepository friendRepository;
 
-    @Inject
-    private UserService userService;
-
     @CacheEvict(value = "group-user-cache", allEntries = true)
     public void createGroup(String name, String description, boolean publicGroup) {
         log.debug("Creating group : {}", name);
@@ -54,10 +54,9 @@ public class GroupService {
         String email = SecurityUtils.getCurrentUserEmail();
         UUID groupId = groupRepository.createGroup(domain, name, description, publicGroup);
         groupMembersRepository.addAdmin(groupId, email);
-        groupCounterRepository.incrementGroupCounter(domain, groupId);
+        groupCounterRepository.incrementGroupCounter(groupId);
         userGroupRepository.addGroupAsAdmin(email, groupId);
-        Group group = getGroupById(domain, groupId);
-        searchService.addGroup(group);
+        searchService.addGroup(getGroupById(groupId));
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
@@ -73,34 +72,24 @@ public class GroupService {
 
     public Collection<UserGroupDTO> getMembersForGroup(UUID groupId, String email) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
-        Collection<String> friendEmails = friendRepository.findFriendsForUser(email);
-        Collection<UserGroupDTO> userGroupDTOs = new TreeSet<>();
-        for (Map.Entry<String, String> member : membersMap.entrySet()) {
-            UserGroupDTO dto = new UserGroupDTO();
-            Optional<User> optionalUser = userRepository.findOneByEmail(member.getKey());
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                dto.setEmail(user.getEmail());
+        Collection<String> friendUsernames = friendRepository.findFriendsForUser(email);
+        return membersMap.entrySet().stream()
+            .map(member -> userRepository.findOneByEmail(member.getKey()))
+            .filter(Optional::isPresent)
+            .map(userOptional -> {
+                User user = userOptional.get();
+                UserGroupDTO dto = new UserGroupDTO();
                 dto.setUsername(user.getUsername());
                 dto.setAvatar(user.getAvatar());
                 dto.setFirstName(user.getFirstName());
                 dto.setLastName(user.getLastName());
-                dto.setRole(member.getValue());
+                dto.setRole(membersMap.get(user.getEmail()));
                 dto.setActivated(user.getActivated());
-                if (friendEmails.contains(user.getEmail())) {
-                    dto.setFriend(true);
-                }
-                if (email.equals(user.getEmail())) {
-                    dto.setYou(true);
-                }
-                userGroupDTOs.add(dto);
-            } else {
-                log.debug("User {} was deleted", member.getKey());
-            }
-        }
-        return userGroupDTOs;
+                dto.setFriend(friendUsernames.contains(user.getUsername()));
+                dto.setYou(email.equals(user.getEmail()));
+                return dto;
+            }).collect(Collectors.toList());
     }
-
 
     public UserGroupDTO getMembersForGroup(UUID groupId, User userWanted) {
         Map<String, String> membersMap = groupMembersRepository.findMembers(groupId);
@@ -124,52 +113,42 @@ public class GroupService {
         return null;
     }
 
-
-    @Cacheable(value = "group-user-cache", key = "#user.username")
-    public Collection<Group> getGroupsForUser(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getEmail());
-        return buildGroupIdsList(groupIds);
+    @Cacheable(value = "group-user-cache")
+    public Collection<Group> getGroupsForUser(String email) {
+        return userGroupRepository.findGroups(email).stream()
+            .map(this::buildGroupIds)
+            .collect(Collectors.toList());
     }
 
-    @Cacheable(value = "group-user-cache", key = "#user.username")
-    private Collection<Group> getGroupsOfUser(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroups(user.getEmail());
-        return getGroupDetails(user, groupIds);
+    @Cacheable(value = "group-user-cache")
+    private Collection<Group> getGroupsOfUser(String email) {
+        Collection<UUID> groupIds = userGroupRepository.findGroups(email);
+        return getGroupDetails(groupIds);
     }
-
 
     @Cacheable(value = "group-cache")
-    public Group getGroupById(String domain, UUID groupId) {
-        return internalGetGroupById(domain, groupId);
+    public Group getGroupById(UUID groupId) {
+        return internalGetGroupById(groupId);
     }
 
-    private Collection<Group> getGroupsWhereUserIsAdmin(User user) {
-        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(user.getEmail());
-        return getGroupDetails(user, groupIds);
+    private Collection<Group> getGroupsWhereUserIsAdmin(String email) {
+        Collection<UUID> groupIds = userGroupRepository.findGroupsAsAdmin(email);
+        return getGroupDetails(groupIds);
     }
 
-    private Collection<Group> getGroupDetails(User currentUser, Collection<UUID> groupIds) {
-        String domain = DomainUtil.getDomainFromEmail(currentUser.getEmail());
-        Collection<Group> groups = new TreeSet<Group>();
-        for (UUID groupId : groupIds) {
-            Group group = internalGetGroupById(domain, groupId);
-            groups.add(group);
-        }
-        return groups;
+    private Collection<Group> getGroupDetails(Collection<UUID> groupIds) {
+        return groupIds.stream()
+            .map(this::internalGetGroupById)
+            .collect(Collectors.toList());
     }
 
     public Collection<Group> getGroupsWhereCurrentUserIsAdmin() {
-        Optional<User> optionalCurrentUser = userService.getCurrentUser();
-        if (optionalCurrentUser.isPresent()) {
-            return getGroupsWhereUserIsAdmin(optionalCurrentUser.get());
-        }
-        log.warn("Current User is not found");
-        return Collections.emptyList();
+        return getGroupsWhereUserIsAdmin(SecurityUtils.getCurrentUserEmail());
     }
 
-    private Group internalGetGroupById(String domain, UUID groupId) {
-        Group group = groupRepository.getGroupById(domain, groupId);
-        long counter = groupCounterRepository.getGroupCounter(domain, groupId);
+    private Group internalGetGroupById(UUID groupId) {
+        Group group = groupRepository.getGroupById(groupId);
+        long counter = groupCounterRepository.getGroupCounter(groupId);
         group.setCounter(counter);
         return group;
     }
@@ -178,16 +157,10 @@ public class GroupService {
     public void addMemberToGroup(User user, Group group) {
         UUID groupId = group.getGroupId();
         Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getEmail());
-        boolean userIsAlreadyAMember = false;
-        for (UUID testGroupId : userCurrentGroupIds) {
-            if (testGroupId.equals(groupId)) {
-                userIsAlreadyAMember = true;
-            }
-        }
+        boolean userIsAlreadyAMember = userCurrentGroupIds.stream().anyMatch(uuid -> uuid.equals(groupId));
         if (!userIsAlreadyAMember) {
             groupMembersRepository.addMember(groupId, user.getEmail());
-            log.debug("user=" + user);
-            groupCounterRepository.incrementGroupCounter(user.getDomain(), groupId);
+            groupCounterRepository.incrementGroupCounter(groupId);
             userGroupRepository.addGroupAsMember(user.getEmail(), groupId);
         } else {
             log.debug("User {} is already a member of group {}", user.getUsername(), group.getName());
@@ -195,130 +168,67 @@ public class GroupService {
     }
 
     @CacheEvict(value = {"group-user-cache", "group-cache"}, allEntries = true)
-    public void removeMemberFromGroup(User user, Group group) {
+    public void removeMemberFromGroup(String email, Group group) {
         UUID groupId = group.getGroupId();
-        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(user.getEmail());
-        boolean userIsAlreadyAMember = false;
-        for (UUID testGroupId : userCurrentGroupIds) {
-            if (testGroupId.equals(groupId)) {
-                userIsAlreadyAMember = true;
-            }
-        }
+        Collection<UUID> userCurrentGroupIds = userGroupRepository.findGroups(email);
+        boolean userIsAlreadyAMember = userCurrentGroupIds.stream().anyMatch(uuid -> uuid.equals(groupId));
         if (userIsAlreadyAMember) {
-            groupMembersRepository.removeMember(groupId, user.getEmail());
-            groupCounterRepository.decrementGroupCounter(user.getDomain(), groupId);
-            userGroupRepository.removeGroup(user.getEmail(), groupId);
+            groupMembersRepository.removeMember(groupId, email);
+            groupCounterRepository.decrementGroupCounter(groupId);
+            userGroupRepository.removeGroup(email, groupId);
         } else {
-            log.debug("User {} is not a member of group {}", user.getUsername(), group.getName());
+            log.debug("User {} is not a member of group {}", email, group.getName());
         }
     }
-
 
     public Collection<Group> buildGroupList(Collection<Group> groups) {
-        Optional<User> optionalCurrentUser = userService.getCurrentUser();
-        if (optionalCurrentUser.isPresent()) {
-            return buildGroupList(optionalCurrentUser.get(), groups);
-        }
-        log.warn("Current User is not found");
-        return Collections.emptyList();
-
+        String email = SecurityUtils.getCurrentUserEmail();
+        return groups.stream()
+            .map(group -> buildGroup(email, group))
+            .collect(Collectors.toList());
     }
 
-    private Collection<Group> buildGroupList(User user, Collection<Group> groups) {
-
-        for (Group group : groups) {
-            buildGroup(user, group);
-        }
-
-        return groups;
-    }
-
-    private Group buildGroup(Group group) {
-        Optional<User> optionalCurrentUser = userService.getCurrentUser();
-        if (optionalCurrentUser.isPresent()) {
-            return buildGroup(optionalCurrentUser.get(), group);
-        }
-        log.warn("Current User is not found");
-        return null;
-    }
-
-    private Group getGroupFromUser(User currentUser, UUID groupId) {
-        Collection<Group> groups = getGroupsOfUser(currentUser);
-        for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(groupId)) {
-                return testGroup;
-            }
-        }
-        return null;
+    private Group getGroupFromUser(String email, UUID groupId) {
+        Collection<Group> groups = getGroupsOfUser(email);
+        Optional<Group> groupOptional = groups.stream().filter(uGroup -> uGroup.getGroupId().equals(groupId))
+            .findFirst();
+        return groupOptional.isPresent() ? groupOptional.get() : null;
     }
 
     private boolean isGroupManagedByCurrentUser(Group group) {
         Collection<Group> groups = getGroupsWhereCurrentUserIsAdmin();
-        boolean isGroupManagedByCurrentUser = false;
-        for (Group testGroup : groups) {
-            if (testGroup.getGroupId().equals(group.getGroupId())) {
-                isGroupManagedByCurrentUser = true;
-                break;
-            }
-        }
-        return isGroupManagedByCurrentUser;
+        return groups.stream().anyMatch(uGroup -> uGroup.equals(group));
     }
 
-    private Group buildGroup(User user, Group group) {
+    private Group buildGroup(String email, Group group) {
         if (group != null) {
             if (isGroupManagedByCurrentUser(group)) {
                 group.setAdministrator(true);
                 group.setMember(true);
             } else if (group.isPublicGroup()) {
-                Group result = getGroupFromUser(user, group.getGroupId());
+                Group result = getGroupFromUser(email, group.getGroupId());
                 group.setAdministrator(false); // If we made it here, the user is not an admin
-                if (result != null) {
-                    group.setMember(true); // We found a group, so the user is a member
-                } else {
-                    group.setMember(false); // Since no group was found, the user is not a member
-                }
+                group.setMember(result != null);
             } else {
-                Group result = getGroupFromUser(user, group.getGroupId());
+                Group result = getGroupFromUser(email, group.getGroupId());
                 group.setAdministrator(false); // If we make it here, the user is not an admin
                 if (result == null) {
-                    log.info("Permission denied! User {} tried to access group ID = {} ", user.getUsername(), group.getGroupId());
+                    log.info("Permission denied! User {} tried to access group ID = {} ", email, group.getGroupId());
                     group.setMember(false); // No group found, therefore the user is not a member
                     return null;
                 } else {
                     group.setMember(true); // Since a group was found, we know the user is a member
                 }
             }
-            long counter = 0;
-            for (UserGroupDTO userGroup : getMembersForGroup(group.getGroupId(), SecurityUtils.getCurrentUserEmail())) {
-                if (userGroup.isActivated()) {
-                    counter++;
-                }
-            }
+            long counter = getMembersForGroup(group.getGroupId(), SecurityUtils.getCurrentUserEmail()).stream()
+                .filter(UserGroupDTO::isActivated).count();
             group.setCounter(counter);
         }
         return group;
     }
 
-    private Collection<Group> buildGroupIdsList(Collection<UUID> groupIds) {
-        Collection<Group> groups = new TreeSet<Group>();
-        for (UUID groupId : groupIds) {
-            groups.add(buildGroupIds(groupId));
-        }
-        return groups;
-    }
-
     private Group buildGroupIds(UUID groupId) {
-        Optional<User> optionalCurrentUser = userService.getCurrentUser();
-        if (optionalCurrentUser.isPresent()) {
-            return buildGroupIds(optionalCurrentUser.get(), groupId);
-        }
-        log.warn("Current User is not found");
-        return null;
-    }
-
-    private Group buildGroupIds(User user, UUID groupId) {
-        String domain = DomainUtil.getDomainFromEmail(user.getEmail());
-        Group group = getGroupById(domain, groupId);
-        return buildGroup(group);
+        Group group = getGroupById(groupId);
+        return buildGroup(SecurityUtils.getCurrentUserEmail(), group);
     }
 }

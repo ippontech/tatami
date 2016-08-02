@@ -171,7 +171,7 @@ public class TimelineService {
         List<String> favoriteLine = Collections.emptyList();
         if (SecurityUtils.isAuthenticated()) {
             currentUser = userService.getCurrentUser().get();
-            usergroups = groupService.getGroupsForUser(currentUser);
+            usergroups = groupService.getGroupsForUser(currentUser.getEmail());
             favoriteLine = favoritelineRepository.getFavoriteline(currentUser.getEmail());
         }
         Collection<StatusDTO> statuses = new ArrayList<>(line.size());
@@ -325,7 +325,7 @@ public class TimelineService {
         boolean hiddenStatus = false;
         if (status.getGroupId() != null) {
             statusDTO.setGroupId(status.getGroupId());
-            Group group = groupService.getGroupById(statusUser.getDomain(), UUID.fromString(statusDTO.getGroupId()));
+            Group group = groupService.getGroupById(UUID.fromString(statusDTO.getGroupId()));
             // if this is a private group and the user is not part of it, he cannot see the status
             if (!group.isPublicGroup() && !usergroups.contains(group)) {
                 hiddenStatus = true;

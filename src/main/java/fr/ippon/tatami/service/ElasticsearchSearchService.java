@@ -21,8 +21,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -35,7 +33,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
@@ -170,7 +167,7 @@ public class ElasticsearchSearchService implements SearchService {
                 .field("content", status.getContent());
 
             if (status.getGroupId() != null) {
-                Group group = groupRepository.getGroupByGroupId(UUID.fromString(status.getGroupId()));
+                Group group = groupRepository.getGroupById(UUID.fromString(status.getGroupId()));
                 source.field("groupId", status.getGroupId());
                 source.field("publicGroup", group.isPublicGroup());
             }
@@ -349,8 +346,8 @@ public class ElasticsearchSearchService implements SearchService {
     public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
         Collection<String> ids = searchByPrefix(domain, prefix, size, groupMapper);
         return ids.stream()
-                .map(id -> groupRepository.getGroupByGroupId(UUID.fromString(id)))
-                .collect(Collectors.toList());
+            .map(id -> groupRepository.getGroupById(UUID.fromString(id)))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -469,7 +466,7 @@ public class ElasticsearchSearchService implements SearchService {
         });
     }
 
-    private Collection<String>  searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
+    private Collection<String> searchByPrefix(String domain, String prefix, int size, ElasticsearchMapper<?> mapper) {
         try {
 
             SearchRequestBuilder searchRequest = client.prepareSearch(mapper.type())

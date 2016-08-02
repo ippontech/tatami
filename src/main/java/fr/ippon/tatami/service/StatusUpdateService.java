@@ -147,7 +147,7 @@ public class StatusUpdateService {
         Status status = (Status) abstractStatus;
         Group group = null;
         if (status.getGroupId() != null) {
-            group = groupService.getGroupById(status.getDomain(), UUID.fromString(status.getGroupId()));
+            group = groupService.getGroupById(UUID.fromString(status.getGroupId()));
 
             if (group.isArchivedGroup()) {
                 throw new ArchivedGroupException();

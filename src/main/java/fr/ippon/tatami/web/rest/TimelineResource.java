@@ -3,7 +3,6 @@ package fr.ippon.tatami.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.ActionStatus;
 import fr.ippon.tatami.domain.Group;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.StatusDetails;
 import fr.ippon.tatami.exception.NoUserFoundException;
 import fr.ippon.tatami.security.SecurityUtils;
@@ -84,7 +83,7 @@ public class TimelineResource {
 
     /**
      * GET  /rest/company -> get the latest statuses from the domain
-     *
+     * <p>
      * NOTE: This endpoint was "/rest/statuses/domain_timeline", but was changed to match the old implementation
      * so that the mobile app could access the company timeline safely regardless of the web app's version
      */
@@ -197,18 +196,18 @@ public class TimelineResource {
             log.debug("Private status");
             statusUpdateService.postStatus(escapedContent, status.isStatusPrivate(), attachmentIds, status.getGeoLocalization());
         } else {
-            User currentUser = userService.getCurrentUser().get();
-            Collection<Group> groups = groupService.getGroupsForUser(currentUser);
+            String email = SecurityUtils.getCurrentUserEmail();
+            Collection<Group> groups = groupService.getGroupsForUser(email);
             UUID statusGroupId = UUID.fromString(status.getGroupId());
             Optional<Group> groupOptional = groups.stream().filter(group -> group.getGroupId().equals(statusGroupId)).findFirst();
 
             if (!groupOptional.isPresent()) {
                 log.info("Permission denied! User {} tried to access " +
-                    "group ID = {}", currentUser.getUsername(), status.getGroupId());
+                    "group ID = {}", email, status.getGroupId());
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             } else if (groupOptional.isPresent() && groupOptional.get().isArchivedGroup()) {
                 log.info("Archived group! User {} tried to post a message to archived " +
-                    "group ID = {}", currentUser.getUsername(), status.getGroupId());
+                    "group ID = {}", email, status.getGroupId());
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             } else {
                 statusUpdateService.postStatusToGroup(escapedContent, groupOptional.get(), attachmentIds, status.getGeoLocalization());
@@ -237,8 +236,7 @@ public class TimelineResource {
     @ResponseBody
     public Collection<StatusDTO> getReportedStatuses() {
         log.debug("REST request to get all reported statuses");
-        Collection<StatusDTO> reportedStatusList = statusUpdateService.findReportedStatuses();
-        return reportedStatusList;
+        return statusUpdateService.findReportedStatuses();
     }
 
     /**
