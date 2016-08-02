@@ -66,7 +66,7 @@ public class AccountResource {
                 String username = DomainUtil.getUsernameFromEmail(userDTO.getEmail());
                 User user = userService.createUserInformation(username, userDTO.getPassword(),
                     userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
+                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getJobDescription(), userDTO.getPhoneNumber(), userDTO.isMentionEmail(),
                     userDTO.getRssUid(), userDTO.isWeeklyDigest(), userDTO.isDailyDigest(), DomainUtil.getDomainFromEmail(userDTO.getEmail()));
                 String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
@@ -133,7 +133,7 @@ public class AccountResource {
             .findOneByEmail(SecurityUtils.getCurrentUserEmail())
             .map(u -> {
                 userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getPhoneNumber());
+                    userDTO.getLangKey(), userDTO.getJobTitle(), userDTO.getJobDescription(), userDTO.getPhoneNumber());
                 return new ResponseEntity<String>(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

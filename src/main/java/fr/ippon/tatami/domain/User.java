@@ -54,6 +54,9 @@ public class User implements Serializable {
     @Size(max = 50)
     private String jobTitle;
 
+    @Size (max = 1000)
+    private String jobDescription;
+
     @Size (max = 50)
     private String phoneNumber;
 
@@ -176,6 +179,10 @@ public class User implements Serializable {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
+
+    public String getJobDescription() { return jobDescription; }
+
+    public void setJobDescription(String jobDescription) { this.jobDescription = jobDescription; }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -336,6 +343,7 @@ public class User implements Serializable {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", jobTitle='" + jobTitle + '\'' +
+            ", jobDescription='" + jobDescription + '\'' +
             ", phoneNumber='" + phoneNumber + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +

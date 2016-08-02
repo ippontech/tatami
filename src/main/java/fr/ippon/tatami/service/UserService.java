@@ -108,7 +108,7 @@ public class UserService {
     }
 
     public User createUserInformation(String username, String password, String firstName, String lastName, String email,
-                                      String langKey, String jobTitle, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
+                                      String langKey, String jobTitle, String jobDescription, String phoneNumber, boolean mentionEmail, String rssUid, boolean weeklyDigest, boolean dailyDigest, String domain) {
 
         User newUser = new User();
         newUser.setId(UUID.randomUUID().toString());
@@ -122,6 +122,7 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setLangKey(langKey);
         newUser.setJobTitle(jobTitle);
+        newUser.setJobDescription(jobDescription);
         newUser.setPhoneNumber(phoneNumber);
         newUser.setMentionEmail(mentionEmail);
         newUser.setRssUid(rssUid);
@@ -151,6 +152,7 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setJobTitle(userDTO.getJobTitle());
+        user.setJobDescription(userDTO.getJobDescription());
         if (userDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language is English
         } else {
@@ -177,7 +179,7 @@ public class UserService {
     }
 
     public void updateUserInformation(String firstName, String lastName, String email, String langKey, String jobTitle,
-                                      String phoneNumber) {
+                                      String jobDescription, String phoneNumber) {
         getCurrentUser().ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
@@ -185,6 +187,7 @@ public class UserService {
             u.setDomain(DomainUtil.getDomainFromEmail(email));
             u.setLangKey(langKey);
             u.setJobTitle(jobTitle);
+            u.setJobDescription(jobDescription);
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
             searchService.removeUser(u);
@@ -377,6 +380,7 @@ public class UserService {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setJobTitle(user.getJobTitle());
+        dto.setJobDescription(user.getJobDescription());
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setAttachmentsSize(user.getAttachmentsSize());
         dto.setStatusCount(user.getStatusCount());

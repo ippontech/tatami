@@ -245,6 +245,7 @@ CREATE TABLE IF NOT EXISTS user (
     lastname text,
     email text,
     jobtitle text,
+    jobDescription text,
     phonenumber text,
     activated boolean,
     lang_key text,

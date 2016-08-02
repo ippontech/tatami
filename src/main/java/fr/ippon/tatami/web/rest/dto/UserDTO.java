@@ -44,6 +44,9 @@ public class UserDTO {
     @Size(max = 50)
     private String jobTitle;
 
+    @Size (max = 1000)
+    private String jobDescription;
+
     @Size(max = 50)
     private String phoneNumber;
 
@@ -93,7 +96,7 @@ public class UserDTO {
 
     public UserDTO(String username, String password, String avatar, String firstName, String lastName,
         String email, boolean activated, String langKey, Set<String> authorities,
-                   String jobTitle, String phoneNumber,
+                   String jobTitle, String jobDescription, String phoneNumber,
                    boolean mentionEmail, String rssUid, boolean weeklyDigest,
         boolean dailyDigest, String domain, long statusCount, long followersCount, long friendsCount, boolean isAdmin) {
 
@@ -107,6 +110,7 @@ public class UserDTO {
         this.langKey = langKey;
         this.authorities = authorities;
         this.jobTitle = jobTitle;
+        this.jobDescription = jobDescription;
         this.phoneNumber = phoneNumber;
         this.mentionEmail = mentionEmail;
         this.rssUid = rssUid;
@@ -178,6 +182,10 @@ public class UserDTO {
     public String getJobTitle() {
         return jobTitle;
     }
+
+    public void setJobDescription(String jobDescription) { this.jobDescription = jobDescription; }
+
+    public String getJobDescription() { return jobDescription; }
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
@@ -353,6 +361,7 @@ public class UserDTO {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", jobTitle='" + jobTitle + '\'' +
+            ", jobDescription='" + jobDescription + '\'' +
             ", phoneNumber='" + phoneNumber + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
