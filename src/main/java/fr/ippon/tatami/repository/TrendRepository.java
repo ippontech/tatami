@@ -85,6 +85,7 @@ public class TrendRepository {
                 .all()
                 .stream()
                 .map(e -> e.getString("tag"))
+                .distinct()
                 .collect(Collectors.toList());
 
     }
