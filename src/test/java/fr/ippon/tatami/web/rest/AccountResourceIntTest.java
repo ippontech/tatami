@@ -113,6 +113,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
         user.setEmail("john.doe@jhipter.com");
         user.setAuthorities(authorities);
         user.setJobTitle("developer");
+        user.setJobDescription("This is my job description");
         user.setPhoneNumber("123-456-7890");
         user.setMentionEmail(false);
         user.setRssUid("testrssuid");
@@ -131,6 +132,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
                 .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN))
                 .andExpect(jsonPath("$.jobTitle").value("developer"))
+                .andExpect(jsonPath("$.jobDescription").value("This is my job description"))
                 .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"))
                 .andExpect(jsonPath("$.mentionEmail").value(false))
                 .andExpect(jsonPath("$.rssUid").value("testrssuid"))
@@ -162,6 +164,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),   //Authorities
             "Developer",            // Job Title
+            "This is my job description",   //Job Description
             "123-456-7890",          // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid
@@ -198,6 +201,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
+            "This is my job description",   //Job Description
             "123-456-7890",         // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid
@@ -234,6 +238,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
+            "This is my Job description",      //Job Description
             "123-456-7890",        // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid
@@ -272,6 +277,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
+            "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid
@@ -286,7 +292,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
         // Duplicate username, different e-mail
         UserDTO dup = new UserDTO(u.getUsername(), u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
-            "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
+            "alicejr@example.com", true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getJobDescription(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
@@ -324,6 +330,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
+            "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid
@@ -338,7 +345,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
 
         // Duplicate e-mail, different username
         UserDTO dup = new UserDTO("johnjr", u.getPassword(), u.getAvatar(), u.getFirstName(), u.getLastName(),
-            u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getPhoneNumber(),
+            u.getEmail(), true, u.getLangKey(), u.getAuthorities(), u.getJobTitle(), u.getJobDescription(), u.getPhoneNumber(),
             u.isMentionEmail(), u.getRssUid(), u.isWeeklyDigest(),
             u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
@@ -374,6 +381,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "en",                   // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)), // <-- only admin should be able to do that
             "Developer",            // Job Title
+            "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
             false,                  // mentionEmail
             "testrssuid",            // rssUid

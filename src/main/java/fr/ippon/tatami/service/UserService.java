@@ -9,6 +9,7 @@ import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -187,7 +188,7 @@ public class UserService {
             u.setDomain(DomainUtil.getDomainFromEmail(email));
             u.setLangKey(langKey);
             u.setJobTitle(jobTitle);
-            u.setJobDescription(jobDescription);
+            u.setJobDescription(StringUtils.replace(jobDescription, "\n", "<br>"));
             u.setPhoneNumber(phoneNumber);
             userRepository.save(u);
             searchService.removeUser(u);

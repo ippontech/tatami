@@ -51,9 +51,7 @@
                 <span translate="">Job Description</span>
             </div>
             <div class="panel-body">
-                <p>
-                    {{user.jobDescription}}
-                </p>
+                <p ng-bind-html="user.jobDescription"></p>
             </div>
         </div>
     </section>
