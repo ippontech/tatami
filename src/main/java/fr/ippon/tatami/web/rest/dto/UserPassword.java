@@ -39,10 +39,6 @@ public class UserPassword implements Serializable {
 
     @Override
     public String toString() {
-        return "UserPassword{" +
-                "oldPassword='" + oldPassword + '\'' +
-                ", newPassword='" + newPassword + '\'' +
-                ", newPasswordConfirmation='" + newPasswordConfirmation + '\'' +
-                '}';
+        return "UserPassword";
     }
 }

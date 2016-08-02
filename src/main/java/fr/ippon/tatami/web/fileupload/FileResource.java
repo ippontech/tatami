@@ -124,7 +124,7 @@ public class FileResource {
                     byte[] fileContent = attachment.getThumbnail();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream. {}", e.getMessage());
+                    log.info("Error writing file to output stream.", e);
                 }
             }
         }
@@ -132,7 +132,7 @@ public class FileResource {
         try {
             response.flushBuffer();
         } catch (IOException e) {
-            log.info("Error flushing the output stream. {}", e.getMessage());
+            log.info("Error flushing the output stream.", e);
         }
     }
 
@@ -164,7 +164,7 @@ public class FileResource {
                     byte[] fileContent = avatar.getContent();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream. {}", e.getMessage());
+                    log.info("Error writing file to output stream.", e);
                 }
             }
         }
@@ -172,7 +172,7 @@ public class FileResource {
             response.flushBuffer();
 
         } catch (IOException e) {
-            log.info("Error flushing the output stream. {}", e.getMessage());
+            log.info("Error flushing the output stream.", e);
         }
     }
 

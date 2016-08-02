@@ -118,7 +118,7 @@ tatamiJHipsterApp.controller('PostController', [
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
                     $scope.status.attachmentIds.push(data.data[0].attachmentId);
-                }, function (resp) {
+                }, function () {
                     $scope.uploadStatus.isUploading = false;
                     $scope.uploadStatus.progress = 0;
                 }, function (evt) {
@@ -132,13 +132,13 @@ tatamiJHipsterApp.controller('PostController', [
                         $scope.uploadStatus.isUploading = true;
                         Upload.upload({
                             url: '/tatami/rest/fileupload',
-                            data: { uploadFile: files[i] },
+                            data: { uploadFile: files[i] }
                         }).then(function (data) {
                             $scope.current.attachments.push(data.data[0]);
                             $scope.uploadStatus.isUploading = false;
                             $scope.uploadStatus.progress = 0;
                             $scope.status.attachmentIds.push(data.data[0].attachmentId);
-                        }, function (resp) {
+                        }, function () {
                             $scope.uploadStatus.isUploading = false;
                             $scope.uploadStatus.progress = 0;
                         }, function (evt) {

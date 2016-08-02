@@ -355,7 +355,6 @@ public class UserDTO {
         return "UserDTO{" +
             "id='" + id + '\'' +
             ", username='" + username + '\'' +
-            ", password='" + password + '\'' +
             ", avatar='" + avatar + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +

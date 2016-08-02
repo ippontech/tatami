@@ -133,7 +133,7 @@ public class GoogleTokenService {
         try {
             userDetails = DetailsService.loadUserByUsername(email);
         } catch (UsernameNotFoundException e) {
-            log.info("User with email : \"{}\" doesn't exist yet in Tatami database - creating it...", email);
+            log.info("User with email : \"{}\" doesn't exist yet in Tatami database - creating it...", email, e);
             userDetails = getNewlyCreatedUserDetails(user);
         }
         return userDetails;

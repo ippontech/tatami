@@ -54,7 +54,7 @@ public class MailService {
     private String from;
 
     @Async
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    private void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart, isHtml, to, subject, content);
 
@@ -69,7 +69,7 @@ public class MailService {
             javaMailSender.send(mimeMessage);
             log.debug("Sent e-mail to User '{}'", to);
         } catch (Exception e) {
-            log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
+            log.warn("E-mail could not be sent to user '{}', exception is: ", to, e);
         }
     }
 

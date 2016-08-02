@@ -13,7 +13,7 @@ import javax.mail.internet.InternetAddress;
  */
 public class DomainUtil {
 
-    private final Logger log = LoggerFactory.getLogger(DomainUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(DomainUtil.class);
 
     private DomainUtil() {
     }
@@ -42,6 +42,7 @@ public class DomainUtil {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException ex) {
+            log.error("Address invalid", ex);
             result = false;
         }
         return result;
