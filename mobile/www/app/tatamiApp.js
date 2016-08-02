@@ -18,6 +18,7 @@
 
     tatamiRun.$inject = ['$ionicPlatform', '$state', '$localStorage', '$ionicHistory', '$translate', 'PathService', 'TatamiEndpoint', '$http'];
     function tatamiRun($ionicPlatform, $state, $localStorage, $ionicHistory, $translate, PathService, TatamiEndpoint, $http) {
+
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -33,14 +34,10 @@
                     StatusBar.backgroundColorByName('white');
                 }
             }
-        });
 
-        $ionicPlatform.ready(function () {
-
-            // first, make sure any custom endpoints the user entered are prepared properly
-            TatamiEndpoint.prepare();
-
-            // is the (new) default endpoint live?
+            // first, the endpoint (when TatamiEndpoint is injected) gets set up or reset
+            // based on whether or not it's been set before
+            // then, we check is the (new) default endpoint live?
             $http({
                 url: PathService.buildPath('/tatami/rest/client/id'),
                 method: 'GET'

@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     var defaultEndpoint = {url: 'http://app.tatamisoft.com'};
-    var endpoint = {url: defaultEndpoint.url};
+    var endpoint;
 
     angular.module('tatami')
         .factory('TatamiEndpoint', tatamiEndpoint);
@@ -12,9 +12,15 @@
             getEndpoint: getEndpoint,
             setEndpoint: setEndpoint,
             getDefault: getDefaultEndpoint,
-            reset: reset,
-            prepare: prepare
+            reset: reset
         };
+
+        endpoint = $localStorage.get('endpoint');
+        if(!endpoint || !endpoint.url) {
+            $localStorage.signOut();
+            endpoint = {url: defaultEndpoint.url};
+            $localStorage.set('endpoint', endpoint);
+        }
 
         return service;
 
@@ -34,15 +40,6 @@
 
         function reset() {
             setEndpoint(defaultEndpoint.url);
-        }
-
-        function prepare() {
-            endpoint = $localStorage.get('endpoint');
-            if (endpoint == undefined || endpoint == {}) {
-                $localStorage.signOut();
-                endpoint = defaultEndpoint;
-                $localStorage.set('endpoint', defaultEndpoint);
-            }
         }
     }
 })();
