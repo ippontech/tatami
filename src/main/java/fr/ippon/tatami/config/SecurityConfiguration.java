@@ -84,6 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/tatami/rest/oauth/token").permitAll()
             .antMatchers("/tatami/rest/builder").permitAll()
             .antMatchers("/tatami/callback").permitAll()
+            .antMatchers("/tatami/avatar/**").permitAll()
             .antMatchers("/tatami/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/tatami/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/tatami/**").authenticated()
