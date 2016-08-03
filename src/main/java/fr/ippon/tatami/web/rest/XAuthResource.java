@@ -180,7 +180,7 @@ public class XAuthResource {
         try {
             return userDetailsService.loadUserByUsername(login);
         } catch (UsernameNotFoundException e) {
-            log.info("User with login : \"{}\" doesn't exist yet in Tatami database - creating it...", login, e);
+            log.error("User with login : " + login + " doesn't exist yet in Tatami database - creating it...", e);
             return createUserFromGoogleAuth(user);
         }
     }

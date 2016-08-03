@@ -14,10 +14,8 @@ import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.GoogleAuthenticationToken;
 import fr.ippon.tatami.security.xauth.Token;
 import fr.ippon.tatami.security.xauth.TokenProvider;
-import fr.ippon.tatami.security.xauth.XAuthTokenFilter;
 import fr.ippon.tatami.service.util.DomainUtil;
 import fr.ippon.tatami.service.util.RandomUtil;
-import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -32,9 +30,7 @@ import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
 
@@ -133,7 +129,7 @@ public class GoogleTokenService {
         try {
             userDetails = DetailsService.loadUserByUsername(email);
         } catch (UsernameNotFoundException e) {
-            log.info("User with email : \"{}\" doesn't exist yet in Tatami database - creating it...", email, e);
+            log.error("User with email : " + email + " doesn't exist yet in Tatami database - creating it...", e);
             userDetails = getNewlyCreatedUserDetails(user);
         }
         return userDetails;

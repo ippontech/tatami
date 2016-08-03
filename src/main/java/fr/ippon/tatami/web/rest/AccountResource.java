@@ -302,7 +302,7 @@ public class AccountResource {
             log.debug("User password updated : {}", currentUser);
             return new UserPassword();
         } catch (Exception e) {
-            log.error("error while setting passwork", e);
+            log.error("error while setting password", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return null;
         }

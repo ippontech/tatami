@@ -132,7 +132,7 @@ public class TimelineResource {
             return ResponseEntity.ok()
                 .body(statusDTOs);
         } catch (NoUserFoundException e) {
-            log.info("The user {} was not found", email, e);
+            log.error("The user " + email + " was not found", e);
             return ResponseEntity.badRequest()
                 .body(new ArrayList<>());
         }
