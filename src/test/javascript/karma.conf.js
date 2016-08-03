@@ -14,6 +14,7 @@ module.exports = function (config) {
             // bower:js
             'main/webapp/bower_components/jquery/dist/jquery.js',
             'main/webapp/bower_components/angular/angular.js',
+            'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/angular-aria/angular-aria.js',
             'main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'main/webapp/bower_components/angular-cache-buster/angular-cache-buster.js',
@@ -35,7 +36,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/json3/lib/json3.js',
             'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
-            'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/ngToast/dist/ngToast.js',
             'main/webapp/bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js',
             'main/webapp/bower_components/ez-ng/dist/ez-ng.js',
