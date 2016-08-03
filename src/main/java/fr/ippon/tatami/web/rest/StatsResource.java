@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * REST controller for obtaining statistics.
@@ -28,13 +27,11 @@ public class StatsResource {
     @Inject
     private StatsService statsService;
 
-
     @RequestMapping(value = "/rest/stats/day",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<UserStatusStatDTO>> getDayLine() throws URISyntaxException
-    {
+    public ResponseEntity<List<UserStatusStatDTO>> getDayLine() throws URISyntaxException {
         Collection<UserStatusStat> stats = statsService.getDayline();
         List<UserStatusStatDTO> userstats = stats.stream()
             .map(UserStatusStatDTO::new)
@@ -42,6 +39,5 @@ public class StatsResource {
         return new ResponseEntity<>(userstats, HttpStatus.OK);
 
     }
-
 
 }

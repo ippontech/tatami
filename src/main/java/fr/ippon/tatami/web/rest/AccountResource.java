@@ -22,7 +22,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -126,7 +125,7 @@ public class AccountResource {
     @Timed
     public ResponseEntity<String> saveAccount(@RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getUsername().equalsIgnoreCase(userDTO.getUsername()))) {
+        if (existingUser.isPresent() && !existingUser.get().getUsername().equalsIgnoreCase(userDTO.getUsername())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
@@ -200,9 +199,7 @@ public class AccountResource {
     @Timed
     public Preferences getPreferences() {
         log.debug("REST request to get account's preferences");
-        User currentUser = userService.getCurrentUser().get();
-
-        return new Preferences(currentUser);
+        return new Preferences(userService.getCurrentUser().get());
     }
 
     /**
@@ -253,25 +250,6 @@ public class AccountResource {
     }
 
     /**
-     * GET  /account/password -> throws an error if the password is managed by LDAP
-     */
-//    @RequestMapping(value = "/rest/account/password",
-//        method = RequestMethod.GET,
-//        produces = "application/json")
-//    @ResponseBody
-//    @Timed
-//    public UserPassword isPasswordManagedByLDAP(HttpServletResponse response) {
-//        User currentUser = userService.getCurrentUser().get();
-//        String domain = DomainUtil.getDomainFromUsername(currentUser.getUsername());
-//        if (userService.isDomainHandledByLDAP(domain)) {
-//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//            return null;
-//        } else {
-//            return new UserPassword();
-//        }
-//    }
-
-    /**
      * POST  /account/password -> change password
      */
     @RequestMapping(value = "/rest/account/password",
@@ -283,7 +261,6 @@ public class AccountResource {
         log.debug("REST request to set account's password");
         try {
             User currentUser = userService.getCurrentUser().get();
-            StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 
             if (!passwordEncoder.matches(userPassword.getOldPassword(), currentUser.getPassword())) {
                 log.debug("The old password is incorrect : {}", userPassword.getOldPassword());

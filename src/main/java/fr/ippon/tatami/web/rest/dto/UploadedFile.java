@@ -1,4 +1,4 @@
-package fr.ippon.tatami.web.fileupload;
+package fr.ippon.tatami.web.rest.dto;
 
 import java.io.Serializable;
 
@@ -95,13 +95,13 @@ public class UploadedFile implements Serializable {
     @Override
     public String toString() {
         return "UploadedFile{" +
-                "attachmentId='" + attachmentId + '\'' +
-                "name='" + name + '\'' +
-                ", size=" + size +
-                ", url='" + url + '\'' +
-                ", thumbnail_url='" + thumbnail_url + '\'' +
-                ", delete_url='" + delete_url + '\'' +
-                ", delete_type='" + delete_type + '\'' +
-                '}';
+            "attachmentId='" + attachmentId + '\'' +
+            "name='" + name + '\'' +
+            ", size=" + size +
+            ", url='" + url + '\'' +
+            ", thumbnail_url='" + thumbnail_url + '\'' +
+            ", delete_url='" + delete_url + '\'' +
+            ", delete_type='" + delete_type + '\'' +
+            '}';
     }
 }

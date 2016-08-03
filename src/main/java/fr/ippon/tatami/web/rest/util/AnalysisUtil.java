@@ -10,22 +10,20 @@ public class AnalysisUtil {
     private static final int RESULTS_SIZE = 20;
 
     public static void incrementKeyCounterInMap(Map<String, Integer> map, String key) {
-        if (map.containsKey(key.toString())) {
-            Integer total = map.get(key);
+        Integer total = 1;
+        if (map.containsKey(key)) {
+            total = map.get(key);
             total++;
-            map.put(key.toString(), total);
-        } else {
-            map.put(key.toString(), 1);
         }
+        map.put(key, total);
     }
 
     public static List<String> findMostUsedKeys(Map<String, Integer> totalTagsCount) {
         ValueComparator valueComparator = new ValueComparator(totalTagsCount);
-        TreeMap<String, Integer> orderedTags =
-                new TreeMap<String, Integer>(valueComparator);
+        TreeMap<String, Integer> orderedTags = new TreeMap<>(valueComparator);
 
         orderedTags.putAll(totalTagsCount);
-        List<String> mostUsedTags = new ArrayList<String>();
+        List<String> mostUsedTags = new ArrayList<>();
         for (int i = 0; i <= RESULTS_SIZE; i++) {
             Map.Entry<String, Integer> firstEntry = orderedTags.pollFirstEntry();
             if (firstEntry != null) {

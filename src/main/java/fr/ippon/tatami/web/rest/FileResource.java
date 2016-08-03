@@ -1,4 +1,4 @@
-package fr.ippon.tatami.web.fileupload;
+package fr.ippon.tatami.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.Attachment;
@@ -10,6 +10,7 @@ import fr.ippon.tatami.service.AvatarService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.service.exception.StorageSizeException;
 import fr.ippon.tatami.web.rest.dto.AvatarMeta;
+import fr.ippon.tatami.web.rest.dto.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -36,7 +37,6 @@ import java.util.List;
 public class FileResource {
 
     private static final Logger log = LoggerFactory.getLogger(FileResource.class);
-
 
     private static final String HEADER_EXPIRES = "Expires";
 
@@ -74,7 +74,6 @@ public class FileResource {
         method = RequestMethod.GET)
     @Timed
     public ResponseEntity download(@PathVariable("attachmentId") String attachmentId) throws IOException {
-
         HttpHeaders responseHeaders = new HttpHeaders();
 
         // Cache the file in the browser
@@ -83,15 +82,15 @@ public class FileResource {
 
         // Get attachment data
         Attachment attachment = attachmentService.getAttachmentById(attachmentId);
-        byte[] attachmentContent = attachment.getContent();
         if (attachment == null) {
             //response.sendRedirect("/tatami/file/file_not_found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            byte[] attachmentContent = attachment.getContent();
             // ETag support
             responseHeaders.set(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
             String requestETag = responseHeaders.getFirst(HEADER_IF_NONE_MATCH);
-            if (requestETag != null && requestETag.equals(attachmentId)) {
+            if (attachmentId.equals(requestETag)) {
                 return new ResponseEntity<>(attachmentContent, HttpStatus.NOT_MODIFIED);
             }
             return new ResponseEntity<>(attachmentContent, HttpStatus.OK);
@@ -117,14 +116,14 @@ public class FileResource {
             // ETag support
             response.setHeader(HEADER_ETAG, attachmentId); // The attachmentId is unique and should not be modified
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
-            if (requestETag != null && requestETag.equals(attachmentId)) {
+            if (attachmentId.equals(requestETag)) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             } else {
                 try {
                     byte[] fileContent = attachment.getThumbnail();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream.", e);
+                    log.error("Error writing file to output stream.", e);
                 }
             }
         }
@@ -132,10 +131,9 @@ public class FileResource {
         try {
             response.flushBuffer();
         } catch (IOException e) {
-            log.info("Error flushing the output stream.", e);
+            log.error("Error flushing the output stream.", e);
         }
     }
-
 
     @RequestMapping(value = "/avatar/{avatarId}/*",
         method = RequestMethod.GET)
@@ -143,7 +141,6 @@ public class FileResource {
     public void getAvatar(@PathVariable("avatarId") String avatarId,
                           HttpServletRequest request,
                           HttpServletResponse response) throws IOException {
-
         // Cache the file in the browser
         response.setDateHeader(HEADER_EXPIRES, System.currentTimeMillis() + CACHE_SECONDS * 1000L);
         response.setHeader(HEADER_CACHE_CONTROL, "max-age=" + CACHE_SECONDS + ", must-revalidate");
@@ -157,22 +154,21 @@ public class FileResource {
 
             response.setHeader(HEADER_ETAG, avatarId); // The attachmentId is unique and should not be modified
             String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
-            if (requestETag != null && requestETag.equals(avatarId)) {
+            if (avatarId.equals(requestETag)) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             } else {
                 try {
                     byte[] fileContent = avatar.getContent();
                     response.getOutputStream().write(fileContent);
                 } catch (IOException e) {
-                    log.info("Error writing file to output stream.", e);
+                    log.error("Error writing file to output stream.", e);
                 }
             }
         }
         try {
             response.flushBuffer();
-
         } catch (IOException e) {
-            log.info("Error flushing the output stream.", e);
+            log.error("Error flushing the output stream.", e);
         }
     }
 
@@ -180,9 +176,7 @@ public class FileResource {
         method = RequestMethod.POST)
     @ResponseBody
     @Timed
-    public List<UploadedFile> uploadAvatar(
-        @RequestParam("uploadFile") MultipartFile file) throws IOException {
-
+    public List<UploadedFile> uploadAvatar(@RequestParam("uploadFile") MultipartFile file) throws IOException {
         Avatar avatar = new Avatar();
         avatar.setContent(file.getBytes());
         avatar.setFilename(file.getOriginalFilename());
@@ -191,7 +185,7 @@ public class FileResource {
 
         avatarService.createAvatar(avatar);
 
-        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        List<UploadedFile> uploadedFiles = new ArrayList<>();
         UploadedFile uploadedFile = new UploadedFile(
             avatar.getAvatarId(),
             file.getOriginalFilename(),
@@ -208,7 +202,6 @@ public class FileResource {
         userRepository.save(currentUser);
 
         return uploadedFiles;
-
     }
 
     @RequestMapping(value = "/rest/urlupload/avatar",
@@ -218,17 +211,13 @@ public class FileResource {
     @Timed
     public List<UploadedFile> uploadUrlAvatar(@RequestBody AvatarMeta avatarMeta) throws IOException {
         if (avatarMeta == null || avatarMeta.getFilename() == null) {
-
             return null;
         }
         Avatar avatar = new Avatar();
-        if (avatarMeta != null) {
-            avatar.setFilename(avatarMeta.getFilename());
-            avatar.setSize(avatarMeta.getSize());
-
-            avatar = avatarService.createAvatarBasedOnAvatar(avatar);
-        }
-        List<UploadedFile> uploadedFiles = new ArrayList<UploadedFile>();
+        avatar.setFilename(avatarMeta.getFilename());
+        avatar.setSize(avatarMeta.getSize());
+        avatar = avatarService.createAvatarBasedOnAvatar(avatar);
+        List<UploadedFile> uploadedFiles = new ArrayList<>();
         UploadedFile uploadedFile = new UploadedFile(
             avatar.getAvatarId(),
             avatar.getFilename(),
@@ -242,17 +231,13 @@ public class FileResource {
             userRepository.save(currentUser);
         }
         return uploadedFiles;
-
     }
-
 
     @RequestMapping(value = "/rest/fileupload/avatarIE", headers = "content-type=multipart/*",
         method = RequestMethod.POST)
     @ResponseBody
     @Timed
-    public void uploadAvatarIE(
-        @RequestParam("uploadFile") MultipartFile file) throws IOException {
-
+    public void uploadAvatarIE(@RequestParam("uploadFile") MultipartFile file) throws IOException {
         Avatar avatar = new Avatar();
         avatar.setContent(file.getBytes());
         avatar.setFilename(file.getOriginalFilename());
@@ -267,9 +252,7 @@ public class FileResource {
         currentUser.setAvatar(avatar.getAvatarId());
 
         userRepository.save(currentUser);
-
     }
-
 
     @RequestMapping(value = "/rest/fileupload", method = RequestMethod.POST)
     @ResponseBody
@@ -320,7 +303,6 @@ public class FileResource {
         String result = attachment.getAttachmentId() + ":::" + file.getOriginalFilename() + ":::" + file.getSize();
 
         return URLEncoder.encode(result, "UTF-8");
-
     }
 
     @RequestMapping(value = "/file/file_not_found",
@@ -330,6 +312,5 @@ public class FileResource {
         log.debug("File not found !");
         return new ModelAndView("errors/file_not_found");
     }
-
 
 }

@@ -5,7 +5,6 @@ import fr.ippon.tatami.service.TimelineService;
 import fr.ippon.tatami.web.rest.dto.StatusDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -29,8 +28,8 @@ public class FavoritesResource {
      * GET  /favorites -> get the favorite status of the current user
      */
     @RequestMapping(value = "/rest/favorites",
-            method = RequestMethod.GET,
-            produces = "application/json")
+        method = RequestMethod.GET,
+        produces = "application/json")
     @ResponseBody
     @Timed
     public Collection<StatusDTO> listFavoriteStatus() {
@@ -42,7 +41,7 @@ public class FavoritesResource {
      * POST /favorites/create/:id -> Favorites the status
      */
     @RequestMapping(value = "/rest/favorites/create/{statusId}",
-            method = RequestMethod.POST)
+        method = RequestMethod.POST)
     @ResponseBody
     public void favoriteStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to like status : {}", statusId);
@@ -53,7 +52,7 @@ public class FavoritesResource {
      * POST /favorites/destroy/:id -> Unfavorites the status
      */
     @RequestMapping(value = "/rest/favorites/destroy/{statusId}",
-            method = RequestMethod.POST)
+        method = RequestMethod.POST)
     @ResponseBody
     public void unfavoriteStatus(@PathVariable("statusId") String statusId) {
         log.debug("REST request to unlike status : {}", statusId);
