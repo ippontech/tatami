@@ -3,7 +3,7 @@ package fr.ippon.tatami.service;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
-import fr.ippon.tatami.exception.NoUserFoundException;
+import fr.ippon.tatami.web.rest.errors.NoUserFoundException;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.DomainViolationException;
 import fr.ippon.tatami.security.SecurityUtils;

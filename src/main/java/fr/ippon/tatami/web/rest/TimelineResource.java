@@ -4,7 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import fr.ippon.tatami.domain.ActionStatus;
 import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.status.StatusDetails;
-import fr.ippon.tatami.exception.NoUserFoundException;
+import fr.ippon.tatami.web.rest.errors.NoUserFoundException;
 import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.GroupService;
 import fr.ippon.tatami.service.StatusUpdateService;

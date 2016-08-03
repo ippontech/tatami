@@ -33,26 +33,26 @@ public class UserDetailsService implements org.springframework.security.core.use
     We can't change the name of this method because it is Spring Security, but the parameter being passed in is
     actually the user's email address.
     */
-    public UserDetails loadUserByUsername(final String username) {
-        log.debug("Authenticating {}", username);
-        String lowercaseUsername = username.toLowerCase();
-        Optional<User> userFromDatabase = userRepository.findOneByEmail(lowercaseUsername);
+    public UserDetails loadUserByUsername(final String email) {
+        log.debug("Authenticating {}", email);
+        String lowerCaseEmail = email.toLowerCase();
+        Optional<User> userFromDatabase = userRepository.findOneByEmail(lowerCaseEmail);
 
         if (!userFromDatabase.isPresent()) {
-            throw new UsernameNotFoundException("User " + username + " not in the database.");
+            throw new UsernameNotFoundException("User " + email + " not in the database.");
         }
 
         return userFromDatabase.map(user -> {
             if (!user.getActivated()) {
-                throw new UserNotActivatedException("User " + lowercaseUsername + " was not activated");
+                throw new UserNotActivatedException("User " + lowerCaseEmail + " was not activated");
             }
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(userFromDatabase.get().getEmail(),
+            return new org.springframework.security.core.userdetails.User(lowerCaseEmail,
                 user.getPassword(),
                 grantedAuthorities);
-        }).orElseThrow(() -> new UsernameNotFoundException("User " + userFromDatabase.get().getUsername() + " was not found in the " +
+        }).orElseThrow(() -> new UsernameNotFoundException("User " + lowerCaseEmail + " was not found in the " +
             "database"));
     }
 
