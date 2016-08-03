@@ -114,7 +114,7 @@
                     hideOnStateChange: true
                 });
 
-                fileTransfer.upload(image, PathService.buildPath('/tatami/rest/fileupload'), onSuccess, onFail, options);
+                fileTransfer.upload(image, '/tatami/rest/fileupload', onSuccess, onFail, options);
                 promises.push(deferred.promise);
 
                 function onSuccess(result) {

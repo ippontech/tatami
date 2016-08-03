@@ -39,7 +39,7 @@
             // based on whether or not it's been set before
             // then, we check is the (new) default endpoint live?
             $http({
-                url: PathService.buildPath('/tatami/rest/client/id'),
+                url: '/tatami/rest/client/id',
                 method: 'GET'
             }).then(function(result) {
                 // if the endpoint is live...
@@ -124,6 +124,7 @@
 
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
+        $httpProvider.interceptors.push('endpointInterceptor');
 
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: 'i18n/{lang}/{part}.json'

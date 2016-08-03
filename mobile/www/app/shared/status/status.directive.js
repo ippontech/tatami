@@ -129,7 +129,7 @@
 
         buildAttachmentUrl.$inject = ['attachment'];
         function buildAttachmentUrl(attachment) {
-            return PathService.buildPath('/tatami/file/' + attachment.attachmentId + '/' + attachment.filename);
+            return '/tatami/file/' + attachment.attachmentId + '/' + attachment.filename;
         }
 
         $ionicPopover.fromTemplateUrl('app/shared/status/blockUserMenu.html', {

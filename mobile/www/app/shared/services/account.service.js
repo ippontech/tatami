@@ -7,7 +7,7 @@
     accountService.$inject = ['$resource', 'PathService'];
     function accountService($resource, PathService) {
 
-        return $resource(PathService.buildPath('/tatami/rest/account/admin'), null, null);
+        return $resource('/tatami/rest/account/admin', null, null);
     }
 
 })();

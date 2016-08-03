@@ -18,7 +18,7 @@
             return statuses;
         };
 
-        return $resource(PathService.buildPath('/tatami/rest/statuses/report/:statusId'), null,
+        return $resource('/tatami/rest/statuses/report/:statusId', null,
             {
                 'reportStatus': {
                     method: 'POST',
@@ -27,7 +27,7 @@
                 'getReportedStatuses': {
                     method: 'GET',
                     isArray: true,
-                    url: PathService.buildPath('/tatami/rest/statuses/reportedList'),
+                    url: '/tatami/rest/statuses/reportedList',
                     transformResponse: responseTransform
                 },
                 'approveStatus': {

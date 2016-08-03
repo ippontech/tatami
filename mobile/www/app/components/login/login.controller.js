@@ -41,7 +41,7 @@
         function login() {
             var data = "j_username=" + encodeURIComponent(vm.user.email) + "&j_password="
                 + encodeURIComponent(vm.user.password);
-            return $http.post(PathService.buildPath('/tatami/rest/authentication'), data, {
+            return $http.post('/tatami/rest/authentication', data, {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json"
@@ -57,7 +57,7 @@
 
         function tryGoogleLogin() {
             $http({
-                url: PathService.buildPath('/tatami/rest/client/id'),
+                url: '/tatami/rest/client/id',
                 method: 'GET'
             }).then(function (data) {
                 var clientId;
@@ -102,7 +102,7 @@
                     });
                     var requestToken = event.url.split("code=")[1];
                     $http({
-                        url: PathService.buildPath('/tatami/rest/oauth/token'),
+                        url: '/tatami/rest/oauth/token',
                         method: 'POST',
                         headers: {
                             'x-auth-code-header': requestToken

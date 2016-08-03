@@ -27,7 +27,7 @@
         function updateEndpoint() {
             TatamiEndpoint.setEndpoint(vm.endpoint);
             $http({
-                url: PathService.buildPath('/tatami/rest/client/id'),
+                url: '/tatami/rest/client/id',
                 method: 'GET'
             }).then(success, error);
         }

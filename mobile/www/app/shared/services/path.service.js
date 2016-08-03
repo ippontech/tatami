@@ -7,8 +7,7 @@
     avatarService.$inject = ['TatamiEndpoint'];
     function avatarService(TatamiEndpoint) {
         var service = {
-            getAvatar: getAvatar,
-            buildPath: buildPath
+            getAvatar: getAvatar
         };
 
         return service;
@@ -18,9 +17,7 @@
             return TatamiEndpoint.getEndpoint().url + (user.avatar && user.avatar !== '' ? '/tatami/avatar/' + user.avatar + '/photo.jpg' : '/assets/img/default_image_profile.png');
         }
 
-        buildPath.$inject = ['resourcePath'];
-        function buildPath(resourcePath) {
-            return TatamiEndpoint.getEndpoint().url + resourcePath;
-        }
+        //buildPath() removed - REST endpoints being accessed were being cached, leading to issues when swapping endpoints
+        //new implementation intercepts url requests beginning with "/" and tacks on the current endpoint url as a prefix
     }
 })();

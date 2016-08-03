@@ -15,10 +15,11 @@
 
             return users;
         };
-        return $resource(PathService.buildPath('/tatami/rest/users/:username'), null,
+        return $resource('/tatami/rest/users/:username', null,
             {
                 'get': {
                     method: 'GET', params: {username: '@username'},
+                    cache: false,
                     transformResponse: function (user) {
                         user = angular.fromJson(user);
                         user['avatarURL'] = PathService.getAvatar(user);
@@ -28,27 +29,27 @@
                 'query': {
                     method: 'GET',
                     isArray: true,
-                    url: PathService.buildPath('/tatami/rest/users'),
+                    url: '/tatami/rest/users',
                     transformResponse: responseTransform
                 },
                 'getFollowing': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/users/:username/friends'),
+                    url: '/tatami/rest/users/:username/friends',
                     transformResponse: responseTransform
                 },
                 'getFollowers': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/users/:username/followers'),
+                    url: '/tatami/rest/users/:username/followers',
                     transformResponse: responseTransform
                 },
                 'getSuggestions': {
                     method: 'GET',
                     isArray: true,
-                    url: PathService.buildPath('/tatami/rest/users/suggestions'),
+                    url: '/tatami/rest/users/suggestions',
                     transformResponse: function (suggestions) {
                         suggestions = angular.fromJson(suggestions);
 
@@ -61,17 +62,17 @@
                     }
                 },
                 'follow': {
-                    method: 'PATCH', 
+                    method: 'PATCH',
                     params: {username: '@username'}
                 },
                 'searchUsers': {
                     method: 'GET',
                     isArray: true,
-                    url: PathService.buildPath('/tatami/rest/users/:term'),
+                    url: '/tatami/rest/users/:term',
                     transformResponse: responseTransform
                 },
                 'deactivate': {
-                    method: 'PATCH', 
+                    method: 'PATCH',
                     params: {username: '@username'}
                 }
             });

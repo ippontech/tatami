@@ -7,7 +7,7 @@
     profileService.$inject = ['$resource', 'PathService'];
 
     function profileService($resource, PathService) {
-        return $resource(PathService.buildPath('/tatami/rest/account/profile'), null,
+        return $resource('/tatami/rest/account/profile', null,
             {
                 'get': {
                     method: 'GET',

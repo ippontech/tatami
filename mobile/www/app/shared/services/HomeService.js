@@ -9,15 +9,15 @@
         return $resource(null, null,
             {
                 'getMentions': {
-                    method: 'GET', isArray: true, url: PathService.buildPath('/tatami/rest/mentions'),
+                    method: 'GET', isArray: true, url: '/tatami/rest/mentions',
                     transformResponse: responseTransform
                 },
                 'getFavorites': {
-                    method: 'GET', isArray: true, url: PathService.buildPath('/tatami/rest/favorites'),
+                    method: 'GET', isArray: true, url: '/tatami/rest/favorites',
                     transformResponse: responseTransform
                 },
                 'getCompanyTimeline': {
-                    method: 'GET', isArray: true, url: PathService.buildPath('/tatami/rest/company'),
+                    method: 'GET', isArray: true, url: '/tatami/rest/company',
                     transformResponse: responseTransform
                 }
             });

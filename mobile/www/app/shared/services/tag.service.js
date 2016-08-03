@@ -6,11 +6,11 @@
 
     tagService.$inject = ['$resource', 'PathService'];
     function tagService($resource, PathService) {
-        return $resource(PathService.buildPath('/tatami/rest/tags'), null,
+        return $resource('/tatami/rest/tags', null,
             {
-                'get': { method:'GET', params: { tag: '@tag' }, url: PathService.buildPath('/tatami/rest/tags/:tag') },
+                'get': { method:'GET', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },
                 'getTagTimeline': {
-                    method:'GET', isArray: true, params: { tag: '@tag' }, url: PathService.buildPath('/tatami/rest/tags/:tag/tag_timeline'),
+                    method:'GET', isArray: true, params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag/tag_timeline',
                     transformResponse: function(statuses) {
                         statuses = angular.fromJson(statuses);
 
@@ -29,8 +29,8 @@
                         return statuses;
                     }
                 },
-                'follow': { method:'PUT', params: { tag: '@tag' }, url: PathService.buildPath('/tatami/rest/tags/:tag') },
-                'getPopular': { method: 'GET', isArray: true, url: PathService.buildPath('/tatami/rest/tags/popular') }
+                'follow': { method:'PUT', params: { tag: '@tag' }, url: '/tatami/rest/tags/:tag' },
+                'getPopular': { method: 'GET', isArray: true, url: '/tatami/rest/tags/popular' }
             });
     }
 })();

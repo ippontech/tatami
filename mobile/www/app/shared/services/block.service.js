@@ -22,13 +22,13 @@
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/block/blockedusers/:username'),
+                    url: '/tatami/rest/block/blockedusers/:username',
                     transformResponse: responseTransform
                 },
                 'updateBlockedUser': {
                     method: 'PATCH',
                     params: { username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/block/update/:username'),
+                    url: '/tatami/rest/block/update/:username',
                     tranformResponse: function (blockedUser) {
                         blockedUser = angular.fromJson(blockedUser);
                         return blockedUser;

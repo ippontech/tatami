@@ -23,10 +23,11 @@
 
             return statuses;
         };
-        return $resource(PathService.buildPath('/tatami/rest/statuses/:statusId'), null,
+        return $resource('/tatami/rest/statuses/:statusId', null,
             {
                 'get': {
                     method: 'GET',
+                    cache: false,
                     transformResponse: function (status) {
                         status = angular.fromJson(status);
 
@@ -46,20 +47,23 @@
                 'getHomeTimeline': {
                     method: 'GET',
                     isArray: true,
-                    url: PathService.buildPath('/tatami/rest/statuses/home_timeline'),
+                    url: '/tatami/rest/statuses/home_timeline',
+                    cache: false,
                     transformResponse: responseTransform
                 },
                 'getUserTimeline': {
                     method: 'GET',
                     isArray: true,
                     params: {username: '@username'},
-                    url: PathService.buildPath('/tatami/rest/statuses/:username/timeline'),
+                    url: '/tatami/rest/statuses/:username/timeline',
+                    cache: false,
                     transformResponse: responseTransform
                 },
                 'getDetails': {
                     method: 'GET',
                     params: {statusId: '@statusId'},
-                    url: PathService.buildPath('/tatami/rest/statuses/details/:statusId'),
+                    url: '/tatami/rest/statuses/details/:statusId',
+                    cache: false,
                     transformResponse: function (details) {
                         details = angular.fromJson(details);
 
@@ -82,12 +86,13 @@
                         return details;
                     }
                 },
-                'update': {method: 'PATCH', params: {statusId: '@statusId'}},
-                'announce': {method: 'PATCH', params: {params: '@statusId'}},
+                'update': {method: 'PATCH', cache: false, params: {statusId: '@statusId'}},
+                'announce': {method: 'PATCH', cache: false, params: {params: '@statusId'}},
                 'hideStatus': {
                     method: 'POST',
                     params: {statusId: '@statusId'},
-                    url: PathService.buildPath('/tatami/rest/statuses/hide/:statusId')
+                    cache: false,
+                    url: '/tatami/rest/statuses/hide/:statusId'
                 }
             });
 
