@@ -274,6 +274,7 @@ public class ElasticsearchSearchService implements SearchService {
                 .field("username", user.getUsername())
                 .field("firstName", user.getFirstName())
                 .field("lastName", user.getLastName())
+                .field("jobDescription", user.getJobDescription())
                 .endObject();
         }
     };
@@ -508,6 +509,8 @@ public class ElasticsearchSearchService implements SearchService {
         }
 
     }
+
+
 
     /**
      * Stringify a document source for logging purpose.

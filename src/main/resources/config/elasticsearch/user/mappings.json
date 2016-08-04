@@ -55,6 +55,21 @@
                         "search_analyzer" : "prefixSearch"
                     }
                 }
+            },
+            "jobDescription": {
+                "type" : "multi_field",
+                "path" : "just_name",
+                "fields" : {
+                    "jobDescription": {
+                        "type": "string",
+                        "analyzer" : "default"
+                    },
+                    "prefix" : {
+                        "type" : "string",
+                        "index_analyzer" : "prefixIndex",
+                        "search_analyzer" : "prefixSearch"
+                    }
+                }
             }
         }
     }
