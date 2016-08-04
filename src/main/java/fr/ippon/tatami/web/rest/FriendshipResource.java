@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * REST controller for managing friendships.
@@ -53,11 +54,12 @@ public class FriendshipResource {
         if (!DomainUtil.isValidEmailAddress(email)) {
             email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
-        User user = userRepository.findOneByEmail(email).get();
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if (!optionalUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
+        User user = optionalUser.get();
         Collection<User> friends = friendshipService.getFriendsForUser(user.getEmail());
 
         return userService.buildUserDTOList(friends);
@@ -79,11 +81,12 @@ public class FriendshipResource {
         if (!DomainUtil.isValidEmailAddress(email)) {
             email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
         }
-        User user = userRepository.findOneByEmail(email).get();
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if (!optionalUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
+        User user = optionalUser.get();
         Collection<User> friends = friendshipService.getFollowersForUser(user.getEmail());
 
         return userService.buildUserDTOList(friends);
@@ -97,8 +100,14 @@ public class FriendshipResource {
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriend(@PathVariable("email") String email) {
-        UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
+    public UserDTO updateFriend(@PathVariable("email") String email, HttpServletResponse response) {
+        Optional<User> optionalUser = userRepository.findOneByEmail(email);
+        if(!optionalUser.isPresent()){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            log.warn("User {} doen't exist", email);
+            return null;
+        }
+        UserDTO toReturn = userService.buildUserDTO(optionalUser.get());
         if (!toReturn.isFriend()) {
             friendshipService.followUser(toReturn.getEmail());
         } else {

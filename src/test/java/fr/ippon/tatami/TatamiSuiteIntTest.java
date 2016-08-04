@@ -4,6 +4,7 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import fr.ippon.tatami.security.SecurityUtilsIntTest;
 import fr.ippon.tatami.web.rest.AccountResourceIntTest;
+import fr.ippon.tatami.web.rest.FriendshipResourceIntTest;
 import fr.ippon.tatami.web.rest.UserResourceIntTest;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
@@ -26,7 +27,8 @@ import java.io.IOException;
 @Suite.SuiteClasses({
     SecurityUtilsIntTest.class,
     AccountResourceIntTest.class,
-    UserResourceIntTest.class
+    UserResourceIntTest.class,
+    FriendshipResourceIntTest.class
 })
 public class TatamiSuiteIntTest {
 
