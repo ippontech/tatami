@@ -173,12 +173,15 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<UserDTO>> getAllUsers()
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(required = false) Integer pagination)
         throws URISyntaxException {
+        if (pagination == null) {
+            pagination = 0;
+        }
         User currentUser = userService.getCurrentUser().get();
         String domain = currentUser.getDomain();
         log.debug("attempting to list all users in domain: {}", domain);
-        List<String> userList = domainRepository.getEmailsInDomain(domain);
+        List<String> userList = domainRepository.getEmailnamesInDomain(domain, pagination);
         List<UserDTO> users = userList.stream().map(email -> userRepository.findOneByEmail(email))
             .filter(Optional::isPresent)
             .map(user -> new UserDTO(user.get()))
