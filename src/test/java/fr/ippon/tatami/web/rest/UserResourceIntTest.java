@@ -1,21 +1,15 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.AbstractCassandraTest;
 import fr.ippon.tatami.Application;
 import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.SecurityUtils;
 import fr.ippon.tatami.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,9 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
-public class UserResourceIntTest extends AbstractCassandraTest {
+@WebIntegrationTest
+public class UserResourceIntTest {
 
     @Inject
     private UserRepository userRepository;

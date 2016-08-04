@@ -1,40 +1,45 @@
-package fr.ippon.tatami.web.rest;
+package fr.ippon.tatami;
 
-import fr.ippon.tatami.domain.util.JSR310DateTimeSerializer;
-import fr.ippon.tatami.domain.util.JSR310LocalDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import fr.ippon.tatami.domain.util.JSR310DateTimeSerializer;
+import fr.ippon.tatami.domain.util.JSR310LocalDateDeserializer;
+import fr.ippon.tatami.security.AuthoritiesConstants;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Utility class for testing REST controllers.
  */
 public class TestUtil {
 
-    /** MediaType for JSON UTF8 */
+    /**
+     * MediaType for JSON UTF8
+     */
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
-            MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+        MediaType.APPLICATION_JSON.getType(),
+        MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
     /**
      * Convert an object to JSON byte array.
      *
-     * @param object
-     *            the object to convert
+     * @param object the object to convert
      * @return the JSON byte array
      * @throws IOException
      */
     public static byte[] convertObjectToJsonBytes(Object object)
-            throws IOException {
+        throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
@@ -61,5 +66,14 @@ public class TestUtil {
             byteArray[i] = Byte.parseByte(data, 2);
         }
         return byteArray;
+    }
+
+    public static void createAdminSecurityContext() {
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ADMIN));
+        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin@localhost", "admin", authorities));
+        SecurityContextHolder.setContext(securityContext);
     }
 }

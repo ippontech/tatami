@@ -1,36 +1,39 @@
 package fr.ippon.tatami.web.rest;
 
-import fr.ippon.tatami.AbstractCassandraTest;
 import fr.ippon.tatami.Application;
+import fr.ippon.tatami.TestUtil;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.repository.UserRepository;
 import fr.ippon.tatami.security.AuthoritiesConstants;
 import fr.ippon.tatami.service.MailService;
 import fr.ippon.tatami.service.UserService;
 import fr.ippon.tatami.web.rest.dto.UserDTO;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,112 +45,83 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
-public class AccountResourceIntTest extends AbstractCassandraTest {
+@WebIntegrationTest
+public class AccountResourceIntTest {
 
     @Inject
     private UserRepository userRepository;
 
     @Inject
-    private UserService userService;
-
-    @Mock
     private UserService mockUserService;
 
     @Mock
     private MailService mockMailService;
 
-    private MockMvc restUserMockMvc;
-
-    private MockMvc restMvc;
+    private MockMvc restAccountMock;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(mockMailService).sendActivationEmail((User) anyObject(), anyString());
+        doNothing().when(mockMailService).sendActivationEmail(anyObject(), anyString());
 
         AccountResource accountResource = new AccountResource();
         ReflectionTestUtils.setField(accountResource, "userRepository", userRepository);
-        ReflectionTestUtils.setField(accountResource, "userService", userService);
+        ReflectionTestUtils.setField(accountResource, "userService", mockUserService);
         ReflectionTestUtils.setField(accountResource, "mailService", mockMailService);
 
-        AccountResource accountUserMockResource = new AccountResource();
-        ReflectionTestUtils.setField(accountUserMockResource, "userRepository", userRepository);
-        ReflectionTestUtils.setField(accountUserMockResource, "userService", mockUserService);
-        ReflectionTestUtils.setField(accountUserMockResource, "mailService", mockMailService);
-
-        this.restMvc = MockMvcBuilders.standaloneSetup(accountResource).build();
-        this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource).build();
+        this.restAccountMock = MockMvcBuilders.standaloneSetup(accountResource).build();
     }
 
     @Test
     public void testNonAuthenticatedUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/authenticate")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(""));
+        restAccountMock.perform(get("/tatami/authenticate")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(""));
     }
 
     @Test
     public void testAuthenticatedUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/authenticate")
-                .with(request -> {
-                    request.setRemoteUser("test");
-                    return request;
-                })
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("test"));
+        restAccountMock.perform(get("/tatami/authenticate")
+            .with(request -> {
+                request.setRemoteUser("test");
+                return request;
+            })
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("test"));
     }
 
     @Test
     public void testGetExistingAccount() throws Exception {
-        Set<String> authorities = new HashSet<>();
-        authorities.add(AuthoritiesConstants.ADMIN);
-
-        User user = new User();
-        user.setUsername("test");
-        user.setFirstName("john");
-        user.setLastName("doe");
-        user.setEmail("john.doe@jhipter.com");
-        user.setAuthorities(authorities);
-        user.setJobTitle("developer");
-        user.setJobDescription("This is my job description");
-        user.setPhoneNumber("123-456-7890");
-        user.setMentionEmail(false);
-        user.setRssUid("testrssuid");
-        user.setWeeklyDigest(false);
-        user.setDailyDigest(false);
-        user.setDomain("ippon.fr");
-        when(mockUserService.getCurrentUser()).thenReturn(Optional.of(user));
-
-        restUserMockMvc.perform(get("/tatami/rest/account/profile")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())//----------------------
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.username").value("test"))
-                .andExpect(jsonPath("$.firstName").value("john"))
-                .andExpect(jsonPath("$.lastName").value("doe"))
-                .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
-                .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN))
-                .andExpect(jsonPath("$.jobTitle").value("developer"))
-                .andExpect(jsonPath("$.jobDescription").value("This is my job description"))
-                .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"))
-                .andExpect(jsonPath("$.mentionEmail").value(false))
-                .andExpect(jsonPath("$.rssUid").value("testrssuid"))
-                .andExpect(jsonPath("$.weeklyDigest").value(false))
-                .andExpect(jsonPath("$.dailyDigest").value(false))
-                .andExpect(jsonPath("$.domain").value("ippon.fr"));
+        restAccountMock.perform(get("/tatami/rest/account/profile")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())//----------------------
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.username").value("admin"))
+            .andExpect(jsonPath("$.firstName").isEmpty())
+            .andExpect(jsonPath("$.lastName").value("Administrator"))
+            .andExpect(jsonPath("$.email").value("admin@localhost"))
+            .andExpect(jsonPath("$.authorities", hasSize(2)))
+            .andExpect(jsonPath("$.jobTitle").value("Developer"))
+            .andExpect(jsonPath("$.jobDescription").isEmpty())
+            .andExpect(jsonPath("$.phoneNumber").value("8041234567"))
+            .andExpect(jsonPath("$.mentionEmail").value(true))
+            .andExpect(jsonPath("$.rssUid").isEmpty())
+            .andExpect(jsonPath("$.weeklyDigest").value(false))
+            .andExpect(jsonPath("$.dailyDigest").value(false))
+            .andExpect(jsonPath("$.domain").value("localhost"));
     }
 
     @Test
     public void testGetUnknownAccount() throws Exception {
-        when(mockUserService.getCurrentUser()).thenReturn(Optional.empty());
+        SecurityContextHolder.clearContext();
 
-        restUserMockMvc.perform(get("/tatami/rest/account/profile")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());//----------------------
+        restAccountMock.perform(get("/tatami/rest/account/profile")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError());//----------------------
+
+        TestUtil.createAdminSecurityContext();
     }
 
     @Test
@@ -162,7 +136,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "joe@example.com",      // e-mail
             true,                   // activated
             "en",                   // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),   //Authorities
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)),   //Authorities
             "Developer",            // Job Title
             "This is my job description",   //Job Description
             "123-456-7890",          // Phone Number
@@ -177,7 +151,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             false                     // isAdmin
         );
 
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
@@ -199,7 +173,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "funky@example.com",    // e-mail
             true,                   // activated
             "en",                   // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
             "This is my job description",   //Job Description
             "123-456-7890",         // Phone Number
@@ -214,7 +188,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             false                     // isAdmin
         );
 
-        restUserMockMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
@@ -236,7 +210,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "invalid",          // e-mail <-- invalid
             true,               // activated
             "en",               // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
             "This is my Job description",      //Job Description
             "123-456-7890",        // Phone Number
@@ -251,7 +225,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             false                     // isAdmin
         );
 
-        restUserMockMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
@@ -275,7 +249,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "alice@example.com",    // e-mail
             true,                   // activated
             "en",                   // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
             "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
@@ -297,14 +271,14 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
         // Good user
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
         // Duplicate username
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
@@ -328,7 +302,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "john@example.com",     // e-mail
             true,                   // activated
             "en",                   // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.USER)),
             "Developer",            // Job Title
             "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
@@ -350,21 +324,25 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             u.isDailyDigest(), u.getDomain(), u.getStatusCount(), u.getFollowersCount(), u.getFriendsCount(), u.getIsAdmin());
 
         // Good user
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
         // Duplicate e-mail
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(dup)))
             .andExpect(status().is4xxClientError());
 
         Optional<User> user = userRepository.findOneByEmail("john@example.com");
-        assertThat(user.get().getUsername().contains("john"));
+        if (user.isPresent()) {
+            assertThat(user.get().getUsername().contains("john"));
+        } else {
+            Assert.fail();
+        }
     }
 
     @Test
@@ -379,7 +357,7 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             "badguy@example.com",   // e-mail
             true,                   // activated
             "en",                   // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)), // <-- only admin should be able to do that
+            new HashSet<>(Collections.singletonList(AuthoritiesConstants.ADMIN)), // <-- only admin should be able to do that
             "Developer",            // Job Title
             "This is my Job description",      //Job Description
             "123-456-7890",         // Phone Number
@@ -394,15 +372,17 @@ public class AccountResourceIntTest extends AbstractCassandraTest {
             true                     // isAdmin
         );
 
-        restMvc.perform(
+        restAccountMock.perform(
             post("/tatami/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isCreated());
 
         Optional<User> userDup = userRepository.findOneByEmail("badguy@example.com");
-        assertThat(userDup.isPresent()).isTrue();
-        assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(AuthoritiesConstants.USER);
+        if (userDup.isPresent()) {
+            assertThat(userDup.get().getAuthorities()).containsExactly(AuthoritiesConstants.USER);
+        } else {
+            Assert.fail();
+        }
     }
 }
