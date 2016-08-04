@@ -13,6 +13,9 @@
                     <li ng-class="{ 'active': $state.current.name === 'searchusers' }">
                         <a ui-sref="searchusers" translate="account.users.search"></a>
                     </li>
+                    <li ng-class="{ 'active': $state.current.name === 'blockedusers' }">
+                        <a ui-sref="blockedusers" translate="account.users.blocked"></a>
+                    </li>
                 </ul>
             </div>
             <div ui-view="list"></div>

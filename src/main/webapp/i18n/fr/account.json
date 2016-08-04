@@ -55,7 +55,8 @@
             "following": "Abonné",
             "recommended": "Recommandé",
             "search": "Rechercher",
-            "deactivated": "Cet utilisateur est désactivé"
+            "deactivated": "Cet utilisateur est désactivé",
+            "blocked": "Bloqué"
         },
 
         "groups": {

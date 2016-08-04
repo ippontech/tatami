@@ -21,7 +21,7 @@ tatamiJHipsterApp
                 resolve: {
                     usersList: getFollowings
                 }
-            })
+            });
             getFollowings.$inject = ['UserService','profileInfo'];
             function getFollowings(UserService,profileInfo) {
                 return UserService.getFollowing({ email: profileInfo.data.email }).$promise;

@@ -16,7 +16,7 @@ tatamiJHipsterApp
                 resolve: {
                     domain : getDomain
                 }
-            })
+            });
             getDomain.$inject = ['AccountService'];
             function getDomain(AccountService) {
                 return AccountService.get().$promise;
