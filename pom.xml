@@ -479,6 +479,9 @@
                     <argLine>-Xmx256m ${surefireArgLine}</argLine>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
+                    <includes>
+                        <include>**/TatamiSuiteIntTest.class</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
