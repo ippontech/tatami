@@ -76,7 +76,7 @@ public class TimelineController {
     /**
      * Report a status
      */
-    @RequestMapping(value = "/rest/statuses/reportedList",
+    @RequestMapping(value = "/rest/statuses/report/reportedList",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody

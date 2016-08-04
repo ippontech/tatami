@@ -27,7 +27,7 @@
                 'getReportedStatuses': {
                     method: 'GET',
                     isArray: true,
-                    url: '/tatami/rest/statuses/reportedList',
+                    url: '/tatami/rest/statuses/report/reportedList',
                     transformResponse: responseTransform
                 },
                 'approveStatus': {

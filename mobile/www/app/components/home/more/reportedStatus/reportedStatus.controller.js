@@ -35,7 +35,6 @@
 
         function getReportedStatuses(){
             ReportService.getReportedStatuses(null, function(response){
-                    console.log(response);
                     vm.reportedStatuses = response;
                 }
             );
