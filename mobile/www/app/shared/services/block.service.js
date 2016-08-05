@@ -29,7 +29,7 @@
                     method: 'PATCH',
                     params: { username: '@username'},
                     url: '/tatami/rest/block/update/:username',
-                    tranformResponse: function (blockedUser) {
+                    transformResponse: function (blockedUser) {
                         blockedUser = angular.fromJson(blockedUser);
                         return blockedUser;
                     }
