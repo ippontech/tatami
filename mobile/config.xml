@@ -4,8 +4,8 @@
   <description>
         The Tatami mobile app is designed to access the Tatami API, and it is an open source, enterprise social media platform.
     </description>
-  <author email="khegeland@ipponusa.com">
-      Kenny Hegeland
+  <author email="tatami-dev@ippon.fr">
+      Ippon Technology, Inc
     </author>
   <content src="index.html"/>
   <access origin="*"/>
