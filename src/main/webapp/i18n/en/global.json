@@ -184,7 +184,8 @@
         },
         "field": {
             "id": "ID"
-        }
+        },
+        "newMessage": "New message"
     },
     "entity": {
         "action": {
