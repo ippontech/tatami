@@ -42,7 +42,8 @@
             "publicToolTip": "Groupe public",
             "privateToolTip": "Groupe privé",
             "archivedToolTip": "Groupe archivé",
-            "administratorToolTip": "Vous administrez ce groupe."
+            "administratorToolTip": "Vous administrez ce groupe.",
+            "jobExperience": "Experience"
         },
 
         "tag": {

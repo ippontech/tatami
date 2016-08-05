@@ -110,13 +110,13 @@
                                 </div>
                             </small>
                         </div>
-                        <div ng-if="status.type == 'STATUS' || status.type == 'SHARE' || status.type == 'ANNOUNCEMENT'" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
+                        <div ng-if="(status.type == 'STATUS' || status.type == 'SHARE' || status.type == 'ANNOUNCEMENT') && (!isReported)" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
                             <div>
                                 <small class="statusitem-footer">
                                     <span>
                                         <button ng-click="openReplyModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span translate="status.reply"></span>
+                                            <span>{{state}}</span>
                                         </button>
                                         <button ng-if="!status.yours && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
@@ -164,6 +164,22 @@
                                         <a ui-sref="status({ statusId: status.statusId })" class="btn-link status-action button-ios">
                                             <span translate="status.viewConversation"></span>
                                         </a>
+                                    </span>
+                                </small>
+                            </div>
+                        </div>
+                        <div ng-if="isReported" ng-style="{ visibility: showButtonRow ? 'visible': 'hidden' }" style="display: block;" class="mediumHeight little-marge-top buttons">
+                            <div>
+                                <small class="statusitem-footer">
+                                    <span>
+                                        <button ng-click="approveStatus(status.statusId, $index)" class="btn-link status-action status-action-reply button-ios">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                            <span translate="status.approve"></span>
+                                        </button>
+                                        <button ng-click="removeStatus(status.statusId, $index)" class="btn-link status-action status-action-share button-ios">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                            <span translate="status.remove"></span>
+                                        </button>
                                     </span>
                                 </small>
                             </div>

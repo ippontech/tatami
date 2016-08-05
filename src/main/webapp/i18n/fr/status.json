@@ -17,6 +17,8 @@
         "shares": "Partages",
         "hide": "Cacher ce statut",
         "report": "Report this Status",
-        "block": "Block this User"
+        "block": "Block this User",
+        "approve": "Accepter",
+        "remove": "Retirer"
     }
 }

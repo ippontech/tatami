@@ -9,7 +9,7 @@
             "lastName": "Nom",
             "jobTitle": "Titre de travail",
             "phoneNumber": "Numéro de téléphone",
-            "jobDescription": "Description de l'emploi",
+            "jobDescription": "Experience",
             "delete": "Supprimer votre compte",
             "confirmDelete": "Vous êtes sur le point de supprimer votre compte. Êtes-vous sûr?",
             "remainingChar": "Caractères restants :",

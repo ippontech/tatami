@@ -132,6 +132,7 @@
             "admin": {
                 "main": "Administration",
                 "user-management": "User management",
+                "reported-statuses": "Reported Statuses",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "health": "Health",

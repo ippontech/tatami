@@ -17,7 +17,9 @@
         "shares": "Shares",
         "hide": "Hide from Timeline",
         "report": "Report this Status",
-        "block": "Block this User"
+        "block": "Block this User",
+        "approve": "Approve",
+        "remove": "Remove"
 
     }
 }

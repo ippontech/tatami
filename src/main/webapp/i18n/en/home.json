@@ -98,7 +98,8 @@
                 "statuses": "Statuses",
                 "following": "Following",
                 "followers": "Followers",
-                "trends": "Trends"
+                "trends": "Trends",
+                "jobExperience": "Experience"
             },
 
             "block": "Block",

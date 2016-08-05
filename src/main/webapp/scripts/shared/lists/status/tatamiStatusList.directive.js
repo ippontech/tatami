@@ -27,6 +27,11 @@ angular.module('tatamiJHipsterApp')
                         if(showModal && $state.$current.name == 'timeline') {
                             $state.go('timelinePresentation');
                         }
+                        $scope.isReported = false;
+                        console.log($state.$current.name);
+                        if ($state.$current.name == 'reported-statuses') {
+                            $scope.isReported = true;
+                        }
 
                         $scope.busy = false;
                         $scope.isAdmin = $state.isAdmin;
@@ -40,7 +45,7 @@ angular.module('tatamiJHipsterApp')
 
 
                         /* Begin Polling Related Code */
-
+                        $scope.state = $state.$current.name;
                         $scope.newMessages = null;
                         $window.document.title = 'Tatami';
 
@@ -263,19 +268,27 @@ angular.module('tatamiJHipsterApp')
                         }
 
                         $scope.blockUsers = function (email){
-                            BlockService.updateBlockedUser({email: email}, function (){
-                                console.log("blocked this user");
-                            })
+                            BlockService.updateBlockedUser({email: email}, function (){})
                         }
 
                         $scope.reportStatus = function (statusId){
-                            ReportService.reportStatus({statusId: statusId}, function () {
-                                console.log("reported status");
-                            });
+                            ReportService.reportStatus({statusId: statusId}, function () {});
                         }
 
                         $scope.openMenu = function($mdOpenMenu, ev) {
                             $mdOpenMenu(ev);
+                        };
+
+                        $scope.approveStatus = function(statusId, index) {
+                            ReportService.approveStatus({statusId: statusId}, function () {
+                                $scope.statuses.splice(index,1);
+                            })
+                        };
+
+                        $scope.removeStatus = function(statusId, index) {
+                            ReportService.deleteStatus({statusId: statusId}, function () {
+                                $scope.statuses.splice(index,1);
+                            })
                         };
                     }
                 ]

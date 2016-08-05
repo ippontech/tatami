@@ -19,8 +19,7 @@
             {
                 'reportStatus': {
                     method: 'POST',
-                    params: {statusId: '@statusId'},
-                    url: '/tatami/rest/statuses/report/:statusId'
+                    params: {statusId: '@statusId'}
                 },
                 'getReportedStatuses': {
                     method: 'GET',

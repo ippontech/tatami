@@ -55,7 +55,8 @@
                 <div class="form-group">
                     <label for="jobDescription" class="col-sm-2 control-label" translate="account.profile.jobDescription">Job Description</label>
                     <div class="col-sm-10">
-                        <textarea ng-style="{'height':'100px', 'display':'inline-block'}" name="jobDescription" type="text" maxlength="1000" class="form-control" ng-model="userProfile.jobDescription"></textarea>
+                        <textarea ng-style="{'height':'200px', 'display':'inline-block'}" name="jobDescription" type="text" maxlength="1000"
+                                  class="form-control" ng-model="userProfile.jobDescription" ng-change="statusChange(userProfile.jobDescription)"></textarea>
                     </div>
                     <div class = "pull-right">
                         {{ 'account.profile.remainingChar' | translate }}
