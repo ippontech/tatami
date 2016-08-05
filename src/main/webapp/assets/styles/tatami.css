@@ -1083,3 +1083,7 @@ margin-bottom: 20px;
 .btn-header {
     width: 100px;
 }
+
+#content {
+    background-image: url(img/wallpaper.jpg);
+}

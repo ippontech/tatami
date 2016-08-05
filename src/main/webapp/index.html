@@ -29,13 +29,6 @@
         <script src="script.js"></script>-->
 
         <!-- endbuild -->
-
-        <style>
-            body{
-                background-image: url(assets/styles/img/wallpaper.jpg);
-            }
-        </style>
-
     </head>
     <body ng-app="tatamiJHipsterApp" ui-tour>
         <toast></toast>
@@ -44,7 +37,7 @@
         <![endif]-->
 
         <div ui-view="navbar" ng-cloak=""></div>
-        <div class="container-fluid">
+        <div id="content" class="container-fluid">
             <div ui-view="content"></div>
 
             <div ng-if="!$state.includes('home')" style="opacity: 0.5; text-align:center;">
