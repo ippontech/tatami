@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration scan="true">
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
     <logger name="fr.ippon.tatami" level="DEBUG"/>
     <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/>
