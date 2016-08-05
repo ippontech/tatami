@@ -28,7 +28,6 @@ angular.module('tatamiJHipsterApp')
                             $state.go('timelinePresentation');
                         }
                         $scope.isReported = false;
-                        console.log($state.$current.name);
                         if ($state.$current.name == 'reported-statuses') {
                             $scope.isReported = true;
                         }
