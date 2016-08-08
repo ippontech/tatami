@@ -47,7 +47,9 @@ tatamiJHipsterApp
 
         // Update the user information
         $scope.updateUser = function() {
-            $scope.userProfile.jobDescription = $scope.userProfile.jobDescription.trim();
+            if($scope.userProfile.jobDescription){
+                $scope.userProfile.jobDescription = $scope.userProfile.jobDescription.trim();
+            }
             AccountService.update($scope.userProfile, function() {
                 ngToast.create({
                     content: $translate.instant('account.profile.save')
