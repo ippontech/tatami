@@ -19,7 +19,7 @@
         </div>
     </section>
     <section class="hidden-phone groups">
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-if="groups.length > 0">
             <div tour-step
                  tour-step-order="3"
                  tour-step-title="{{ 'home.sidebar.myGroups' | translate }}"
@@ -50,7 +50,7 @@
         </div>
     </section>
     <section class="hidden-phone tag-trends">
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-if="tags.length > 0">
             <div tour-step
                  tour-step-order="4"
                  tour-step-title="{{ 'home.sidebar.trends' | translate }}"
@@ -73,7 +73,7 @@
         </div>
     </section>
     <section class="hidden-phone who-to-follow">
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-if="suggestions.length > 0">
             <div tour-step
                  tour-step-order=5
                  tour-step-title="{{ 'home.sidebar.whoToFollow' | translate }}"
