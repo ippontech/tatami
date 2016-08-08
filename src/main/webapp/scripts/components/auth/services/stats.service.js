@@ -10,7 +10,7 @@
         var responseTransform = function(stats) {
             stats = angular.fromJson(stats);
             return stats;
-        }
+        };
 
         return $resource('/tatami/rest/stats',null,{
             'get': {

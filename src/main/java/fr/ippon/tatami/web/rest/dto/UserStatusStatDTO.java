@@ -5,33 +5,33 @@ import fr.ippon.tatami.domain.UserStatusStat;
 
 public class UserStatusStatDTO {
 
-    private String username;
+    private String email;
 
     private long statusCount;
 
 
-    public UserStatusStatDTO(String username, long statusCount){
-        this.username = username;
+    public UserStatusStatDTO(String email, long statusCount){
+        this.email = email;
         this.statusCount = statusCount;
     }
 
-    public UserStatusStatDTO(String username){
-        this(username,0);
+    public UserStatusStatDTO(String email){
+        this(email,0);
     }
 
     public UserStatusStatDTO(UserStatusStat userStatusStat) {
-        this(userStatusStat.getUsername(),userStatusStat.getStatusCount());
+        this(userStatusStat.getEmail(),userStatusStat.getStatusCount());
     }
 
-    public String getUsername() { return username;}
-    public void setUsername(String username) { this.username = username;}
+    public String getEmail() { return email;}
+    public void setEmail(String email) { this.email = email;}
 
     public long getStatusCount() { return statusCount; }
     public void setStatusCount(int statusCount) { this.statusCount = statusCount;}
 
     public String toString(){
         return "UserDTO{" +
-            "username='" + username + '\'' +
+            "email='" + email + '\'' +
                 ", statusCount='" + statusCount + '\''+
                 "}";
     }

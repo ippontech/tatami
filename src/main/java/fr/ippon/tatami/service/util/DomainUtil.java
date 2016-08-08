@@ -42,7 +42,7 @@ public class DomainUtil {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException ex) {
-            log.error("Address invalid", ex);
+            log.error("Address {} invalid",email, ex);
             result = false;
         }
         return result;

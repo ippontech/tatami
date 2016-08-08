@@ -19,13 +19,11 @@
             for (var i = 0; i < rawStats.length; i++) {
                 //get rest of user info
                 var user = {};
-                user.username = rawStats[i].username;
+                user.email = rawStats[i].email;
                 user.statusCount = rawStats[i].statusCount;
-
-                UserService.get({email: user.username}, function (userResult) {
-                    //console.log(userResult);
+                UserService.get({email: user.email}, function (userResult) {
                     for (var j = 0; j < rawStats.length; j++) {
-                        if (rawStats[j].username == userResult.email) {
+                        if (rawStats[j].email == userResult.email) {
                             rawStats[j].info = userResult;
                             vm.topPosters.push(rawStats[j]);
                             vm.topPosters.sort(function (a, b) {

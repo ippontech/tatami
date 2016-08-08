@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 public class UserStatusStat implements Comparable<UserStatusStat>, Serializable {
 
-    private String username;
+    private String email;
 
     private Long statusCount;
 
-    public UserStatusStat(String username, Long count) {
-        assert username != null && count != null;
-        this.username = username;
+    public UserStatusStat(String email, Long count) {
+        assert email != null && count != null;
+        this.email = email;
         this.statusCount = count;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getStatusCount() {
@@ -32,7 +32,7 @@ public class UserStatusStat implements Comparable<UserStatusStat>, Serializable 
 
     @Override
     public int compareTo(UserStatusStat o) {
-        return this.username.compareTo(o.username);
+        return this.email.compareTo(o.email);
     }
 
     @Override
@@ -42,19 +42,19 @@ public class UserStatusStat implements Comparable<UserStatusStat>, Serializable 
 
         UserStatusStat that = (UserStatusStat) o;
 
-        return username.equals(that.username);
+        return email.equals(that.email);
 
     }
 
     @Override
     public int hashCode() {
-        return username.hashCode();
+        return email.hashCode();
     }
 
     @Override
     public String toString() {
         return "UserStatusStat{" +
-                "username='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", statusCount=" + statusCount +
                 '}';
     }
