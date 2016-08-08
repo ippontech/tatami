@@ -10,8 +10,10 @@ tatamiJHipsterApp
         return users;
     };
     var singleResponseTransform = function(user) {
-        user = angular.fromJson(user);
-        user['avatarURL'] = !user.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+        if(user){
+            user = angular.fromJson(user);
+            user['avatarURL'] = !user.avatar ? '/assets/img/default_image_profile.png' : '/tatami/avatar/' + user.avatar + '/photo.jpg';
+        }
         return user;
     };
 

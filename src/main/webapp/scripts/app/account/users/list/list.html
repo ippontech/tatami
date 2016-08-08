@@ -14,13 +14,13 @@
                 {{ 'account.users.deactivated' | translate }}
             </span>
         </span>
-                <a ui-sref="profileStatuses({ email: user.username })">
+                <a ui-sref="profileStatuses({ email: user.email })">
                     <strong>
                         {{ user.firstName + ' ' + user.lastName }}
                     </strong>
                 </a>
                 <br>
-                <a ui-sref="home.profile.statuses({ username: user.username })">
+                <a ui-sref="profileStatuses({ email: user.email })">
                     <small>
                         @{{ user.username }}
                     </small>
