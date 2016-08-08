@@ -64,7 +64,7 @@
                                  ng-style="{ 'background-image': 'url(' + currentStatus.avatarURL + ')' }"></div>
                         </a>
                     </div>
-                    <div class="status-content-container">
+                    <div  ng-style="{'margin-left':'55px', 'margin-right':'30px'}" class="status-content-container">
                         <h5 class="statusitem-name">
                             <a ui-sref="profile.statuses({ email: currentStatus.email })">
                                 <strong>{{ currentStatus.firstName + ' ' + currentStatus.lastName }}</strong>

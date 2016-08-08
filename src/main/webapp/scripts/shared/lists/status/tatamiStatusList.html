@@ -17,7 +17,7 @@
                                 <div class="img img-rounded img-medium" ng-style="{ 'background-image': 'url(' + status.avatarURL + ')' }"></div>
                             </a>
                         </div>
-                        <div class="status-content-container" ng-init="expanded = false" ng-click="getShares(status, $index); expanded = !expanded">
+                        <div ng-style="{'margin-left':'55px', 'margin-right':'30px'}" class="status-content-container" ng-init="expanded = false" ng-click="getShares(status, $index); expanded = !expanded">
                             <h5 class="statusitem-name">
                                 <small ng-if="status.type == 'SHARE'">
                                     <span class="glyphicon glyphicon-retweet">&nbsp;</span>
