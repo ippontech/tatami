@@ -6,6 +6,15 @@
         "error": {
             "message": "Something went wrong. Returning to Timeline",
             "truncated": "Your post has been truncated to remain under the max length."
+        },
+        "location": {
+            "share": "You will share your location",
+            "unshare": "You won't share your location",
+            "fail": "Location failure. Please check that your GPS is enabled on your device"
+        },
+        "private": {
+            "yes": "Your message will be private",
+            "no": "Your message will be public"
         }
     }
 }

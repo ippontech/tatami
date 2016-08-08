@@ -15,9 +15,10 @@
         '$ionicPopup',
         'repliedToStatus',
         '$scope',
-        '$cordovaGeolocation'
+        '$cordovaGeolocation',
+        'ToastService'
     ];
-    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus, $scope, $cordovaGeolocation) {
+    function postCtrl(StatusService, PathService, $ionicHistory, $state, $cordovaCamera, $q, $ionicLoading, $ionicPopup, repliedToStatus, $scope, $cordovaGeolocation, ToastService) {
         var vm = this;
         vm.charCount = 750;
         vm.status = {
@@ -185,13 +186,15 @@
         function updateLocation() {
             vm.shareLocation = !vm.shareLocation;
             if(vm.shareLocation){
-                var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                var posOptions = {timeout: 5000, enableHighAccuracy: false};
                 $cordovaGeolocation
                     .getCurrentPosition(posOptions)
                     .then(function (position) {
                         vm.status.geoLocalization = position.coords.latitude + ", " + position.coords.longitude;
+                        ToastService.display('post.location.share');
                     }, function() {
                         vm.shareLocation = !vm.shareLocation;
+                        ToastService.display('post.location.fail');
                     });
             } else {
                 vm.status.geoLocalization = "";
@@ -200,6 +203,7 @@
 
         function updatePrivate(){
             vm.status.statusPrivate = !vm.status.statusPrivate;
+            vm.status.statusPrivate ? ToastService.display('post.private.yes') : ToastService.display('post.private.no');
         }
     }
 })();

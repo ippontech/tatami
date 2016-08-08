@@ -1,6 +1,3 @@
-/**
- * Created by emilyklein on 7/22/16.
- */
 (function() {
     'use strict';
 
@@ -16,7 +13,6 @@
 
         return service;
 
-        setFromLocalStorage.$inject = ['toastMessage'];
         function displayToast(toastMessage){
             $translate(toastMessage).then(function(msg){
                 if (ionic.Platform.isIOS()){

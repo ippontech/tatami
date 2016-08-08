@@ -6,6 +6,15 @@
         "error": {
             "message": "Un problème est survenu. Retour à la Timeline.",
             "truncated": "Votre message a été tronqué afin de respecter la longueur maximale autorisée"
+        },
+        "location": {
+            "share": "Votre position sera partagée",
+            "unshare": "Votre position ne sera pas partagée",
+            "fail": "Echec de la localisation. Vérifiez que le GPS de votre téléphone est activé"
+        },
+        "private": {
+            "yes": "Votre message sera privé",
+            "no": "Votre message sera public"
         }
     }
 }
