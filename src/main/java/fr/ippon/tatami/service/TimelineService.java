@@ -178,8 +178,9 @@ public class TimelineService {
         for (String statusId : line) {
             AbstractStatus abstractStatus = statusRepository.findStatusById(statusId);
             if (abstractStatus != null) {
-                User statusUser = userRepository.findOneByEmail(abstractStatus.getEmail()).get();
-                if (statusUser != null) {
+                Optional<User> optionalStatusUser = userRepository.findOneByEmail(abstractStatus.getEmail());
+                if (optionalStatusUser.isPresent()) {
+                    User statusUser = optionalStatusUser.get();
                     // Security check
                     // bypass the security check when no user is logged in
                     // => for non-authenticated rss access
@@ -201,8 +202,13 @@ public class TimelineService {
                         AbstractStatus originalStatus = statusRepository.findStatusById(share.getOriginalStatusId());
                         if (originalStatus != null) { // Find the original status
                             setStatusDTOFromShare(statusDTO, share,  statusUser,  currentUser);
-                            statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            optionalStatusUser = userRepository.findOneByEmail(originalStatus.getEmail());
+                            if(optionalStatusUser.isPresent()) {
+                                statusUser = optionalStatusUser.get();
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("Original user has been deleted");
+                            }
                         } else {
                             log.debug("Original status has been deleted");
                         }
@@ -212,8 +218,13 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was shared
                             statusDTO.setTimelineId(mentionShare.getStatusId().toString());
                             statusDTO.setSharedByUsername(mentionShare.getUsername());
-                            statusUser = userRepository.findOneByEmail(mentionShare.getEmail()).get();
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            optionalStatusUser = userRepository.findOneByEmail(originalStatus.getEmail());
+                            if(optionalStatusUser.isPresent()) {
+                                statusUser = optionalStatusUser.get();
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("Original user has been deleted");
+                            }
                         } else {
                             log.debug("Mentioned status has been deleted");
                         }
@@ -227,8 +238,13 @@ public class TimelineService {
                         if (originalStatus != null) { // Find the status that was announced
                             //An announcement is a share
                             setStatusDTOFromShare(statusDTO, announcement, statusUser, currentUser);
-                            statusUser = userRepository.findOneByEmail(originalStatus.getEmail()).get();
-                            addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            optionalStatusUser = userRepository.findOneByEmail(originalStatus.getEmail());
+                            if(optionalStatusUser.isPresent()) {
+                                statusUser = optionalStatusUser.get();
+                                addStatusToLine(statuses, statusDTO, originalStatus, statusUser, usergroups, favoriteLine);
+                            } else {
+                                log.debug("Original user has been deleted");
+                            }
                         } else {
                             log.debug("Announced status has been deleted");
                         }
@@ -267,12 +283,16 @@ public class TimelineService {
     }
 
     private void setStatusDTOFromMentionFriend(StatusDTO statusDTO, MentionFriend mentionFriend, User statusUser){
-        statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
-        statusUser = userRepository.findOneByEmail(mentionFriend.getfollowerUsername() + "@" + statusUser.getDomain()).get();
-        statusDTO.setFirstName(statusUser.getFirstName());
-        statusDTO.setLastName(statusUser.getLastName());
-        statusDTO.setAvatar(statusUser.getAvatar());
-        statusDTO.setUsername(statusUser.getUsername());
+        Optional<User> optionalStatusUser = userRepository.findOneByEmail(mentionFriend.getfollowerUsername() + "@" + statusUser.getDomain());
+        if(optionalStatusUser.isPresent()) {
+            statusDTO.setTimelineId(mentionFriend.getStatusId().toString());
+            statusDTO.setFirstName(statusUser.getFirstName());
+            statusDTO.setLastName(statusUser.getLastName());
+            statusDTO.setAvatar(statusUser.getAvatar());
+            statusDTO.setUsername(statusUser.getUsername());
+        } else {
+            log.info("User {} was deleted", mentionFriend.getfollowerUsername());
+        }
     }
 
     //@Cacheable("isSharedByMe")
@@ -445,7 +465,7 @@ public class TimelineService {
      * @param nbStatus the number of status to retrieve, starting from most recent ones
      * @return a status list
      */
-    public Collection<StatusDTO> getUserTimeline(String email, int nbStatus, String start, String finish) {
+    private Collection<StatusDTO> getUserTimeline(String email, int nbStatus, String start, String finish) {
         List<String> statuses =
             timelineRepository.getTimeline(email, nbStatus, start, finish);
 
@@ -519,12 +539,12 @@ public class TimelineService {
                 counterRepository.decrementStatusCounter(status.getEmail());
 //                searchService.removeStatus(status);
             }
-        } else if (abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
+        } else if (abstractStatus != null && abstractStatus.getType().equals(StatusType.ANNOUNCEMENT)) {
             User currentUser = userService.getCurrentUser().get();
             if (abstractStatus.getUsername().equals(currentUser.getUsername())) {
                 statusRepository.removeStatus(abstractStatus);
             }
-        } else if(abstractStatus.getType().equals(StatusType.SHARE) && SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
+        } else if(abstractStatus != null && abstractStatus.getType().equals(StatusType.SHARE) && SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
             Share currentShare = (Share) abstractStatus;
             // We delete the original status
             String originalStatusId = currentShare.getOriginalStatusId();
@@ -551,7 +571,7 @@ public class TimelineService {
                 log.warn("Cannot share this type of status: " + abstractStatus);
             }
         } else {
-            log.debug("Cannot share this status, as it does not exist: {}", abstractStatus);
+            log.debug("Cannot share this status, as it does not exist: statusId {}", statusId);
         }
     }
 
@@ -612,7 +632,7 @@ public class TimelineService {
                 log.warn("Cannot announce this type of status: " + abstractStatus);
             }
         } else {
-            log.debug("Cannot announce this status, as it does not exist: {}", abstractStatus);
+            log.debug("Cannot announce this status, as it does not exist: statusId {}", statusId);
         }
     }
 
