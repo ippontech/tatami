@@ -14,8 +14,10 @@ tatamiJHipsterApp
           };
 
         var init = function () {
-            $scope.userProfile.jobDescription = $scope.userProfile.jobDescription.replace(/<br>/g, "\n");
-        }
+            if($scope.userProfile.jobDescription){
+                $scope.userProfile.jobDescription = $scope.userProfile.jobDescription.replace(/<br>/g, "\n");
+            }
+        };
 //
 //        // Resolve the user data, profileInfo is inherited from account state
 //        // Since profileInfo is a resolve from the parent state, updating the model will cause
@@ -29,7 +31,6 @@ tatamiJHipsterApp
 
         //Get the character count remaining for job description
         $scope.calculateRemainingLength = function(){
-            console.log($scope.userProfile.jobDescription);
             if ($scope.userProfile.jobDescription != null) {
                 return $scope.charCount - $scope.userProfile.jobDescription.length - ($scope.userProfile.jobDescription.match(/\n/g) || []).length;
             }
@@ -47,7 +48,6 @@ tatamiJHipsterApp
         // Update the user information
         $scope.updateUser = function() {
             $scope.userProfile.jobDescription = $scope.userProfile.jobDescription.trim();
-            console.log($scope.userProfile.jobDescription);
             AccountService.update($scope.userProfile, function() {
                 ngToast.create({
                     content: $translate.instant('account.profile.save')

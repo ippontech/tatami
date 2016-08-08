@@ -42,8 +42,7 @@
             "publicToolTip": "Groupe public",
             "privateToolTip": "Groupe privé",
             "archivedToolTip": "Groupe archivé",
-            "administratorToolTip": "Vous administrez ce groupe.",
-            "jobExperience": "Experience"
+            "administratorToolTip": "Vous administrez ce groupe."
         },
 
         "tag": {
@@ -99,7 +98,8 @@
                 "statuses": "Statuts",
                 "following": "Abonnement",
                 "followers": "Abonné",
-                "trends": "Tendances"
+                "trends": "Tendances",
+                "jobExperience": "Experience"
             },
 
             "block": "Bloquer",
