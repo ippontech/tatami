@@ -156,7 +156,7 @@ public class UserDTO {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName != null ? firstName : "";
     }
 
     public void setFirstName(String firstName) {
@@ -164,7 +164,7 @@ public class UserDTO {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName != null ? lastName : "";
     }
 
     public void setLastName(String lastName) {
