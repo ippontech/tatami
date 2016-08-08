@@ -4,8 +4,8 @@ tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
             .state('activate', {
-                parent: 'login',
-                url: '/activate?key',
+                parent: 'site',
+                url: '/login/activate?key',
                 data: {
                     authorities: [],
                     pageTitle: 'activate.title'

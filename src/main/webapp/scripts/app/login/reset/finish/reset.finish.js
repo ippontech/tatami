@@ -4,8 +4,8 @@ tatamiJHipsterApp
     .config(function ($stateProvider) {
         $stateProvider
             .state('finishReset', {
-                parent: 'login',
-                url: '/reset/finish?key',
+                parent: 'site',
+                url: '/login/reset/finish?key',
                 data: {
                     authorities: []
                 },
