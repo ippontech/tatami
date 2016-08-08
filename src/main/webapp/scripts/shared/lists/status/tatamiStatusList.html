@@ -116,7 +116,7 @@
                                     <span>
                                         <button ng-click="openReplyModal(status.statusId)" class="btn-link status-action status-action-reply button-ios">
                                             <i class="glyphicon glyphicon-comment"></i>
-                                            <span>{{state}}</span>
+                                            <span translate="status.reply"></span>
                                         </button>
                                         <button ng-if="!status.yours && !status.shareByMe && !status.statusPrivate" ng-click="shareStatus(status, $index)" class="btn-link status-action status-action-share button-ios">
                                             <i class="glyphicon glyphicon-retweet"></i>
