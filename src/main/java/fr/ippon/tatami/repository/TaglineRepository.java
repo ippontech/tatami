@@ -3,14 +3,13 @@ package fr.ippon.tatami.repository;
 import com.datastax.driver.core.PreparedStatement;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.status.Status;
-import fr.ippon.tatami.repository.TaglineRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.TAGLINE_CF;
 
 /**
  * Cassandra implementation of the Tag line repository.
@@ -34,25 +33,25 @@ public class TaglineRepository extends AbstractLineRepository {
     public void init() {
         findByKeyStmt = session.prepare(
                 "SELECT * " +
-                        "FROM " + TAGLINE+
+                        "FROM " + TAGLINE_CF +
                         " WHERE key = :key");
 
-        deleteByIdStmt = session.prepare("DELETE FROM " + TAGLINE +
+        deleteByIdStmt = session.prepare("DELETE FROM " + TAGLINE_CF +
                 " WHERE key = :key " +
                 "AND status = :statusId");
 
     }
 
     public void addStatusToTagline(String tag, Status status) {
-        addStatus(getKey(status.getDomain(), tag), TAGLINE, status.getStatusId().toString());
+        addStatus(getKey(status.getDomain(), tag), TAGLINE_CF, status.getStatusId().toString());
     }
 
     public void removeStatusesFromTagline(String tag, String domain, Collection<String> statusIdsToDelete) {
-        removeStatuses(getKey(domain, tag), ColumnFamilyKeys.TAGLINE, statusIdsToDelete);
+        removeStatuses(getKey(domain, tag), ColumnFamilyKeys.TAGLINE_CF, statusIdsToDelete);
     }
 
     public List<String> getTagline(String domain, String tag, int size, String start, String finish) {
-        return getLineFromTable(TAGLINE, getKey(domain, tag), size, start, finish);
+        return getLineFromTable(TAGLINE_CF, getKey(domain, tag), size, start, finish);
     }
 
     /**

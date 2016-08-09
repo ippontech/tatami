@@ -6,9 +6,9 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.config.Constants;
 import fr.ippon.tatami.domain.Domain;
-import fr.ippon.tatami.repository.DomainRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -38,10 +38,10 @@ public class DomainRepository {
 
 
     public void addEmailInDomain(String domain, String email) {
-        Statement statement = QueryBuilder.insertInto("domain")
-                .value(DOMAIN_ID, domain)
-                .value("email", email)
-                .value("created", UUIDs.timeBased());
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.DOMAIN_CF)
+            .value(DOMAIN_ID, domain)
+            .value("email", email)
+            .value("created", UUIDs.timeBased());
         session.execute(statement);
     }
 
@@ -53,9 +53,9 @@ public class DomainRepository {
 
     public void deleteEmailInDomain(String domain, String email) {
         Statement statement = QueryBuilder.delete()
-                .from("domain")
-                .where(eq(DOMAIN_ID,domain))
-                .and(eq("email",email));
+            .from(ColumnFamilyKeys.DOMAIN_CF)
+            .where(eq(DOMAIN_ID, domain))
+            .and(eq("email", email));
         session.execute(statement);
     }
 
@@ -63,24 +63,24 @@ public class DomainRepository {
     public List<String> getEmailnamesInDomain(String domain, int pagination) {
         int maxColumns = pagination + Constants.PAGINATION_SIZE;
         Statement statement = QueryBuilder.select()
-                .column("email")
-                .from("user")
-                .where(eq("domain", domain))
-                .limit(maxColumns+1);
+            .column("email")
+            .from(ColumnFamilyKeys.USER_CF)
+            .where(eq("domain", domain))
+            .limit(maxColumns + 1);
 
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .skip(pagination)
-                .map(e -> e.getString("email"))
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .skip(pagination)
+            .map(e -> e.getString("email"))
+            .collect(Collectors.toList());
     }
 
     public List<String> getEmailsInDomain(String domain) {
         Statement statement = QueryBuilder.select()
             .column("email")
-            .from("user")
+            .from(ColumnFamilyKeys.USER_CF)
             .where(eq("domain", domain));
 
         ResultSet results = session.execute(statement);
@@ -94,9 +94,9 @@ public class DomainRepository {
 
     public Set<Domain> getAllDomains() {
         Statement statement = QueryBuilder.select()
-                .distinct()
-                .column(DOMAIN_ID)
-                .from("domain");
+            .distinct()
+            .column(DOMAIN_ID)
+            .from(ColumnFamilyKeys.DOMAIN_CF);
 
         ResultSet results = session.execute(statement);
         Set<Domain> domainMaps = new HashSet<>();
@@ -105,7 +105,7 @@ public class DomainRepository {
             String domainId = result.getString(DOMAIN_ID);
             Domain domain = new Domain();
             domain.setName(domainId);
-            domain.setNumberOfUsers((int)getCountForDomain(domain.getName()));
+            domain.setNumberOfUsers((int) getCountForDomain(domain.getName()));
             domainMaps.add(domain);
         }
         return domainMaps;
@@ -113,9 +113,9 @@ public class DomainRepository {
 
     private long getCountForDomain(String name) {
         Statement statement = QueryBuilder.select()
-                .countAll()
-                .from("domain")
-                .where(eq(DOMAIN_ID,name));
+            .countAll()
+            .from(ColumnFamilyKeys.DOMAIN_CF)
+            .where(eq(DOMAIN_ID, name));
 
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {

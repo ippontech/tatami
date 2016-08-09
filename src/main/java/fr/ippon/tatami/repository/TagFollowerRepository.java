@@ -24,8 +24,7 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
  * @author Julien Dubois
  */
 @Repository
-public class TagFollowerRepository
-        extends AbstractFollowerRepository {
+public class TagFollowerRepository extends AbstractFollowerRepository {
 
     @Inject
     private Session session;
@@ -40,15 +39,15 @@ public class TagFollowerRepository
 
     public Collection<String> findFollowers(String domain, String tag) {
         Statement statement = QueryBuilder.select()
-                .column("email")
-                .from("tagFollowers")
-                .where(eq("key", getKey(domain, tag)));
+            .column("email")
+            .from(ColumnFamilyKeys.TAG_FOLLOWERS_CF)
+            .where(eq("key", getKey(domain, tag)));
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .map(e -> e.getString("email"))
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .map(e -> e.getString("email"))
+            .collect(Collectors.toList());
     }
 
     @Override

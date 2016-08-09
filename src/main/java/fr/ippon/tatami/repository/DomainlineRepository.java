@@ -1,14 +1,13 @@
 package fr.ippon.tatami.repository;
 
 import com.datastax.driver.core.PreparedStatement;
-import fr.ippon.tatami.repository.DomainlineRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAINLINE;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.DOMAINLINE_CF;
 
 /**
  * Cassandra implementation of the Domain line repository.
@@ -34,10 +33,10 @@ public class DomainlineRepository extends AbstractLineRepository {
     public void init() {
         findByEmailStmt = session.prepare(
                 "SELECT * " +
-                        "FROM " + DOMAINLINE+
+                        "FROM " + DOMAINLINE_CF +
                         " WHERE key = :key");
 
-        deleteByIdStmt = session.prepare("DELETE FROM " + DOMAINLINE +
+        deleteByIdStmt = session.prepare("DELETE FROM " + DOMAINLINE_CF +
                 " WHERE key = :key " +
                 "AND status = :statusId");
 
@@ -45,15 +44,15 @@ public class DomainlineRepository extends AbstractLineRepository {
 
 
     public void addStatusToDomainline(String domain, String statusId) {
-        addStatus(domain, DOMAINLINE, statusId, COLUMN_TTL);
+        addStatus(domain, DOMAINLINE_CF, statusId, COLUMN_TTL);
     }
 
     public void removeStatusFromDomainline(String domain, Collection<String> statusIdsToDelete) {
-        removeStatuses(domain, DOMAINLINE, statusIdsToDelete);
+        removeStatuses(domain, DOMAINLINE_CF, statusIdsToDelete);
     }
 
     public List<String> getDomainline(String domain, int size, String start, String finish) {
-        return getLineFromTable(DOMAINLINE, domain, size, start, finish);
+        return getLineFromTable(DOMAINLINE_CF, domain, size, start, finish);
     }
 
     @Override

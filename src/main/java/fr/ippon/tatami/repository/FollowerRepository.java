@@ -5,7 +5,6 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
-import fr.ippon.tatami.repository.FollowerRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -48,15 +47,15 @@ public class FollowerRepository extends AbstractFollowerRepository {
     public Collection<String> findFollowersForUser(String userEmail) {
 
         Statement statement = QueryBuilder.select()
-                .column("email")
-                .from("followers")
-                .where(eq("key", userEmail));
+            .column("email")
+            .from(ColumnFamilyKeys.FOLLOWERS_CF)
+            .where(eq("key", userEmail));
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .map(e -> e.getString("email"))
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .map(e -> e.getString("email"))
+            .collect(Collectors.toList());
     }
 
     @Override

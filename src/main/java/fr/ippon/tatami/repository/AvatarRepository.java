@@ -6,8 +6,8 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.Avatar;
-import fr.ippon.tatami.repository.AvatarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,7 +21,7 @@ import java.util.UUID;
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 @Repository
-public class AvatarRepository  {
+public class AvatarRepository {
 
     private final Logger log = LoggerFactory.getLogger(AttachmentRepository.class);
 
@@ -34,19 +34,18 @@ public class AvatarRepository  {
     private Session session;
 
 
-
     public void createAvatar(Avatar avatar) {
         ByteBuffer content = null;
         if (avatar.getContent() != null) {
             content = ByteBuffer.wrap(avatar.getContent());
         }
         avatar.setAvatarId(UUIDs.timeBased().toString());
-        Statement statement = QueryBuilder.insertInto("avatar")
-                .value("id", UUID.fromString(avatar.getAvatarId()))
-                .value(FILENAME, avatar.getFilename())
-                .value(CONTENT, content)
-                .value(SIZE,avatar.getSize())
-                .value(CREATION_DATE,avatar.getCreationDate());
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.AVATAR_CF)
+            .value("id", UUID.fromString(avatar.getAvatarId()))
+            .value(FILENAME, avatar.getFilename())
+            .value(CONTENT, content)
+            .value(SIZE, avatar.getSize())
+            .value(CREATION_DATE, avatar.getCreationDate());
         session.execute(statement);
     }
 
@@ -54,8 +53,8 @@ public class AvatarRepository  {
     public void removeAvatar(String avatarId) {
         log.debug("Avatar deleted : {}", avatarId);
         Statement statement = QueryBuilder.delete()
-                .from("avatar")
-                .where(eq("id", UUID.fromString(avatarId)));
+            .from(ColumnFamilyKeys.AVATAR_CF)
+            .where(eq("id", UUID.fromString(avatarId)));
         session.execute(statement);
     }
 
@@ -70,9 +69,9 @@ public class AvatarRepository  {
 
         if (avatar != null) {
             Statement statement = QueryBuilder.select()
-                    .column(CONTENT)
-                    .from("avatar")
-                    .where(eq("id", UUID.fromString(avatarId)));
+                .column(CONTENT)
+                .from(ColumnFamilyKeys.AVATAR_CF)
+                .where(eq("id", UUID.fromString(avatarId)));
 
             ResultSet results = session.execute(statement);
             avatar.setContent(results.one().getBytes(CONTENT).array());
@@ -87,12 +86,12 @@ public class AvatarRepository  {
         }
 
         Statement statement = QueryBuilder.select()
-                .column("id")
-                .column(FILENAME)
-                .column(SIZE)
-                .column(CREATION_DATE)
-                .from("avatar")
-                .where(eq("filename", filename));
+            .column("id")
+            .column(FILENAME)
+            .column(SIZE)
+            .column(CREATION_DATE)
+            .from(ColumnFamilyKeys.AVATAR_CF)
+            .where(eq("filename", filename));
 
         ResultSet results = session.execute(statement);
         return loadAvatar(results);
@@ -118,12 +117,12 @@ public class AvatarRepository  {
         }
 
         Statement statement = QueryBuilder.select()
-                .column("id")
-                .column(FILENAME)
-                .column(SIZE)
-                .column(CREATION_DATE)
-                .from("avatar")
-                .where(eq("id", UUID.fromString(avatarId)));
+            .column("id")
+            .column(FILENAME)
+            .column(SIZE)
+            .column(CREATION_DATE)
+            .from(ColumnFamilyKeys.AVATAR_CF)
+            .where(eq("id", UUID.fromString(avatarId)));
 
         ResultSet results = session.execute(statement);
         return loadAvatar(results);

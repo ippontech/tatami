@@ -6,7 +6,6 @@ import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.status.Share;
-import fr.ippon.tatami.repository.UserlineRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -16,8 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_CF;
-import static fr.ippon.tatami.config.ColumnFamilyKeys.USERLINE_SHARES_CF;
 
 /**
  * Cassandra implementation of the Userline repository.
@@ -41,33 +38,33 @@ public class UserlineRepository extends AbstractLineRepository {
     @PostConstruct
     public void init() {
         deleteByIdStmt = session.prepare("DELETE FROM userline " +
-                "WHERE key = :key " +
-                "AND status = :statusId");
+            "WHERE key = :key " +
+            "AND status = :statusId");
 
     }
 
     public void addStatusToUserline(String email, String statusId) {
-        Statement statement = QueryBuilder.insertInto("userline")
-                .value("key", email)
-                .value("status", UUID.fromString(statusId));
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.USERLINE_CF)
+            .value("key", email)
+            .value("status", UUID.fromString(statusId));
         session.execute(statement);
     }
 
     public void removeStatusesFromUserline(String email, Collection<String> statusIdsToDelete) {
-        removeStatuses(email,"userline",statusIdsToDelete);
+        removeStatuses(email, ColumnFamilyKeys.USERLINE_CF, statusIdsToDelete);
     }
 
     public void shareStatusToUserline(String currentEmail, Share share) {
-        shareStatus(currentEmail, share, USERLINE_CF, USERLINE_SHARES_CF);
+        shareStatus(currentEmail, share, ColumnFamilyKeys.USERLINE_CF, ColumnFamilyKeys.USERLINE_SHARES_CF);
     }
 
     public List<String> getUserline(String email, int size, String start, String finish) {
-        return getLineFromTable("userline", email, size, start, finish);
+        return getLineFromTable(ColumnFamilyKeys.USERLINE_CF, email, size, start, finish);
     }
 
     public void deleteUserline(String email) {
         Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.USERLINE_CF)
-                .where(eq("email", email));
+            .where(eq("email", email));
         session.execute(statement);
     }
 

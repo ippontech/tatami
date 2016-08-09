@@ -5,7 +5,7 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
-import fr.ippon.tatami.repository.TrendRepository;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -38,14 +38,13 @@ public class TrendRepository {
     Session session;
 
 
-
     @CacheEvict(value = "domain-tags-cache", key = "#domain")
     public void addTag(String domain, String tag) {
-        Statement statement = QueryBuilder.insertInto("trends")
-                .value("domain", domain)
-                .value("id", UUIDs.timeBased())
-                .value("tag", tag)
-                .using(ttl(COLUMN_TTL));
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.TRENDS_CF)
+            .value("domain", domain)
+            .value("id", UUIDs.timeBased())
+            .value("tag", tag)
+            .using(ttl(COLUMN_TTL));
         session.execute(statement);
     }
 
@@ -57,36 +56,36 @@ public class TrendRepository {
 
     public List<String> getRecentTags(String domain, int maxNumber) {
         Statement statement = QueryBuilder.select()
-                .column("tag")
-                .from("trends")
-                .where(eq("domain", domain))
-                .orderBy(desc("id"))
-                .limit(maxNumber);
+            .column("tag")
+            .from(ColumnFamilyKeys.TRENDS_CF)
+            .where(eq("domain", domain))
+            .orderBy(desc("id"))
+            .limit(maxNumber);
 
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .map(e -> e.getString("tag"))
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .map(e -> e.getString("tag"))
+            .collect(Collectors.toList());
     }
 
     @Cacheable(value = "domain-tags-cache", key = "#domain")
     public Collection<String> getDomainTags(String domain) {
         Statement statement = QueryBuilder.select()
-                .column("tag")
-                .from("trends")
-                .where(eq("domain", domain))
-                .orderBy(desc("id"))
-                .limit(TRENDS_NUMBER_OF_TAGS);
+            .column("tag")
+            .from(ColumnFamilyKeys.TRENDS_CF)
+            .where(eq("domain", domain))
+            .orderBy(desc("id"))
+            .limit(TRENDS_NUMBER_OF_TAGS);
 
         ResultSet results = session.execute(statement);
         return results
-                .all()
-                .stream()
-                .map(e -> e.getString("tag"))
-                .distinct()
-                .collect(Collectors.toList());
+            .all()
+            .stream()
+            .map(e -> e.getString("tag"))
+            .distinct()
+            .collect(Collectors.toList());
 
     }
 

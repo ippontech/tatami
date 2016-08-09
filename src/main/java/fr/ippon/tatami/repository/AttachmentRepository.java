@@ -6,6 +6,7 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import fr.ippon.tatami.domain.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,13 +51,13 @@ public class AttachmentRepository {
         UUID attachmentId = UUIDs.timeBased();
         log.debug("Creating attachment : {}", attachment);
         attachment.setAttachmentId(attachmentId.toString());
-        Statement statement = QueryBuilder.insertInto("Attachment")
-                .value("id", UUID.fromString(attachment.getAttachmentId()))
-                .value(FILENAME, attachment.getFilename())
-                .value(CONTENT, content)
-                .value(THUMBNAIL, thumbnail)
-                .value(SIZE,attachment.getSize())
-                .value(CREATION_DATE,attachment.getCreationDate());
+        Statement statement = QueryBuilder.insertInto(ColumnFamilyKeys.ATTACHMENT_CF)
+            .value("id", UUID.fromString(attachment.getAttachmentId()))
+            .value(FILENAME, attachment.getFilename())
+            .value(CONTENT, content)
+            .value(THUMBNAIL, thumbnail)
+            .value(SIZE, attachment.getSize())
+            .value(CREATION_DATE, attachment.getCreationDate());
         session.execute(statement);
     }
 
@@ -64,9 +65,9 @@ public class AttachmentRepository {
     @CacheEvict(value = "attachment-cache", key = "#attachment.attachmentId")
     public void deleteAttachment(Attachment attachment) {
         log.debug("Deleting attachment : {}", attachment);
-        Statement statement = QueryBuilder.delete().from("Attachment")
-                .where(eq("id", UUID.fromString(attachment.getAttachmentId())))
-                .and(eq("filename", attachment.getFilename()));
+        Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.ATTACHMENT_CF)
+            .where(eq("id", UUID.fromString(attachment.getAttachmentId())))
+            .and(eq("filename", attachment.getFilename()));
         session.execute(statement);
     }
 
@@ -85,19 +86,19 @@ public class AttachmentRepository {
             return null;
         }
         Statement statement = QueryBuilder.select()
-                .column(CONTENT)
-                .from("Attachment")
-                .where(eq("id", UUID.fromString(attachmentId)))
-                .and(eq("filename", attachment.getFilename()));
+            .column(CONTENT)
+            .from(ColumnFamilyKeys.ATTACHMENT_CF)
+            .where(eq("id", UUID.fromString(attachmentId)))
+            .and(eq("filename", attachment.getFilename()));
 
         ResultSet results = session.execute(statement);
         attachment.setContent(results.one().getBytes(CONTENT).array());
 
         statement = QueryBuilder.select()
-                .column(THUMBNAIL)
-                .from("Attachment")
-                .where(eq("id", UUID.fromString(attachmentId)))
-                .and(eq("filename", attachment.getFilename()));
+            .column(THUMBNAIL)
+            .from(ColumnFamilyKeys.ATTACHMENT_CF)
+            .where(eq("id", UUID.fromString(attachmentId)))
+            .and(eq("filename", attachment.getFilename()));
 
         results = session.execute(statement);
         attachment.setThumbnail(results.one().getBytes(THUMBNAIL).array());
@@ -115,11 +116,11 @@ public class AttachmentRepository {
             return null;
         }
         Statement statement = QueryBuilder.select()
-                .column(FILENAME)
-                .column(SIZE)
-                .column(CREATION_DATE)
-                .from("Attachment")
-                .where(eq("id", UUID.fromString(attachmentId)));
+            .column(FILENAME)
+            .column(SIZE)
+            .column(CREATION_DATE)
+            .from(ColumnFamilyKeys.ATTACHMENT_CF)
+            .where(eq("id", UUID.fromString(attachmentId)));
 
         ResultSet results = session.execute(statement);
         if (!results.isExhausted()) {
@@ -138,17 +139,17 @@ public class AttachmentRepository {
     }
 
 
-	public Attachment updateThumbnail(Attachment attach) {
-		log.debug("Updating thumbnail : {}", attach);
+    public Attachment updateThumbnail(Attachment attach) {
+        log.debug("Updating thumbnail : {}", attach);
         ByteBuffer thumbnail = null;
         if (attach.getThumbnail() != null) {
             thumbnail = ByteBuffer.wrap(attach.getThumbnail());
         }
-        Statement statement = QueryBuilder.update("Attachment")
-                .with(set(THUMBNAIL, thumbnail))
-                .where(eq("id", UUID.fromString(attach.getAttachmentId())))
-                .and(eq("filename", attach.getFilename()));
+        Statement statement = QueryBuilder.update(ColumnFamilyKeys.ATTACHMENT_CF)
+            .with(set(THUMBNAIL, thumbnail))
+            .where(eq("id", UUID.fromString(attach.getAttachmentId())))
+            .and(eq("filename", attach.getFilename()));
         session.execute(statement);
         return attach;
-	}
+    }
 }

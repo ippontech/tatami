@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository;
 
 import com.datastax.driver.core.PreparedStatement;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
-import fr.ippon.tatami.repository.MentionlineRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -26,31 +25,30 @@ public class MentionlineRepository extends AbstractLineRepository {
 
     private PreparedStatement deleteByIdStmt;
 
-
     @PostConstruct
     public void init() {
         findByKeyStmt = session.prepare(
-                "SELECT * " +
-                        "FROM mentionline " +
-                        "WHERE key = :key");
+            "SELECT * " +
+                "FROM mentionline " +
+                "WHERE key = :key");
 
         deleteByIdStmt = session.prepare("DELETE FROM mentionline " +
-                "WHERE key = :key " +
-                "AND status = :statusId");
+            "WHERE key = :key " +
+            "AND status = :statusId");
 
     }
 
 
     public void addStatusToMentionline(String mentionedEmail, String statusId) {
-        addStatus(mentionedEmail, ColumnFamilyKeys.MENTIONLINE, statusId);
+        addStatus(mentionedEmail, ColumnFamilyKeys.MENTIONLINE_CF, statusId);
     }
 
     public void removeStatusesFromMentionline(String mentionedEmail, Collection<String> statusIdsToDelete) {
-        removeStatuses(mentionedEmail, ColumnFamilyKeys.MENTIONLINE, statusIdsToDelete);
+        removeStatuses(mentionedEmail, ColumnFamilyKeys.MENTIONLINE_CF, statusIdsToDelete);
     }
 
     public List<String> getMentionline(String email, int size, String start, String finish) {
-        return getLineFromTable("mentionLine", email, size, start, finish);
+        return getLineFromTable(ColumnFamilyKeys.MENTIONLINE_CF, email, size, start, finish);
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.FRIENDS_CF;
 
 /**
  * Cassandra implementation of the Friend repository.
@@ -40,6 +40,6 @@ public class FriendRepository extends AbstractFriendRepository {
 
     @Override
     public String getFriendsTable() {
-        return FRIENDS;
+        return FRIENDS_CF;
     }
 }

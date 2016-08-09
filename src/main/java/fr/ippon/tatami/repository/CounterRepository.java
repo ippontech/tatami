@@ -5,7 +5,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import fr.ippon.tatami.repository.CounterRepository;
+import fr.ippon.tatami.config.ColumnFamilyKeys;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +27,8 @@ import static com.datastax.driver.core.querybuilder.QueryBuilder.*;
 @Repository
 public class CounterRepository {
 
-    public static final String COUNTER = "counter";
     public static final String EMAIL = "email";
+
     @Inject
     Session session;
 
@@ -37,7 +37,6 @@ public class CounterRepository {
     private static final String FOLLOWERS_COUNTER = "FOLLOWERS_COUNTER";
 
     private static final String FRIENDS_COUNTER = "FRIENDS_COUNTER";
-
 
 
     @CacheEvict(value = "user-cache", key = "#email")
@@ -107,37 +106,37 @@ public class CounterRepository {
 
 
     public void deleteCounters(String email) {
-        Statement statement = QueryBuilder.delete().from(COUNTER)
-                .where(eq(EMAIL, email));
+        Statement statement = QueryBuilder.delete().from(ColumnFamilyKeys.COUNTER_CF)
+            .where(eq(EMAIL, email));
         session.execute(statement);
     }
 
     private void createCounter(String counterName, String email) {
-        Statement statement = QueryBuilder.update(COUNTER)
-                .with(incr(counterName,0))
-                .where(eq(EMAIL,email));
+        Statement statement = QueryBuilder.update(ColumnFamilyKeys.COUNTER_CF)
+            .with(incr(counterName, 0))
+            .where(eq(EMAIL, email));
         session.execute(statement);
     }
 
     private void incrementCounter(String counterName, String email) {
-        Statement statement = QueryBuilder.update(COUNTER)
-                .with(incr(counterName,1))
-                .where(eq(EMAIL,email));
+        Statement statement = QueryBuilder.update(ColumnFamilyKeys.COUNTER_CF)
+            .with(incr(counterName, 1))
+            .where(eq(EMAIL, email));
         session.execute(statement);
     }
 
     private void decrementCounter(String counterName, String email) {
-        Statement statement = QueryBuilder.update(COUNTER)
-                .with(decr(counterName,1))
-                .where(eq(EMAIL,email));
+        Statement statement = QueryBuilder.update(ColumnFamilyKeys.COUNTER_CF)
+            .with(decr(counterName, 1))
+            .where(eq(EMAIL, email));
         session.execute(statement);
     }
 
     private long getCounter(String counterName, String email) {
         Statement statement = QueryBuilder.select()
-                .column(counterName)
-                .from(COUNTER)
-                .where(eq(EMAIL, email));
+            .column(counterName)
+            .from(ColumnFamilyKeys.COUNTER_CF)
+            .where(eq(EMAIL, email));
         ResultSet results = session.execute(statement);
         Row row = results.one();
         if (row != null) {

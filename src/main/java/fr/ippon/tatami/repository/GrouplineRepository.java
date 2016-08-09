@@ -2,7 +2,6 @@ package fr.ippon.tatami.repository;
 
 import com.datastax.driver.core.PreparedStatement;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
-import fr.ippon.tatami.repository.GrouplineRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -10,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE;
+import static fr.ippon.tatami.config.ColumnFamilyKeys.GROUPLINE_CF;
 
 /**
  * Cassandra implementation of the Group line repository.
@@ -34,25 +33,25 @@ public class GrouplineRepository extends AbstractLineRepository {
     public void init() {
         findByKeyStmt = session.prepare(
                 "SELECT * " +
-                        "FROM " + GROUPLINE+
+                        "FROM " + GROUPLINE_CF +
                         " WHERE key = :key");
 
-        deleteByIdStmt = session.prepare("DELETE FROM " + GROUPLINE +
+        deleteByIdStmt = session.prepare("DELETE FROM " + GROUPLINE_CF +
                 " WHERE key = :key " +
                 "AND status = :statusId");
 
     }
 
     public void addStatusToGroupline(UUID groupId, String statusId) {
-        addStatus(groupId.toString(), ColumnFamilyKeys.GROUPLINE, statusId);
+        addStatus(groupId.toString(), ColumnFamilyKeys.GROUPLINE_CF, statusId);
     }
 
     public void removeStatusesFromGroupline(String groupId, Collection<String> statusIdsToDelete) {
-        removeStatuses(groupId, ColumnFamilyKeys.GROUPLINE, statusIdsToDelete);
+        removeStatuses(groupId, ColumnFamilyKeys.GROUPLINE_CF, statusIdsToDelete);
     }
 
     public List<String> getGroupline(String groupId, int size, String start, String finish) {
-        return getLineFromTable(ColumnFamilyKeys.GROUPLINE, groupId, size, start, finish);
+        return getLineFromTable(ColumnFamilyKeys.GROUPLINE_CF, groupId, size, start, finish);
     }
 
     @Override

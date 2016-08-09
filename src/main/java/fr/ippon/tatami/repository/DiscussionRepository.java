@@ -1,23 +1,20 @@
 package fr.ippon.tatami.repository;
 
-import com.datastax.driver.core.*;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.Status;
-import fr.ippon.tatami.repository.DiscussionRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.text.NumberFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
-import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 
 /**
  * Cassandra implementation of the StatusDetails repository.
@@ -76,53 +73,4 @@ public class DiscussionRepository {
         session.execute(stmt);
     }
 
-
-//    public Collection<String> findStatusIdsInDiscussion(String originalStatusId) {
-////        ColumnSlice<Long, String> result = createSliceQuery(keyspaceOperator,
-////                StringSerializer.get(), LongSerializer.get(), StringSerializer.get())
-////                .setColumnFamily(DISCUSSION_CF)
-////                .setKey(originalStatusId)
-////                .setRange(null, null, false, Integer.MAX_VALUE)
-////                .execute()
-////                .get();
-////
-////        Collection<String> statusIds = new LinkedHashSet<String>();
-////        for (HColumn<Long, String> column : result.getColumns()) {
-////            statusIds.add(column.getValue());
-////        }
-////        return statusIds;
-//
-//
-//        Statement statement = QueryBuilder.select()
-//            .column("discussionId")
-//            .from("status")
-//            .where(eq("statusId", originalStatusId))
-//            .orderBy(desc("statusDate"));
-////            .limit(50);
-//        ResultSet results = session.execute(statement);
-//
-//        Collection<String> resultCollection = new ArrayList<>();
-//        while(results.one() != null) {
-//            resultCollection.add(results.one().toString());
-//        }
-//
-//        return resultCollection;
-////        return results
-////            .all()
-////            .stream()
-////            .map(e -> e.getDate("statusId").toString())
-////            .collect(Collectors.toList());
-//    }
-
-
-    public boolean hasReply(String statusId) {
-//        int zeroOrOne = HFactory.createCountQuery(keyspaceOperator, StringSerializer.get(), LongSerializer.get())
-//                .setColumnFamily(DISCUSSION_CF)
-//                .setKey(statusId)
-//                .setRange(null, null, 1)
-//                .execute()
-//                .get();
-
-        return 1 > 0;
-    }
 }
