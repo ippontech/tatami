@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS usersBlocked (
     blockedEmail varchar,
     PRIMARY KEY(email,blockedEmail)
 );
-CREATE TABLE reportedStatus (
+CREATE TABLE IF NOT EXISTS reportedStatus (
     domain varchar,
     statusId varchar,
     reportingLogin varchar,
