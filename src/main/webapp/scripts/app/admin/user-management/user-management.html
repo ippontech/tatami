@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped" infinite-scroll="getMoreUsers()" infinite-scroll-disabled="busy">
             <thead>
             <tr>
                 <th translate="global.field.id">ID</th>
@@ -51,11 +51,11 @@
                             class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </button>
-                    <button type="submit"
+                    <!--<button type="submit"
                             ui-sref="user-management.delete({login:user.email})"
                             class="btn btn-danger btn-sm">
                         <span class="glyphicon glyphicon-remove-circle"></span>
-                    </button>
+                    </button>-->
                 </td>
             </tr>
             </tbody>
