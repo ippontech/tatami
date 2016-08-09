@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.UUID;
 import com.datastax.driver.mapping.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.annotations.Document;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +24,8 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setting(settingPath = "/config/elasticsearch/shared-settings.json")
 @Mapping(mappingPath = "/config/elasticsearch/group/mappings.json")
 public class Group implements Comparable<Group>, Serializable, Cloneable {
+
+    private final Logger log = LoggerFactory.getLogger(Group.class);
 
     @Id
     @PartitionKey
@@ -172,7 +176,7 @@ public class Group implements Comparable<Group>, Serializable, Cloneable {
         try {
             clone = (Group) super.clone();
         } catch (CloneNotSupportedException cnse) {
-            cnse.printStackTrace(System.err);
+            log.warn("Error while trying to clone a group", cnse.getCause());
         }
         return clone;
     }
