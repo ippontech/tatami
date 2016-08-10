@@ -111,19 +111,15 @@ public class MailService {
     }
 
     @Async
-    public void sendReportedStatusEmail (User reportingUser, String statusId){
+    public void sendReportedStatusEmail (User reportingUser, String statusId, String baseUrl){
         log.debug("Sending email alerting admins of reported status");
-        //TODO: need to get statusURL
-        String statusUrl = "";
-        User currentUser = userService.getCurrentUser().get();
-        Locale locale = Locale.forLanguageTag(currentUser.getLangKey());
+        Locale locale = Locale.forLanguageTag(reportingUser.getLangKey());
+        String statusUrl = baseUrl + "/#/home/status/" +statusId;
         Context context = new Context(locale);
         context.setVariable("reportingUser", reportingUser);
         context.setVariable("statusUrl", statusUrl);
         String content = templateEngine.process("reportedStatusEmail", context);
         String subject = messageSource.getMessage ("email.reported.title", null, locale);
-        //TODO: Need to check to see what admin returns... Is it username or email?
-        //TODO: If it is a username, need to get email from username...
         String[] adminUsersArray = StringUtils.split(jHipsterProperties.getTatami().getAdmins(), ",");
         List<String> adminUsers = new ArrayList<>(Arrays.asList(adminUsersArray));
         for (String email : adminUsers) {

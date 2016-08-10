@@ -190,11 +190,11 @@ public class StatusUpdateService {
         }
     }
 
-    public void reportedStatus(User reportingUser, String statusId) {
+    public void reportedStatus(User reportingUser, String statusId, String baseUrl) {
         log.debug("Reported Status: '{}'", statusId);
         String domain = SecurityUtils.getCurrentUserDomain();
         reportedStatusRepository.reportStatus(domain, statusId, reportingUser.getEmail());
-        mailService.sendReportedStatusEmail(reportingUser, statusId);
+        mailService.sendReportedStatusEmail(reportingUser, statusId, baseUrl);
     }
 
     private List<String> getAllReportedStatuses(String domain) {

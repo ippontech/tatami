@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -223,9 +224,15 @@ public class TimelineResource {
     @RequestMapping(value = "/rest/statuses/report/{statusId}",
         method = RequestMethod.POST)
     @ResponseBody
-    public void reportStatus(@PathVariable("statusId") String statusId) {
+    public void reportStatus(@PathVariable("statusId") String statusId, HttpServletRequest request) {
         log.debug("REST request to get status details Id : {}", statusId);
-        statusUpdateService.reportedStatus(userService.getCurrentUser().get(), statusId);
+        String baseUrl = request.getScheme() +
+            "://" +
+            request.getServerName() +
+            ":" +
+            request.getServerPort() +
+            request.getContextPath();
+        statusUpdateService.reportedStatus(userService.getCurrentUser().get(), statusId, baseUrl);
     }
 
     /**

@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{email.reported.title}">JHipster password reset</title>
+    <title th:text="#{email.reported.title}">Reported Email</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <p th:text="#{email.reported.greeting}">
     Dear admin
 </p>
-<p th:text="#{email.reported.text1}">
-    For your JHipster account a password reset was requested, please click on the URL below to reset it:
+
+<p th:text="#{email.reported.text1(${reportingUser.username})}">
+    has reported a status as inappropriate or offensive
+</p>
+<p th:text="#{email.reported.text2}">
+    Please click the link below to reset it
 </p>
 <p>
-    <!--TODO: Need to find out what really needs to be here-->
-    <a th:href="@{|${statusUrl}/#/login/reset/finish?key=${user.resetKey}|}"
-       th:text="|${user.username}|">Reset Link</a>
+    <a th:href="@{|${statusUrl}|}"></a>
 </p>
 <p>
-    <span th:text="#{email.reported.text2}">Regards, </span>
+    <span th:text="#{email.reset.text2}">Regards, </span>
     <br/>
-    <em th:text="#{email.signature}">JHipster.</em>
+    <em th:text="#{email.signature}">JHipster</em>
 </p>
 </body>
 </html>
