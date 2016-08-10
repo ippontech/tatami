@@ -16,18 +16,11 @@
         <link rel="stylesheet" href="bower_components/angular-hotkeys/build/hotkeys.css" />
         <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
         <!-- endbower -->
-        <!--link rel="stylesheet" href= "assets/styles/bootstrap.css" />
 
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
         <link rel="stylesheet" href="assets/styles/tatami.css">
-
-        <!-- spinner stuff
-        <script type="text/javascript" src="http://fgnass.github.io/spin.js/spin.min.js"></script>
-        <script type="text/javascript" src="angular-spinner.js"></script>
-        <script src="script.js"></script>-->
-
         <!-- endbuild -->
     </head>
     <body ng-app="tatamiJHipsterApp" ui-tour>
@@ -82,188 +75,174 @@
         <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="bower_components/ngToast/dist/ngToast.js"></script>
+        <script src="bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
+        <script src="bower_components/ez-ng/dist/ez-ng.js"></script>
+        <script src="bower_components/angular-hotkeys/build/hotkeys.js"></script>
+        <script src="bower_components/angular-ui-tour/dist/angular-ui-tour.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script src="bower_components/angular-material/angular-material.js"></script>
         <script src="bower_components/ment.io/dist/mentio.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
-        <script src="assets/js/openlayers/OpenLayers.js"></script>
 
-
-        <script src="bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
-        <script src="bower_components/ez-ng/dist/ez-ng.js"></script>
-        <script src="bower_components/angular-hotkeys/build/hotkeys.js"></script>
-        <script src="bower_components/angular-ui-tour/dist/angular-ui-tour.js"></script>
-
-
-    <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
-    <script src="scripts/app/app.js"></script>
-    <script src="scripts/app/app.constants.js"></script>
-    <script src="scripts/components/auth/auth.service.js"></script>
-    <script src="scripts/components/auth/principal.service.js"></script>
-    <script src="scripts/components/auth/authority.directive.js"></script>
-    <script src="scripts/components/auth/services/account.service.js"></script>
-    <script src="scripts/components/auth/services/activate.service.js"></script>
-    <script src="scripts/components/auth/services/password.service.js"></script>
-    <script src="scripts/components/auth/services/register.service.js"></script>
-    <script src="scripts/components/form/form.directive.js"></script>
-    <script src="scripts/components/form/maxbytes.directive.js"></script>
-    <script src="scripts/components/form/minbytes.directive.js"></script>
-    <script src="scripts/components/form/uib-pager.config.js"></script>
-    <script src="scripts/components/form/uib-pagination.config.js"></script>
-    <script src="scripts/components/admin/audits.service.js"></script>
-    <script src="scripts/components/admin/logs.service.js"></script>
-    <script src="scripts/components/admin/configuration.service.js"></script>
-    <script src="scripts/components/admin/monitoring.service.js"></script>
-    <script src="scripts/components/interceptor/auth.interceptor.js"></script>
-    <script src="scripts/components/interceptor/errorhandler.interceptor.js"></script>
-    <script src="scripts/components/interceptor/notification.interceptor.js"></script>
-    <script src="scripts/components/navbar/navbar.directive.js"></script>
-    <script src="scripts/components/navbar/navbar.controller.js"></script>
-    <script src="scripts/components/util/truncate.filter.js"></script>
-    <script src="scripts/components/util/base64.service.js"></script>
-    <script src="scripts/components/util/capitalize.filter.js"></script>
-    <script src="scripts/components/alert/alert.service.js"></script>
-    <script src="scripts/components/alert/alert.directive.js"></script>
-    <script src="scripts/components/util/parse-links.service.js"></script>
-    <script src="scripts/components/util/date-util.service.js"></script>
-    <script src="scripts/components/util/data-util.service.js"></script>
-    <script src="scripts/components/util/sort.directive.js"></script>
-    <script src="scripts/app/account/account.js"></script>
-    <script src="scripts/app/login/activate/activate.js"></script>
-    <script src="scripts/app/login/activate/activate.controller.js"></script>
-    <script src="scripts/app/login/login.js"></script>
-    <script src="scripts/app/login/login.controller.js"></script>
-    <script src="scripts/app/login/password/password.js"></script>
-    <script src="scripts/app/login/password/password.controller.js"></script>
-    <script src="scripts/app/login/password/password.directive.js"></script>
-    <script src="scripts/app/login/register/register.js"></script>
-    <script src="scripts/app/login/register/register.controller.js"></script>
-    <script src="scripts/shared/lists/status/tatamiStatusList.directive.js"></script>
-    <script src="scripts/app/home/timeline/timeline/content.controller.js"></script>
-    <script src="scripts/app/login/reset/finish/reset.finish.controller.js"></script>
-    <script src="scripts/app/login/reset/finish/reset.finish.js"></script>
-    <script src="scripts/app/admin/admin.js"></script>
-    <script src="scripts/app/admin/audits/audits.js"></script>
-    <script src="scripts/app/admin/audits/audits.controller.js"></script>
-    <script src="scripts/app/admin/configuration/configuration.js"></script>
-    <script src="scripts/app/admin/configuration/configuration.controller.js"></script>
-    <script src="scripts/app/admin/docs/docs.js"></script>
-    <script src="scripts/app/admin/health/health.js"></script>
-    <script src="scripts/app/admin/health/health.controller.js"></script>
-    <script src="scripts/app/admin/health/health.modal.controller.js"></script>
-    <script src="scripts/app/admin/logs/logs.js"></script>
-    <script src="scripts/app/admin/logs/logs.controller.js"></script>
-    <script src="scripts/app/admin/metrics/metrics.js"></script>
-    <script src="scripts/app/admin/metrics/metrics.controller.js"></script>
-    <script src="scripts/app/admin/metrics/metrics.modal.controller.js"></script>
-    <script src="scripts/app/admin/user-management/user-management-detail.controller.js"></script>
-    <script src="scripts/app/admin/user-management/user-management-dialog.controller.js"></script>
-    <script src="scripts/app/admin/user-management/user-management-delete-dialog.controller.js"></script>
-    <script src="scripts/app/admin/user-management/user-management.controller.js"></script>
-    <script src="scripts/app/admin/user-management/user-management.js"></script>
-    <script src="scripts/app/admin/reported-statuses/reported-statuses.controller.js"></script>
-    <script src="scripts/app/admin/reported-statuses/reported-statuses.js"></script>
-    <script src="scripts/app/error/error.js"></script>
-    <script src="bower_components/messageformat/locale/en.js"></script>
-    <script src="bower_components/messageformat/locale/fr.js"></script>
-    <script src="scripts/components/language/language.service.js"></script>
-    <script src="scripts/components/language/language.controller.js"></script>
-    <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
-    <script src="scripts/app/account/profile/profile.controller.js"></script>
-    <script src="scripts/app/account/password/password.controller.js"></script>
-    <script src="scripts/app/account/password/password.js"></script>
-
-    <!-- endbuild -->
-
-    <script src="scripts/app/about/about.js"></script>
-    <script src="scripts/app/account/profile/profile.js"></script>
-    <script src="scripts/app/account/account.controller.js"></script>
-    <script src="scripts/app/account/tags/tags.controller.js"></script>
-    <script src="scripts/app/account/files/files.js"></script>
-    <script src="scripts/app/account/files/files.controller.js"></script>
-
-
-    <script src="scripts/app/account/users/users.js"></script>
-    <script src="scripts/app/account/users/users.controller.js"></script>
-
-    <script src="scripts/app/account/users/list/search/search.js"></script>
-    <script src="scripts/app/account/users/list/search/search.controller.js"></script>
-    <script src="scripts/app/account/users/list/recommended/recommended.js"></script>
-    <script src="scripts/app/account/users/list/recommended/recommended.controller.js"></script>
-    <script src="scripts/app/account/users/list/following/following.js"></script>
-    <script src="scripts/app/account/users/list/following/following.controller.js"></script>
-    <script src="scripts/app/account/users/list/list.js"></script>
-    <script src="scripts/app/account/users/list/list.directive.js"></script>
-    <script src="scripts/app/account/users/list/list.controller.js"></script>
-    <script src="scripts/app/account/users/list/blocked/blocked.users.js"></script>
-    <script src="scripts/app/account/users/list/blocked/blocked.users.controllers.js"></script>
-
-
-    <script src="scripts/app/account/groups/groups.js"></script>
-    <script src="scripts/app/account/groups/groups.controller.js"></script>
-    <script src="scripts/app/account/groups/create/create.controller.js"></script>
-    <script src="scripts/app/account/groups/create/create.directive.js"></script>
-    <script src="scripts/app/account/groups/list/list.controller.js"></script>
-    <script src="scripts/app/account/groups/list/list.directive.js"></script>
-    <script src="scripts/app/account/groups/list/mine/mine.js"></script>
-    <script src="scripts/app/account/groups/list/mine/mine.controller.js"></script>
-    <script src="scripts/app/account/groups/list/recommended/recommended.js"></script>
-    <script src="scripts/app/account/groups/list/recommended/recommended.controller.js"></script>
-    <script src="scripts/app/account/groups/list/search/search.js"></script>
-    <script src="scripts/app/account/groups/list/search/search.controller.js"></script>
-    <script src="scripts/app/account/groups/list/list.js"></script>
-    <script src="scripts/app/account/groups/manage/manage.controller.js"></script>
-    <script src="scripts/app/account/groups/manage/manage.js"></script>
-    <script src="scripts/app/account/topPosters/topPosters.js"></script>
-    <script src="scripts/app/account/topPosters/topPosters.controller.js"></script>
-    <script src="scripts/components/auth/services/user.service.js"></script>
-    <script src="scripts/app/account/preferences/preferences.controller.js"></script>
-    <script src="scripts/app/account/preferences/preferences.js"></script>
-    <script src="scripts/components/auth/services/preferences.service.js"></script>
-    <script src="scripts/components/navbar/post/PostController.js"></script>
-    <script src="scripts/shared/services/SearchService.js"></script>
-    <script src="scripts/shared/services/GeolocService.js"></script>
-    <script src="scripts/shared/services/PostModalService.js"></script>
-    <script src="scripts/shared/services/block.service.js"></script>
-    <script src="scripts/shared/services/reported.status.service.js"></script>
-    <script src="scripts/shared/filters/PlaceholderFilter.js"></script>
-    <script src="scripts/shared/filters/MarkdownFilter.js"></script>
-    <script src="scripts/shared/filters/EmoticonFilter.js"></script>
-    <script src="scripts/app/home/home.js"></script>
-    <script src="scripts/app/home/home.controller.js"></script>
-    <script src="scripts/app/home/timeline/sidebar/homeSidebar.controller.js"></script>
-    <script src="scripts/components/auth/services/home.service.js"></script>
-    <script src="scripts/components/auth/services/tag.service.js"></script>
-    <script src="scripts/components/auth/services/status.service.js"></script>
-    <script src="scripts/components/auth/services/group.service.js"></script>
-    <script src="scripts/components/auth/services/stats.service.js"></script>
-    <script src="scripts/app/home/timeline/group/group.controller.js"></script>
-    <script src="scripts/app/home/timeline/group/group.js"></script>
-    <script src="scripts/app/home/presentation/presentation.js"></script>
-    <script src="scripts/app/home/presentation/welcome.controller.js"></script>
-    <script src="assets/js/marked/marked.js"></script>
-    <script src="scripts/app/home/timeline/company/company.js"></script>
-    <script src="scripts/app/home/timeline/timeline/timeline.js"></script>
-    <script src="scripts/app/home/timeline/mentions/mentions.js"></script>
-    <script src="scripts/app/home/timeline/favorites/favorites.js"></script>
-    <script src="scripts/app/home/timeline/tag/tag.js"></script>
-    <script src="scripts/app/home/timeline/tag/tagHeader.controller.js"></script>
-    <script src="scripts/app/home/status/status.controller.js"></script>
-    <script src="scripts/app/home/status/status.js"></script>
-    <script src="scripts/app/account/tags/following/following.js"></script>
-    <script src="scripts/app/account/tags/search/search.js"></script>
-    <script src="scripts/app/account/tags/trends/trends.js"></script>
-    <script src="scripts/components/auth/services/files.service.js"></script>
-    <script src="scripts/app/home/profile/profileHeader.controller.js"></script>
-    <script src="scripts/app/home/profile/sidebar/profileSidebar.controller.js"></script>
-    <script src="scripts/app/home/profile/statuses/profileStatuses.js"></script>
-    <script src="scripts/app/home/profile/profile.js"></script>
-    <script src="scripts/app/home/profile/followers/followers.js"></script>
-    <script src="scripts/app/home/profile/following/following.js"></script>
-    <script src="scripts/shared/lists/user/userList.controller.js"></script>
-
-
-
+        <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
+        <script src="bower_components/messageformat/locale/en.js"></script>
+        <script src="bower_components/messageformat/locale/fr.js"></script>
+        <script src="scripts/app/app.js"></script>
+        <script src="scripts/app/app.constants.js"></script>
+        <script src="scripts/components/auth/auth.service.js"></script>
+        <script src="scripts/components/auth/principal.service.js"></script>
+        <script src="scripts/components/auth/authority.directive.js"></script>
+        <script src="scripts/components/auth/services/account.service.js"></script>
+        <script src="scripts/components/auth/services/activate.service.js"></script>
+        <script src="scripts/components/auth/services/password.service.js"></script>
+        <script src="scripts/components/auth/services/register.service.js"></script>
+        <script src="scripts/components/form/form.directive.js"></script>
+        <script src="scripts/components/form/maxbytes.directive.js"></script>
+        <script src="scripts/components/form/minbytes.directive.js"></script>
+        <script src="scripts/components/form/uib-pager.config.js"></script>
+        <script src="scripts/components/form/uib-pagination.config.js"></script>
+        <script src="scripts/components/admin/audits.service.js"></script>
+        <script src="scripts/components/admin/logs.service.js"></script>
+        <script src="scripts/components/admin/configuration.service.js"></script>
+        <script src="scripts/components/admin/monitoring.service.js"></script>
+        <script src="scripts/components/interceptor/auth.interceptor.js"></script>
+        <script src="scripts/components/interceptor/errorhandler.interceptor.js"></script>
+        <script src="scripts/components/interceptor/notification.interceptor.js"></script>
+        <script src="scripts/components/navbar/navbar.directive.js"></script>
+        <script src="scripts/components/navbar/navbar.controller.js"></script>
+        <script src="scripts/components/util/truncate.filter.js"></script>
+        <script src="scripts/components/util/base64.service.js"></script>
+        <script src="scripts/components/util/capitalize.filter.js"></script>
+        <script src="scripts/components/alert/alert.service.js"></script>
+        <script src="scripts/components/alert/alert.directive.js"></script>
+        <script src="scripts/components/util/parse-links.service.js"></script>
+        <script src="scripts/components/util/date-util.service.js"></script>
+        <script src="scripts/components/util/data-util.service.js"></script>
+        <script src="scripts/components/util/sort.directive.js"></script>
+        <script src="scripts/app/account/account.js"></script>
+        <script src="scripts/app/login/activate/activate.js"></script>
+        <script src="scripts/app/login/activate/activate.controller.js"></script>
+        <script src="scripts/app/login/login.js"></script>
+        <script src="scripts/app/login/login.controller.js"></script>
+        <script src="scripts/app/login/password/password.js"></script>
+        <script src="scripts/app/login/password/password.controller.js"></script>
+        <script src="scripts/app/login/password/password.directive.js"></script>
+        <script src="scripts/app/login/register/register.js"></script>
+        <script src="scripts/app/login/register/register.controller.js"></script>
+        <script src="scripts/shared/lists/status/tatamiStatusList.directive.js"></script>
+        <script src="scripts/app/home/timeline/timeline/content.controller.js"></script>
+        <script src="scripts/app/login/reset/finish/reset.finish.controller.js"></script>
+        <script src="scripts/app/login/reset/finish/reset.finish.js"></script>
+        <script src="scripts/app/admin/admin.js"></script>
+        <script src="scripts/app/admin/audits/audits.js"></script>
+        <script src="scripts/app/admin/audits/audits.controller.js"></script>
+        <script src="scripts/app/admin/configuration/configuration.js"></script>
+        <script src="scripts/app/admin/configuration/configuration.controller.js"></script>
+        <script src="scripts/app/admin/docs/docs.js"></script>
+        <script src="scripts/app/admin/health/health.js"></script>
+        <script src="scripts/app/admin/health/health.controller.js"></script>
+        <script src="scripts/app/admin/health/health.modal.controller.js"></script>
+        <script src="scripts/app/admin/logs/logs.js"></script>
+        <script src="scripts/app/admin/logs/logs.controller.js"></script>
+        <script src="scripts/app/admin/metrics/metrics.js"></script>
+        <script src="scripts/app/admin/metrics/metrics.controller.js"></script>
+        <script src="scripts/app/admin/metrics/metrics.modal.controller.js"></script>
+        <script src="scripts/app/admin/user-management/user-management-detail.controller.js"></script>
+        <script src="scripts/app/admin/user-management/user-management-dialog.controller.js"></script>
+        <script src="scripts/app/admin/user-management/user-management-delete-dialog.controller.js"></script>
+        <script src="scripts/app/admin/user-management/user-management.controller.js"></script>
+        <script src="scripts/app/admin/user-management/user-management.js"></script>
+        <script src="scripts/app/admin/reported-statuses/reported-statuses.controller.js"></script>
+        <script src="scripts/app/admin/reported-statuses/reported-statuses.js"></script>
+        <script src="scripts/app/error/error.js"></script>
+        <script src="scripts/components/language/language.service.js"></script>
+        <script src="scripts/components/language/language.controller.js"></script>
+        <script src="scripts/components/auth/provider/auth.xauth.service.js"></script>
+        <script src="scripts/app/account/profile/profile.controller.js"></script>
+        <script src="scripts/app/account/password/password.controller.js"></script>
+        <script src="scripts/app/account/password/password.js"></script>
+        <script src="scripts/app/about/about.js"></script>
+        <script src="scripts/app/account/profile/profile.js"></script>
+        <script src="scripts/app/account/account.controller.js"></script>
+        <script src="scripts/app/account/tags/tags.controller.js"></script>
+        <script src="scripts/app/account/files/files.js"></script>
+        <script src="scripts/app/account/files/files.controller.js"></script>
+        <script src="scripts/app/account/users/users.js"></script>
+        <script src="scripts/app/account/users/users.controller.js"></script>
+        <script src="scripts/app/account/users/list/search/search.js"></script>
+        <script src="scripts/app/account/users/list/search/search.controller.js"></script>
+        <script src="scripts/app/account/users/list/recommended/recommended.js"></script>
+        <script src="scripts/app/account/users/list/recommended/recommended.controller.js"></script>
+        <script src="scripts/app/account/users/list/following/following.js"></script>
+        <script src="scripts/app/account/users/list/following/following.controller.js"></script>
+        <script src="scripts/app/account/users/list/list.js"></script>
+        <script src="scripts/app/account/users/list/list.directive.js"></script>
+        <script src="scripts/app/account/users/list/list.controller.js"></script>
+        <script src="scripts/app/account/users/list/blocked/blocked.users.js"></script>
+        <script src="scripts/app/account/users/list/blocked/blocked.users.controllers.js"></script>
+        <script src="scripts/app/account/groups/groups.js"></script>
+        <script src="scripts/app/account/groups/groups.controller.js"></script>
+        <script src="scripts/app/account/groups/create/create.controller.js"></script>
+        <script src="scripts/app/account/groups/create/create.directive.js"></script>
+        <script src="scripts/app/account/groups/list/list.controller.js"></script>
+        <script src="scripts/app/account/groups/list/list.directive.js"></script>
+        <script src="scripts/app/account/groups/list/mine/mine.js"></script>
+        <script src="scripts/app/account/groups/list/mine/mine.controller.js"></script>
+        <script src="scripts/app/account/groups/list/recommended/recommended.js"></script>
+        <script src="scripts/app/account/groups/list/recommended/recommended.controller.js"></script>
+        <script src="scripts/app/account/groups/list/search/search.js"></script>
+        <script src="scripts/app/account/groups/list/search/search.controller.js"></script>
+        <script src="scripts/app/account/groups/list/list.js"></script>
+        <script src="scripts/app/account/groups/manage/manage.controller.js"></script>
+        <script src="scripts/app/account/groups/manage/manage.js"></script>
+        <script src="scripts/app/account/topPosters/topPosters.js"></script>
+        <script src="scripts/app/account/topPosters/topPosters.controller.js"></script>
+        <script src="scripts/components/auth/services/user.service.js"></script>
+        <script src="scripts/app/account/preferences/preferences.controller.js"></script>
+        <script src="scripts/app/account/preferences/preferences.js"></script>
+        <script src="scripts/components/auth/services/preferences.service.js"></script>
+        <script src="scripts/components/navbar/post/PostController.js"></script>
+        <script src="scripts/shared/services/SearchService.js"></script>
+        <script src="scripts/shared/services/GeolocService.js"></script>
+        <script src="scripts/shared/services/PostModalService.js"></script>
+        <script src="scripts/shared/services/block.service.js"></script>
+        <script src="scripts/shared/services/reported.status.service.js"></script>
+        <script src="scripts/shared/filters/PlaceholderFilter.js"></script>
+        <script src="scripts/shared/filters/MarkdownFilter.js"></script>
+        <script src="scripts/shared/filters/EmoticonFilter.js"></script>
+        <script src="scripts/app/home/home.js"></script>
+        <script src="scripts/app/home/home.controller.js"></script>
+        <script src="scripts/app/home/timeline/sidebar/homeSidebar.controller.js"></script>
+        <script src="scripts/components/auth/services/home.service.js"></script>
+        <script src="scripts/components/auth/services/tag.service.js"></script>
+        <script src="scripts/components/auth/services/status.service.js"></script>
+        <script src="scripts/components/auth/services/group.service.js"></script>
+        <script src="scripts/components/auth/services/stats.service.js"></script>
+        <script src="scripts/app/home/timeline/group/group.controller.js"></script>
+        <script src="scripts/app/home/timeline/group/group.js"></script>
+        <script src="scripts/app/home/presentation/presentation.js"></script>
+        <script src="scripts/app/home/presentation/welcome.controller.js"></script>
+        <script src="assets/js/marked/marked.js"></script>
+        <script src="scripts/app/home/timeline/company/company.js"></script>
+        <script src="scripts/app/home/timeline/timeline/timeline.js"></script>
+        <script src="scripts/app/home/timeline/mentions/mentions.js"></script>
+        <script src="scripts/app/home/timeline/favorites/favorites.js"></script>
+        <script src="scripts/app/home/timeline/tag/tag.js"></script>
+        <script src="scripts/app/home/timeline/tag/tagHeader.controller.js"></script>
+        <script src="scripts/app/home/status/status.controller.js"></script>
+        <script src="scripts/app/home/status/status.js"></script>
+        <script src="scripts/app/account/tags/following/following.js"></script>
+        <script src="scripts/app/account/tags/search/search.js"></script>
+        <script src="scripts/app/account/tags/trends/trends.js"></script>
+        <script src="scripts/components/auth/services/files.service.js"></script>
+        <script src="scripts/app/home/profile/profileHeader.controller.js"></script>
+        <script src="scripts/app/home/profile/sidebar/profileSidebar.controller.js"></script>
+        <script src="scripts/app/home/profile/statuses/profileStatuses.js"></script>
+        <script src="scripts/app/home/profile/profile.js"></script>
+        <script src="scripts/app/home/profile/followers/followers.js"></script>
+        <script src="scripts/app/home/profile/following/following.js"></script>
+        <script src="scripts/shared/lists/user/userList.controller.js"></script>
+        <!-- endbuild -->
 </body>
 </html>
