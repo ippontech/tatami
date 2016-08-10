@@ -8,6 +8,7 @@ tatamiJHipsterApp.controller('UserManagementDialogController',
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
         Language.getAll().then(function (languages) {
             $scope.languages = languages;
+            $scope.userLang = $scope.languages[0];
         });
         var onSaveSuccess = function (result) {
             $scope.isSaving = false;
