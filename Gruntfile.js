@@ -159,10 +159,10 @@ module.exports = function (grunt) {
             css: ['<%= yeoman.dist %>/assets/styles/**/*.css'],
             js: ['<%= yeoman.dist %>/scripts/**/*.js'],
             options: {
-                assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/assets/styles', '<%= yeoman.dist %>/assets/images', '<%= yeoman.dist %>/assets/fonts'],
+                assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/assets/styles', '<%= yeoman.dist %>/assets/img', '<%= yeoman.dist %>/assets/fonts'],
                 patterns: {
                     js: [
-                        [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
+                        [/(assets\/img\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
                     ]
                 },
                 dirs: ['<%= yeoman.dist %>']
@@ -172,9 +172,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'src/main/webapp/assets/images',
+                    cwd: 'src/main/webapp/assets/img',
                     src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
-                    dest: '<%= yeoman.dist %>/assets/images'
+                    dest: '<%= yeoman.dist %>/assets/img'
                 }]
             }
         },
@@ -182,9 +182,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'src/main/webapp/assets/images',
+                    cwd: 'src/main/webapp/assets/img',
                     src: '**/*.svg',
-                    dest: '<%= yeoman.dist %>/assets/images'
+                    dest: '<%= yeoman.dist %>/assets/img'
                 }]
             }
         },
@@ -253,8 +253,8 @@ module.exports = function (grunt) {
                     ]
                 }, {
                     expand: true,
-                    cwd: '.tmp/assets/images',
-                    dest: '<%= yeoman.dist %>/assets/images',
+                    cwd: '.tmp/assets/img',
+                    dest: '<%= yeoman.dist %>/assets/img',
                     src: [
                         'generated/*'
                     ]
@@ -380,6 +380,6 @@ module.exports = function (grunt) {
         'buildcontrol:openshift'
     ]);
 
-    
+
     grunt.registerTask('default', ['serve']);
 };
