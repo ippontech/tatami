@@ -7,7 +7,7 @@ angular.module('tatamiJHipsterApp')
 
         $scope.followUnfollowUser = function() {
             UserService.follow(
-                { email: $scope.user.email },
+                { username: $scope.user.username },
                 { friend: !$scope.user.friend, friendShip: true },
                 function(response) {
                     $scope.user.friend = response.friend;
@@ -16,10 +16,9 @@ angular.module('tatamiJHipsterApp')
         };
 
         $scope.updateBlockUser = function () {
-            BlockService.updateBlockedUser({email: $scope.user.email}, function (response) {
+            BlockService.updateBlockedUser({username: $scope.user.username}, function (response) {
                 $scope.user = response;
                 $scope.$state.reload();
-
             });
         };
     }

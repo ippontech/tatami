@@ -17,10 +17,10 @@ tatamiJHipsterApp
         return user;
     };
 
-    return $resource('/tatami/rest/users/:email', null,
+    return $resource('/tatami/rest/users/:username', null,
     {
         'get': {
-            method: 'GET', params: { email: '@email' },
+            method: 'GET', params: { username: '@username' },
             transformResponse: singleResponseTransform
         },
         'query': {
@@ -28,11 +28,11 @@ tatamiJHipsterApp
             transformResponse: responseTransform
         },
         'getFollowing': {
-            method: 'GET', isArray: true, params: { email: '@email' }, url: '/tatami/rest/users/:email/friends',
+            method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/users/:username/friends',
             transformResponse: responseTransform
         },
         'getFollowers': {
-            method: 'GET', isArray: true, params: { email: '@email' }, url: '/tatami/rest/users/:email/followers',
+            method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/users/:username/followers',
             transformResponse: responseTransform
         },
         'getSuggestions': {
@@ -50,12 +50,12 @@ tatamiJHipsterApp
         },
         'follow': {
             method: 'PATCH',
-            params: { email: '@email' },
+            params: { username: '@username' },
             transformResponse: singleResponseTransform
         },
         'searchUsers': { method: 'GET', isArray: true, url: '/tatami/rest/users/:term', transformResponse: responseTransform },
-        'deactivate': { method: 'PATCH', params: { email: '@email' } },
-        'delete': { method: 'DELETE', params: { email: '@email' } },
+        // 'deactivate': { method: 'PATCH', params: { email: '@email' } },
+        // 'delete': { method: 'DELETE', params: { email: '@email' } },
         'update': { method: 'PUT' },
         'save': {method: 'POST' }
     });

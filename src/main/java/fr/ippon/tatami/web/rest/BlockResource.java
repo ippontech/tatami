@@ -28,12 +28,17 @@ public class BlockResource {
     @Inject
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/rest/block/blockedusers/{email}",
+    @RequestMapping(value = "/rest/block/blockedusers/{username}",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getBlockedUsersForUser(@PathVariable String email) {
+    public Collection<UserDTO> getBlockedUsersForUser(@PathVariable("username") String username) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         Collection<User> blockedUsers = blockService.getUsersBlockedForUser(email);
         return userService.buildUserDTOList(blockedUsers);
     }
@@ -41,14 +46,19 @@ public class BlockResource {
     /**
      * Method used by current user. Switch the blocked/unblocked status of the clicked user.
      *
-     * @param email (of the clicked user)
+     * @param username (of the clicked user)
      * @return
      */
-    @RequestMapping(value = "/rest/block/update/{email}",
+    @RequestMapping(value = "/rest/block/update/{username}",
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateBlockedUser(@PathVariable("email") String email) {
+    public UserDTO updateBlockedUser(@PathVariable("username") String username) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         String currentUserEmail = SecurityUtils.getCurrentUserEmail();
         UserDTO toReturn = userService.buildUserDTO(userRepository.findOneByEmail(email).get());
         if (toReturn.isBlocked()) {

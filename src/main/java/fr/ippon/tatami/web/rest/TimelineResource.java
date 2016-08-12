@@ -105,24 +105,19 @@ public class TimelineResource {
     /**
      * GET  /rest/statuses/jdubois/timeline -> get the latest statuses from user "jdubois"
      */
-    @RequestMapping(value = "/rest/statuses/{email}/timeline",
+    @RequestMapping(value = "/rest/statuses/{username}/timeline",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Collection<StatusDTO>> listStatusForUser(@PathVariable("email") String email,
+    public ResponseEntity<Collection<StatusDTO>> listStatusForUser(@PathVariable("username") String username,
                                                                    @RequestParam(required = false) Integer count,
                                                                    @RequestParam(required = false) String start,
                                                                    @RequestParam(required = false) String finish) {
         /*
-        In cases of posts where users are mentioned, we pass in a username instead of an email address when
-        a user clicks the link. In these cases, we should append the current user's domain to the username
-        before we proceed.
-
-        See marked.js
-        */
-        if (!DomainUtil.isValidEmailAddress(email)) {
-            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
-        }
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
 
         if (count == null || count == 0) {
             count = defaultCount;

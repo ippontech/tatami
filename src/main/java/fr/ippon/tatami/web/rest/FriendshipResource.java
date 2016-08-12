@@ -41,22 +41,17 @@ public class FriendshipResource {
     @Inject
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/rest/users/{email}/friends",
+    @RequestMapping(value = "/rest/users/{username}/friends",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFriends(@PathVariable String email, HttpServletResponse response) {
+    public Collection<UserDTO> getFriends(@PathVariable("username") String username, HttpServletResponse response) {
         /*
-                In cases of posts where users are mentioned, we pass in a username instead of an email address when
-                a user clicks the link. In these cases, we should append the current user's domain to the username
-                before we proceed.
-
-                See marked.js
-        */
-        if (!DomainUtil.isValidEmailAddress(email)) {
-            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
-        }
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         Optional<User> optionalUser = userRepository.findOneByEmail(email);
         if (!optionalUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -68,22 +63,18 @@ public class FriendshipResource {
         return userService.buildUserDTOList(friends);
     }
 
-    @RequestMapping(value = "/rest/users/{email}/followers",
+    @RequestMapping(value = "/rest/users/{username}/followers",
         method = RequestMethod.GET,
         produces = "application/json")
     @Timed
     @ResponseBody
-    public Collection<UserDTO> getFollowers(@PathVariable String email, HttpServletResponse response) {
+    public Collection<UserDTO> getFollowers(@PathVariable("username") String username, HttpServletResponse response) {
         /*
-                In cases of posts where users are mentioned, we pass in a username instead of an email address when
-                a user clicks the link. In these cases, we should append the current user's domain to the username
-                before we proceed.
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
 
-                See marked.js
-        */
-        if (!DomainUtil.isValidEmailAddress(email)) {
-            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
-        }
         Optional<User> optionalUser = userRepository.findOneByEmail(email);
         if (!optionalUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -99,11 +90,16 @@ public class FriendshipResource {
      * Added an "action" parameter to specify which type of PATCH we should do (Activate / Follow ).
      */
 
-    @RequestMapping(value = "/rest/users/{email}",
+    @RequestMapping(value = "/rest/users/{username}",
         method = RequestMethod.PATCH)
     @Timed
     @ResponseBody
-    public UserDTO updateFriend(@PathVariable("email") String email, HttpServletResponse response) {
+    public UserDTO updateFriend(@PathVariable("username") String username, HttpServletResponse response) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         Optional<User> optionalUser = userRepository.findOneByEmail(email);
         if (!optionalUser.isPresent()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

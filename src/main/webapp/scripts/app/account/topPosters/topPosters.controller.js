@@ -19,9 +19,11 @@
             for (var i = 0; i < rawStats.length; i++) {
                 //get rest of user info
                 var user = {};
-                user.email = rawStats[i].email;
+                // we're using username now for UserService.get(), but result only gives us the email
+                // and i don't really have time to fix that, so instead, we'll trim the email to everything before the @
+                user.email = rawStats[i].email.split('@')[0];
                 user.statusCount = rawStats[i].statusCount;
-                UserService.get({email: user.email}, function (userResult) {
+                UserService.get({username: user.email}, function (userResult) {
                     for (var j = 0; j < rawStats.length; j++) {
                         if (rawStats[j].email == userResult.email) {
                             rawStats[j].info = userResult;

@@ -22,14 +22,14 @@
                 'getBlockedUsersForUser': {
                     method: 'GET',
                     isArray: true,
-                    params: {email: '@email'},
-                    url: '/tatami/rest/block/blockedusers/:email',
+                    params: {email: '@username'},
+                    url: '/tatami/rest/block/blockedusers/:username',
                     transformResponse: responseTransform
                 },
                 'updateBlockedUser': {
                     method: 'PATCH',
-                    params: { email: '@email'},
-                    url: '/tatami/rest/block/update/:email',
+                    params: { username: '@username'},
+                    url: '/tatami/rest/block/update/:username',
                     transformResponse: function (blockedUser) {
                         blockedUser = angular.fromJson(blockedUser);
                         return blockedUser;

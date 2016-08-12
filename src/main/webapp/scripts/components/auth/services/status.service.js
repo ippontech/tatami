@@ -40,7 +40,7 @@ angular.module('tatamiJHipsterApp')
             transformResponse: responseTransform
         },
         'getUserTimeline': {
-            method: 'GET', isArray: true, params: { email: '@email' }, url: '/tatami/rest/statuses/:email/timeline',
+            method: 'GET', isArray: true, params: { username: '@username' }, url: '/tatami/rest/statuses/:username/timeline',
             transformResponse: responseTransform
         },
         'getDetails': {

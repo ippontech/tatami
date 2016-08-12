@@ -190,23 +190,18 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/:username -> get User with the corresponding "email"
+     * GET  /users/:username -> get User with the corresponding "username"
      */
-    @RequestMapping(value = "/rest/users/{email}",
+    @RequestMapping(value = "/rest/users/{username}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<UserDTO> getUser(@PathVariable String email) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable("username") String username) {
         /*
-        In cases of posts where users are mentioned, we pass in a username instead of an email address when
-        a user clicks the link. In these cases, we should append the current user's domain to the username
-        before we proceed.
-
-        See marked.js
-        */
-        if (!DomainUtil.isValidEmailAddress(email)) {
-            email = DomainUtil.getEmailFromUsernameAndDomain(email, SecurityUtils.getCurrentUserDomain());
-        }
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         log.debug("rest request to get User : {}", email);
         return userService.getUser(email)
             .map(userService::buildUserDTO)

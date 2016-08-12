@@ -26,7 +26,7 @@
             },
             resolve: {
                 users: ['UserService', '$stateParams', function (UserService, $stateParams) {
-                    return UserService.getFollowers({email: $stateParams.email}).$promise;
+                    return UserService.getFollowers({username: $stateParams.username}).$promise;
                 }]
             }
         })

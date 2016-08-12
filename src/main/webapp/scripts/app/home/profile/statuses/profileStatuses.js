@@ -26,7 +26,7 @@
             },
             resolve: {
                 statuses: ['StatusService', '$stateParams', function (StatusService, $stateParams) {
-                    return StatusService.getUserTimeline({email: $stateParams.email}).$promise;
+                    return StatusService.getUserTimeline({username: $stateParams.email.split('@')[0]}).$promise;
                 }],
                 showModal: function () {
                     return false;

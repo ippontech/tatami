@@ -223,12 +223,17 @@ public class GroupResource {
     /**
      * GET  /groups/{groupId}/members/{userEmail} -> get a member to group status
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
         method = RequestMethod.GET,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
+    public UserGroupDTO getUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         Group currentGroup = groupService.getGroupById(UUID.fromString(groupId));
 
         if (!SecurityUtils.isAuthenticated()) {
@@ -263,12 +268,17 @@ public class GroupResource {
     /**
      * PUT  /groups/{groupId}/members/{userEmail} -> add a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
         method = RequestMethod.PUT,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
+    public UserGroupDTO addUserToGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         String currentUserEmail = SecurityUtils.getCurrentUserEmail();
         Group currentGroup = groupService.getGroupById(UUID.fromString(groupId));
         Optional<User> optionalUserToAdd = userRepository.findOneByEmail(email);
@@ -295,14 +305,19 @@ public class GroupResource {
     }
 
     /**
-     * DELETE  /groups/{groupId}/members/{userEmail} -> remove a member to group
+     * DELETE  /groups/{groupId}/members/{username} -> remove a member to group
      */
-    @RequestMapping(value = "/rest/groups/{groupId}/members/{email}",
+    @RequestMapping(value = "/rest/groups/{groupId}/members/{username}",
         method = RequestMethod.DELETE,
         produces = "application/json")
     @ResponseBody
     @Timed
-    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("email") String email) {
+    public boolean removeUserFromGroup(HttpServletResponse response, @PathVariable("groupId") String groupId, @PathVariable("username") String username) {
+        /*
+         * Passing emails isn't safe, so instead of sometimes passing users and sometimes passing emails,
+         * we're going to always pass usernames and then convert them to emails
+         */
+        String email = username + "@" + SecurityUtils.getCurrentUserDomain();
         String currentUserEmail = SecurityUtils.getCurrentUserEmail();
         Group currentGroup = groupService.getGroupById(UUID.fromString(groupId));
 
