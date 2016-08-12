@@ -14,10 +14,11 @@
             abstract: true,
             resolve: {
                 user: ['UserService', '$stateParams', function (UserService, $stateParams) {
-                    return UserService.get({username: $stateParams.email.split('@')[0]}).$promise;
+                    console.log($stateParams.username);
+                    return UserService.get({username: $stateParams.username}).$promise;
                 }],
                 tags: ['TagService', '$stateParams', function (TagService, $stateParams) {
-                    return TagService.query({popular: true, username: $stateParams.email.split('@')[0]}).$promise;
+                    return TagService.query({popular: true, username: $stateParams.username}).$promise;
                 }]
             }
         })
