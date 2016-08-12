@@ -47,7 +47,7 @@ public class UserResourceIntTest {
 
     @Test
     public void testGetExistingUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/rest/users/admin@localhost")
+        restUserMockMvc.perform(get("/tatami/rest/users/admin")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
@@ -56,7 +56,7 @@ public class UserResourceIntTest {
 
     @Test
     public void testGetUnknownUser() throws Exception {
-        restUserMockMvc.perform(get("/tatami/rest/users/unknown@localhost")
+        restUserMockMvc.perform(get("/tatami/rest/users/unknown")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
