@@ -26,11 +26,13 @@ tatamiJHipsterApp
         $scope.loadAll();
 
         $scope.setActive = function (user, isActivated) {
-            user.activated = isActivated;
-            UserService.update(user, function () {
-                $scope.loadAll();
-                $scope.clear();
-            });
+            if (!user.you){
+                user.activated = isActivated;
+                UserService.update(user, function () {
+                    $scope.loadAll();
+                    $scope.clear();
+                });
+            }
         };
 
         $scope.getMoreUsers = function (){

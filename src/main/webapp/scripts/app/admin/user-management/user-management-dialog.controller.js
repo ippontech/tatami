@@ -5,10 +5,15 @@ tatamiJHipsterApp.controller('UserManagementDialogController',
         function($scope, $stateParams, $uibModalInstance, entity, User, Language) {
 
         $scope.user = entity;
+            User.get({email: $stateParams.email}, function(result) {
+                $scope.user = result;
+            });
         $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
         Language.getAll().then(function (languages) {
             $scope.languages = languages;
-            $scope.userLang = $scope.languages[0];
+            if (!$scope.user.langKey){
+                $scope.user.langKey = $scope.languages[0];
+            }
         });
         var onSaveSuccess = function (result) {
             $scope.isSaving = false;
