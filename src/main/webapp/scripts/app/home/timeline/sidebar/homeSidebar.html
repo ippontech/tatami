@@ -7,12 +7,12 @@
         </div>
         <div class="well well-sm little-padding">
             <div>
-                <a class="h3" ui-sref="profileStatuses({ email: profile.username })">
+                <a class="h3" ui-sref="profileStatuses({ username: profile.username })">
                     <strong>{{ profile.firstName + ' ' + profile.lastName }}</strong>
                 </a>
             </div>
             <div>
-                <a class="h5 text-muted" ui-sref="profileStatuses({ email: profile.username })">
+                <a class="h5 text-muted" ui-sref="profileStatuses({ username: profile.username })">
                     @{{ profile.username }}
                 </a>
             </div>
@@ -91,16 +91,16 @@
                     <span ng-click="followUser(suggestion, $index)" ng-init="hover = false" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="label little-padding pointer pull-right" ng-class="{ 'label-danger': suggestion.followingUser && hover,'label-info': suggestion.followingUser, 'label-glyphicon-plus': !suggestion.followingUser}">
                         <span class="glyphicon" ng-class="suggestion.followingUser ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
                     </span>
-                    <a ui-sref="profileStatuses({ email: suggestion.username })">
+                    <a ui-sref="profileStatuses({ username: suggestion.username })">
                         <span class='pull-left background-image-fffix'>
                             <img class="img-rounded img-small" ng-style="{ 'background-image': 'url(' + suggestion.avatarURL + ')' }">
                         </span>
                     </a>&nbsp;
-                    <a ui-sref="profileStatuses({ email: suggestion.username })">
+                    <a ui-sref="profileStatuses({ username: suggestion.username })">
                         <strong>{{ suggestion.firstName + ' ' + suggestion.lastName }}</strong>
                     </a>
                     <br>&nbsp;
-                    <a ui-sref="profileStatuses({ email: suggestion.username })">
+                    <a ui-sref="profileStatuses({ username: suggestion.username })">
                         <small>@{{ suggestion.username }}</small>
                     </a>
                 </h6>

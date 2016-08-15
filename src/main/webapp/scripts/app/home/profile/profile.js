@@ -14,7 +14,6 @@
             abstract: true,
             resolve: {
                 user: ['UserService', '$stateParams', function (UserService, $stateParams) {
-                    console.log($stateParams.username);
                     return UserService.get({username: $stateParams.username}).$promise;
                 }],
                 tags: ['TagService', '$stateParams', function (TagService, $stateParams) {

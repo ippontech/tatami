@@ -64,8 +64,8 @@ angular.module('tatamiJHipsterApp')
                                         args = { groupId: $scope.$stateParams.groupId, start: $scope.statuses[0].timelineId };
                                     }
 
-                                    else if($state.$current.name == 'home.profile.statuses') {
-                                        args = { email: $scope.$stateParams.email, start: $scope.statuses[0].timelineId };
+                                    else if($state.$current.name == 'timelineHome.sidebarHome.otherUserProfile.profileStatuses') {
+                                        args = { username: $scope.$stateParams.username, start: $scope.statuses[0].timelineId };
                                     }
 
                                     else {

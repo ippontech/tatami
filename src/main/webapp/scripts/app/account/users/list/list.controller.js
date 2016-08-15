@@ -4,11 +4,10 @@ tatamiJHipsterApp
 
     $scope.followUser = function(user) {
 
-        $scope.email = user.username+"@"+$scope.$parent.domain.data.domain;
         $scope.user = user;
 
         $scope.user.friend = UserService.follow(
-            { email: $scope.email },
+            { username: $scope.user.username },
             { friend: !$scope.user.friend, friendShip: $scope.user.friend }
         ).friend;
     };
