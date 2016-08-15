@@ -24,6 +24,6 @@ tatamiJHipsterApp
             });
             getFollowings.$inject = ['UserService','profileInfo'];
             function getFollowings(UserService,profileInfo) {
-                return UserService.getFollowing({ email: profileInfo.data.email }).$promise;
+                return UserService.getFollowing({ username: profileInfo.data.username }).$promise;
             }
     });

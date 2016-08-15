@@ -9,7 +9,7 @@ angular.module('tatamiJHipsterApp')
                 if (!$scope.group.member) {
 
                     GroupService.join(
-                        {groupId: $scope.group.groupId, email: $scope.profile.data.email},
+                        {groupId: $scope.group.groupId, username: $scope.profile.data.username},
                         null,
                         function () {
                                 $scope.$state.reload();
@@ -17,7 +17,7 @@ angular.module('tatamiJHipsterApp')
                     );
                 } else {
                     GroupService.leave(
-                        {groupId: $scope.group.groupId, email: $scope.profile.data.email},
+                        {groupId: $scope.group.groupId, username: $scope.profile.data.username},
                         null,
                         function () {
                                 $scope.$state.reload();

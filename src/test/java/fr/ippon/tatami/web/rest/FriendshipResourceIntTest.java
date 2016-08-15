@@ -52,18 +52,18 @@ public class FriendshipResourceIntTest {
     public void unknownUserTest() throws Exception {
         //getFriends of a non existing user
         restFriendshipMockMvc
-            .perform(get("/tatami/rest/users/nobody@localhost/friends")
+            .perform(get("/tatami/rest/users/nobody/friends")
                 .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isNotFound());
 
         //getFollowers of a non existing user
         restFriendshipMockMvc
-            .perform(get("/tatami/rest/users/nobody@localhost/followers")
+            .perform(get("/tatami/rest/users/nobody/followers")
                 .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isNotFound());
 
         //add a non-existing friend
-        restFriendshipMockMvc.perform(patch("/tatami/rest/users/nobody@localhost")
+        restFriendshipMockMvc.perform(patch("/tatami/rest/users/nobody")
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isNotFound());
     }
@@ -72,47 +72,47 @@ public class FriendshipResourceIntTest {
     @Test
     public void testGetAndAddFriendWorkflow() throws Exception {
 
-        //getFriends of admin@localhost and check user@localhost is not a friend
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin@localhost/friends"))
+        //getFriends of admin and check user is not a friend
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin/friends"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='user@localhost')]").isEmpty());
 
-        //getFollowers of user@localhost and check admin@localhost is not a follower
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/user@localhost/followers"))
+        //getFollowers of user and check admin is not a follower
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/user/followers"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='admin@localhost')]").isEmpty());
 
-        //add user@localhost as a friend of admin
-        restFriendshipMockMvc.perform(patch("/tatami/rest/users/user@localhost")
+        //add user as a friend of admin
+        restFriendshipMockMvc.perform(patch("/tatami/rest/users/user")
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.email").value("user@localhost"));
 
         //check if user was added to admin's friends
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin@localhost/friends"))
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin/friends"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='user@localhost')]").isNotEmpty());
 
         //check if admin was added as follower of user
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/user@localhost/followers"))
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/user/followers"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='admin@localhost')]").isNotEmpty());
 
-        //remove user from admin@localhost's friends
-        restFriendshipMockMvc.perform(patch("/tatami/rest/users/user@localhost")
+        //remove user from admin's friends
+        restFriendshipMockMvc.perform(patch("/tatami/rest/users/user")
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.email").value("user@localhost"));
 
         //check the removal in admin's friends
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin@localhost/friends"))
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/admin/friends"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='user@localhost')]").isEmpty());
 
         //check the removal in user's followers
-        restFriendshipMockMvc.perform(get("/tatami/rest/users/user@localhost/followers"))
+        restFriendshipMockMvc.perform(get("/tatami/rest/users/user/followers"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[?(@['email']=='admin@localhost')]").isEmpty());
     }

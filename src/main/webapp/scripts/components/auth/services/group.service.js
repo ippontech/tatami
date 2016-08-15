@@ -41,8 +41,8 @@ angular.module('tatamiJHipsterApp')
             }
         },
         'getRecommendations': { method: 'GET', isArray: true, url: '/tatami/rest/groupmemberships/suggestions' },
-        'join': { method: 'PUT', params: { groupId: '@groupId', email: '@email' }, url: '/tatami/rest/groups/:groupId/members/:email' },
-        'leave': { method: 'DELETE', params: { groupId: '@groupId', email: '@email' }, url: '/tatami/rest/groups/:groupId/members/:email' },
+        'join': { method: 'PUT', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
+        'leave': { method: 'DELETE', params: { groupId: '@groupId', username: '@username' }, url: '/tatami/rest/groups/:groupId/members/:username' },
         'update': { method: 'PUT', params: { groupId: '@groupId' }, url: '/tatami/rest/groups/:groupId' },
         'getGroups': { method: 'GET', isArray: true, url: '/tatami/rest/groups' }
     });

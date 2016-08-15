@@ -19,13 +19,13 @@
                                     <img class="img-rounded img-medium" ng-style="{ 'background-image': 'url(' + user.info.avatarURL + ')' }">
                                 </div>
                                 <h4>
-                                    <a ui-sref="profileStatuses({ email: user.info.email })">
+                                    <a ui-sref="profileStatuses({ username: user.info.username })">
                                         <strong>
                                             {{ user.info.firstName + ' ' + user.info.lastName }}
                                         </strong>
                                     </a>
                                     <br>
-                                    <a ui-sref="profileStatuses({ email: user.info.email })">
+                                    <a ui-sref="profileStatuses({ username: user.info.username })">
                                         <small>
                                             @{{ user.info.username }}
                                         </small>

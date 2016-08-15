@@ -37,7 +37,7 @@ tatamiJHipsterApp
                 $scope.$state.go('groupStatus', { groupId: $item.groupId });
             }
             else if($item.username) {
-                $scope.$state.go('profileStatuses', { email: $item.username });
+                $scope.$state.go('profileStatuses', { username: $item.username });
             }
             else if(!$item.groupId) {
                 $scope.$state.go('tag', { tag: $item.name })

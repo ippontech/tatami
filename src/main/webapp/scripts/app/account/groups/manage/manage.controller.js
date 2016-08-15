@@ -11,7 +11,7 @@ tatamiJHipsterApp
 
     $scope.removeUser = function(member) {
         GroupService.leave(
-            { groupId: $scope.group.groupId, email: member.email },
+            { groupId: $scope.group.groupId, username: member.username },
             null,
             function() {
                 $scope.$state.reload();
@@ -30,7 +30,7 @@ tatamiJHipsterApp
 
     $scope.addUser = function(member) {
         GroupService.join(
-            { groupId: $scope.group.groupId, email: member.email },
+            { groupId: $scope.group.groupId, username: member.username },
             null,
             function() {
                 $scope.$state.reload();
