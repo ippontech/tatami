@@ -1,47 +1,47 @@
 CREATE TABLE IF NOT EXISTS status (
     statusId timeuuid,
-    type varchar,
-    email varchar,
-    username varchar,
-    domain varchar,
+    type text,
+    email text,
+    username text,
+    domain text,
     statusDate timestamp,
-    geoLocalization varchar,
+    geoLocalization text,
     removed boolean,
-    groupId varchar,
+    groupId text,
     statusPrivate boolean,
     hasAttachments boolean,
-    content varchar,
-    discussionId varchar,
-    replyTo varchar,
-    replyToUsername varchar,
+    content text,
+    discussionId text,
+    replyTo text,
+    replyToUsername text,
     detailsAvailable boolean,
     originalStatusId timeuuid,
-    followerUsername varchar,
+    followerUsername text,
     PRIMARY KEY(statusId)
 );
 
 CREATE TABLE IF NOT EXISTS discussion (
     statusId timeuuid,
-    discussionId varchar,
+    discussionId text,
     PRIMARY KEY(discussionId,statusId)
 ) WITH CLUSTERING ORDER BY (statusId ASC);
 CREATE INDEX ON discussion (statusId);
 
 CREATE TABLE IF NOT EXISTS timeline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key,status)
 );
 
 CREATE TABLE IF NOT EXISTS domain (
-    domainId varchar,
-    email varchar,
+    domainId text,
+    email text,
     created timeuuid,
     PRIMARY KEY(domainId, email)
 );
 
 CREATE TABLE IF NOT EXISTS counter (
-    email varchar,
+    email text,
     STATUS_COUNTER counter,
     FOLLOWERS_COUNTER counter,
     FRIENDS_COUNTER counter,
@@ -49,125 +49,125 @@ CREATE TABLE IF NOT EXISTS counter (
 );
 
 CREATE TABLE IF NOT EXISTS friends (
-    email varchar,
-    friendEmail varchar,
+    email text,
+    friendEmail text,
     PRIMARY KEY(email,friendEmail)
 );
 
 CREATE TABLE IF NOT EXISTS followers (
-    key varchar,
-    email varchar,
+    key text,
+    email text,
     PRIMARY KEY(key,email)
 );
 
 CREATE TABLE IF NOT EXISTS dayline (
-    domainDay varchar,
-    email varchar,
+    domainDay text,
+    email text,
     statusCount counter,
     PRIMARY KEY(domainDay, email)
 );
 
 CREATE TABLE IF NOT EXISTS tagline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS userline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS userlineShares (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS shares (
     status timeuuid,
-    email varchar,
+    email text,
     PRIMARY KEY(status, email)
 );
 
 CREATE TABLE IF NOT EXISTS tagFollowers (
-    key varchar,
-    email varchar,
+    key text,
+    email text,
     PRIMARY KEY(key, email)
 );
 
 CREATE TABLE IF NOT EXISTS favline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS domainline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS mentionline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 CREATE TABLE IF NOT EXISTS groupline (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key, status)
 );
 
 CREATE TABLE IF NOT EXISTS group (
     id timeuuid,
-    domain varchar,
-    name varchar,
-    description varchar,
+    domain text,
+    name text,
+    description text,
     publicGroup boolean,
     archivedGroup boolean,
     PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS userGroup (
-    email varchar,
+    email text,
     groupId timeuuid,
-    role varchar,
+    role text,
     PRIMARY KEY(email, groupId)
 );
 
 CREATE TABLE IF NOT EXISTS groupMember (
     groupId timeuuid,
-    email varchar,
-    role varchar,
+    email text,
+    role text,
     PRIMARY KEY(groupId, email)
 );
 
 CREATE TABLE IF NOT EXISTS userTags (
-    email varchar,
-    friendEmail varchar,
+    email text,
+    friendEmail text,
     time timestamp,
     PRIMARY KEY(email, friendEmail)
 );
 
 CREATE TABLE IF NOT EXISTS trends (
-    domain varchar,
+    domain text,
     id timeuuid,
-    tag varchar,
+    tag text,
     PRIMARY KEY(domain, id)
 );
 
 CREATE TABLE IF NOT EXISTS userTrends (
-    email varchar,
+    email text,
     id timeuuid,
-    tag varchar,
+    tag text,
     PRIMARY KEY(email, id)
 );
 
 CREATE TABLE IF NOT EXISTS avatar (
     id timeuuid,
-    filename varchar,
+    filename text,
     content blob,
     size bigint,
     creation_date timestamp,
@@ -175,25 +175,25 @@ CREATE TABLE IF NOT EXISTS avatar (
 );
 
 CREATE TABLE IF NOT EXISTS timelineShares (
-    key varchar,
+    key text,
     status timeuuid,
     PRIMARY KEY(key,status)
 );
 
 CREATE TABLE IF NOT EXISTS appleDevice (
-    email varchar,
-    deviceId varchar,
+    email text,
+    deviceId text,
     PRIMARY KEY(email,deviceId)
 );
 
 CREATE TABLE IF NOT EXISTS appleDeviceUser (
-    deviceId varchar,
-    email varchar,
+    deviceId text,
+    email text,
     PRIMARY KEY(deviceId,email)
 );
 CREATE TABLE IF NOT EXISTS attachment (
     id timeuuid,
-    filename varchar,
+    filename text,
     content blob,
     thumbnail blob,
     size bigint,
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS attachment (
 );
 
 CREATE TABLE IF NOT EXISTS groupCounter (
-    domain varchar,
+    domain text,
     groupId timeuuid,
     counter counter,
     PRIMARY KEY(domain,groupId)
@@ -216,22 +216,22 @@ CREATE TABLE IF NOT EXISTS statusAttachments (
 );
 
 CREATE TABLE IF NOT EXISTS tagCounter (
-    key varchar,
+    key text,
     TAG_COUNTER counter,
     PRIMARY KEY(key)
 );
 
 CREATE TABLE IF NOT EXISTS userAttachments (
-    email varchar,
+    email text,
     attachmentId timeuuid,
     PRIMARY KEY(email,attachmentId)
 );
 
 CREATE TABLE IF NOT EXISTS domainConfiguration (
-    domain varchar,
-    subscriptionLevel varchar,
-    storageSize varchar,
-    adminUsername varchar,
+    domain text,
+    subscriptionLevel text,
+    storageSize text,
+    adminUsername text,
     PRIMARY KEY(domain)
 );
 
@@ -304,27 +304,27 @@ CREATE TABLE IF NOT EXISTS persistent_token_by_user (
 );
 
 CREATE TABLE IF NOT EXISTS rss (
-    rss_uid varchar,
-    email varchar,
+    rss_uid text,
+    email text,
     PRIMARY KEY(rss_uid)
 );
 
 CREATE TABLE IF NOT EXISTS mail_digest (
-    digest_id varchar,
-    email varchar,
+    digest_id text,
+    email text,
     created timestamp,
     PRIMARY KEY(digest_id,email)
 );
 
 CREATE TABLE IF NOT EXISTS usersBlocked (
-    email varchar,
-    blockedEmail varchar,
+    email text,
+    blockedEmail text,
     PRIMARY KEY(email,blockedEmail)
 );
 CREATE TABLE IF NOT EXISTS reportedStatus (
-    domain varchar,
-    statusId varchar,
-    reportingLogin varchar,
+    domain text,
+    statusId text,
+    reportingLogin text,
     PRIMARY KEY(domain,statusId, reportingLogin)
 );
 

@@ -129,7 +129,7 @@ public class AttachmentRepository {
             attachment.setAttachmentId(attachmentId);
             attachment.setFilename(row.getString(FILENAME));
             attachment.setSize(row.getLong(SIZE));
-            attachment.setCreationDate(row.getDate(CREATION_DATE));
+            attachment.setCreationDate(row.getTimestamp(CREATION_DATE));
             if (attachment.getCreationDate() == null) {
                 attachment.setCreationDate(new Date());
             }

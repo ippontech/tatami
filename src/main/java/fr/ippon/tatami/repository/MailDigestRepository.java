@@ -1,9 +1,6 @@
 package fr.ippon.tatami.repository;
 
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import fr.ippon.tatami.config.Constants;
@@ -15,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,7 +71,7 @@ public class MailDigestRepository {
         Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
         stmt.setString("digest_id", buildKey(digestType, domain, day));
         stmt.setString("email", email);
-        stmt.setDate("created", timestamp);
+        stmt.setTimestamp("created", new Date(timestamp.getTime()));
         session.execute(stmt);
     }
 

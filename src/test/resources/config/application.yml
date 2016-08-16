@@ -17,7 +17,7 @@ spring:
             # JHipster's Cassandra support is in the process of being merged in Spring Boot
             contactPoints: localhost
             port: 9142
-            protocolVersion: V2
+            protocolVersion: V4
             compression: NONE
             keyspaceName: cassandra_unit_keyspace
     mail:

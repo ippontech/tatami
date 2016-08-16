@@ -104,7 +104,7 @@ public class AvatarRepository {
             avatar.setAvatarId(row.getUUID("id").toString());
             avatar.setFilename(row.getString(FILENAME));
             avatar.setSize(row.getLong(SIZE));
-            avatar.setCreationDate(row.getDate(CREATION_DATE));
+            avatar.setCreationDate(row.getTimestamp(CREATION_DATE));
             return avatar;
         }
         return null;

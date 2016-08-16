@@ -1,6 +1,25 @@
 # TatamiJHipster
 
-Create a new cluster: ccm create 'nodeName' -v 2.1.6 -n 'nodeCount'
+To manage your Cassandra cluster, you can either use ccm (Cassandra Cluster Manager) or Docker. For a quick start, you can use ccm and follow the 
+steps beyond. To use docker, see the section 'Docker for Cassandra' at the end of this page. 
+
+Using ccm :
+Create a new cluster: ccm create 'clusterName' -v 3.7 -n 'nodeCount'
+
+Before running your applcation, you will have to create your keyspace and the associated tables. Do :
+
+    ccm start
+    
+Check that the node is up running : ccm status
+
+Cqlsh into the node : ccm node1 cqlsh
+
+In cqlsh :  source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-keyspace.cql' ;
+            use tatamijhipster ;
+            source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-tables.cql''
+
+Your cassandra environment is now set up to run the application.
+
 
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 

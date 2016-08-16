@@ -21,7 +21,7 @@ spring:
     data:
         cassandra:
             contactPoints: localhost
-            protocolVersion: V2
+            protocolVersion: V4
             compression: LZ4
             keyspaceName: TatamiJHipster
         elasticsearch:

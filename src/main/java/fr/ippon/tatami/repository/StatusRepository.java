@@ -302,8 +302,7 @@ public class StatusRepository {
         } else {
             throw new IllegalStateException("Status cannot have a null domain: " + status);
         }
-
-        status.setStatusDate(row.getDate(STATUS_DATE));
+        status.setStatusDate(row.getTimestamp(STATUS_DATE));
         Boolean removed = row.getBool(REMOVED);
         if (removed != null) {
             status.setRemoved(removed);
