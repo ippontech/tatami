@@ -39,7 +39,7 @@ public class TatamiSuiteIntTest {
     @BeforeClass
     public static void before() throws InterruptedException, TTransportException, ConfigurationException, IOException {
         // Start Cassandra
-        EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra(60000);
         Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
         Session session = cluster.connect();
         CQLDataLoader dataLoader = new CQLDataLoader(session);
