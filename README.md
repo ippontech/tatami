@@ -24,7 +24,7 @@ In cqlsh :
             
     use tatamijhipster ;
     
-    source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-tables.cql''
+    source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-tables.cql' ;
 
 Your cassandra environment is now set up to run the application.
 
