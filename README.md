@@ -10,13 +10,21 @@ Before running your applcation, you will have to create your keyspace and the as
 
     ccm start
     
-Check that the node is up running : ccm status
+Check that the node is up running : 
 
-Cqlsh into the node : ccm node1 cqlsh
+    ccm status
 
-In cqlsh :  source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-keyspace.cql' ;
-            use tatamijhipster ;
-            source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-tables.cql''
+Cqlsh into the node : 
+
+    ccm node1 cqlsh
+
+In cqlsh :
+  
+    source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-keyspace.cql' ;
+            
+    use tatamijhipster ;
+    
+    source '~/your-path-to-the-root-of-the-project/tatami/src/main/resources/config/cql/create-tables.cql''
 
 Your cassandra environment is now set up to run the application.
 
