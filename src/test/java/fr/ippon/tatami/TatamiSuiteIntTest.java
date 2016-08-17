@@ -12,7 +12,6 @@ import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -50,11 +49,6 @@ public class TatamiSuiteIntTest {
     public void setup() {
         // Set Security context
         TestUtil.createAdminSecurityContext();
-    }
-
-    @AfterClass
-    public static void after() {
-        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
 }

@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -125,7 +124,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterValid() throws Exception {
         UserDTO u = new UserDTO(
             "joe",                  // username
@@ -162,7 +160,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterInvalidLogin() throws Exception {
         UserDTO u = new UserDTO(
             "funky-log!n",              // username <-- invalid
@@ -199,7 +196,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterInvalidEmail() throws Exception {
         UserDTO u = new UserDTO(
             "username",         // username
@@ -236,7 +232,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     // Duplicate usernames should be allowed:
     public void testRegisterDuplicateLogin() throws Exception {
         // Good
@@ -290,7 +285,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterDuplicateEmail() throws Exception {
         // Good
         UserDTO u = new UserDTO(
@@ -346,7 +340,6 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional
     public void testRegisterAdminIsIgnored() throws Exception {
         UserDTO u = new UserDTO(
             "badguy",             // username
