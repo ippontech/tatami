@@ -1,4 +1,4 @@
-FROM cassandra:2.2.3
+FROM cassandra:3.7
 
 # script to initialize the keyspace and the base tables
 ADD cassandra/scripts/init-prod.sh /usr/local/bin/init-prod
