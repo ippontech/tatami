@@ -347,8 +347,9 @@ public class ElasticsearchSearchService implements SearchService {
     public Collection<Group> searchGroupByPrefix(String domain, String prefix, int size) {
         Collection<String> ids = searchByPrefix(domain, prefix, size, groupMapper);
         return ids.stream()
-            .map(id -> groupRepository.getGroupById(UUID.fromString(id)))
-            .collect(Collectors.toList());
+                    .map(id -> groupRepository.getGroupById(UUID.fromString(id)))
+                    .filter(p -> p!=null)
+                    .collect(Collectors.toList());
     }
 
     /**
