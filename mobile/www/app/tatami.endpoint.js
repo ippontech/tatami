@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    var defaultEndpoint = {url: 'http://app.tatamisoft.com'};
+    var defaultEndpoint = {url: 'http://tatami.ippon.fr'};
     var endpoint;
 
     angular.module('tatami')
