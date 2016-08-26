@@ -5,7 +5,7 @@ version: '2'
 services:
     tatami-cassandra:
         container_name: tatami-cassandra
-        image: cassandra:2.2.3
+        image: cassandra:3.7
         ports:
             - 7000:7000
             - 7001:7001
@@ -13,7 +13,7 @@ services:
             - 9042:9042
             - 9160:9160
     tatami-cassandra-node:
-        image: cassandra:2.2.3
+        image: cassandra:3.7
         links:
             - tatami-cassandra:seed
         environment:

@@ -12,7 +12,6 @@ import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -39,7 +38,7 @@ public class TatamiSuiteIntTest {
     @BeforeClass
     public static void before() throws InterruptedException, TTransportException, ConfigurationException, IOException {
         // Start Cassandra
-        EmbeddedCassandraServerHelper.startEmbeddedCassandra();
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra(60000);
         Cluster cluster = new Cluster.Builder().addContactPoints("127.0.0.1").withPort(9142).build();
         Session session = cluster.connect();
         CQLDataLoader dataLoader = new CQLDataLoader(session);
@@ -50,11 +49,6 @@ public class TatamiSuiteIntTest {
     public void setup() {
         // Set Security context
         TestUtil.createAdminSecurityContext();
-    }
-
-    @AfterClass
-    public static void after() {
-        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
 }

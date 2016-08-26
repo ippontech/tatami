@@ -41,8 +41,8 @@ angular.module('tatamiJHipsterApp')
                             $scope.end = false;
                             $scope.finish = $scope.statuses[$scope.statuses.length - 1].timelineId;
                         }
-
-
+                        
+                        
                         /* Begin Polling Related Code */
                         $scope.state = $state.$current.name;
                         $scope.newMessages = null;
@@ -133,6 +133,28 @@ angular.module('tatamiJHipsterApp')
                         $scope.$on('$destroy', function() {
                             $timeout.cancel($scope.poller);
                         });
+
+                        $scope.checkIfImage = function (src) {
+                            return(src.endsWith(".jpeg") || src.endsWith(".gif") || src.endsWith(".png") || src.endsWith(".jpg"));
+                        };
+
+                        $scope.openPictureModal = function (attachment) {
+                            var modalInstance = $uibModal.open({
+                                animation: true,
+                                templateUrl: '/scripts/components/util/ImageView.html',
+                                controller: function($scope) {
+
+                                    $scope.title = attachment.filename;
+
+                                    $scope.modalImage = '/tatami/file/' + attachment.attachmentId + '/' + attachment.filename;
+
+                                    $scope.closeModal = function() {
+                                        modalInstance.dismiss();
+                                    }
+                                },
+                                size: 'md'
+                            });
+                        };
 
                         $scope.loadNewStatuses = function() {
                             for(var i = $scope.newMessages.length - 1; i >= 0 ; i--) {

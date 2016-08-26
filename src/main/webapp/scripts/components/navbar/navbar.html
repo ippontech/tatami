@@ -313,13 +313,12 @@
                     <input name="searchBar"
                            ng-model="search.term"
                            ng-change="search()"
-                           typeahead-focus-first="false"
                            uib-typeahead="state for state in allSearch | filter:$viewValue | limitTo:10"
                            typeahead-on-select="goToPage($item)"
                            typeahead-template-url="/scripts/components/navbar/SearchView.html"
                            type="text"
-                           autocomplete="off" placeholder="{{ 'global.topMenu.search' | translate }}"
-                           typeahead-min-length="1"
+                           autocomplete="off"
+                           placeholder="{{ 'global.topMenu.search' | translate }}"
                            class="form-control">
                 </div>
             </form>
