@@ -20,8 +20,8 @@
         return directive;
     }
 
-    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', '$translate', 'ReportService', 'ToastService'];
-    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, $translate, ReportService, ToastService) {
+    controller.$inject = ['$scope', '$state', '$ionicPopup', '$ionicPopover', '$filter', '$sce', 'StatusService', 'PathService', 'BlockService', '$translate', 'ReportService', 'ToastService', 'TatamiEndpoint'];
+    function controller($scope, $state, $ionicPopup, $ionicPopover, $filter, $sce, StatusService, PathService, BlockService, $translate, ReportService, ToastService, TatamiEndpoint) {
         var vm = this;
 
         vm.state = $state.current.name;
@@ -44,6 +44,7 @@
         vm.reportStatus = reportStatus;
         vm.hideStatus = hideStatus;
         vm.announceStatus = announceStatus;
+        vm.tatamEndpoint = TatamiEndpoint.getEndpoint().url;
 
         function remove() {
             var confirmPopup = $ionicPopup.confirm({
@@ -129,7 +130,8 @@
 
         buildAttachmentUrl.$inject = ['attachment'];
         function buildAttachmentUrl(attachment) {
-            return '/tatami/file/' + attachment.attachmentId + '/' + attachment.filename;
+            var location = TatamiEndpoint.getEndpoint().url;
+            return location + '/tatami/file/' + attachment.attachmentId + '/' + attachment.filename;
         }
 
         $ionicPopover.fromTemplateUrl('app/shared/status/blockUserMenu.html', {
