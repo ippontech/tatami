@@ -45,6 +45,11 @@
             <span class="ion-locked padding-right"></span>
             <span translate="status.private"></span>
         </p>
+        <span ng-repeat="attachment in vm.status.attachments" >
+            <img ng-if="attachment.filename.endsWith('.jpg') || attachment.filename.endsWith('.gif') || attachment.filename.endsWith('.jpeg') || attachment.filename.endsWith('.png')"
+                 class="tatami-attached-image" ng-src="{{ vm.tatamEndpoint }}/tatami/file/{{ attachment.attachmentId }}/{{ attachment.filename }}" />
+        </span>
+        <!--No view exists to display them-->
         <p ng-repeat="attachment in vm.status.attachments">
             <a ng-href="{{ vm.buildAttachmentUrl(attachment) }}">
                 <i class="ion-document-text"></i> {{ attachment.filename }}
