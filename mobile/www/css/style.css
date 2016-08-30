@@ -25,6 +25,11 @@ div .tatami-avatar {
     min-height: 42px;
 }
 
+.tatami-attached-image{
+    height: auto;
+    max-width: 350px;
+}
+
 .bar .bar-header .title {
     left:0!important;
     right:0!important;
