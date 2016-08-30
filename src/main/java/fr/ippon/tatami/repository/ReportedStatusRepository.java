@@ -5,6 +5,7 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import fr.ippon.tatami.config.ColumnFamilyKeys;
+import fr.ippon.tatami.service.util.DomainUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
@@ -58,6 +59,20 @@ public class ReportedStatusRepository {
             .all()
             .stream()
             .map(e -> e.getString(STATUS_ID))
+            .collect(Collectors.toList());
+    }
+
+    public List<String> findReportingUsersByStatusId(String domain, String statusId) {
+        Statement statement = QueryBuilder.select()
+            .all()
+            .from(ColumnFamilyKeys.REPORTED_STATUS_CF)
+            .where(eq(DOMAIN, domain))
+            .and(eq(STATUS_ID, statusId));
+        ResultSet results = session.execute(statement);
+        return results
+            .all()
+            .stream()
+            .map(e -> DomainUtil.getUsernameFromEmail(e.getString(REPORTING_LOGIN)))
             .collect(Collectors.toList());
     }
 

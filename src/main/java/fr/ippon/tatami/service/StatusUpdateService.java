@@ -204,7 +204,18 @@ public class StatusUpdateService {
     public Collection<StatusDTO> findReportedStatuses() {
         String domain = SecurityUtils.getCurrentUserDomain();
         List<String> reportedStatusId = getAllReportedStatuses(domain);
-        return timelineService.buildStatusList(reportedStatusId);
+        Collection<StatusDTO> statuses = timelineService.buildStatusList(reportedStatusId);
+        return fillInReportingUsers(domain, statuses);
+
+    }
+
+    private Collection<StatusDTO> fillInReportingUsers(String domain, Collection<StatusDTO> statuses) {
+        for (StatusDTO s : statuses) {
+            s.setReportingUsers(
+                reportedStatusRepository.findReportingUsersByStatusId(domain, s.getStatusId())
+            );
+        }
+        return statuses;
     }
 
     public void deleteReportedStatus(String statusId) {

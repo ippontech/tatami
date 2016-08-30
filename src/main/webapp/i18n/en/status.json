@@ -19,7 +19,8 @@
         "report": "Report this Status",
         "block": "Block this User",
         "approve": "Approve",
-        "remove": "Remove"
+        "remove": "Remove",
+        "reportedBy": "Reported by: "
 
     }
 }

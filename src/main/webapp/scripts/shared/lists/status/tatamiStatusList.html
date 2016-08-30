@@ -183,6 +183,10 @@
                                             <i class="glyphicon glyphicon-remove"></i>
                                             <span translate="status.remove"></span>
                                         </button>
+                                        <span translate="status.reportedBy"></span>
+                                        <span ng-repeat="user in status.reportingUsers">
+                                            {{user}}{{$last ? '' : ', '}}
+                                        </span>
                                     </span>
                                 </small>
                             </div>

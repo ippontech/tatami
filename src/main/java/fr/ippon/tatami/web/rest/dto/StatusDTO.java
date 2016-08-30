@@ -65,6 +65,8 @@ public class StatusDTO implements Serializable {
 
     private Collection<String> attachmentIds;
 
+    private Collection<String> reportingUsers;
+
     private String content;
 
     private Date statusDate;
@@ -99,6 +101,14 @@ public class StatusDTO implements Serializable {
     private String sharedByUsername;
 
     private boolean shareByMe;
+
+    public Collection<String> getReportingUsers() {
+        return reportingUsers;
+    }
+
+    public void setReportingUsers(Collection<String> reportingUsers) {
+        this.reportingUsers = reportingUsers;
+    }
 
     public boolean isActivated() {
         return activated;
