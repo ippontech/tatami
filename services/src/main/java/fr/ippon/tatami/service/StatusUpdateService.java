@@ -6,13 +6,12 @@ import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.*;
 import fr.ippon.tatami.repository.*;
 import fr.ippon.tatami.security.AuthenticationService;
+import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.exception.ArchivedGroupException;
 import fr.ippon.tatami.service.exception.ReplyStatusException;
 import fr.ippon.tatami.service.util.DomainUtil;
-import org.apache.camel.util.Time;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.openjpa.jdbc.kernel.exps.Abs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -107,7 +106,7 @@ public class StatusUpdateService {
     private StatusReportRepository statusReportRepository;
 
     @Inject
-    private BlockRepository blockRepository;
+    private TatamiUserDetailsService tatamiUserDetailsService;
 
     @Inject
     private TimelineService timelineService;
@@ -429,7 +428,7 @@ public class StatusUpdateService {
         log.debug("Reported Status: ", statusId);
         String domain = DomainUtil.getDomainFromLogin(reportingLogin);
         statusReportRepository.reportStatus(domain, statusId, reportingLogin);
-        mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId));
+        mailService.sendReportedStatusEmail(reportingLogin, statusRepository.findStatusById(statusId),tatamiUserDetailsService.getAdminUsers());
 
     }
 

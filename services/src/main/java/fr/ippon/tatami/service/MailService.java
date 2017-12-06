@@ -4,10 +4,6 @@ import fr.ippon.tatami.domain.Group;
 import fr.ippon.tatami.domain.User;
 import fr.ippon.tatami.domain.status.AbstractStatus;
 import fr.ippon.tatami.domain.status.Status;
-import fr.ippon.tatami.repository.DomainRepository;
-import fr.ippon.tatami.repository.UserRepository;
-import fr.ippon.tatami.security.AuthenticationService;
-import fr.ippon.tatami.security.TatamiUserDetailsService;
 import fr.ippon.tatami.service.dto.StatusDTO;
 import fr.ippon.tatami.service.util.DomainUtil;
 import org.apache.velocity.app.VelocityEngine;
@@ -47,15 +43,6 @@ public class MailService {
     @Inject
     private MessageSource mailMessageSource;
 
-    @Inject
-    private AuthenticationService authenticationService;
-
-    @Inject
-    private UserService userService;
-
-    @Inject
-    private DomainRepository domainRepository;
-
     private String host;
 
     private int port;
@@ -79,8 +66,6 @@ public class MailService {
     @Inject
     private VelocityEngine velocityEngine;
 
-    @Inject
-    private TatamiUserDetailsService tatamiUserDetailsService;
 
     @PostConstruct
     public void init() {
@@ -110,17 +95,6 @@ public class MailService {
         model.put("registrationUrl", registrationUrl);
 
         sendTextFromTemplate(user.getLogin(), model, "registration", this.locale);
-    }
-
-    @Async
-    public void sendInvitationEmail(String email, User user) {
-        log.debug("Sending invitation e-mail to email '{}'", email);
-
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("user", user.getLogin());
-        model.put("invitationUrl", tatamiUrl);
-
-        sendTextFromTemplate(user.getLogin(), model, "invitationMessage", this.locale);
     }
 
     @Async
@@ -221,7 +195,7 @@ public class MailService {
     }
 
     @Async
-    public void sendReportedStatusEmail(String emailReporting, AbstractStatus status) {
+    public void sendReportedStatusEmail(String emailReporting, AbstractStatus status,Collection<String> adminUser) {
         log.debug("Sending reported status e-mail to User '{}' with locale : '{}'", locale);
         String url = tatamiUrl + "/#/home/status/" + status.getStatusId();
 
@@ -229,7 +203,7 @@ public class MailService {
         model.put("status", status);
         model.put("statusUrl", url);
 
-        for(String email : tatamiUserDetailsService.getAdminUsers()) {
+        for(String email : adminUser) {
             sendTextFromTemplate(email, model, "reportedStatus", this.locale);
         }
     }
